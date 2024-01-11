@@ -1,0 +1,52 @@
+<header class="container">
+    <nav>
+        <div class="nav-bar">
+            <i class='bx bx-menu sidebarOpen'></i>
+            <span class="logo navLogo"><a href="#"><img th:src="@{/img/logo.png}" alt="" class="w-25"></a></span>
+
+            <div class="menu">
+                <div class="logo-toggle">
+                    <span class="logo"><a href="#"><img th:src="@{/img/logo.png}" alt="" class="w-25"></a></span>
+                    <i class='bx bx-x siderbarClose'></i>
+                </div>
+
+                <ul class="nav-links">
+                    <li><a href="#">TRANG CHỦ</a></li>
+                    <li><a href="#">PHÒNG TRỌ</a></li>
+                    <li><a href="#">DỊCH VỤ</a></li>
+                    <li><a href="#">TIN TỨC</a></li>
+                    <li><a href="#" class="dropdown">
+                            <button class="btn dropdown-toggle taikhoan" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                TÀI KHOẢN
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><button class="dropdown-item" type="button">Đăng Nhập</button></li>
+                                <li><button class="dropdown-item" type="button">Đăng Ký</button></li>
+                                <li><button class="dropdown-item" type="button">Quên Mật Khẩu</button></li>
+                            </ul>
+                        </a></li>
+                </ul>
+            </div>
+
+            <div class="darkLight-searchBox">
+                <div class="dark-light ">
+                    <i class='bx bx-moon moon'></i>
+                    <i class='bx bx-sun sun'></i>
+                </div>
+
+                <div class="searchBox">
+                    <div class="searchToggle">
+                        <i class='bx bx-x cancel'></i>
+                        <i class='bx bx-search search'></i>
+                    </div>
+
+                    <div class="search-field">
+                        <input type="text" placeholder="Search...">
+                        <i class='bx bx-search'></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

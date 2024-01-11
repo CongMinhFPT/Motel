@@ -1,0 +1,40 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.4s ease;
+    ;
+}
+
+ul li {
+    list-style-type: none;
+}
+
+@media screen and (min-width:767px) and (max-width:1023px) {
+    .footer-responsive {
+        padding: 0rem 5rem;
+    }
+
+    .footer-responsive-comp {
+        margin-top: 1rem;
+    }
+}
+
+@media screen and (max-width:767px) {
+    .footer-responsive {
+        padding: 0rem 1rem;
+    }
+
+    .footer-responsive-comp {
+        margin-top: 1rem;
+    }
+}
+
+@media screen and (min-width:1024px) {
+    .footer-responsive {
+        padding: 0rem 10rem;
+    }
+
+    .footer-responsive-comp {
+        margin-top: 5rem;
+    }
+}

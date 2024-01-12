@@ -1,0 +1,90 @@
+body{
+    background-color: #FFECBF;
+    
+}
+.main-bottom {
+    color: #000;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 800;
+    margin-top: 5rem;
+}
+
+.main-bottom-text {
+    color: #000;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 18px;
+    /* 120% */
+    text-transform: uppercase;
+}
+
+.main-bottom-box img {
+    height: 300px;  
+}
+
+.main-bottom-box p {
+    text-align: center; 
+}
+
+.signin p{
+    color:  #eec564;
+}
+.signin-form button{
+    color:  #e7cc8d;
+    font-weight: bold;
+}
+.signin-left img{
+    height: 600px;
+    border-radius: 25px 25px ;
+    width: 600px; 
+}
+.line{
+    position: relative;
+    height: 1px;
+    width: 100%;
+    margin: 36px 0;
+    background-color: #d4d4d4;
+}
+.line::before{
+    content: 'Or';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFF;
+    color: #232836;
+    padding:  0 15px;
+    
+}
+.form-link{
+    text-align: center;
+    margin-top: 20px;
+}
+.form-link span,
+.form-link a{
+    text-decoration: none;
+}
+.media-options a{
+    display: flex;
+}
+img.google-img{
+    height: 20px;
+    width: 20px;
+    object-fit: cover;
+    margin: 3px 10px 3px 10px;
+    
+}
+a.google{
+    border:  1px solid #cacaca;
+    text-decoration: none;
+    color: #000;
+}
+.field span{
+    text-align: center;
+}

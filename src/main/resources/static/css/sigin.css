@@ -39,11 +39,6 @@ body{
     color:  #e7cc8d;
     font-weight: bold;
 }
-.signin-left img{
-    height: 600px;
-    border-radius: 25px 25px ;
-    width: 600px; 
-}
 .line{
     position: relative;
     height: 1px;

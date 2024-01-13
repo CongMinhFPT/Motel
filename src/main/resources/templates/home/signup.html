@@ -2,7 +2,7 @@
 <html lang="en" xmlns="https://www.thymeleaf.org">
 
 <head>
-    <title>Sign_In</title>
+    <title>Sign_Up</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS v5.2.1 -->
@@ -26,39 +26,50 @@
                     <div class="card text-black" style="border-radius: 25px;">
                         <div class="card-body p-md-5">
                             <div class="row justify-content-center">
-                                <div
-                                    class="col-md-10 col-lg-6 col-xl-6 order-1 order-lg-1 d-flex align-items-center">
 
-                                    <img th:src="@{/img/motel1.jpg}" class="img-fluid h-100 rounded-3" alt="">
+                                <div class="signin col-md-10 col-lg-6 col-xl-6  order-1 order-lg-1">
 
-                                </div>
-                                <div class="signin col-md-10 col-lg-6 col-xl-6  order-2 order-lg-2">
-
-                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Đăng nhập</p>
+                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Đăng Ký</p>
 
                                     <form class="signin-form mx-1 mx-md-4">
                                         <div class="d-flex flex-row align-items-center mb-4">
 
                                             <div class="form-outline flex-fill mb-0">
+                                                <label class="form-label fw-bold" for="form3Example2c">Họ và tên</label>
+                                                <input type="text" id="form3Example2c" class="form-control rounded-3"
+                                                    placeholder="Nhập họ và tên">
+
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row align-items-center mb-4">
+
+                                            <div class="form-outline flex-fill mb-0">
                                                 <label class="form-label fw-bold" for="form3Example3c">Email</label>
-                                                <input type="email" id="form3Example3c"
-                                                    class="form-control rounded-3" placeholder="Nhập email">
+                                                <input type="email" id="form3Example3c" class="form-control rounded-3"
+                                                    placeholder="Nhập email">
 
                                             </div>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">
-
                                             <div class="form-outline flex-fill mb-0">
                                                 <label class="form-label fw-bold" for="form3Example4c">Mật khẩu</label>
                                                 <input type="password" id="form3Example4c"
                                                     class="form-control rounded-3" placeholder="Nhập mật khẩu">
                                             </div>
                                         </div>
-                                        <div class="d-grid gap-2 ">
-                                            <button class="btn btn-secondary rounded-3">Đăng nhập</button>
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div class="form-outline flex-fill mb-0">
+                                                <label class="form-label fw-bold" for="form3Example5c">Xác nhận mật
+                                                    khẩu</label>
+                                                <input type="password" id="form3Example5c"
+                                                    class="form-control rounded-3" placeholder="Nhập xác nhận mật khẩu">
+                                            </div>
                                         </div>
-                                        <div class="form-link">
+                                        <div class="d-grid gap-2 ">
+                                            <button class="btn btn-secondary rounded-3">Đăng Ký</button>
+                                        </div>
+                                        <!-- <div class="form-link">
                                             <span>Bạn quên mật khẩu? <a href="" class="signup-link">Quên mật khẩu</a></span>
                                         </div>
                                         <div class="line"></div>
@@ -76,13 +87,18 @@
                                                     <span>Đăng nhập với Google</span>
                                                 </a>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="form-link">
-                                            <span>Bạn chưa có tài khoản? <a href="" class="signup-link">Đăng
-                                                    Ký</a></span>
+                                            <span>Bạn đã có tài khoản? <a href="" class="signup-link">Đăng
+                                                    nhập</a></span>
                                         </div>
                                     </form>
+
+                                </div>
+                                <div class="col-md-10 col-lg-6 col-xl-6 order-2 order-lg-2 d-flex align-items-center">
+
+                                    <img th:src="@{/img/kinh doanh motel.jpg}" class="img-fluid h-100 rounded-3" alt="">
 
                                 </div>
 

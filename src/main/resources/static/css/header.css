@@ -65,7 +65,10 @@ nav .nav-bar .sidebarOpen {
 }
 
 .taikhoan{
+    
     color: var(--text-color);
+    background-color: #545454;
+    border: none;
 }
 
 .menu .logo-toggle {

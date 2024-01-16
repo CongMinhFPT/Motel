@@ -1,0 +1,137 @@
+:root{
+    --off-white: #f5f5f5;
+    --primary: #dd7373;
+}
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #FFECBF;
+    height: 100%;
+    width: 100%;
+   
+}
+.container{
+    width: 100%;
+    /* margin: 2rem auto; */
+
+}
+h3{
+    font-weight: bold;
+}
+.card-title{
+    font-size: 1.3rem;
+    margin-top: 15px
+}
+
+
+.blog-details,
+.icon-text{
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+
+}
+.icon-text .icon{
+    color: var(--primary);
+    margin-right: 0.4rem;
+
+}
+.blog-cta{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.button{
+    padding: 0.7rem 1.2rem 0rem 1rem;
+    display: inline-block;
+    background-color: var(--primary);
+    border-radius: 0.5rem;
+    color: var(--off-white);
+    text-decoration: solid ;
+   
+
+}
+.share-button{
+    width: 3rem;
+    height: 3rem;
+    border: 0.1rem solid var(--primary);
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+    color: var(--primary);
+    outline: none;
+    transition: all 0.3s ease-in-out; 
+
+}
+.share{
+    display: flex;
+    justify-content: space-between;
+}
+.share-button:focus{
+    background-color: var(--primary);
+    color: var(--off-white);
+
+}
+@media screen and (min-width:90px){
+        .card-content{
+            flex: 2;    
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+        }
+}
+
+.form-label {
+    display: inline-block;
+    width: 100px;
+}
+
+.form-select {
+    display: inline-block;
+    width: calc(100% - 100px);
+    margin-right:15px;
+    background-color: #FFC270;
+}
+
+
+
+.form-container {
+    display: flex;
+    align-items: center;
+}
+
+.form-label {
+    flex: 0 0 auto;
+}
+
+.select {
+    flex: 0 0 100px; /* Điều chỉnh độ rộng của select nếu cần thiết */
+    margin-left: 58rem; /* Điều chỉnh khoảng cách giữa label và select nếu cần thiết */
+    border: none; /* Loại bỏ border */
+    outline: none; /* Loại bỏ đường viền khi được focus (tuỳ chọn) */
+    background-color: #FFECBF ;
+}
+
+
+  .col-12 {
+    border: none !important; /* Sử dụng !important để ghi đè các giá trị khác nếu có */
+  }
+
+  .pagination,
+  .page-item,
+  .page-link {
+    border: none !important;
+  }
+
+  .page-link {
+    background-color: #FFECBF; /* Đặt màu cho text của page link */
+    color: black;
+  }
+
+ 

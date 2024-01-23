@@ -15,6 +15,19 @@
                     <li><a href="#">PHÒNG TRỌ</a></li>
                     <li><a href="#">DỊCH VỤ</a></li>
                     <li><a th:href="@{/news}">TIN TỨC</a></li>
+                    <li><a href="#" class="dropdown">
+                            <button class="btn dropdown-toggle taikhoan" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                TÀI KHOẢN
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><button class="dropdown-item" type="button">Đăng Nhập</button></li>
+                                <li><button class="dropdown-item" type="button">Đăng Ký</button></li>
+                                <li><button class="dropdown-item" type="button">Quên Mật Khẩu</button></li>
+                            </ul>
+                        </a></li>
+                    <!-- <li><a href="#">TIN TỨC</a></li>
+                    
                     <div class="dropdown">
                         <button class="dropdown-toggle taikhoan" type="button" id="dropdownMenuButton1"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -29,7 +42,7 @@
                             <li><a class="dropdown-item" th:href="@{/change}">Thay đổi mật khẩu</a></li>
                             <li><a class="dropdown-item" href="#">Admin</a></li>
                         </ul>
-                    </div>
+                    </div> -->
                 </ul>
             </div>
 

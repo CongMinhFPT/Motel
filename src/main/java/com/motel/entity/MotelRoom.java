@@ -69,5 +69,5 @@ public class MotelRoom {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "indexId")
-    Index index;
+    Indexs indexs;
 }   

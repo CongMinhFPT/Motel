@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "index")
-public class Index {
+@Table(name = "indexs")
+public class Indexs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer indexId;
@@ -33,6 +33,6 @@ public class Index {
     @Temporal(TemporalType.DATE)
     Date createDate = new Date();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "index")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "indexs")
     List<MotelRoom> motelRoom;
 }

@@ -15,17 +15,21 @@
                     <li><a href="#">PHÒNG TRỌ</a></li>
                     <li><a href="#">DỊCH VỤ</a></li>
                     <li><a th:href="@{/news}">TIN TỨC</a></li>
-                    <li><a href="#" class="dropdown">
-                            <button class="btn dropdown-toggle taikhoan" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                TÀI KHOẢN
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><button class="dropdown-item" type="button">Đăng Nhập</button></li>
-                                <li><button class="dropdown-item" type="button">Đăng Ký</button></li>
-                                <li><button class="dropdown-item" type="button">Quên Mật Khẩu</button></li>
-                            </ul>
-                        </a></li>
+                    <div class="dropdown">
+                        <button class="dropdown-toggle taikhoan" type="button" id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            TÀI KHOẢN
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" th:href="@{/signup}">Đăng ký</a></li>
+                            <li><a class="dropdown-item" th:href="@{/signin}">Đăng nhập</a></li>
+                            <li><a class="dropdown-item" th:href="@{/forgot}">Quên mật khẩu</a></li>
+                            <hr>
+                            <li><a class="dropdown-item" th:href="@{/information}">Thông tin</a></li>
+                            <li><a class="dropdown-item" th:href="@{/change}">Thay đổi mật khẩu</a></li>
+                            <li><a class="dropdown-item" href="#">Admin</a></li>
+                        </ul>
+                    </div>
                 </ul>
             </div>
 

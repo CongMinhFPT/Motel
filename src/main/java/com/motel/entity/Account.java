@@ -1,5 +1,6 @@
 package com.motel.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -23,16 +24,19 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Nationalized;
 
+
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@SuppressWarnings("serial")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "Accounts")
-public class Account {
+public class Account implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer accountId;
@@ -59,8 +63,8 @@ public class Account {
 	
 	String avatar;
 	boolean active = true;
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "account")
 	List<Authority> authorities;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
@@ -75,4 +79,12 @@ public class Account {
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "serviceId")
     Services services;
+	
+	@Override
+	public String toString() {
+		return "Account{" +
+				"id=" + email +
+				// ... Các thuộc tính khác không có lời gọi toString()
+				'}';
+	}
 }

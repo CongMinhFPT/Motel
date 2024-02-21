@@ -6,4 +6,6 @@ import com.motel.entity.Account;
 
 public interface AccountsRepository extends JpaRepository<Account, Integer>{
 
+	
+	Account getByEmail(String email);
 }

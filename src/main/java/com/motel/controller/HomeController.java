@@ -23,4 +23,6 @@ public class HomeController {
     public String showRoomDetal(){
         return "room/room_detail";
     }
+
+    
 }

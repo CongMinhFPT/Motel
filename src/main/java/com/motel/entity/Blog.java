@@ -1,9 +1,10 @@
 package com.motel.entity;
 
 import java.util.Date;
-import java.util.List;
+
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,23 +27,31 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "blog")
 public class Blog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer blogId;
+    private Integer blogId;
     @Nationalized
-    String title;
+    private String title;
+
     @Nationalized
-    String descriptions;
-    String image;
+     @Column(name = "descriptions",columnDefinition = "TEXT")
+    private String descriptions;
+
+    private String image;
     @Temporal(TemporalType.DATE)
     Date createDate = new Date();
     boolean status;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tagId")
-    Tag tag;
+    private Tag tag;
+   
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "accountId")
-    Account account;
+    private Account account;
+
+
+    
 }

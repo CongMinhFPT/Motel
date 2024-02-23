@@ -1,6 +1,5 @@
 package com.motel.entity;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,10 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.Nationalized;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,30 +21,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "motels")
-public class Motel {
+@Table(name = "requestAuthority")
+public class RequestAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer motelId;
-    @Nationalized
+    Integer requestAuthorityId;
     String descriptions;
-    @Nationalized
-    String province;
-    @Nationalized
-    String district;
-    @Nationalized
-    String ward;
-    @Nationalized
-    String detailAddress;
-    String image;
-    @Temporal(TemporalType.DATE)
-    Date createDate = new Date();
-    boolean status = true;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motel")
-	List<MotelRoom> motelRoom;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "requestAuthority")
+	List<RequestAuthorityStatus> requestAuthorityStatus;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "accountId")
     Account account;
+
+
 }

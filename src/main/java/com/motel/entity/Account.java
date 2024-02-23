@@ -76,9 +76,15 @@ public class Account implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
 	List<Blog> blog;
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
+	List<RequestAuthority> requestAuthorities;
+
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "serviceId")
     Services services;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
+	List<Motel> motel;
 	
 	@Override
 	public String toString() {

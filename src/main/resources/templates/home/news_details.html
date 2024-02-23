@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="https://www.thymeleaf.org">
+
+<head>
+    <title>Tin tức</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/newdetails.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+
+    <!-- Boxicons.css -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <div th:replace="~{/layout/header.html}"></div>
+    <main>
+
+        <div class="container ">
+            <div class="row" style="margin-top: 10rem; margin-bottom: 10px;">
+                <div class="col-12" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/index}">Trang Chủ</a></li>
+                        <li class="breadcrumb-item active"><a th:href="@{/news}">Tin Tức</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Tin Tức Số #1</li>
+                    </ol>
+                </div>
+            </div>
+            <div>
+                <h3>Top 10 website đăng tin cho thuê nhà trọ, phòng trọ hiệu quả nhất năm 2023 </h3>
+                <p style="margin-bottom: 3rem;"> Ngày đăng: 01/01/2023</p>
+                <h3 style="font-size: 20px;">
+                    Căn hộ dịch vụ hút khách sinh viên
+                </h3>
+                <a>TP HCM Trần Lê Bình An nhẩm tính mỗi tháng tiền thuê căn hộ dịch vụ nhỉnh hơn ở ký túc xá một triệu
+                    đồng
+                    nên quyết định đặt bút ký hợp đồng hai năm.
+
+                    Căn hộ chung cư mà Bình An (20 tuổi) sinh viên quê Long An thuê cùng ba người bạn, nằm cách Đại học
+                    Khoa
+                    học Xã hội và Nhân văn TP HCM khoảng 1,5 km, mất 10 phút chạy xe máy.
+
+                    An nói đã ở ký túc xá suốt ba năm cấp 3, tuy vui nhưng vẫn gặp một số bất tiện như không được tự nấu
+                    ăn,
+                    sinh hoạt theo giờ giấc quy định, thiếu nhiều tiện nghi. Cuối tháng 8, khi biết tin đã trúng tuyển
+                    đại
+                    học, cô cùng mẹ dành hai tuần đi khảo sát nơi ở từ ký túc xá, phòng trọ đến khu chung cư quanh khu
+                    đô
+                    thị Đại học Quốc gia TP HCM.
+
+                    Cuối cùng cô quyết định chọn căn hộ 50 m2, hai phòng ngủ, hai nhà vệ sinh mới xây cách đây một năm
+                    nên
+                    phòng ốc sạch sẽ, hệ thống thang máy, cửa khóa hiện đại. Giá thuê 5 triệu đồng, thêm tiền phí dịch
+                    vụ,
+                    điện, nước và wifi, mỗi người tốn khoảng 1,5 triệu đồng mỗi tháng. "Mức chi phí này nhỉnh hơn ở ký
+                    túc
+                    xá một chút nhưng ở đây người thuê được sử dụng hồ bơi, công viên, phòng gym và an ninh 24/7 nên
+                    tiện
+                    lợi hơn nhiều", Bình An nói.</a>
+                <img th:src="@{/img/canho.jpg}" style="width: 100%; margin-top: 1rem;" alt="">
+                <hr>
+
+                <h3 style="font-size: 20px;">
+                    Sinh viên không còn muốn ở nhà trọ dãy lụp xụp
+                </h3>
+                <a>
+                    Sinh viên không còn muốn ở nhà trọ dãy lụp xụp
+                    Nhà trọ dãy với nhiều bất tiện đang thất thế vì yêu cầu không gian ở của sinh viên, người trẻ ngày
+                    càng cao.
+                    <br>
+                    <!-- Hình ảnh những dãy nhà trọ nối dài trong các hẻm hốc với diện tích khiêm tốn từ lâu đã trở nên rất
+                    đỗi quen thuộc với học sinh, sinh viên và cả những người lao động có thu nhập thấp tại thành phố.
+
+                    Tuy nhiên, trong bối cảnh hiện tại, ngày càng có nhiều người trẻ lựa chọn các hình thức nhà ở khác
+                    hấp dẫn hơn. Trong đó, những căn hộ tích hợp với nhiều tiện ích đi kèm đang trở nên có sức hấp dẫn
+                    hơn bao giờ hết, âu cũng nhờ vào những ưu điểm vượt trội so với nhà trọ truyền thống. -->
+                    <br>
+                    <!-- Tiết kiệm vài triệu đồng nhưng mất nhiều thứ khi ở trọ ghép
+                    Tiết kiệm vài triệu đồng nhưng mất nhiều thứ khi ở trọ ghép
+                    Các bạn tôi thời sinh viên ở ghép với nhau để dành tiền mua quần áo, giày dép. Tôi ở một mình nên
+                    các bạn bảo 'lãng phí'. 62 -->
+
+                    <!-- Đầu tiên, loại hình căn hộ chung cư thường có mức giá ổn định đồng thời không quá cao so với mặt
+                    bằng chung. Hình thức ở ghép có thể giúp tiết kiệm đáng kể chi phí thuê và vì thế nên không quá
+                    chênh lệch so với thuê nhà trọ. -->
+
+                    Thêm vào đó, các dịch vụ thiết yếu như giữ xe, giặt quần áo, nhu yếu phẩm, phòng tập thể hình hay
+                    thậm chí là hồ bơi công cộng đang ngày càng trở nên phổ biến, đáp ứng tốt hầu như mọi nhu cầu hàng
+                    ngày của người dân sinh sống tại đây. Ngoài ra, các khu vực này cũng đảm bảo an ninh ở mức tốt khi
+                    có chốt chặn ở cổng để kiểm soát dân cư lẫn người lạ ra vào mỗi ngày.</a>
+                <img th:src="@{/img/canho1.jpg}" style="width: 100%; margin-top: 1rem;" alt="">
+                <hr>
+
+                <h3 style="font-size: 20px;">
+                    Liều mình thuê nhà cũ 2,6 triệu/ tháng, cô bạn quyết tâm “lột xác" để không sống tạm bợ
+                </h3>
+                <a>Một môi trường sống sạch sẽ, thoải mái và an lành đem lại cảm giác thư giãn, giảm căng thẳng, cải
+                    thiện tâm trạng và tạo ra một tinh thần tích cực. Không gian sống tốt có thể trở thành một nơi thể
+                    hiện sự sáng tạo, ảnh hưởng đến tinh thần và động lực, thúc đẩy mọi người làm việc và đạt được các
+                    mục tiêu.
+                    <br>
+                    Bởi vì vẫn đang là sinh viên, ngân sách cho nhà cửa không nhiều, để có được không gian sống như mong
+                    muốn, Yến Ngọc đã liều chọn một căn phòng khá cũ kỹ và quyết định tự tay cải tạo lại nó.
+                    “Vì không tự tin với mắt thẩm mỹ của bản thân nên hiện tại mình decor căn phòng theo phong cách tối
+                    giản, lấy gọn gàng và sáng sủa làm tiêu chí tiên quyết. Để căn nhà trông sáng hơn, mình đã sơn phòng
+                    màu trắng, thay rèm vải truyền thống bằng rèm sáo nhôm trắng hiện đại. Mình cũng sơn trắng lại
+                    giường gỗ nâu cho hợp tông màu của phòng. Tổng quan căn phòng đã lột xác hoàn toàn. Thời gian tới
+                    mình sẽ decor dần dần để căn phòng trở nên đáng yêu hơn với tông hồng và sẽ có thêm nhiều dấu ấn
+                    riêng của bản thân”.
+                    <br>
+                    <br>
+                    Mỗi người đều có thể tạo những điểm nhấn cá nhân khi decor một không gian nhỏ. Yến Ngọc chọn sử dụng
+                    tranh, hình ảnh và trang trí tường tạo những điểm nhấn nghệ thuật. Cô bạn cũng mua một vài cây xanh
+                    dễ sống trong phòng bởi vì muốn gần gũi thiên nhiên hơn nhưng khá lười chăm sóc. Căn phòng cũng được
+                    trang trí bởi những món đồ nhỏ dễ thương nữa, cô bạn hướng tới màu hồng hoặc tím để thể hiện tâm hồn
+                    mơ mộng của bản thân.
+                </a>
+                <img th:src="@{/img/canho2.jpg}" style="width: 100%; margin-top: 1rem;" alt="">
+                <hr>
+
+                <h3 style="font-size: 20px;">
+                    Tân sinh viên chật vật tìm nhà trọ, chi tiêu tằn tiện vì giá phòng tăng cao
+                </h3>
+                <a>Nhu cầu tìm nhà trọ mùa sinh viên nhập học tăng cao
+                    Mùa tựu trường, nhu cầu thuê phòng của sinh viên ngoại tỉnh tăng cao do đó thị trường phòng trọ cho
+                    thuê cũng trở nên nhộn nhịp hơn bao giờ hết.
+                    <br>
+                    <br>
+                    Chỉ cần nhập từ khóa tìm phòng trọ trên các trang mạng xã hội đã cho ra hàng nghìn kết quả tìm kiếm.
+                    Những bài chào mời thuê phòng với đầy đủ thông tin mà người thuê cần như giá phòng, dịch vụ kèm
+                    theo, diện tích phòng, địa điểm và cả số điện thoại liên hệ với người cho thuê,..
+                    <br>
+                    <br>
+                    Không chỉ giá phòng tăng, nhiều phòng trọ khác còn tăng cả giá dịch vụ. Bạn Ngọc Hà hiện đang thuê
+                    một căn chung cư mini trong ngõ 201 Cầu Giấy cho biết, nơi cô bạn đang thuê tăng giá đủ thứ dịch vụ,
+                    riêng tiền dọn rác, tiền mạng Internet, gửi xe,... đã rơi vào khoảng 250.000-300.000
+                    đồng/người/tháng, chưa kể tiền điện tăng từ 4.000 đồng/1 kw lên 4.500 đồng/1 kw tiền nước tăng từ
+                    110.000 đồng/người/tháng lên tới 150.000 đồng/người/tháng.
+
+                </a>
+                <img th:src="@{/img/canho4.jpg}" style="width: 100%; margin-top: 1rem;" alt="">
+
+                <hr>
+
+                <h5>Tin tức liên quan</h5>
+
+                <div class="card mb-3" style="max-width: 700px;background-color: #545454; color: #DCBF7D;">
+                    <div class="row g-0">
+
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <h6 class="card-title" style="margin-bottom: 1rem;">Top 10 website đăng tin cho thuê nhà
+                                    trọ,
+                                    phòng
+                                    trọ
+                                    hiệu quả nhất năm 2023</h6>
+                                <p style="font-size: 15px; margin-top: 1rem;">Những lợi ích khi đăng tin cho thuê nhà,
+                                    phòng trọ online <br>
+                                    Dễ dàng tiếp cận những người có nhu cầu
+                                    Nền tảng internet cho phép bạn có thể tiếp cận với lượng lớn khách hàng có nhu cầu
+                                    thuê
+                                    phòng.
+                                </p>
+                                <div class="blog-details">
+                                    <div class="icon-text">
+                                        <span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}" alt=""></span>
+                                        <span class="text">01/01/2024</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <img th:src="@{/img/canho.jpg}" class="img-fluid rounded-1 h-100" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3" style="max-width: 700px;background-color: #545454; color: #DCBF7D;">
+                    <div class="row g-0">
+
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <h6 class="card-title" style="margin-bottom: 1rem;">Top 10 website đăng tin cho thuê nhà
+                                    trọ,
+                                    phòng
+                                    trọ
+                                    hiệu quả nhất năm 2023</h6>
+                                <p style="font-size: 15px; margin-top: 1rem;">Những lợi ích khi đăng tin cho thuê nhà,
+                                    phòng trọ online <br>
+                                    Dễ dàng tiếp cận những người có nhu cầu
+                                    Nền tảng internet cho phép bạn có thể tiếp cận với lượng lớn khách hàng có nhu cầu
+                                    thuê
+                                    phòng.
+                                </p>
+                                <div class="blog-details">
+                                    <div class="icon-text">
+                                        <span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}" alt=""></span>
+                                        <span class="text">01/01/2024</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <img th:src="@{/img/canho.jpg}" class="img-fluid rounded-1 h-100" alt="">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+
+    <div th:replace="~{/layout/footer}"></div>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+    <script th:src="@{/js/header.js}"></script>
+</body>
+
+</html>

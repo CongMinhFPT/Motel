@@ -45,12 +45,6 @@ public class MotelRoom {
 	List<Post> posts;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-	List<Motel> motel;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-	List<Invoice> invoice;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
 	List<Image> image;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
@@ -59,13 +53,19 @@ public class MotelRoom {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
 	List<FavoriteRoom> favoriteRoom;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+	List<Cash> cash;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+	List<DetailInvoice> detailInvoice;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "motelId")
+    Motel motel;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "categoryRoomId")
     CategoryRoom categoryRoom;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cashId")
-    Cash cash;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "indexId")

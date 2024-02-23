@@ -1,6 +1,5 @@
 package com.motel.entity;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,16 +21,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "invoice")
-public class Invoice {
+@Table(name = "detailInvoice")
+public class DetailInvoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer invoiceId;
-    @Temporal(TemporalType.DATE)
-    Date createDate = new Date();
-    Double totalPrice;
+    Integer detailInvoiceId;
+    Double usedElectricityIndex;
+    Double usedWaterIndex;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "invoice")
-	List<DetailInvoice> detailInvoice;
-    
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "motelRoomId")
+    MotelRoom motelRoom;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "invoiceId")
+    Invoice invoice;
 }

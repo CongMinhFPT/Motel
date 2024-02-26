@@ -53,4 +53,5 @@ public class AuthorityConfig extends WebSecurityConfigurerAdapter{
 			.logoutUrl("/auth/logoff")
 			.logoutSuccessUrl("/logout");
 	}
+	
 }

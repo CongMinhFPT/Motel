@@ -4,6 +4,7 @@ import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.Style;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -202,6 +203,47 @@ public class RegisterController {
         return "home/forgot_password";
     }
 
+   
+    
+    @PostMapping("/forgot/save")
+    public String ForgotSubmit(Model model, @RequestParam("email") String email) {
+    	Account currentAcc = accountsRepository.getByEmail(email);
+    	Integer id = (currentAcc != null) ? currentAcc.getAccountId() : null;
+    	if(email.isBlank()) {
+    		model.addAttribute("email","Vui lòng nhập email!");
+    		return "home/forgot_password";
+    	}
+    	if(id != null) {
+    		int leftLimit = 97; 
+    		int rightLimit = 122;
+    		int len = 8;
+    		Random random = new Random();
+    		StringBuilder buffer = new StringBuilder(len);
+    		for(int i = 0; i < len; i++) {
+    			int randomLimitedInt = leftLimit + (int) (random.nextFloat() * (rightLimit - leftLimit + 1));
+    			buffer.append((char) randomLimitedInt);
+    		}
+    		String generatedString = buffer.toString();
+    		System.out.println("Random forgot:>> " + generatedString);
+    		
+    		Account acc = accountsRepository.getByEmail(email);
+    		acc.setPassword(pe.encode(generatedString));
+    		accountsRepository.save(acc);
+    		try {
+				sendEmail(email, generatedString);
+				model.addAttribute("message", "Vui lòng xem gmail để lấy lại mật khẩu!");
+				return "home/forgot_password";
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+    	}else {
+    		model.addAttribute("message","Email không tồn tại!");
+    		return "home/forgot_password";
+    	}
+    	return "home/forgot_password";
+    }
+    
     @GetMapping("/information")
     public String Information() {
         return "home/information";
@@ -211,4 +253,21 @@ public class RegisterController {
     public String logout() {
     	return "forward:/signin";
     }
+    
+    private void sendEmail(String email, String password) {
+		// gửi email
+		mailerService.add(mimeMessage -> {
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+			try {
+				helper.setTo(email);
+				helper.setSubject("Nhà Trọ F.E Xin Chào!");
+				helper.setText("Bạn đã quên mật khẩu cũ và đã yêu cầu một mật khẩu mới: <br/>Đây là mật khẩu mới của bạn: <span style='font-size: 18px; color: red'>" + password + "</span>.", true);
+
+			} catch (MessagingException e) {
+				// TODO: handle exception
+
+			}
+
+		});
+	}
 }

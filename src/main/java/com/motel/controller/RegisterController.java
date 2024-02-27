@@ -1,11 +1,15 @@
 package com.motel.controller;
 
+import java.util.Random;
+
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +26,7 @@ import com.motel.entity.Role;
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.AuthorityRepository;
 import com.motel.repository.RoleRepository;
+import com.motel.service.AuthorityService;
 import com.motel.service.MailerService;
 
 
@@ -42,6 +47,10 @@ public class RegisterController {
 	
 	@Autowired
 	HttpSession session;
+	
+	@Autowired
+	AuthorityService authorityService;
+	
 	@Autowired
 	BCryptPasswordEncoder pe;
 	
@@ -55,9 +64,17 @@ public class RegisterController {
     @PostMapping("/register/save")
     public String save(@Validated @ModelAttribute("accounts") Account account, BindingResult bindingResult, @RequestParam("password1") String pass, Model model) {
     	if(bindingResult.hasErrors()) {
+    		if(account.getPhone().isBlank()) {
+    			model.addAttribute("phone","Vui lòng nhập số điện thoại!");
+    		}
     		if(pass.isEmpty()) {
     			model.addAttribute("pass","Vui lòng nhập xác nhận mật khẩu!");
     		}
+    		return "home/signup";
+    	}
+    	
+    	if(!account.getPhone().matches("^(0[2|3|5|7|8|9])+([0-9]{8})")) {
+    		model.addAttribute("phone", "Sai định dạng số điện thoại!");
     		return "home/signup";
     	}
     	if(!account.getPassword().equals(pass)) {
@@ -130,6 +147,51 @@ public class RegisterController {
 		return "redirect:/index";
 	}
 	
+	@RequestMapping("/oauth2/login/success")
+	public String success(OAuth2AuthenticationToken oauth2, Model model) {
+		authorityService.loginFromOAuth2(oauth2);
+		OAuth2User oauth2User = oauth2.getPrincipal();
+//		String username = oauth2User.getAttribute("email");
+		String email = oauth2User.getAttribute("email");
+		System.out.println("Email>> " + email);
+		int leftLimit = 97; // 'a'
+		int righLimit = 122; // 'z'
+		int len = 8;
+		Random random = new Random();
+		StringBuilder buffer = new StringBuilder(len);
+		for (int i = 0; i < len; i++) {
+			int randomLimitedInt = leftLimit + (int) (random.nextFloat() * (righLimit - leftLimit + 1));
+			buffer.append((char) randomLimitedInt);
+		}
+		String generatedString = buffer.toString();
+		System.out.println("pass>> " + generatedString);
+		Account acc = new Account();
+		acc.setEmail(email);
+		acc.setFullname(email);
+		acc.setPassword(pe.encode(generatedString));
+		acc.setActive(true);
+		acc.setPhone("null");
+		if(accountsRepository.getByEmail(email) != null) {
+			model.addAttribute("error", "Email này đã tồn tại vui lòng trọn email khác!");
+			return "redirect:/index";
+		}else {
+			accountsRepository.save(acc);
+			Role staff = roleRepository.findById("STAFF").orElseGet(() -> {
+	    		Role newRole = new Role();
+	    		newRole.setId("STAFF");
+	    		return roleRepository.save(newRole);
+	    	});
+	    	
+	    	Authority au = new Authority();
+	    	au.setAccount(acc);
+	    	au.setRole(staff);
+	    	authorityRepository.save(au);
+		}
+
+		return "forward:/index";
+	}
+	
+	//
     @GetMapping("/change")
     public String Change() {
         return "home/change_password";

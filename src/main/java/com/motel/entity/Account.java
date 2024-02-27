@@ -44,9 +44,9 @@ public class Account implements Serializable{
 	@Nationalized
 	String fullname;
 	
-	@NotBlank(message = "Vui lòng nhập số điện thoại!")
-	@Size(max = 10, min = 10, message = "Số điện thoài phải 10 số!")
-	@Pattern(regexp = "^(0[2|3|5|7|8|9])+([0-9]{8})", message = "Sai định dạng số điện thoại!")
+//	@NotBlank(message = "Vui lòng nhập số điện thoại!")
+//	@Size(max = 10, min = 10, message = "Số điện thoài phải 10 số!")
+//	@Pattern(regexp = "^(0[2|3|5|7|8|9])+([0-9]{8})", message = "Sai định dạng số điện thoại!")
 	String phone;
 	
 	@NotBlank(message = "Vui lòng nhập email!")

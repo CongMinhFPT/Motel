@@ -52,5 +52,12 @@ public class AuthorityConfig extends WebSecurityConfigurerAdapter{
 		http.logout()
 			.logoutUrl("/auth/logoff")
 			.logoutSuccessUrl("/logout");
+		
+		http.oauth2Login()
+			.loginPage("/signin")
+			.defaultSuccessUrl("/oauth2/login/success", true)
+			.failureUrl("/signin?error=true")
+			.authorizationEndpoint()
+			.baseUri("/oauth2/authorization");
 	}
 }

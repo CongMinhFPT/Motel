@@ -4,5 +4,4 @@ import com.motel.entity.Account;
 
 public interface AccountService {
 
-	
 }

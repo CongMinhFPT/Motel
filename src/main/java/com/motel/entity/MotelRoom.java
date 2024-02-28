@@ -18,6 +18,9 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Nationalized;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,32 +45,41 @@ public class MotelRoom {
     boolean status = true;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @JsonManagedReference
 	List<Post> posts;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @JsonManagedReference
 	List<Image> image;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @JsonManagedReference
 	List<RoomRenter> roomRenter;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @JsonManagedReference
 	List<FavoriteRoom> favoriteRoom;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @JsonManagedReference
 	List<Cash> cash;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @JsonManagedReference
 	List<DetailInvoice> detailInvoice;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "motelId")
+    @JsonBackReference
     Motel motel;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "categoryRoomId")
+    @JsonBackReference
     CategoryRoom categoryRoom;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "indexId")
+    @JsonBackReference
     Indexs indexs;
 }   

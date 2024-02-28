@@ -1,8 +1,12 @@
 package com.motel.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Random;
 
 import javax.mail.MessagingException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpSession;
 import javax.swing.text.Style;
 import javax.validation.Valid;
@@ -19,9 +23,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.motel.entity.Account;
 import com.motel.entity.Authority;
@@ -33,7 +39,7 @@ import com.motel.repository.RoleRepository;
 import com.motel.service.AuthorityService;
 import com.motel.service.MailerService;
 
-
+@MultipartConfig
 @Controller
 public class RegisterController {
 	
@@ -58,7 +64,7 @@ public class RegisterController {
 	@Autowired
 	BCryptPasswordEncoder pe;
 	
-   
+    private static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
     
     @GetMapping("/signup")
     public String Signup(@ModelAttribute("accounts") Account account) {
@@ -174,7 +180,6 @@ public class RegisterController {
 		acc.setFullname(email);
 		acc.setPassword(pe.encode(generatedString));
 		acc.setActive(true);
-		acc.setPhone("null");
 		if(accountsRepository.getByEmail(email) != null) {
 			model.addAttribute("error", "Email này đã tồn tại vui lòng trọn email khác!");
 			return "redirect:/index";
@@ -205,7 +210,7 @@ public class RegisterController {
     }
     
     @PostMapping("/change/save")
-    public String changesubmit(Model model, @Valid @ModelAttribute("changepass") ChangePassword changepass, BindingResult bindingResult, Authentication authentication) {
+    public String changesubmit(Model model,  @ModelAttribute("changepass")@Valid ChangePassword changepass, BindingResult bindingResult, Authentication authentication) {
     	String id = authentication.getName();
     	Account acc = accountsRepository.getByEmail(id);
     	if(bindingResult.hasErrors()) {
@@ -223,7 +228,7 @@ public class RegisterController {
 		System.out.println("MK có bằng không: " + oldPasswordFormUser.equals(oldPasswordFromData));
 		oldPasswordFormUser = oldPasswordFormUser.trim();
 		System.out.println("Equal after trimming: " + oldPasswordFormUser.equals(oldPasswordFromData));
-		if(!oldPasswordFormUser.matches(oldPasswordFromData)) {
+		if(!pe.matches(oldPasswordFormUser, oldPasswordFromData)) {
 			model.addAttribute("message", "Mật khẩu hiện tại không đúng!");
 			return "home/change_password";
 		}
@@ -235,10 +240,15 @@ public class RegisterController {
 			model.addAttribute("message", "Mật khẩu mới không được trùng với mật khẩu hiện tại!");
 			return "home/change_password";
 		}
-		Account account = new Account();
-		account.setPassword(changepass.getNewPassword());
-		accountsRepository.save(account);
-    	return "home/change_password";
+		
+		String pass = changepass.getNewPassword();
+		System.out.println("pass>> " + pass);
+		String passpe = pe.encode(pass);
+		System.out.println("passpe>> " + passpe);
+		acc.setPassword(passpe);
+		accountsRepository.save(acc);
+		model.addAttribute("message", "Thay đổi mật khẩu thành công!");
+		return "redirect:/auth/logoff";
     }
 
     @GetMapping("/forgot")
@@ -286,9 +296,44 @@ public class RegisterController {
     	return "home/forgot_password";
     }
     
-    @GetMapping("/information")
-    public String Information() {
+    @GetMapping("/information/{email}")
+    public String Information(@PathVariable("email") String email, Model model) {
+    	Account acc = accountsRepository.getByEmail(email);
+    	model.addAttribute("account", acc);
         return "home/information";
+    }
+    
+    @PostMapping("/information/{accountId}")
+    public String InformationSubmit(@PathVariable("accountId") Integer accountId ,Model model, @ModelAttribute("account") Account account, @RequestParam("image") MultipartFile photo) {
+    	Account acccurrent = accountsRepository.getById(accountId);
+    	if(photo != null && !photo.isEmpty()) {
+    		try {
+				String fileName = photo.getOriginalFilename();
+				Path fileNameAnPath = Paths.get(UPLOAD_DIRECTORY, fileName);
+				Files.write(fileNameAnPath, photo.getBytes());
+				account.setAvatar(fileName);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    	}else {
+    		model.addAttribute("photo_message","Vui lòng chọn ảnh!");
+    		return "home/information";
+    	}
+
+    	
+//    	if(!account.getPhone().matches("^(0[2|3|5|7|8|9])+([0-9]{8})")) {
+//    		model.addAttribute("phone", "Sai định dạng số điện thoại!");
+//    		return "home/signup";
+//    	}
+    	String email = acccurrent.getEmail();
+    	String pass = acccurrent.getPassword();
+    	System.out.println("pass>> " + pass);
+    	account.setEmail(email);
+    	account.setPassword(pass);
+    	accountsRepository.save(account);
+    	model.addAttribute("update", "Cập nhật thành công!");
+    	
+    	return "home/information";
     }
     
     @GetMapping("/logout")

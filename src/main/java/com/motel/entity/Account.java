@@ -23,8 +23,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Nationalized;
-
-
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -59,9 +58,13 @@ public class Account implements Serializable{
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "create_date")
-	Date createDate = new Date();
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	Date createDate;
 	
 	String avatar;
+	
+	boolean gender;
+	
 	boolean active = true;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "account")

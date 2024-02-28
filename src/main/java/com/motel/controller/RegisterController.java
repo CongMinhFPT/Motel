@@ -5,9 +5,11 @@ import java.util.Random;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import javax.swing.text.Style;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.motel.entity.Account;
 import com.motel.entity.Authority;
+import com.motel.entity.ChangePassword;
 import com.motel.entity.Role;
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.AuthorityRepository;
@@ -192,10 +195,50 @@ public class RegisterController {
 		return "forward:/index";
 	}
 	
-	//
+	
     @GetMapping("/change")
-    public String Change() {
+    public String Change(Model model, @ModelAttribute("changepass") ChangePassword changepass, Authentication authentication) {
+    	String id = authentication.getName();
+    	System.out.println("id_ChangeGet>> "+ id);
+    	model.addAttribute("id", id);
         return "home/change_password";
+    }
+    
+    @PostMapping("/change/save")
+    public String changesubmit(Model model, @Valid @ModelAttribute("changepass") ChangePassword changepass, BindingResult bindingResult, Authentication authentication) {
+    	String id = authentication.getName();
+    	Account acc = accountsRepository.getByEmail(id);
+    	if(bindingResult.hasErrors()) {
+    		model.addAttribute("id", id);
+    		return "home/change_password";
+    	}
+    	model.addAttribute("id", id);
+    	String oldPasswordFormUser = changepass.getOldPassword();
+    	System.out.println("Mật khẩu cũ: " + oldPasswordFormUser);
+    	String oldPasswordFromData = acc.getPassword();
+    	System.out.println("Mật khẩu data: " + oldPasswordFromData);
+    	System.out.println("Length User: " + oldPasswordFormUser.length());
+		System.out.println("Length Database: " + oldPasswordFromData.length());
+		// kiểm tra mật khẩu có bằng không
+		System.out.println("MK có bằng không: " + oldPasswordFormUser.equals(oldPasswordFromData));
+		oldPasswordFormUser = oldPasswordFormUser.trim();
+		System.out.println("Equal after trimming: " + oldPasswordFormUser.equals(oldPasswordFromData));
+		if(!oldPasswordFormUser.matches(oldPasswordFromData)) {
+			model.addAttribute("message", "Mật khẩu hiện tại không đúng!");
+			return "home/change_password";
+		}
+		if(!changepass.getNewPassword().equals(changepass.getConfirmPassword())) {
+			model.addAttribute("message", "Xác nhận mật khẩu không đúng!");
+			return "home/change_password";
+		}
+		if(changepass.getNewPassword().equals(changepass.getOldPassword())) {
+			model.addAttribute("message", "Mật khẩu mới không được trùng với mật khẩu hiện tại!");
+			return "home/change_password";
+		}
+		Account account = new Account();
+		account.setPassword(changepass.getNewPassword());
+		accountsRepository.save(account);
+    	return "home/change_password";
     }
 
     @GetMapping("/forgot")
@@ -203,7 +246,6 @@ public class RegisterController {
         return "home/forgot_password";
     }
 
-   
     
     @PostMapping("/forgot/save")
     public String ForgotSubmit(Model model, @RequestParam("email") String email) {

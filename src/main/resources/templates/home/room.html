@@ -149,7 +149,7 @@
                                                     <img class="" style="max-width: 75%; max-height: 75%;"
                                                         th:src="@{/img/icons8-heart-50.png}" alt=""
                                                         ng-click="addFavoriteRoom(motelRoom.motelRoomId)" />                                                    
-                                                    <input type="hidden" th:value="${#request.remoteUser}"
+                                                    <input type="hidden" th:value="${accountId}"
                                                         id="accountIdFavorite">
                                                 </div>
                                             </div>

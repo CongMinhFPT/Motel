@@ -17,16 +17,22 @@
                     <li><a th:href="@{/blog}">TIN TỨC</a></li>
                     <div class="dropdown">
                         <button class="dropdown-toggle taikhoan" type="button" id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                            data-bs-toggle="dropdown" aria-expanded="false" th:unless="${#request.remoteUser}">
                             TÀI KHOẢN
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <button class="dropdown-toggle taikhoan" type="button" id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown" aria-expanded="false" th:if="${#request.remoteUser}">
+                            [[${#request.remoteUser}]] !
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" th:unless="${#request.remoteUser}">
                             <li><a class="dropdown-item" th:href="@{/signup}">Đăng ký</a></li>
                             <li><a class="dropdown-item" th:href="@{/signin}">Đăng nhập</a></li>
                             <li><a class="dropdown-item" th:href="@{/forgot}">Quên mật khẩu</a></li>
-                            <hr>
+                        </ul>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" th:if="${#request.remoteUser}">
                             <li><a class="dropdown-item" th:href="@{/information}">Thông tin</a></li>
                             <li><a class="dropdown-item" th:href="@{/change}">Thay đổi mật khẩu</a></li>
+                             <li><a class="dropdown-item" th:href="@{/auth/logoff}">Đăng xuất</a></li>
                             <li><a class="dropdown-item" href="#">Admin</a></li>
                         </ul>
                     </div>

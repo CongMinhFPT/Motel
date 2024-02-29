@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,7 +29,8 @@ public class Cash {
     Double electricityBill;
     Double waterBill;
     
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "motelRoomId")
+    MotelRoom motelRoom;
     
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cash")
-	List<MotelRoom> motelRoom;
 }

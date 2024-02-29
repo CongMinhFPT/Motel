@@ -12,5 +12,11 @@ public class HomeController {
     }
    
     
+    @GetMapping("/room-detail")
+    public String showRoomDetal(){
+        return "room/room_detail";
+    }
+
+    
 }
 

@@ -145,12 +145,11 @@
                                                     <p class="card-text">Phòng trọ hẻm 5, đường Nguyễn Văn Linh, phường
                                                         An Khánh</p>
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-2" ng-show="!motelRoom.favoriteRoom[0].favoriteRoomId">
                                                     <img class="" style="max-width: 75%; max-height: 75%;"
                                                         th:src="@{/img/icons8-heart-50.png}" alt=""
-                                                        ng-click="addFavoriteRoom(motelRoom.motelRoomId)" />                                                    
-                                                    <input type="hidden" th:value="${accountId}"
-                                                        id="accountIdFavorite">
+                                                        ng-click="addFavoriteRoom(motelRoom.motelRoomId)" id="img" />
+                                                    <input type="hidden" th:value="${accountId}" id="accountIdFavorite">
                                                 </div>
                                             </div>
                                             <h4 class="card-title mt-1">$ 3triệu/tháng</h4>
@@ -211,6 +210,7 @@
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/js/header.js}"></script>
     <script th:src="@{/js/room.js}"></script>
 </body>

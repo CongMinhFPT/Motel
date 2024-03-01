@@ -46,8 +46,8 @@ public class FavoriteRoomImpl implements FavoriteRoomService {
     }
 
     @Override
-    public Page<MotelRoom> getPagedFavoriteRooms(Pageable pageable) {
-        return motelRoomRepository.findMotelRoomByFavoriteRoom(pageable);
+    public List<MotelRoom> getPagedFavoriteRooms() {
+        return motelRoomRepository.findMotelRoomByFavoriteRoom();
     }
 
 }

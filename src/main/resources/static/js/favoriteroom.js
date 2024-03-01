@@ -1,51 +1,70 @@
 var app = angular.module("favoriteRoomApp", []);
 let hostFavoriteRoom = "http://localhost:8080/api/deleteFavoriteRoom";
 
-app.controller('favoriteRoomCtrl', function ($scope, $http) {
+app.controller('favoriteRoomCtrl', function ($scope, $http, $timeout, $rootScope) {
+
+    // $scope.deleteFavoriteRoom = (favoriteRoomId) => {
+    //     Swal.fire({
+    //         icon: 'question',
+    //         title: 'Question!',
+    //         text: 'Bạn muốn xóa khỏi danh sách yêu thích?',
+    //         showCancelButton: true,
+    //         confirmButtonText: 'Yes',
+    //         cancelButtonText: 'No'
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             const url = `${hostFavoriteRoom}/${favoriteRoomId}`;
+    //             $http.delete(url).then(resp => {
+    //                 console.log(resp.data);
+    //             }).catch(error => {
+    //                 console.log(error);
+    //             })
+    //         } else if (result.dismiss === Swal.DismissReason.cancel) {
+    //             Swal.fire('Cancelled', 'Bạn đã hủy!', 'error');
+    //         }
+    //     });
+
+    // }
 
     $scope.deleteFavoriteRoom = (favoriteRoomId) => {
-        const confirmed = window.confirm("Bạn có chắc chắn muốn xóa không?");
-        if (confirmed) {
-            const url = `${hostFavoriteRoom}/${favoriteRoomId}`;
-            $http.delete(url).then(resp => {
-                console.log(resp.data);
-                let img = document.getElementById('img');
-                if (img.src.match('heart.png')) {
-                    img.src = '/img/icons8-heart-50.png'
-                }
-                location.reload();
-            }).catch(error => {
-                console.log(error);
-            })
-        }
+        Swal.fire({
+            icon: 'question',
+            title: 'Question!',
+            text: 'Bạn muốn xóa khỏi danh sách yêu thích?',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const url = `${hostFavoriteRoom}/${favoriteRoomId}`;
+                $http.delete(url).then(resp => {
+                    Swal.fire('Deleted', 'Phòng đã được xóa khỏi danh sách yêu thích!', 'success').then(() => {
+                        window.location.reload();
+                    });
+                }).catch(error => {
+                    console.log(error);
+                    Swal.fire('Error', 'Đã có lỗi xảy ra khi xóa phòng!', 'error');
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire('Cancelled', 'Bạn đã hủy!', 'error');
+            }
+        });
     }
 
-    $scope.sortBy = 'create_date'; // Default sort by ID
-    $scope.currentPage = 0;
+
+
+
+    $scope.favoriteRooms = [];
 
     $scope.getFavoriteRoom = function () {
-        var url = '/api/listFavoriteRoom?page=' + $scope.currentPage + '&size=3&sortBy=' + $scope.sortBy + '&direction=asc';
+        var url = '/api/listFavoriteRoom';
         $http.get(url)
             .then(function (response) {
-                $scope.favoriteRooms = response.data.content; console.log(response.data);
-                $scope.totalPages = response.data.totalPages;
+                $scope.favoriteRooms = response.data; console.log(response.data);
             }).catch(error => {
                 console.log(error);
             })
     };
 
-    $scope.prevPage = function () {
-        if ($scope.currentPage > 0) {
-            $scope.currentPage--;
-            $scope.getFavoriteRoom();
-        }
-    };
-
-    $scope.nextPage = function () {
-        if ($scope.currentPage < $scope.totalPages - 1) {
-            $scope.currentPage++;
-            $scope.getFavoriteRoom();
-        }
-    };
     $scope.getFavoriteRoom();
 })

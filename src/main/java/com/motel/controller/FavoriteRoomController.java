@@ -14,7 +14,8 @@ import com.motel.service.MotelRoomService;
 @Controller
 public class FavoriteRoomController {
 
-    @Autowired MotelRoomService motelRoomService;
+    @Autowired
+    MotelRoomService motelRoomService;
 
     @GetMapping("/favorite")
     public String showFavoriteRoom(Model model) {

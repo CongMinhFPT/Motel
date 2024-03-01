@@ -45,13 +45,8 @@ public class FavoriteRoomRestController {
     }
 
     @GetMapping("/api/listFavoriteRoom")
-    public ResponseEntity<Page<MotelRoom>> getPagedProducts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size,
-            @RequestParam(defaultValue = "create_date") String sortBy,
-            @RequestParam(defaultValue = "asc") String direction) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sortBy));
-        Page<MotelRoom> favoriteRoomPage = favoriteRoomService.getPagedFavoriteRooms(pageable);
+    public ResponseEntity<List<MotelRoom>> getPagedProducts() {
+        List<MotelRoom> favoriteRoomPage = favoriteRoomService.getPagedFavoriteRooms();
         return ResponseEntity.ok(favoriteRoomPage);
     }
 

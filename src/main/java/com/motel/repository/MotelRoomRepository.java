@@ -13,5 +13,5 @@ import com.motel.entity.MotelRoom;
 
 public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM motel_room AS m inner join favorite_room a on m.motel_room_id = a.motel_room_id WHERE EXISTS (SELECT 1 FROM favorite_room AS f WHERE f.motel_room_id = m.motel_room_id)")
-    Page<MotelRoom> findMotelRoomByFavoriteRoom(Pageable pageable);
+    List<MotelRoom> findMotelRoomByFavoriteRoom();
 }

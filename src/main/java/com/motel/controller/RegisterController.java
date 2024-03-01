@@ -3,6 +3,7 @@ package com.motel.controller;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.Random;
 
 import javax.mail.MessagingException;
@@ -42,109 +43,129 @@ import com.motel.service.MailerService;
 @MultipartConfig
 @Controller
 public class RegisterController {
-	
-	@Autowired 
+
+	@Autowired
 	AccountsRepository accountsRepository;
-    
+
 	@Autowired
 	RoleRepository roleRepository;
-	
+
 	@Autowired
 	AuthorityRepository authorityRepository;
-	
+
 	@Autowired
 	MailerService mailerService;
-	
+
 	@Autowired
 	HttpSession session;
-	
+
 	@Autowired
 	AuthorityService authorityService;
-	
+
 	@Autowired
 	BCryptPasswordEncoder pe;
-	
-    private static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
-    
-    @GetMapping("/signup")
-    public String Signup(@ModelAttribute("accounts") Account account) {
-        return "home/signup";
-    }
-    
-    @PostMapping("/register/save")
-    public String save(@Validated @ModelAttribute("accounts") Account account, BindingResult bindingResult, @RequestParam("password1") String pass, Model model) {
-    	if(bindingResult.hasErrors()) {
-    		if(account.getPhone().isBlank()) {
-    			model.addAttribute("phone","Vui lòng nhập số điện thoại!");
-    		}
-    		if(pass.isEmpty()) {
-    			model.addAttribute("pass","Vui lòng nhập xác nhận mật khẩu!");
-    		}
-    		return "home/signup";
-    	}
-    	
-    	if(!account.getPhone().matches("^(0[2|3|5|7|8|9])+([0-9]{8})")) {
-    		model.addAttribute("phone", "Sai định dạng số điện thoại!");
-    		return "home/signup";
-    	}
-    	if(!account.getPassword().equals(pass)) {
-    		model.addAttribute("pass","Xác nhận mật khẩu không đúng!");
-    		return "home/signup";
-    	}
-    	if(accountsRepository.getByEmail(account.getEmail()) != null) {
-    		model.addAttribute("email", "Email này đã tồn tại!");
-    		return "home/signup";
-    	}
-    	
-    	String passw = account.getPassword();
-    	System.out.println("passw>> " + passw);
-    	String passpe = pe.encode(passw);
-    	System.out.println("PassPE>> " + passpe);
-    	account.setPassword(passpe);
-    	accountsRepository.save(account);
-    	
-    	Role staff = roleRepository.findById("STAFF").orElseGet(() -> {
-    		Role newRole = new Role();
-    		newRole.setId("STAFF");
-    		return roleRepository.save(newRole);
-    	});
-    	
-    	Authority au = new Authority();
-    	au.setAccount(account);
-    	au.setRole(staff);
-    	authorityRepository.save(au);
-    	
-    	mailerService.add(memeMessage -> {
-    		MimeMessageHelper helper = new MimeMessageHelper(memeMessage);
-    		try {
+
+	private static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
+
+	@GetMapping("/signup")
+	public String Signup(@ModelAttribute("accounts") Account account) {
+		return "home/signup";
+	}
+
+	@PostMapping("/register/save")
+	public String save(@Validated @ModelAttribute("accounts") Account account, BindingResult bindingResult,
+			Model model) {
+		if (bindingResult.hasErrors()) {
+			if (account.getPhone().isBlank()) {
+				model.addAttribute("phone", "Vui lòng nhập số điện thoại!");
+			}
+			if (account.getCreateDate() == null) {
+				model.addAttribute("date", "Vui lòng chọn ngày tháng năm sinh!");
+				return "home/signup";
+			}
+			return "home/signup";
+		}
+
+		if (!account.getPhone().matches("^(0[2|3|5|7|8|9])+([0-9]{8})")) {
+			model.addAttribute("phone", "Sai định dạng số điện thoại!");
+			return "home/signup";
+		}
+
+		if (accountsRepository.getByEmail(account.getEmail()) != null) {
+			model.addAttribute("email", "Email này đã tồn tại!");
+			return "home/signup";
+		}
+
+		Calendar calNow = Calendar.getInstance(); // lấy thời gian hiện tại
+		System.out.println("calNow>> " + calNow);
+		Calendar calBirth = Calendar.getInstance(); // lấy ngày tháng năm sinh người dùng
+		System.out.println("calBirth>> " + calBirth);
+		calBirth.setTime(account.getCreateDate()); // đặc thời gian calBirth bằng ngày tháng năm sinh người dùng
+		int age = calNow.get(Calendar.YEAR) - calBirth.get(Calendar.YEAR); // năm hiện tại trừ năm sinh
+		System.out.println("age>> " + age);
+		if (calNow.get(Calendar.DAY_OF_YEAR) < calBirth.get(Calendar.DAY_OF_YEAR)) {
+			age--; // Kiểm tra xem ngày hiện tại có nhỏ hơn ngày sinh của người dùng không. Nếu có,
+					// chứng tỏ họ chưa đủ tuổi trong năm nay, vì vậy ta giảm tuổi đi một năm.
+			System.out.println("ageif>> " + age);
+		}
+		if (age < 18) { // Kiểm tra xem tuổi của người dùng có dưới 18 tuổi không. Nếu có, ta thêm thông
+						// báo lỗi vào model và trả về trang thông tin.
+			model.addAttribute("date", "Bạn phải đủ 18 tuổi trở lên!");
+			return "home/signup";
+		}
+
+		String passw = randompassword();
+		System.out.println("passw>> " + passw);
+		String passpe = pe.encode(passw);
+		System.out.println("PassPE>> " + passpe);
+		account.setPassword(passpe);
+		accountsRepository.save(account);
+
+		Role staff = roleRepository.findById("STAFF").orElseGet(() -> {
+			Role newRole = new Role();
+			newRole.setId("STAFF");
+			return roleRepository.save(newRole);
+		});
+
+		Authority au = new Authority();
+		au.setAccount(account);
+		au.setRole(staff);
+		authorityRepository.save(au);
+
+		mailerService.add(memeMessage -> {
+			MimeMessageHelper helper = new MimeMessageHelper(memeMessage);
+			try {
 				helper.setTo(account.getEmail());
 				helper.setSubject("Nhà Trọ F.E Xin Chào!");
-				helper.setText("Nhà trọ F.E luôn là lựa chọn tốt nhất. Hân hạnh được phục vụ quí khách!");
+				helper.setText(
+						"Nhà trọ F.E luôn là lựa chọn tốt nhất. Hân hạnh được phục vụ quí khách! <br/>Đây là mật khẩu đăng nhập của bạn: <span style='font-size: 18px; color: red'>"
+								+ passw + "</span>.",
+						true);
 			} catch (MessagingException e) {
 				e.printStackTrace();
 			}
-    	});
-    	
-    	model.addAttribute("create", "Thêm mới thành công!");
-    
-    	return "redirect:/signin";
-    }
-    
-    @RequestMapping("/signin")
-    public String error(Model model, @RequestParam(required = false) String error) {
-    	if (error != null) {
+		});
+
+		model.addAttribute("create", "Thêm mới thành công!");
+
+		return "redirect:/signin";
+	}
+
+	@RequestMapping("/signin")
+	public String error(Model model, @RequestParam(required = false) String error) {
+		if (error != null) {
 			model.addAttribute("error", "Đăng nhập thất bại!");
 		}
-        return "home/signin";
+		return "home/signin";
 
-    }
-    
-    @RequestMapping("/auth/access/denied")
-    public String denied(Model model) {
-    	model.addAttribute("error", "Bạn không có quyền truy cập!");
-    	return "home/signin";
-    }
-    
+	}
+
+	@RequestMapping("/auth/access/denied")
+	public String denied(Model model) {
+		model.addAttribute("error", "Bạn không có quyền truy cập!");
+		return "home/signin";
+	}
+
 	@PostMapping("/sigin/save")
 	public String sigin(Model model, @ModelAttribute("accounts") Account account) {
 		Account currentUser = accountsRepository.getByEmail(account.getEmail());
@@ -156,7 +177,7 @@ public class RegisterController {
 		System.out.println("user");
 		return "redirect:/index";
 	}
-	
+
 	@RequestMapping("/oauth2/login/success")
 	public String success(OAuth2AuthenticationToken oauth2, Model model) {
 		authorityService.loginFromOAuth2(oauth2);
@@ -164,83 +185,75 @@ public class RegisterController {
 //		String username = oauth2User.getAttribute("email");
 		String email = oauth2User.getAttribute("email");
 		System.out.println("Email>> " + email);
-		int leftLimit = 97; // 'a'
-		int righLimit = 122; // 'z'
-		int len = 8;
-		Random random = new Random();
-		StringBuilder buffer = new StringBuilder(len);
-		for (int i = 0; i < len; i++) {
-			int randomLimitedInt = leftLimit + (int) (random.nextFloat() * (righLimit - leftLimit + 1));
-			buffer.append((char) randomLimitedInt);
-		}
-		String generatedString = buffer.toString();
+		String generatedString = randompassword();
 		System.out.println("pass>> " + generatedString);
 		Account acc = new Account();
 		acc.setEmail(email);
 		acc.setFullname(email);
 		acc.setPassword(pe.encode(generatedString));
 		acc.setActive(true);
-		if(accountsRepository.getByEmail(email) != null) {
+		if (accountsRepository.getByEmail(email) != null) {
 			model.addAttribute("error", "Email này đã tồn tại vui lòng trọn email khác!");
 			return "redirect:/index";
-		}else {
+		} else {
 			accountsRepository.save(acc);
 			Role staff = roleRepository.findById("STAFF").orElseGet(() -> {
-	    		Role newRole = new Role();
-	    		newRole.setId("STAFF");
-	    		return roleRepository.save(newRole);
-	    	});
-	    	
-	    	Authority au = new Authority();
-	    	au.setAccount(acc);
-	    	au.setRole(staff);
-	    	authorityRepository.save(au);
+				Role newRole = new Role();
+				newRole.setId("STAFF");
+				return roleRepository.save(newRole);
+			});
+
+			Authority au = new Authority();
+			au.setAccount(acc);
+			au.setRole(staff);
+			authorityRepository.save(au);
 		}
 
 		return "forward:/index";
 	}
-	
-	
-    @GetMapping("/change")
-    public String Change(Model model, @ModelAttribute("changepass") ChangePassword changepass, Authentication authentication) {
-    	String id = authentication.getName();
-    	System.out.println("id_ChangeGet>> "+ id);
-    	model.addAttribute("id", id);
-        return "home/change_password";
-    }
-    
-    @PostMapping("/change/save")
-    public String changesubmit(Model model,  @ModelAttribute("changepass")@Valid ChangePassword changepass, BindingResult bindingResult, Authentication authentication) {
-    	String id = authentication.getName();
-    	Account acc = accountsRepository.getByEmail(id);
-    	if(bindingResult.hasErrors()) {
-    		model.addAttribute("id", id);
-    		return "home/change_password";
-    	}
-    	model.addAttribute("id", id);
-    	String oldPasswordFormUser = changepass.getOldPassword();
-    	System.out.println("Mật khẩu cũ: " + oldPasswordFormUser);
-    	String oldPasswordFromData = acc.getPassword();
-    	System.out.println("Mật khẩu data: " + oldPasswordFromData);
-    	System.out.println("Length User: " + oldPasswordFormUser.length());
+
+	@GetMapping("/change")
+	public String Change(Model model, @ModelAttribute("changepass") ChangePassword changepass,
+			Authentication authentication) {
+		String id = authentication.getName();
+		System.out.println("id_ChangeGet>> " + id);
+		model.addAttribute("id", id);
+		return "home/change_password";
+	}
+
+	@PostMapping("/change/save")
+	public String changesubmit(Model model, @ModelAttribute("changepass") @Valid ChangePassword changepass,
+			BindingResult bindingResult, Authentication authentication) {
+		String id = authentication.getName();
+		Account acc = accountsRepository.getByEmail(id);
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("id", id);
+			return "home/change_password";
+		}
+		model.addAttribute("id", id);
+		String oldPasswordFormUser = changepass.getOldPassword();
+		System.out.println("Mật khẩu cũ: " + oldPasswordFormUser);
+		String oldPasswordFromData = acc.getPassword();
+		System.out.println("Mật khẩu data: " + oldPasswordFromData);
+		System.out.println("Length User: " + oldPasswordFormUser.length());
 		System.out.println("Length Database: " + oldPasswordFromData.length());
 		// kiểm tra mật khẩu có bằng không
 		System.out.println("MK có bằng không: " + oldPasswordFormUser.equals(oldPasswordFromData));
 		oldPasswordFormUser = oldPasswordFormUser.trim();
 		System.out.println("Equal after trimming: " + oldPasswordFormUser.equals(oldPasswordFromData));
-		if(!pe.matches(oldPasswordFormUser, oldPasswordFromData)) {
+		if (!pe.matches(oldPasswordFormUser, oldPasswordFromData)) {
 			model.addAttribute("message", "Mật khẩu hiện tại không đúng!");
 			return "home/change_password";
 		}
-		if(!changepass.getNewPassword().equals(changepass.getConfirmPassword())) {
+		if (!changepass.getNewPassword().equals(changepass.getConfirmPassword())) {
 			model.addAttribute("message", "Xác nhận mật khẩu không đúng!");
 			return "home/change_password";
 		}
-		if(changepass.getNewPassword().equals(changepass.getOldPassword())) {
+		if (changepass.getNewPassword().equals(changepass.getOldPassword())) {
 			model.addAttribute("message", "Mật khẩu mới không được trùng với mật khẩu hiện tại!");
 			return "home/change_password";
 		}
-		
+
 		String pass = changepass.getNewPassword();
 		System.out.println("pass>> " + pass);
 		String passpe = pe.encode(pass);
@@ -249,39 +262,29 @@ public class RegisterController {
 		accountsRepository.save(acc);
 		model.addAttribute("message", "Thay đổi mật khẩu thành công!");
 		return "redirect:/auth/logoff";
-    }
+	}
 
-    @GetMapping("/forgot")
-    public String Forgot() {
-        return "home/forgot_password";
-    }
+	@GetMapping("/forgot")
+	public String Forgot() {
+		return "home/forgot_password";
+	}
 
-    
-    @PostMapping("/forgot/save")
-    public String ForgotSubmit(Model model, @RequestParam("email") String email) {
-    	Account currentAcc = accountsRepository.getByEmail(email);
-    	Integer id = (currentAcc != null) ? currentAcc.getAccountId() : null;
-    	if(email.isBlank()) {
-    		model.addAttribute("email","Vui lòng nhập email!");
-    		return "home/forgot_password";
-    	}
-    	if(id != null) {
-    		int leftLimit = 97; 
-    		int rightLimit = 122;
-    		int len = 8;
-    		Random random = new Random();
-    		StringBuilder buffer = new StringBuilder(len);
-    		for(int i = 0; i < len; i++) {
-    			int randomLimitedInt = leftLimit + (int) (random.nextFloat() * (rightLimit - leftLimit + 1));
-    			buffer.append((char) randomLimitedInt);
-    		}
-    		String generatedString = buffer.toString();
-    		System.out.println("Random forgot:>> " + generatedString);
-    		
-    		Account acc = accountsRepository.getByEmail(email);
-    		acc.setPassword(pe.encode(generatedString));
-    		accountsRepository.save(acc);
-    		try {
+	@PostMapping("/forgot/save")
+	public String ForgotSubmit(Model model, @RequestParam("email") String email) {
+		Account currentAcc = accountsRepository.getByEmail(email);
+		Integer id = (currentAcc != null) ? currentAcc.getAccountId() : null;
+		if (email.isBlank()) {
+			model.addAttribute("email", "Vui lòng nhập email!");
+			return "home/forgot_password";
+		}
+		if (id != null) {
+			String generatedString = randompassword();
+			System.out.println("Random forgot:>> " + generatedString);
+
+			Account acc = accountsRepository.getByEmail(email);
+			acc.setPassword(pe.encode(generatedString));
+			accountsRepository.save(acc);
+			try {
 				sendEmail(email, generatedString);
 				model.addAttribute("message", "Vui lòng xem gmail để lấy lại mật khẩu!");
 				return "home/forgot_password";
@@ -289,25 +292,31 @@ public class RegisterController {
 				// TODO: handle exception
 				e.printStackTrace();
 			}
-    	}else {
-    		model.addAttribute("message","Email không tồn tại!");
-    		return "home/forgot_password";
-    	}
-    	return "home/forgot_password";
-    }
-    
-    @GetMapping("/information/{email}")
-    public String Information(@PathVariable("email") String email, Model model) {
-    	Account acc = accountsRepository.getByEmail(email);
-    	model.addAttribute("account", acc);
-        return "home/information";
-    }
-    
-    @PostMapping("/information/{accountId}")
-    public String InformationSubmit(@PathVariable("accountId") Integer accountId ,Model model, @ModelAttribute("account") Account account, @RequestParam("image") MultipartFile photo) {
-    	Account acccurrent = accountsRepository.getById(accountId);
-    	if(photo != null && !photo.isEmpty()) {
-    		try {
+		} else {
+			model.addAttribute("message", "Email không tồn tại!");
+			return "home/forgot_password";
+		}
+		return "home/forgot_password";
+	}
+
+	@GetMapping("/information/{email}")
+	public String Information(@PathVariable("email") String email, Model model, Authentication authentication) {
+		Account accc = accountsRepository.getByEmail(email);
+		model.addAttribute("account", accc);
+		String acc = authentication.getName();
+		model.addAttribute("acc", acc);
+		return "home/information";
+	}
+
+	@PostMapping("/information/{accountId}")
+	public String InformationSubmit(@PathVariable("accountId") Integer accountId, Model model,
+			@ModelAttribute("account") Account account, @RequestParam("image") MultipartFile photo,
+			Authentication authentication) {
+		Account acccurrent = accountsRepository.getById(accountId);
+		String acc = authentication.getName();
+		model.addAttribute("acc", acc);
+		if (photo != null && !photo.isEmpty()) {
+			try {
 				String fileName = photo.getOriginalFilename();
 				Path fileNameAnPath = Paths.get(UPLOAD_DIRECTORY, fileName);
 				Files.write(fileNameAnPath, photo.getBytes());
@@ -315,46 +324,89 @@ public class RegisterController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-    	}else {
-    		model.addAttribute("photo_message","Vui lòng chọn ảnh!");
-    		return "home/information";
-    	}
+		} else {
+			String photoname = acccurrent.getAvatar();
+			account.setAvatar(photoname);
+		}
+		if (account.getFullname().isBlank()) {
+			model.addAttribute("fullname", "Vui lòng nhập họ và tên!");
+			return "home/information";
+		}
+		if (account.getPhone().isBlank()) {
+			model.addAttribute("phone", "Vui lòng nhập số điện thoại!");
+			return "home/information";
+		}
+		if (!account.getPhone().matches("^(0[2|3|5|7|8|9])+([0-9]{8})")) {
+			model.addAttribute("phone", "Sai định dạng số điện thoại!");
+			return "home/information";
+		}
+		if (account.getCreateDate() == null) {
+			model.addAttribute("date", "Vui lòng chọn ngày tháng năm sinh!");
+			return "home/information";
+		} else {
+			Calendar calNow = Calendar.getInstance(); // lấy thời gian hiện tại
+			System.out.println("calNow>> " + calNow);
+			Calendar calBirth = Calendar.getInstance(); // lấy ngày tháng năm sinh người dùng
+			System.out.println("calBirth>> " + calBirth);
+			calBirth.setTime(account.getCreateDate()); // đặc thời gian calBirth bằng ngày tháng năm sinh người dùng
+			int age = calNow.get(Calendar.YEAR) - calBirth.get(Calendar.YEAR); // năm hiện tại trừ năm sinh
+			System.out.println("age>> " + age);
+			if (calNow.get(Calendar.DAY_OF_YEAR) < calBirth.get(Calendar.DAY_OF_YEAR)) {
+				age--; // Kiểm tra xem ngày hiện tại có nhỏ hơn ngày sinh của người dùng không. Nếu có,
+						// chứng tỏ họ chưa đủ tuổi trong năm nay, vì vậy ta giảm tuổi đi một năm.
+				System.out.println("ageif>> " + age);
+			}
+			if (age < 18) { // Kiểm tra xem tuổi của người dùng có dưới 18 tuổi không. Nếu có, ta thêm thông
+							// báo lỗi vào model và trả về trang thông tin.
+				model.addAttribute("date", "Bạn phải đủ 18 tuổi trở lên!");
+				return "home/information";
+			}
+		}
+		String email = acccurrent.getEmail();
+		String pass = acccurrent.getPassword();
+		System.out.println("pass>> " + pass);
+		account.setEmail(email);
+		account.setPassword(pass);
+		accountsRepository.save(account);
+		model.addAttribute("update", "Cập nhật thành công!");
 
-    	
-//    	if(!account.getPhone().matches("^(0[2|3|5|7|8|9])+([0-9]{8})")) {
-//    		model.addAttribute("phone", "Sai định dạng số điện thoại!");
-//    		return "home/signup";
-//    	}
-    	String email = acccurrent.getEmail();
-    	String pass = acccurrent.getPassword();
-    	System.out.println("pass>> " + pass);
-    	account.setEmail(email);
-    	account.setPassword(pass);
-    	accountsRepository.save(account);
-    	model.addAttribute("update", "Cập nhật thành công!");
-    	
-    	return "home/information";
-    }
-    
-    @GetMapping("/logout")
-    public String logout() {
-    	return "forward:/signin";
-    }
-    
-    private void sendEmail(String email, String password) {
+		return "home/information";
+	}
+
+	@GetMapping("/logout")
+	public String logout() {
+		return "forward:/signin";
+	}
+
+	private void sendEmail(String email, String password) {
 		// gửi email
 		mailerService.add(mimeMessage -> {
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 			try {
 				helper.setTo(email);
 				helper.setSubject("Nhà Trọ F.E Xin Chào!");
-				helper.setText("Bạn đã quên mật khẩu cũ và đã yêu cầu một mật khẩu mới: <br/>Đây là mật khẩu mới của bạn: <span style='font-size: 18px; color: red'>" + password + "</span>.", true);
+				helper.setText(
+						"Bạn đã quên mật khẩu cũ và đã yêu cầu một mật khẩu mới: <br/>Đây là mật khẩu mới của bạn: <span style='font-size: 18px; color: red'>"
+								+ password + "</span>.",
+						true);
 
 			} catch (MessagingException e) {
-				// TODO: handle exception
-
+				e.printStackTrace();
 			}
-
 		});
+	}
+
+	private String randompassword() {
+		int leftLimit = 97;
+		int rightLimit = 122;
+		int len = 8;
+		Random random = new Random();
+		StringBuilder buffer = new StringBuilder(len);
+		for (int i = 0; i < len; i++) {
+			int randomLimitedInt = leftLimit + (int) (random.nextFloat() * (rightLimit - leftLimit + 1));
+			buffer.append((char) randomLimitedInt);
+		}
+		String generatedString = buffer.toString();
+		return generatedString;
 	}
 }

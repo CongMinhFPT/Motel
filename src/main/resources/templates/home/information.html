@@ -14,6 +14,7 @@
 	<link rel="stylesheet" th:href="@{/css/sigin.css}">
 	<!-- Boxicons.css -->
 	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
 </head>
 
 <body>
@@ -31,27 +32,29 @@
 								<div class="row justify-content-center signin ">
 									<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-2">Thông Tin</p>
 									<div class="col-lg-6">
-										<img th:src="@{/img/motel1.jpg}" class="img-fluid rounded-3 mb-3" alt="">
+										<p class="text-center">Xin chào, <b th:text="${acc}"></b>!</p>
 										<div class="form-group form-float">
 											<div class="form-line">
-												<input type="file" id="form3Example0c" class="form-control rounded-3"
+												<img th:src="@{|/uploads/${account.avatar}|}" id="imagePreview"
+													class="img-fluid rounded-3 mb-3" alt="" style="height: 200px;">
+												<input type="file" id="uploadInput" class="form-control rounded-3"
 													name="image" placeholder="Chọn tệp" accept="image/*">
 											</div>
 											<i class="text-danger" th:text="${photo_message}"></i>
 										</div>
-										
-										<div class="d-flex flex-row align-items-center mb-4">
-											<div class="form-outline flex-fill mb-0">
+									</div>
+									<div class="signin col-lg-6">
+										<div class="form-group form-float mb-3">
+											<div class="form-line">
 												<label class="form-label fw-bold" for="form3Example2c">Họ và tên</label>
 												<input type="text" id="form3Example2c" class="form-control rounded-3"
 													th:field="*{fullname}" placeholder="Nhập họ và tên">
 											</div>
+											<i class="text-danger" th:text="${fullname}"></i>
 											<i class="text-danger" th:errors="*{fullname}"></i>
 										</div>
-									</div>
-									<div class="signin col-lg-6">
-										<div class="d-flex flex-row align-items-center mb-3">
-											<div class="form-outline flex-fill mb-0">
+										<div class="form-group form-float mb-3">
+											<div class="form-line">
 												<label class="form-label fw-bold" for="form3Example4c">Số điện
 													thoại</label>
 												<input type="text" id="phone" name="phone"
@@ -60,13 +63,8 @@
 											</div>
 											<i class="text-danger" th:text="${phone}"></i>
 										</div>
-										<div class="d-flex flex-row align-items-center mb-3">
-											<div class="form-outline flex-fill mb-0">
-												<label class="form-label fw-bold" for="form3Example5c">Email</label>
-												<input type="email" id="form3Example5c" class="form-control rounded-3"
-													th:field="*{email}" disabled placeholder="Nhập email">
-											</div>
-										</div>
+
+
 										<div class="d-flex flex-row align-items-center mb-3">
 
 											<div class="form-outline flex-fill mb-0">
@@ -75,26 +73,27 @@
 												<div class="form-check form-check-inline">
 													<input class="form-check-input" type="radio"
 														name="inlineRadioOptions" id="inlineRadio1" th:value="true"
-														th:field="*{gender}">
+														th:field="*{gender}" required>
 													<label class="form-check-label" for="inlineRadio1">Nam</label>
 												</div>
 												<div class="form-check form-check-inline">
 													<input class="form-check-input" type="radio"
 														name="inlineRadioOptions" id="inlineRadio2" th:value="false"
-														th:field="*{gender}">
+														th:field="*{gender}" required>
 													<label class="form-check-label" for="inlineRadio2">Nữ</label>
 												</div>
 
 											</div>
 										</div>
-										<div class="d-flex flex-row align-items-center mb-3">
+										<div class="form-group form-float mb-3">
 
-											<div class="form-outline flex-fill mb-0">
+											<div class="form-line mb-0">
 												<label class="form-label fw-bold" for="form3Example3c">Ngày sinh</label>
 												<input type="date" id="form3Example3c" class="form-control rounded-3"
 													th:field="*{createDate}" placeholder="">
-
 											</div>
+											<i class="text-danger" th:text="${date}"></i>
+											<i class="text-danger" th:errors="*{createDate}"></i>
 										</div>
 
 										<div class="d-grid gap-2">
@@ -128,7 +127,25 @@
 	</main>
 
 	<div th:replace="~{/layout/footer}"></div>
-
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+	<script>
+		document.getElementById('uploadInput').addEventListener('change', function () {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				document.getElementById('imagePreview').src = e.target.result;
+			}
+			reader.readAsDataURL(this.files[0]);
+		});
+	</script>
+	<script th:if="${not #strings.isEmpty(update)}">
+		Swal.fire({
+			icon: "success",
+			title: "Cập nhật thông tin thành công!",
+			showConfirmButton: false,
+			timer: 1500
+		});
+	</script>
+	</script>
 	<!-- Bootstrap JavaScript Libraries -->
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
 		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

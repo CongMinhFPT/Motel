@@ -19,12 +19,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Nationalized;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import io.micrometer.core.lang.NonNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,8 +54,8 @@ public class Account implements Serializable{
 	@Email(message = "Sai định dạng email!")
 	String email;
 	
-	@NotBlank(message = "Vui lòng nhập mật khẩu!")
-	@Size(min = 8, message = "Mật khẩu phải ít nhất 8 ký tự!")
+//	@NotBlank(message = "Vui lòng nhập mật khẩu!")
+//	@Size(min = 8, message = "Mật khẩu phải ít nhất 8 ký tự!")
 	String password;
 	
 	@Temporal(TemporalType.DATE)

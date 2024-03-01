@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.motel.entity.Account;
 import com.motel.entity.CustomUserDetails;
@@ -39,15 +40,13 @@ public class AuthorityService implements UserDetailsService{
 							.map(au -> au.getRole().getId())
 							.collect(Collectors.toList()).toArray(new String[0]);
 			System.out.println("role>> "+ roles);
-			List<GrantedAuthority> grandList = new ArrayList<GrantedAuthority>();
-			if(roles!=null) {
-			for(String role: roles) {
-				System.out.println(role);
-				GrantedAuthority authority = new SimpleGrantedAuthority(role);
-				grandList.add(authority);
+			List<GrantedAuthority> authorities = new ArrayList<>(roles.length);
+			for (String role : roles) {
+				Assert.isTrue(!role.startsWith("ROLE_"),
+						() -> role + " cannot start with ROLE_ (it is automatically added)");
+				authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
 			}
-		}
-			CustomUserDetails userDetails = new CustomUserDetails(username, password,grandList,accountid, 0);
+			CustomUserDetails userDetails = new CustomUserDetails(username, password,authorities,accountid, 0);
 			return userDetails;
 		} catch (Exception e) {
 			System.out.println("Không tồn tại tài khoản này " + username);

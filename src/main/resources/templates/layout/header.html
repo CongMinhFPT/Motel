@@ -12,10 +12,6 @@
 
                 <ul class="nav-links" >
                     <li><a th:href="@{/index}">TRANG CHỦ</a></li>
-                    <ul th:if="${#request.remoteUser}">
-                        <li th:text="${#request.isUserInRole('[STAFF]')}">admin</li>
-                        <li th:if="${#request.isUserInRole('STAFF')}">admin</li>
-                    </ul>
                     <li><a th:href="@{/room}">PHÒNG TRỌ</a></li>
                     <li><a href="#">DỊCH VỤ</a></li>
                     <li><a th:href="@{/news}">TIN TỨC</a></li>

@@ -1,71 +1,233 @@
 ﻿<!DOCTYPE html>
-<html lang="en"  xmlns="http://www.thymeleaf.org"
-th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
-<body>
-	<div class="content-body">
-		<div class="container-fluid">
-			<div class="form-head mb-sm-5 mb-3 d-flex flex-wrap align-items-center">
-				<h2 class="font-w600 title mb-2 mr-auto ">Nhà Trọ 2</h2>
 
+<body>
+	<div class="content-body ">
+		<div class="container-fluid">
+			<div class="form-head  d-flex flex-wrap align-items-center">
+				<h2 class="font-w600 title mb-2 mr-auto ">Danh sách nhà trọ</h2>
 			</div>
-			<div class="col-xl-12 col-lg-12">
-				<div class="card">
-					<div class="card-body">
-						<div class="basic-form">
-							<form>
-								<div class="form-row">
-									<div class="form-group col-md-6">
-										<label>First Name</label>
-										<input type="text" class="form-control" placeholder="1234 Main St">
-									</div>
-									<div class="form-group col-md-6">
-										<label>Email</label>
-										<input type="email" class="form-control" placeholder="Email">
-									</div>
-									<div class="form-group col-md-6">
-										<label>Password</label>
-										<input type="password" class="form-control" placeholder="Password">
-									</div>
-									<div class="form-group col-md-6">
-										<label>City</label>
-										<input type="text" class="form-control">
-									</div>
-								</div>
-								<div class="form-row">
-									<div class="form-group col-md-6">
-										<label>State</label>
-										<select id="inputState" class="form-control default-select">
-											<option selected="">Choose...</option>
-											<option>Option 1</option>
-											<option>Option 2</option>
-											<option>Option 3</option>
-										</select>
-									</div>
-									<div class="form-group col-md-6">
-										<label>Zip</label>
-										<input type="text" class="form-control">
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="form-check">
-										<input class="form-check-input" type="checkbox" id="check" >
-										<label class="form-check-label" for="check">
-											Check me out
-										</label>
-									</div>
-								</div>
-								<button type="submit" class="btn btn-primary">Lưu Lại</button>
-							</form>
+			<div class="col-xl-12 col-lg-12 row ">
+				<div class="container-fluid  " th:if="${motelttr!=null}">
+					<form action="#" th:action="@{/admin/add-motel}" th:object="${motelttr}" method="post"
+						class="w-100 " enctype="multipart/form-data">
+						<div class="mb-3">
+							<label for="descriptions" class="form-label text-black">Mô tả</label>
+							<textarea th:field="*{descriptions}" class="form-control" id="descriptions"
+								name="descriptions" rows="3" required></textarea>
+							<label th:errors="*{descriptions}" id="descriptions-error"
+								style="color: red; padding: 0.5rem; display: block;" for=""></label>
 						</div>
-					</div>
+						<div class="mb-3 row">
+							<div class="col">
+								<label for="province" class="form-label text-black">Tỉnh</label>
+								<select class="form-control " required id="city" th:field="*{province}">
+									<option th:if="*{province!=null}" id="city1" th:value="*{province}"
+										th:attr="data-id=*{provinceID}" th:text="*{province}" selected></option>
+									<option value="" data-id="" selected> -- Chọn tỉnh thành --</option>
+									<input class="d-none " type="text" id="cityIdInput" th:field="*{provinceID}">
+								</select>
+								<label th:errors="*{province}" id="provinces-error"
+									style="color: red; padding: 0.5rem; display: block;" for=""></label>
+							</div>
+							<div class="col">
+								<label for="district" class="form-label text-black">Huyện</label>
+								<select id="district" required class="form-control " th:field="*{district}">
+									<option th:if="*{district!=null}" id="district1" th:value="*{district}"
+										th:attr="data-id=*{districtID}" th:text="*{district}" selected></option>
+									<option id="huyen" value="" data-id="" selected>-- Chọn quận huyện --</option>
+									<input class="d-none " type="text" id="districtIdnput" th:field="*{districtID}">
+								</select>
+								<label th:errors="*{district}" id="districts-error"
+									style="color: red; padding: 0.5rem; display: block;" for=""></label>
+							</div>
+							<div class="col">
+								<label for="ward" class="form-label text-black ">Phường</label>
+								<select id="ward" required class="form-control " th:field="*{ward}">
+									<option id="ward1" th:if="*{ward!=null}" th:value="*{ward}" th:text="*{ward}"
+										selected></option>
+									<option id="phuong" value="" selected>-- Chọn phường xã --</option>
+								</select>
+								<label th:errors="*{ward}" id="wards-error"
+									style="color: red; padding: 0.5rem; display: block;" for=""></label>
+							</div>
+						</div>
+						<div class="mb-3 row">
+							<div class="col-6 mt-3">
+								<label for="descriptions" class="form-label text-black">Số nhà</label>
+								<textarea th:field="*{detailAddress}" class="form-control" id="detailAddress"
+									name="detailAddress" rows="3" required></textarea>
+								<label th:errors="*{detailAddress}" id="detailAddress-error"
+									style="color: red; padding: 0.5rem; display: block;" for=""></label>
+							</div>
+							<div class="col-6  text-center " id="imageContainer">
+								<div class="avatar-frame mb-3 mt-2   ">
+									<img alt="Avatar" src="images/profile/pic1.jpg" id="previewImage"
+										class="avatar-image">
+								</div>
+								<input type="file" class="form-control" id="imageInput" name="files" accept="image/*">
+							</div>
+						</div>
+						<div class="m-3 ">
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
-	</div>
+		<style>
+			.avatar-frame {
+				width: 150px;
+				height: 150px;
+				border: 2px solid #333;
+				border-radius: 50%;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+				margin: auto;
+			}
+
+			.avatar-image {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				border-radius: 50%;
+			}
+		</style>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+		<script>
+			var citis = document.getElementById("city");
+			var districts = document.getElementById("district");
+			var wards = document.getElementById("ward");
+			var Parameter = {
+				url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+				method: "GET",
+				responseType: "application/json",
+			};
+			var promise = axios(Parameter);
+			promise.then(function (result) {
+				renderCity(result.data);
+			});
+
+			function renderCity(data) {
+				for (const x of data) {
+					var opt = document.createElement('option');
+					opt.value = x.Name;
+					opt.text = x.Name;
+					opt.setAttribute('data-id', x.Id);
+					citis.options.add(opt);
+				}
+				citis.onchange = function () {
+					district.length = 2;
+					ward.length = 2;
+					if (this.options[this.selectedIndex].dataset.id != "") {
+						const result = data.filter(n => n.Id === this.options[this.selectedIndex].dataset.id);
+						for (const k of result[0].Districts) {
+							var opt = document.createElement('option');
+							opt.value = k.Name;
+							opt.text = k.Name;
+							opt.setAttribute('data-id', k.Id);
+							district.options.add(opt);
+						}
+					}
+					var huyenOption = document.getElementById("huyen");
+					var nextOption = huyenOption.nextElementSibling;
+					if(nextOption!=null){
+						nextOption.remove();
+					}
+					var huyenOption = document.getElementById("phuong");
+					var nextOption = huyenOption.nextElementSibling;
+					if(nextOption!=null){
+						nextOption.style.display = "none";
+					}
+					var selectedOption = this.options[this.selectedIndex];
+					var dataId = selectedOption.getAttribute('data-id');
+					document.getElementById('cityIdInput').value = dataId;
+					console.log(8888)
+				};
+				district.onchange = function () {
+					ward.length = 2;
+					const dataCity = data.filter((n) => n.Id === citis.options[citis.selectedIndex].dataset.id);
+					if (this.options[this.selectedIndex].dataset.id != "") {
+						const dataWards = dataCity[0].Districts.filter(n => n.Id === this.options[this.selectedIndex].dataset.id)[0].Wards;
+
+						for (const w of dataWards) {
+							var opt = document.createElement('option');
+							opt.value = w.Name;
+							opt.text = w.Name;
+							opt.setAttribute('data-id', w.Id);
+							wards.options.add(opt);
+						}
+					}
+					var huyenOption = document.getElementById("phuong");
+					var nextOption = huyenOption.nextElementSibling;
+					nextOption.remove();
+					var selectedOption = this.options[this.selectedIndex];
+					var dataId = selectedOption.getAttribute('data-id');
+					document.getElementById('districtIdnput').value = dataId;
+				};
+			}
+			document.addEventListener("DOMContentLoaded", function () {
+				var event = new Event('change');
+				citis.dispatchEvent(event);
+				var event = new Event('change');
+				districts.dispatchEvent(event);
+				citis.addEventListener('change', function () {
+					let optionToRemove = document.getElementById('city1');
+					let cityOpdistrict = document.getElementById('district1');
+					let cityward1 = document.getElementById('ward1');
+					if (optionToRemove != null) {
+						optionToRemove.remove();
+						cityOpdistrict.remove();
+						cityward1.remove();
+					}
+				});
+				districts.addEventListener('change', function () {
+					let optionToRemove = document.getElementById('city1');
+					let cityward1 = document.getElementById('ward1');
+					let cityOpdistrict = document.getElementById('district1');
+					if (optionToRemove != null) {
+						cityward1.remove();
+						cityOpdistrict.remove();
+					}
+				});
+			});
+			const imageInput = document.getElementById('imageInput');
+			const previewImage = document.getElementById('previewImage');
+
+			imageInput.addEventListener('change', function () {
+				const file = this.files[0];
+				if (file) {
+					const reader = new FileReader();
+					reader.onload = function (e) {
+						previewImage.src = e.target.result;
+					}
+					reader.readAsDataURL(file);
+				}
+			});
+
+		</script>
+
+		<script th:inline="javascript">
+			var successMessage = /*[[${successMessage}]]*/ '';
+			if (successMessage) {
+				Swal.fire({
+					title: 'Thành công!',
+					text: successMessage,
+					icon: 'success',
+					timer: 500,
+					showConfirmButton: false
+				});
+			}
+		</script>
+
 </body>
+
 </html>

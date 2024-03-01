@@ -1,8 +1,11 @@
 package com.motel.service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,20 +18,27 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.motel.FileManager.FileManager;
+import com.motel.entity.Account;
 import com.motel.entity.CustomUserDetails;
 import com.motel.entity.Motel;
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.MotelRepository;
 import com.motel.service.impl.ManageMotelImpl;
-
 @Service
 public class ManageMoleService implements ManageMotelImpl {
     @Autowired
     AccountsRepository account;
     @Autowired
     MotelRepository motelR;
+    @Autowired
+    FileManager  fileManager;
 
     @Override
     public Optional<CustomUserDetails> checklogin() {
@@ -95,9 +105,9 @@ public class ManageMoleService implements ManageMotelImpl {
                 }
             }
         } else {
-            return "home/news";
+            return "home/signin";
         }
-        return "home/news";
+        return "home/signin";
     }
 
     @Override
@@ -134,10 +144,8 @@ public class ManageMoleService implements ManageMotelImpl {
 
         CustomUserDetails details = us;
         if (details.getMotelid() == 0) {
-            System.out.println(details.getMotelid()+"loia");
             return false;
         }
-        System.out.println(details.getMotelid()+"trana");
         return true;
 
     }
@@ -159,9 +167,57 @@ public class ManageMoleService implements ManageMotelImpl {
                 addcookei(response, idmotel, model);
                 return "admin/motel/manage-motel";
             } else {
-                return "home/news";
+                return "admin/error/error404";
             }
         }
-        return "home/news";
+        return "home/signin";
+    }
+
+    @Override
+    public String addmotel(Motel motel, BindingResult bindingResult, MultipartFile[] files ,Model model ,RedirectAttributes attributes) {
+        if (checklogin().isPresent()) {
+            CustomUserDetails userDetails = checklogin().get();
+                if (bindingResult.hasErrors()) {
+                    return "admin/motel/add-motel";
+                }
+                if (files != null && files.length > 0 && !files[0].isEmpty()) {
+                    Motel motel2 = motel;
+                    String nameimg =imgsave("ImgMotel", files);
+                    motel2.setImage(nameimg);
+                    Account account1=account.getById(userDetails.getAccountid());
+                    motel2.setAccount(account1);
+                    motelR.save(motel2);
+                    setModelMotel(model);
+                    attributes.addFlashAttribute("successMessage", "Thêm thành công!");
+                    return "redirect:/admin/add-motel";
+                }else{
+                    Motel motel2 = motel;
+                    String nameimg ="img-defaul.png";
+                    motel2.setImage(nameimg);
+                    Account account1=account.getById(userDetails.getAccountid());
+                    motel2.setAccount(account1);
+                    motelR.save(motel2);
+                    setModelMotel(model);
+                    attributes.addFlashAttribute("successMessage", "Thêm thành công!");
+                    return "redirect:/admin/add-motel";
+                }
+        }
+        return "home/signin";
+    }
+
+    @Override
+    public String imgsave( String folder,MultipartFile[] files) {
+        List<String> list = new ArrayList<>();
+        list=  fileManager.save(folder, files);
+        return list.get(0);
+    }
+
+    @Override
+    public String getmotel(Model model) {
+         if (checklogin().isPresent()) {
+            setModelMotel(model);
+            return "admin/motel/add-motel";
+         }
+         return "home/signin";
     }
 }

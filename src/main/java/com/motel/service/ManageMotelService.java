@@ -32,7 +32,7 @@ import com.motel.repository.AccountsRepository;
 import com.motel.repository.MotelRepository;
 import com.motel.service.impl.ManageMotelImpl;
 @Service
-public class ManageMoleService implements ManageMotelImpl {
+public class ManageMotelService implements ManageMotelImpl {
     @Autowired
     AccountsRepository account;
     @Autowired
@@ -41,7 +41,7 @@ public class ManageMoleService implements ManageMotelImpl {
     FileManager  fileManager;
 
     @Override
-    public Optional<CustomUserDetails> checklogin() {
+    public Optional<CustomUserDetails> CheckLogin() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         
         if (principal instanceof CustomUserDetails) {
@@ -54,7 +54,7 @@ public class ManageMoleService implements ManageMotelImpl {
     }
 
     @Override
-    public int getcookei(HttpServletRequest request) {
+    public int GetCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
 
         if (cookies != null) {
@@ -70,7 +70,7 @@ public class ManageMoleService implements ManageMotelImpl {
     }
 
     @Override
-    public void addcookei(HttpServletResponse response, int idmotel, Model model) {
+    public void AddCookie(HttpServletResponse response, int idmotel, Model model) {
         String stringValue = String.valueOf(idmotel);
         Cookie cookie = new Cookie("motelcookie", stringValue);
         cookie.setMaxAge(24 * 60 * 60);
@@ -78,20 +78,20 @@ public class ManageMoleService implements ManageMotelImpl {
     }
 
     @Override
-    public String checkManageMotel(HttpServletRequest request, Model model) {
-        if (checklogin().isPresent()) {
-            CustomUserDetails details = checklogin().get();
-            if (checkmotelaccount(details)) {
-                setModelMotel(model);
+    public String CheckManageMotel(HttpServletRequest request, Model model) {
+        if (CheckLogin().isPresent()) {
+            CustomUserDetails details = CheckLogin().get();
+            if (CheckAccountSetIdMotel(details)) {
+                SetModelMotel(model);
                 List<Motel> motels = account.getById(details.getAccountid()).getMotel();
                 model.addAttribute("listmotel", motels);
                 System.out.println(1);
                 return "admin/motel/manage-motel";
             } else {
-                if (getcookei(request) != 0) {
-                    int idmotel = getcookei(request);
-                    if (checklidmotel(idmotel, model)) {
-                        setAccount(idmotel);
+                if (GetCookie(request) != 0) {
+                    int idmotel = GetCookie(request);
+                    if (CheckIdMotelInAccount(idmotel, model)) {
+                        SetAccount(idmotel);
                         List<Motel> motels = account.getById(details.getAccountid()).getMotel();
                         model.addAttribute("listmotel", motels);
                         System.out.println(2);
@@ -111,9 +111,9 @@ public class ManageMoleService implements ManageMotelImpl {
     }
 
     @Override
-    public Boolean checklidmotel(int idmotel, Model model) {
+    public Boolean CheckIdMotelInAccount(int idmotel, Model model) {
 
-        CustomUserDetails cDetails = checklogin().get();
+        CustomUserDetails cDetails = CheckLogin().get();
         List<Motel> listmotel = account.getById(cDetails.getAccountid()).getMotel();
         for (Motel t : listmotel) {
             if (t.getMotelId() == idmotel) {
@@ -126,7 +126,7 @@ public class ManageMoleService implements ManageMotelImpl {
     }
 
     @Override
-    public void setAccount(int idmotel) {
+    public void SetAccount(int idmotel) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof CustomUserDetails) {
             CustomUserDetails details = (CustomUserDetails) principal;
@@ -140,7 +140,7 @@ public class ManageMoleService implements ManageMotelImpl {
     }
 
     @Override
-    public Boolean checkmotelaccount(CustomUserDetails us) {
+    public Boolean CheckAccountSetIdMotel(CustomUserDetails us) {
 
         CustomUserDetails details = us;
         if (details.getMotelid() == 0) {
@@ -151,20 +151,20 @@ public class ManageMoleService implements ManageMotelImpl {
     }
 
     @Override
-    public void setModelMotel(Model model) {
+    public void SetModelMotel(Model model) {
 
-        CustomUserDetails cDetails = checklogin().get();
+        CustomUserDetails cDetails = CheckLogin().get();
         Motel motel = motelR.getById(cDetails.getMotelid());
         model.addAttribute("motel", motel);
 
     }
 
     @Override
-    public String ManageMotelPava(HttpServletResponse response, int idmotel, Model model) {
-        if (checklogin().isPresent()) {
-            if (checklidmotel(idmotel, model)) {
-                setAccount(idmotel);
-                addcookei(response, idmotel, model);
+    public String AddIdMotelInAccount(HttpServletResponse response, int idmotel, Model model) {
+        if (CheckLogin().isPresent()) {
+            if (CheckIdMotelInAccount(idmotel, model)) {
+                SetAccount(idmotel);
+                AddCookie(response, idmotel, model);
                 return "admin/motel/manage-motel";
             } else {
                 return "admin/error/error404";
@@ -174,20 +174,20 @@ public class ManageMoleService implements ManageMotelImpl {
     }
 
     @Override
-    public String addmotel(Motel motel, BindingResult bindingResult, MultipartFile[] files ,Model model ,RedirectAttributes attributes) {
-        if (checklogin().isPresent()) {
-            CustomUserDetails userDetails = checklogin().get();
+    public String AddMotel(Motel motel, BindingResult bindingResult, MultipartFile[] files ,Model model ,RedirectAttributes attributes) {
+        if (CheckLogin().isPresent()) {
+            CustomUserDetails userDetails = CheckLogin().get();
                 if (bindingResult.hasErrors()) {
                     return "admin/motel/add-motel";
                 }
                 if (files != null && files.length > 0 && !files[0].isEmpty()) {
                     Motel motel2 = motel;
-                    String nameimg =imgsave("ImgMotel", files);
+                    String nameimg =ImgSave("ImgMotel", files);
                     motel2.setImage(nameimg);
                     Account account1=account.getById(userDetails.getAccountid());
                     motel2.setAccount(account1);
                     motelR.save(motel2);
-                    setModelMotel(model);
+                    SetModelMotel(model);
                     attributes.addFlashAttribute("successMessage", "Thêm thành công!");
                     return "redirect:/admin/add-motel";
                 }else{
@@ -197,7 +197,7 @@ public class ManageMoleService implements ManageMotelImpl {
                     Account account1=account.getById(userDetails.getAccountid());
                     motel2.setAccount(account1);
                     motelR.save(motel2);
-                    setModelMotel(model);
+                    SetModelMotel(model);
                     attributes.addFlashAttribute("successMessage", "Thêm thành công!");
                     return "redirect:/admin/add-motel";
                 }
@@ -206,16 +206,16 @@ public class ManageMoleService implements ManageMotelImpl {
     }
 
     @Override
-    public String imgsave( String folder,MultipartFile[] files) {
+    public String ImgSave( String folder,MultipartFile[] files) {
         List<String> list = new ArrayList<>();
         list=  fileManager.save(folder, files);
         return list.get(0);
     }
 
     @Override
-    public String getmotel(Model model) {
-         if (checklogin().isPresent()) {
-            setModelMotel(model);
+    public String GetMotel(Model model) {
+         if (CheckLogin().isPresent()) {
+            SetModelMotel(model);
             return "admin/motel/add-motel";
          }
          return "home/signin";

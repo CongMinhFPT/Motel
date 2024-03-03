@@ -14,12 +14,6 @@ public class HomeController {
     ManageMotelImpl impl;
     @GetMapping("/index")
     public String getMethodName() {
-        if (impl.checklogin().isPresent()) {
-            CustomUserDetails access =impl.checklogin().get();
-            System.out.println(access.getAuthorities()+"Loi");
-            System.out.println(access.getUsername()+"Loi");
-            return "home/index";
-        }
         return "home/index";
     }
     @GetMapping("/news")

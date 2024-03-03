@@ -32,23 +32,23 @@ public class AdminMotelController {
     ManageMotelImpl motelImpl;
     @GetMapping("/admin/add-motel")
     public String showMotel(@ModelAttribute("motelttr") Motel motel ,Model model){
-        return motelImpl.getmotel(model);
+        return motelImpl.GetMotel(model);
     }
     @PostMapping("/admin/add-motel")
     public String postMethodName(@ModelAttribute ("motelttr") @Valid Motel motel ,BindingResult bindingResult  , @RequestParam("files") MultipartFile[] files ,
     Model model ,RedirectAttributes attributes) {
-        return motelImpl.addmotel(motel, bindingResult, files, model,attributes);
+        return motelImpl.AddMotel(motel, bindingResult, files, model,attributes);
     }
 
     @GetMapping("/admin/manage-motel")
     public String getMethodName(HttpServletRequest request , Model model) {
-    return motelImpl.checkManageMotel(request, model);
+    return motelImpl.CheckManageMotel(request, model);
     }
     @GetMapping("/admin/manage-motel/{idmotel}")
     public String getMethodName(HttpServletResponse response ,@PathVariable String idmotel, Model model) {
         int idmotel1 = Integer.valueOf(idmotel);
         System.out.println(idmotel1+"dd");
-    return motelImpl.ManageMotelPava(response, idmotel1, model);
+    return motelImpl.AddIdMotelInAccount(response, idmotel1, model);
     }
 
     // @GetMapping("/admin/manage-motel/{idmotel}")

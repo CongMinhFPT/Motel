@@ -18,21 +18,21 @@ import com.motel.entity.Motel;
 
 @Service
 public interface ManageMotelImpl {
-   public Optional<CustomUserDetails> checklogin();
+   public Optional<CustomUserDetails> CheckLogin();
 
-   public int getcookei(HttpServletRequest request);
+   public int GetCookie(HttpServletRequest request);
 
-   public void addcookei(HttpServletResponse response , int idmotel ,Model model);
+   public void AddCookie(HttpServletResponse response , int idmotel ,Model model);
 
-   String checkManageMotel(HttpServletRequest request,Model model);
+   String CheckManageMotel(HttpServletRequest request,Model model);
 
-   void setAccount(int idmotel  );
-   void setModelMotel(Model model );
+   void SetAccount(int idmotel  );
+   void SetModelMotel(Model model );
   
-   public Boolean checklidmotel(int idmotel ,Model model);
-   public Boolean checkmotelaccount(CustomUserDetails us);
-   public String ManageMotelPava(HttpServletResponse response , int idmotel ,Model model);
-   public String addmotel(Motel motel ,BindingResult bindingResult ,  MultipartFile[] files , Model model,RedirectAttributes attributes);
-   public String imgsave( String namefolder,MultipartFile[] files);
-   public String getmotel(Model model);
+   public Boolean CheckIdMotelInAccount(int idmotel ,Model model);
+   public Boolean CheckAccountSetIdMotel(CustomUserDetails us);
+   public String AddIdMotelInAccount(HttpServletResponse response , int idmotel ,Model model);
+   public String AddMotel(Motel motel ,BindingResult bindingResult ,  MultipartFile[] files , Model model,RedirectAttributes attributes);
+   public String ImgSave( String namefolder,MultipartFile[] files);
+   public String GetMotel(Model model);
 } 

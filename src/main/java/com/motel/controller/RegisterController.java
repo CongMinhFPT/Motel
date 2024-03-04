@@ -148,7 +148,7 @@ public class RegisterController {
 
 		model.addAttribute("create", "Thêm mới thành công!");
 
-		return "redirect:/signin";
+		return "home/signin";
 	}
 
 	@RequestMapping("/signin")
@@ -162,7 +162,7 @@ public class RegisterController {
 
 	@RequestMapping("/auth/access/denied")
 	public String denied(Model model) {
-		model.addAttribute("error", "Bạn không có quyền truy cập!");
+		model.addAttribute("errors", "Bạn không có quyền truy cập!");
 		return "home/signin";
 	}
 
@@ -293,7 +293,7 @@ public class RegisterController {
 				e.printStackTrace();
 			}
 		} else {
-			model.addAttribute("message", "Email không tồn tại!");
+			model.addAttribute("messagee", "Email không tồn tại!");
 			return "home/forgot_password";
 		}
 		return "home/forgot_password";

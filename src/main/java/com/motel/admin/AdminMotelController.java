@@ -30,16 +30,22 @@ import com.motel.service.impl.ManageMotelImpl;
 public class AdminMotelController {
     @Autowired
     ManageMotelImpl motelImpl;
+
+    @GetMapping("/admin/show-motel")
+    public String showmotell( Model model) {
+        return motelImpl.ShowMotel(model);
+    }
+    
     @GetMapping("/admin/add-motel")
-    public String showMotel(@ModelAttribute("motelttr") Motel motel ,Model model){
+    public String GetAddMotel(@ModelAttribute("motelttr") Motel motel ,Model model){
         return motelImpl.GetMotel(model);
     }
     @PostMapping("/admin/add-motel")
-    public String postMethodName(@ModelAttribute ("motelttr") @Valid Motel motel ,BindingResult bindingResult  , @RequestParam("files") MultipartFile[] files ,
+    public String PostAddMotel(@ModelAttribute ("motelttr") @Valid Motel motel ,BindingResult bindingResult  , @RequestParam("files") MultipartFile[] files ,
     Model model ,RedirectAttributes attributes) {
         return motelImpl.AddMotel(motel, bindingResult, files, model,attributes);
     }
-
+ 
     @GetMapping("/admin/manage-motel")
     public String getMethodName(HttpServletRequest request , Model model) {
     return motelImpl.CheckManageMotel(request, model);
@@ -49,6 +55,15 @@ public class AdminMotelController {
         int idmotel1 = Integer.valueOf(idmotel);
         System.out.println(idmotel1+"dd");
     return motelImpl.AddIdMotelInAccount(response, idmotel1, model);
+    }
+
+    @GetMapping("/admin/update-motel")
+    public String GetUpdateMotel(Model model){
+        return motelImpl.GetUpdateMotel(model);
+    }
+    @PostMapping("/admin/update-motel")
+    public String PostUpdateMotel(@ModelAttribute ("motelttr") @Valid Motel motel ,BindingResult bindingResult  , @RequestParam("files") MultipartFile[] files,Model model) {
+        return motelImpl.PostUpadateMotel(motel, model, files, bindingResult);
     }
 
     // @GetMapping("/admin/manage-motel/{idmotel}")

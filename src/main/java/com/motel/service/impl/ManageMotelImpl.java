@@ -35,4 +35,7 @@ public interface ManageMotelImpl {
    public String AddMotel(Motel motel ,BindingResult bindingResult ,  MultipartFile[] files , Model model,RedirectAttributes attributes);
    public String ImgSave( String namefolder,MultipartFile[] files);
    public String GetMotel(Model model);
+   public String ShowMotel(Model model);
+   public String GetUpdateMotel(Model model);
+   public String PostUpadateMotel( Motel motel,Model model,MultipartFile[] files , BindingResult bindingResult);
 } 

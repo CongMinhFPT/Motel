@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.jni.User;
+import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -96,6 +97,11 @@ public class ManageMotelService implements ManageMotelImpl {
                         model.addAttribute("listmotel", motels);
                         System.out.println(2);
                         return "admin/motel/manage-motel";
+                    }else{
+                        List<Motel> motels = account.getById(details.getAccountid()).getMotel();
+                        model.addAttribute("listmotel", motels);
+                        System.out.println(3);
+                        return "admin/motel/manage-motel";
                     }
                 } else {
                     List<Motel> motels = account.getById(details.getAccountid()).getMotel();
@@ -107,7 +113,6 @@ public class ManageMotelService implements ManageMotelImpl {
         } else {
             return "home/signin";
         }
-        return "home/signin";
     }
 
     @Override
@@ -151,12 +156,13 @@ public class ManageMotelService implements ManageMotelImpl {
     }
 
     @Override
-    public void SetModelMotel(Model model) {
-
+    public void SetModelMotel(Model model) {     
         CustomUserDetails cDetails = CheckLogin().get();
-        Motel motel = motelR.getById(cDetails.getMotelid());
-        model.addAttribute("motel", motel);
-
+        if (CheckAccountSetIdMotel(cDetails)) {
+            Motel motel = motelR.getById(cDetails.getMotelid());
+            model.addAttribute("motel", motel);
+    
+        }
     }
 
     @Override
@@ -165,7 +171,7 @@ public class ManageMotelService implements ManageMotelImpl {
             if (CheckIdMotelInAccount(idmotel, model)) {
                 SetAccount(idmotel);
                 AddCookie(response, idmotel, model);
-                return "admin/motel/manage-motel";
+                return "redirect:/admin/show-motel"; 
             } else {
                 return "admin/error/error404";
             }
@@ -178,6 +184,7 @@ public class ManageMotelService implements ManageMotelImpl {
         if (CheckLogin().isPresent()) {
             CustomUserDetails userDetails = CheckLogin().get();
                 if (bindingResult.hasErrors()) {
+                    SetModelMotel(model);
                     return "admin/motel/add-motel";
                 }
                 if (files != null && files.length > 0 && !files[0].isEmpty()) {
@@ -189,7 +196,7 @@ public class ManageMotelService implements ManageMotelImpl {
                     motelR.save(motel2);
                     SetModelMotel(model);
                     attributes.addFlashAttribute("successMessage", "Thêm thành công!");
-                    return "redirect:/admin/add-motel";
+                    return "redirect:/admin/manage-motel";
                 }else{
                     Motel motel2 = motel;
                     String nameimg ="img-defaul.png";
@@ -199,7 +206,7 @@ public class ManageMotelService implements ManageMotelImpl {
                     motelR.save(motel2);
                     SetModelMotel(model);
                     attributes.addFlashAttribute("successMessage", "Thêm thành công!");
-                    return "redirect:/admin/add-motel";
+                    return "redirect:/admin/manage-motel";
                 }
         }
         return "home/signin";
@@ -215,9 +222,86 @@ public class ManageMotelService implements ManageMotelImpl {
     @Override
     public String GetMotel(Model model) {
          if (CheckLogin().isPresent()) {
-            SetModelMotel(model);
+            CustomUserDetails customUserDetails = CheckLogin().get();
+            if (CheckAccountSetIdMotel(customUserDetails)) {
+                SetModelMotel(model);
+            }
             return "admin/motel/add-motel";
          }
          return "home/signin";
     }
+
+    @Override
+    public String ShowMotel(Model model) {
+         if (CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = CheckLogin().get();
+            if (CheckAccountSetIdMotel(customUserDetails)) {
+                SetModelMotel(model);
+                return "admin/motel/home-motel";
+            }else{
+                return "redirect:/admin/manage-motel"; 
+            }
+         }else{
+            return "home/signin";
+         }
+    }
+
+    @Override
+    public String GetUpdateMotel(Model model) {
+        if (CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = CheckLogin().get();
+            if (CheckAccountSetIdMotel(customUserDetails)) {
+                Motel motel = motelR.getById(customUserDetails.getMotelid());
+                SetModelMotel(model);
+                model.addAttribute("motelttr", motel);
+                return "admin/motel/update-motel";
+            }else{
+                return "redirect:/admin/manage-motel"; 
+            }
+        }else{
+            return "home/signin";  
+        }
+    }
+
+    @Override
+    public String PostUpadateMotel(Motel motel, Model model, MultipartFile[] files, BindingResult bindingResult) {
+        if (CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = CheckLogin().get();
+            if (CheckAccountSetIdMotel(customUserDetails)) {
+                if (bindingResult.hasErrors()) {
+                    SetModelMotel(model);
+                    return "admin/motel/add-motel";
+                }
+                if (files != null && files.length > 0 && !files[0].isEmpty()) {
+                   Motel motel2 = motelR.getById(customUserDetails.getMotelid());
+                   String CheckNullImg = motel2.getImage();
+                   if (CheckNullImg!=null) {
+                    if (!CheckNullImg.equals("img-defaul.png")) {
+                        fileManager.delete("ImgMotel", CheckNullImg);
+                    }
+                   }
+                   String nameimg = ImgSave("ImgMotel", files);
+                   int idmotel = motel2.getMotelId();
+                   motel2=motel;
+                   motel2.setMotelId(idmotel);
+                   motel2.setImage(nameimg);
+                   motelR.save(motel2);
+                    return "redirect:/admin/update-motel";
+                }else{
+                    Motel motel2 = motelR.getById(customUserDetails.getMotelid());
+                    String nameimg = motel2.getImage();
+                    int idmotel = motel2.getMotelId();
+                    motel2=motel;
+                    motel2.setMotelId(idmotel);
+                    motel2.setImage(nameimg);
+                    motelR.save(motel2);
+                    return "redirect:/admin/update-motel";
+                }
+            }else{
+                return "redirect:/admin/manage-motel"; 
+            }
+        }else{
+            return "home/signin";  
+        }
+    }   
 }

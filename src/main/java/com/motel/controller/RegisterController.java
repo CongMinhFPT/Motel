@@ -11,13 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-<<<<<<< HEAD
-=======
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
->>>>>>> main
 
 import com.motel.entity.Account;
 import com.motel.entity.Authority;
@@ -55,7 +53,8 @@ public class RegisterController {
         return "home/signup";
     }
     
-    @PostMapping("/register/save")
+    @SuppressWarnings("null")
+	@PostMapping("/register/save")
     public String save(@Validated @ModelAttribute("accounts") Account account, BindingResult bindingResult, @RequestParam("password1") String pass, Model model) {
     	if(bindingResult.hasErrors()) {
     		if(pass.isEmpty()) {

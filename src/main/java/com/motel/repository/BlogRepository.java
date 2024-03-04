@@ -11,6 +11,7 @@ import com.motel.entity.Blog;
 @Repository
 public interface BlogRepository extends JpaRepository<Blog, Integer> {
 
-    @Query(value = "Select * form Blog order by id desc limit :limit", nativeQuery = true)
-    List<Blog> getListNewest(int limit);
+//    @Query(value = "Select * form Blog order by id desc limit :limit", nativeQuery = true)
+//    List<Blog> getListNewest(int limit);
+	
 }

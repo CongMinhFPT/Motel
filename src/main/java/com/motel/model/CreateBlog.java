@@ -31,6 +31,6 @@ public class CreateBlog {
     private Integer imageId;
 
     private String fullname;
-    private Set<Integer> tags = new HashSet<>();
+    private Set<Integer> tag = new HashSet<>();
 
 }

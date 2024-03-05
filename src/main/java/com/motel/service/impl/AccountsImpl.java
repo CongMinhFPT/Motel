@@ -10,7 +10,7 @@ import com.motel.repository.AccountsRepository;
 import com.motel.service.AccountService;
 
 @Service
-public class AccountsImpl implements AccountService {
+public class AccountsImpl implements AccountService{
 
 	@Autowired
 	AccountsRepository accountsRepository;

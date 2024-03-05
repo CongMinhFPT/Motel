@@ -8,12 +8,7 @@ import com.motel.entity.Account;
 import com.motel.repository.AccountsRepository;
 import com.motel.service.AccountService;
 
-public class AccountsImpl implements AccountService{
-
+public class AccountsImpl implements AccountService {
 	@Autowired
 	AccountsRepository accountsRepository;
-
-	
-	
-
 }

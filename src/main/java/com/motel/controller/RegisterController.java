@@ -147,7 +147,7 @@ public class RegisterController {
 			}
 		});
 
-		model.addAttribute("create", "Đăng ký thành công!");
+		model.addAttribute("create", "Đăng ký thành công, vui lòng kiểm tra email để lấy mật khẩu!");
 
 		return "home/signup";
 	}

@@ -24,6 +24,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Nationalized;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -46,22 +47,23 @@ public class Account implements Serializable {
 	@Nationalized
 	String fullname;
 
-	@NotBlank(message = "Vui lòng nhập số điện thoại!")
-	@Size(max = 10, min = 10, message = "Số điện thoài phải 10 số!")
-	@Pattern(regexp = "^(0[2|3|5|7|8|9])+([0-9]{8})", message = "Sai định dạng số điện thoại!")
+	// @NotBlank(message = "Vui lòng nhập số điện thoại!")
+	// @Size(max = 10, min = 10, message = "Số điện thoài phải 10 số!")
+	// @Pattern(regexp = "^(0[2|3|5|7|8|9])+([0-9]{8})", message = "Sai định dạng số điện thoại!")
 	String phone;
 
 	@NotBlank(message = "Vui lòng nhập email!")
 	@Email(message = "Sai định dạng email!")
 	String email;
 
-	@NotBlank(message = "Vui lòng nhập mật khẩu!")
-	@Size(min = 8, message = "Mật khẩu phải ít nhất 8 ký tự!")
+	// @NotBlank(message = "Vui lòng nhập mật khẩu!")
+	// @Size(min = 8, message = "Mật khẩu phải ít nhất 8 ký tự!")
 	String password;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "create_date")
-	Date createDate = new Date();
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	Date createDate;
 
 	String avatar;
 

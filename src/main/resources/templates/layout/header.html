@@ -31,10 +31,10 @@
                             <li><a class="dropdown-item" th:href="@{/forgot}">Quên mật khẩu</a></li>
                         </ul>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" th:if="${#request.remoteUser}">
-                            <li><a class="dropdown-item" th:href="@{/information}">Thông tin</a></li>
+                            <li><a class="dropdown-item" th:href="@{|/information/${#request.remoteUser}|}">Thông tin</a></li>
                             <li><a class="dropdown-item" th:href="@{/favorite}">Trang yêu thích</a></li>
                             <li><a class="dropdown-item" th:href="@{/change}">Thay đổi mật khẩu</a></li>
-                            <li><a class="dropdown-item" th:href="@{/auth/logoff}">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" id="logoutButton">Đăng xuất</a></li>
                             <li><a class="dropdown-item" th:href="@{/admin}">Admin</a></li>
                         </ul>
                     </div>

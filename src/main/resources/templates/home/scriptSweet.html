@@ -13,6 +13,8 @@
 		title: "Thành công!",
 		text: "Vui lòng xem email để lấy lại mật khẩu!",
 		icon: "success"
+	}).then(() => {
+		window.location.href = '/signin';
 	});
 </script>
 <script th:if="${not #strings.isEmpty(messagee)}">
@@ -113,9 +115,7 @@
 	Swal.fire({
 		icon: "success",
 		title: "Thành công!",
-		text: changeMessage,
-		showConfirmButton: false,
-		timer: 1500
+		text: changeMessage
 	}).then(() => {
 		window.location.href = '/signin';
 	});

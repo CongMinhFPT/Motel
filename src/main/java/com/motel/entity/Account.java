@@ -86,8 +86,8 @@ public class Account implements Serializable {
 	List<RequestAuthority> requestAuthorities;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
-	@JsonManagedReference
-	List<Renter> renter;
+    @JsonManagedReference
+    List<Renter> renter;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
 	@JsonManagedReference

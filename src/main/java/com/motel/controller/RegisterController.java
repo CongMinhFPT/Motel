@@ -173,6 +173,7 @@ public class RegisterController {
 		Account currentUser = accountsRepository.getByEmail(account.getEmail());
 		if (currentUser != null) {
 			session.setAttribute("currentUsername", currentUser.getEmail());
+			
 		}
 
 		session.setAttribute("user", currentUser);

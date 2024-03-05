@@ -27,6 +27,7 @@ import org.hibernate.annotations.Nationalized;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -85,8 +86,8 @@ public class Account implements Serializable {
 	List<RequestAuthority> requestAuthorities;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
-		@JsonManagedReference
-		List<Renter> renter;	
+	@JsonManagedReference
+	List<Renter> renter;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
 	@JsonManagedReference

@@ -36,7 +36,6 @@ public class MotelRoom {
     Integer motelRoomId;
     @Temporal(TemporalType.DATE)
     Date createDate = new Date();
-    Double price;
     Double length;
     Double width;
     String video;
@@ -54,19 +53,31 @@ public class MotelRoom {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
-	List<RoomRenter> roomRenter;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-    @JsonManagedReference
 	List<FavoriteRoom> favoriteRoom;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
-	List<Cash> cash;
+	List<ElectricityCash> electricityCash;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
-	List<DetailInvoice> detailInvoice;
+	List<WaterCash> waterCash;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @JsonManagedReference
+	List<WifiCash> wifiCash;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @JsonManagedReference
+	List<RoomCash> roomCash;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @JsonManagedReference
+    List<Indexs> index;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @JsonManagedReference
+    List<Renter> renter;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "motelId")
@@ -79,7 +90,6 @@ public class MotelRoom {
     CategoryRoom categoryRoom;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "indexId")
-    @JsonBackReference
-    Indexs indexs;
+    @JoinColumn(name = "roomStatusId")
+    RoomStatus roomStatus;
 }   

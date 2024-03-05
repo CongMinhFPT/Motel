@@ -1,17 +1,17 @@
 package com.motel.entity;
 
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Nationalized;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,14 +21,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "serviceStatus")
-public class ServiceStatus {
+@Table(name = "waterCash")
+public class WaterCash {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer serviceStatusId;
-    @Nationalized
-    String title;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "serviceStatus")
-	List<Services> services;
+    Integer waterCashId;
+    Double waterBill;
+    @Temporal(TemporalType.DATE)
+    Date createDate = new Date();
+    
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "motelRoomId")
+    MotelRoom motelRoom;
 }

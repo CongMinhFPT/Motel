@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.motel.entity.Account;
 import com.motel.entity.Authority;
@@ -146,9 +147,9 @@ public class RegisterController {
 			}
 		});
 
-		model.addAttribute("create", "Thêm mới thành công!");
+		model.addAttribute("create", "Đăng ký thành công!");
 
-		return "home/signin";
+		return "home/signup";
 	}
 
 	@RequestMapping("/signin")
@@ -156,6 +157,7 @@ public class RegisterController {
 		if (error != null) {
 			model.addAttribute("error", "Đăng nhập thất bại!");
 		}
+		
 		return "home/signin";
 
 	}
@@ -166,7 +168,7 @@ public class RegisterController {
 		return "home/signin";
 	}
 
-	@PostMapping("/sigin/save")
+	@PostMapping("/signin/save")
 	public String sigin(Model model, @ModelAttribute("accounts") Account account) {
 		Account currentUser = accountsRepository.getByEmail(account.getEmail());
 		if (currentUser != null) {
@@ -175,7 +177,8 @@ public class RegisterController {
 
 		session.setAttribute("user", currentUser);
 		System.out.println("user");
-		return "redirect:/index";
+		model.addAttribute("signin","Đăng nhập thành công!");
+		return "home/signin";
 	}
 
 	@RequestMapping("/oauth2/login/success")
@@ -193,8 +196,8 @@ public class RegisterController {
 		acc.setPassword(pe.encode(generatedString));
 		acc.setActive(true);
 		if (accountsRepository.getByEmail(email) != null) {
-			model.addAttribute("error", "Email này đã tồn tại vui lòng trọn email khác!");
-			return "redirect:/index";
+			model.addAttribute("auth", "Đăng nhập thành công!");
+			return "home/signin";
 		} else {
 			accountsRepository.save(acc);
 			Role staff = roleRepository.findById("STAFF").orElseGet(() -> {
@@ -208,8 +211,8 @@ public class RegisterController {
 			au.setRole(staff);
 			authorityRepository.save(au);
 		}
-
-		return "forward:/index";
+		model.addAttribute("auth","Đăng nhập thành công!");
+		return "home/signin";
 	}
 
 	@GetMapping("/change")
@@ -222,7 +225,7 @@ public class RegisterController {
 	}
 
 	@PostMapping("/change/save")
-	public String changesubmit(Model model, @ModelAttribute("changepass") @Valid ChangePassword changepass,
+	public String changesubmit(Model model, @ModelAttribute("changepass") @Valid ChangePassword changepass, 
 			BindingResult bindingResult, Authentication authentication) {
 		String id = authentication.getName();
 		Account acc = accountsRepository.getByEmail(id);
@@ -242,15 +245,15 @@ public class RegisterController {
 		oldPasswordFormUser = oldPasswordFormUser.trim();
 		System.out.println("Equal after trimming: " + oldPasswordFormUser.equals(oldPasswordFromData));
 		if (!pe.matches(oldPasswordFormUser, oldPasswordFromData)) {
-			model.addAttribute("message", "Mật khẩu hiện tại không đúng!");
+			model.addAttribute("change", "Mật khẩu hiện tại không đúng!");
 			return "home/change_password";
 		}
 		if (!changepass.getNewPassword().equals(changepass.getConfirmPassword())) {
-			model.addAttribute("message", "Xác nhận mật khẩu không đúng!");
+			model.addAttribute("change", "Xác nhận mật khẩu không đúng!");
 			return "home/change_password";
 		}
 		if (changepass.getNewPassword().equals(changepass.getOldPassword())) {
-			model.addAttribute("message", "Mật khẩu mới không được trùng với mật khẩu hiện tại!");
+			model.addAttribute("change", "Mật khẩu mới không được trùng với mật khẩu hiện tại!");
 			return "home/change_password";
 		}
 
@@ -260,8 +263,8 @@ public class RegisterController {
 		System.out.println("passpe>> " + passpe);
 		acc.setPassword(passpe);
 		accountsRepository.save(acc);
-		model.addAttribute("message", "Thay đổi mật khẩu thành công!");
-		return "redirect:/auth/logoff";
+		model.addAttribute("pass", "Thay đổi mật khẩu thành công!");
+		return "home/change_password";
 	}
 
 	@GetMapping("/forgot")

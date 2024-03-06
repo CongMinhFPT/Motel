@@ -33,7 +33,8 @@ public class Invoice {
     Date createDate = new Date();
     Double totalPrice;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "invoice")
-	List<DetailInvoice> detailInvoice;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "renterId")
+    Renter renter;
     
 }

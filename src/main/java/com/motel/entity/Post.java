@@ -43,6 +43,5 @@ public class Post {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "motelRoomId")
     MotelRoom motelRoom;
-    
 
 }

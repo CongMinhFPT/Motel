@@ -12,20 +12,26 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 
 @SuppressWarnings("serial")
 @Data
 @Entity
 @Table(name = "Authorities", uniqueConstraints = {
-		@UniqueConstraint(columnNames = {"accountId", "RoleId"})
+		@UniqueConstraint(columnNames = { "accountId", "RoleId" })
 })
-public class Authority implements Serializable{
-    @Id 
+public class Authority implements Serializable {
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@ManyToOne @JoinColumn(name = "accountId" )
+	@ManyToOne
+	@JoinColumn(name = "accountId")
+	@JsonBackReference
 	private Account account;
-	@ManyToOne  @JoinColumn(name = "RoleId")
+	@ManyToOne
+	@JoinColumn(name = "RoleId")
+	@JsonBackReference
 	private Role role;
 }

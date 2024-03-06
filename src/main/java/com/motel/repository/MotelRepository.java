@@ -10,3 +10,4 @@ import com.motel.entity.Motel;
 public interface MotelRepository extends JpaRepository<Motel, Integer> {
 
 } 
+

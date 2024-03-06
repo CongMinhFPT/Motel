@@ -77,6 +77,17 @@
 				showConfirmButton: false
 			});
 		}
+		var successMessageUpdate = /*[[${successMessageUpdate}]]*/ '';
+		if (successMessageUpdate) {
+			Swal.fire({
+				title: 'Thành công!',
+				text: successMessageUpdate,
+				icon: 'success',
+				timer: 1000,
+				showConfirmButton: false
+			});
+		}
+
 	</script>
 
 </body>

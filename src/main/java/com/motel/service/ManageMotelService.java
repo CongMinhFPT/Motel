@@ -264,7 +264,7 @@ public class ManageMotelService implements ManageMotelImpl {
     }
 
     @Override
-    public String PostUpadateMotel(Motel motel, Model model, MultipartFile[] files, BindingResult bindingResult) {
+    public String PostUpadateMotel(Motel motel, Model model, MultipartFile[] files, BindingResult bindingResult,RedirectAttributes attributes) {
         if (CheckLogin().isPresent()) {
             CustomUserDetails customUserDetails = CheckLogin().get();
             if (CheckAccountSetIdMotel(customUserDetails)) {
@@ -286,6 +286,7 @@ public class ManageMotelService implements ManageMotelImpl {
                    motel2.setMotelId(idmotel);
                    motel2.setImage(nameimg);
                    motelR.save(motel2);
+                   attributes.addFlashAttribute("successMessageUpdate", "Cập nhật thành công!");
                     return "redirect:/admin/update-motel";
                 }else{
                     Motel motel2 = motelR.getById(customUserDetails.getMotelid());
@@ -295,6 +296,7 @@ public class ManageMotelService implements ManageMotelImpl {
                     motel2.setMotelId(idmotel);
                     motel2.setImage(nameimg);
                     motelR.save(motel2);
+                    attributes.addFlashAttribute("successMessageUpdate", "Cập nhật thành công!");
                     return "redirect:/admin/update-motel";
                 }
             }else{

@@ -62,8 +62,9 @@ public class AdminMotelController {
         return motelImpl.GetUpdateMotel(model);
     }
     @PostMapping("/admin/update-motel")
-    public String PostUpdateMotel(@ModelAttribute ("motelttr") @Valid Motel motel ,BindingResult bindingResult  , @RequestParam("files") MultipartFile[] files,Model model) {
-        return motelImpl.PostUpadateMotel(motel, model, files, bindingResult);
+    public String PostUpdateMotel(@ModelAttribute ("motelttr") @Valid Motel motel ,BindingResult bindingResult  , @RequestParam("files") MultipartFile[] files,
+    Model model,RedirectAttributes attributes) {
+        return motelImpl.PostUpadateMotel(motel, model, files, bindingResult,attributes);
     }
 
     // @GetMapping("/admin/manage-motel/{idmotel}")

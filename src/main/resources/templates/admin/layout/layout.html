@@ -88,6 +88,37 @@
 			});
 		}
 
+        function conditionmotel(status) {
+			let title = 'Bật';
+			let content ='Bạn có muốn bật hoạt động!';
+			if(status=='true'){
+             title ='Tắt';
+			 content ='Bạn có muốn tắt hoạt động!';
+			}
+			Swal.fire({
+			title: "Xác Nhận!",
+			text: content,
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: title,
+			cancelButtonText: "Không"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					icon: "success",
+					title: "Thành công!",
+					text: "Cập nhật trạng thái thành công!",
+					showConfirmButton: false,
+					timer: 1500
+				}).then(() => {
+					window.location.href = '/admin/condition-motel';
+				});
+			}
+		});
+		}
+
 	</script>
 
 </body>

@@ -32,6 +32,7 @@ import com.motel.entity.Motel;
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.MotelRepository;
 import com.motel.service.impl.ManageMotelImpl;
+
 @Service
 public class ManageMotelService implements ManageMotelImpl {
     @Autowired
@@ -39,14 +40,16 @@ public class ManageMotelService implements ManageMotelImpl {
     @Autowired
     MotelRepository motelR;
     @Autowired
-    FileManager  fileManager;
+    FileManager fileManager;
 
     @Override
     public Optional<CustomUserDetails> CheckLogin() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        
+
         if (principal instanceof CustomUserDetails) {
             CustomUserDetails details = (CustomUserDetails) principal;
+            System.out.println(details.getAccountid() + "idaccount");
+            System.out.println(details.getMotelid() + "idmotel");
             return Optional.of(details);
         } else {
             return Optional.empty();
@@ -97,7 +100,7 @@ public class ManageMotelService implements ManageMotelImpl {
                         model.addAttribute("listmotel", motels);
                         System.out.println(2);
                         return "admin/motel/manage-motel";
-                    }else{
+                    } else {
                         List<Motel> motels = account.getById(details.getAccountid()).getMotel();
                         model.addAttribute("listmotel", motels);
                         System.out.println(3);
@@ -156,12 +159,12 @@ public class ManageMotelService implements ManageMotelImpl {
     }
 
     @Override
-    public void SetModelMotel(Model model) {     
+    public void SetModelMotel(Model model) {
         CustomUserDetails cDetails = CheckLogin().get();
         if (CheckAccountSetIdMotel(cDetails)) {
             Motel motel = motelR.getById(cDetails.getMotelid());
             model.addAttribute("motel", motel);
-    
+
         }
     }
 
@@ -171,7 +174,7 @@ public class ManageMotelService implements ManageMotelImpl {
             if (CheckIdMotelInAccount(idmotel, model)) {
                 SetAccount(idmotel);
                 AddCookie(response, idmotel, model);
-                return "redirect:/admin/show-motel"; 
+                return "redirect:/admin/show-motel";
             } else {
                 return "admin/error/error404";
             }
@@ -180,70 +183,71 @@ public class ManageMotelService implements ManageMotelImpl {
     }
 
     @Override
-    public String AddMotel(Motel motel, BindingResult bindingResult, MultipartFile[] files ,Model model ,RedirectAttributes attributes) {
+    public String AddMotel(Motel motel, BindingResult bindingResult, MultipartFile[] files, Model model,
+            RedirectAttributes attributes) {
         if (CheckLogin().isPresent()) {
             CustomUserDetails userDetails = CheckLogin().get();
-                if (bindingResult.hasErrors()) {
-                    SetModelMotel(model);
-                    return "admin/motel/add-motel";
-                }
-                if (files != null && files.length > 0 && !files[0].isEmpty()) {
-                    Motel motel2 = motel;
-                    String nameimg =ImgSave("ImgMotel", files);
-                    motel2.setImage(nameimg);
-                    Account account1=account.getById(userDetails.getAccountid());
-                    motel2.setAccount(account1);
-                    motelR.save(motel2);
-                    SetModelMotel(model);
-                    attributes.addFlashAttribute("successMessage", "Thêm thành công!");
-                    return "redirect:/admin/manage-motel";
-                }else{
-                    Motel motel2 = motel;
-                    String nameimg ="img-defaul.png";
-                    motel2.setImage(nameimg);
-                    Account account1=account.getById(userDetails.getAccountid());
-                    motel2.setAccount(account1);
-                    motelR.save(motel2);
-                    SetModelMotel(model);
-                    attributes.addFlashAttribute("successMessage", "Thêm thành công!");
-                    return "redirect:/admin/manage-motel";
-                }
+            if (bindingResult.hasErrors()) {
+                SetModelMotel(model);
+                return "admin/motel/add-motel";
+            }
+            if (files != null && files.length > 0 && !files[0].isEmpty()) {
+                Motel motel2 = motel;
+                String nameimg = ImgSave("ImgMotel", files);
+                motel2.setImage(nameimg);
+                Account account1 = account.getById(userDetails.getAccountid());
+                motel2.setAccount(account1);
+                motelR.save(motel2);
+                SetModelMotel(model);
+                attributes.addFlashAttribute("successMessage", "Thêm thành công!");
+                return "redirect:/admin/manage-motel";
+            } else {
+                Motel motel2 = motel;
+                String nameimg = "img-defaul.png";
+                motel2.setImage(nameimg);
+                Account account1 = account.getById(userDetails.getAccountid());
+                motel2.setAccount(account1);
+                motelR.save(motel2);
+                SetModelMotel(model);
+                attributes.addFlashAttribute("successMessage", "Thêm thành công!");
+                return "redirect:/admin/manage-motel";
+            }
         }
         return "home/signin";
     }
 
     @Override
-    public String ImgSave( String folder,MultipartFile[] files) {
+    public String ImgSave(String folder, MultipartFile[] files) {
         List<String> list = new ArrayList<>();
-        list=  fileManager.save(folder, files);
+        list = fileManager.save(folder, files);
         return list.get(0);
     }
 
     @Override
     public String GetMotel(Model model) {
-         if (CheckLogin().isPresent()) {
+        if (CheckLogin().isPresent()) {
             CustomUserDetails customUserDetails = CheckLogin().get();
             if (CheckAccountSetIdMotel(customUserDetails)) {
                 SetModelMotel(model);
             }
             return "admin/motel/add-motel";
-         }
-         return "home/signin";
+        }
+        return "home/signin";
     }
 
     @Override
     public String ShowMotel(Model model) {
-         if (CheckLogin().isPresent()) {
+        if (CheckLogin().isPresent()) {
             CustomUserDetails customUserDetails = CheckLogin().get();
             if (CheckAccountSetIdMotel(customUserDetails)) {
                 SetModelMotel(model);
                 return "admin/motel/home-motel";
-            }else{
-                return "redirect:/admin/manage-motel"; 
+            } else {
+                return "redirect:/admin/manage-motel";
             }
-         }else{
+        } else {
             return "home/signin";
-         }
+        }
     }
 
     @Override
@@ -255,16 +259,17 @@ public class ManageMotelService implements ManageMotelImpl {
                 SetModelMotel(model);
                 model.addAttribute("motelttr", motel);
                 return "admin/motel/update-motel";
-            }else{
-                return "redirect:/admin/manage-motel"; 
+            } else {
+                return "redirect:/admin/manage-motel";
             }
-        }else{
-            return "home/signin";  
+        } else {
+            return "home/signin";
         }
     }
 
     @Override
-    public String PostUpadateMotel(Motel motel, Model model, MultipartFile[] files, BindingResult bindingResult,RedirectAttributes attributes) {
+    public String PostUpadateMotel(Motel motel, Model model, MultipartFile[] files, BindingResult bindingResult,
+            RedirectAttributes attributes) {
         if (CheckLogin().isPresent()) {
             CustomUserDetails customUserDetails = CheckLogin().get();
             if (CheckAccountSetIdMotel(customUserDetails)) {
@@ -273,37 +278,66 @@ public class ManageMotelService implements ManageMotelImpl {
                     return "admin/motel/add-motel";
                 }
                 if (files != null && files.length > 0 && !files[0].isEmpty()) {
-                   Motel motel2 = motelR.getById(customUserDetails.getMotelid());
-                   String CheckNullImg = motel2.getImage();
-                   if (CheckNullImg!=null) {
-                    if (!CheckNullImg.equals("img-defaul.png")) {
-                        fileManager.delete("ImgMotel", CheckNullImg);
+                    Motel motel2 = motelR.getById(customUserDetails.getMotelid());
+                    String CheckNullImg = motel2.getImage();
+                    if (CheckNullImg != null) {
+                        if (!CheckNullImg.equals("img-defaul.png")) {
+                            fileManager.delete("ImgMotel", CheckNullImg);
+                        }
                     }
-                   }
-                   String nameimg = ImgSave("ImgMotel", files);
-                   int idmotel = motel2.getMotelId();
-                   motel2=motel;
-                   motel2.setMotelId(idmotel);
-                   motel2.setImage(nameimg);
-                   motelR.save(motel2);
-                   attributes.addFlashAttribute("successMessageUpdate", "Cập nhật thành công!");
+                    String nameimg = ImgSave("ImgMotel", files);
+                    int idmotel = motel2.getMotelId();
+                    Account account = motel2.getAccount();
+                    Date day = motel2.getCreateDate();
+                    motel2 = motel;
+                    motel2.setMotelId(idmotel);
+                    motel2.setImage(nameimg);
+                    motel2.setAccount(account);
+                    motel2.setCreateDate(day);
+                    motelR.save(motel2);
+                    attributes.addFlashAttribute("successMessageUpdate", "Cập nhật thành công!");
                     return "redirect:/admin/update-motel";
-                }else{
+                } else {
                     Motel motel2 = motelR.getById(customUserDetails.getMotelid());
                     String nameimg = motel2.getImage();
                     int idmotel = motel2.getMotelId();
-                    motel2=motel;
+                    Account account = motel2.getAccount();
+                    Date day = motel2.getCreateDate();
+                    motel2 = motel;
                     motel2.setMotelId(idmotel);
                     motel2.setImage(nameimg);
+                    motel2.setAccount(account);
+                    motel2.setCreateDate(day);
                     motelR.save(motel2);
                     attributes.addFlashAttribute("successMessageUpdate", "Cập nhật thành công!");
                     return "redirect:/admin/update-motel";
                 }
-            }else{
-                return "redirect:/admin/manage-motel"; 
+            } else {
+                return "redirect:/admin/manage-motel";
             }
-        }else{
-            return "home/signin";  
+        } else {
+            return "home/signin";
         }
-    }   
+    }
+
+    @Override
+    public String StatusUpdatesMotel() {
+        if (CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = CheckLogin().get();
+            if (CheckAccountSetIdMotel(customUserDetails)) {
+               Motel motel = motelR.getById(customUserDetails.getMotelid());
+               if (motel.isStatus()) {
+                motel.setStatus(false);
+                motelR.save(motel);
+                return "redirect:/admin/show-motel";
+               }
+               motel.setStatus(true);
+               motelR.save(motel);
+             return  "redirect:/admin/show-motel";
+            }else{
+                return "redirect:/admin/manage-motel";
+            }
+        }
+        return "home/signin";
+    }
 }

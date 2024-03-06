@@ -38,4 +38,5 @@ public interface ManageMotelImpl {
    public String ShowMotel(Model model);
    public String GetUpdateMotel(Model model);
    public String PostUpadateMotel( Motel motel,Model model,MultipartFile[] files , BindingResult bindingResult,RedirectAttributes attributes);
+   public String StatusUpdatesMotel();
 } 

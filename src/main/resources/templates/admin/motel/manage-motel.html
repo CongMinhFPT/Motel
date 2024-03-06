@@ -18,25 +18,35 @@
 				<a class="p-3 btn btn-success  " href="/admin/add-motel">Thêm nhà trọ </a>
 			</div>
 			<div class=" row ">
-				<div class="col-12 col-md-4  p-2  " th:each="item : ${listmotel}" >
+				<div class="col-12 col-md-4  p-2  " th:each="item : ${listmotel}">
 					<div class=" bg-white  h-100 pt-3   position-relative  ">
 						<div class="avatar-frame ">
 							<img th:src="@{'/files/ImgMotel/' + ${item.image}}" class="avatar-image" alt="...">
 						</div>
-						<div>
-							<span class="badge text-bg-warning h5  ">Ngày Tạo : <span>[[${#dates.format(item.createDate, 'dd/MM/yyyy')}]]</span></span>
+						<div class="d-flex justify-content-between ">
+							<span class="badge text-bg-warning h5  ">Ngày Tạo : <span>[[${#dates.format(item.createDate,
+									'dd/MM/yyyy')}]]</span></span>
+							<span class="d-inline-block pe-2">
+								<span th:if="${item.status}==true"><span
+										style="width: 10px; height: 10px; background-color: #31a24c; display: inline-block; border-radius: 50%;margin-left: 0.5rem;"></span>
+									Đang Hoạt động</span>
+								<span th:if="${item.status}==false"><span
+										style="width: 10px; height: 10px; background-color: #959a96; display: inline-block; border-radius: 50%;margin-left: 0.5rem;"></span>
+									Không hoạt động</span>
+							</span>
 						</div>
 						<div>
 							<p class="alert alert-info" role="alert">
-								<img style="width: 1.5rem;" src="/files/ImgMotel/iconDiaChi.png" alt=""> 
-							   [[${item.province}]] ,
+								<img style="width: 1.5rem;" src="/files/ImgMotel/iconDiaChi.png" alt="">
+								[[${item.province}]] ,
 								[[${item.district}]],
 								[[${item.ward}]],
 								[[${item.detailAddress}]]
 							</p>
 						</div>
-						<span class="h5 p-2  position-absolute top-0  end-0 "><span>Mã # </span>[[${item.motelId}]]</span>
-						<div  class="position-absolute top-0  "  th:if="${motel!=null}">
+						<span class="h5 p-2  position-absolute top-0  end-0 "><span>Mã #
+							</span>[[${item.motelId}]]</span>
+						<div class="position-absolute top-0  " th:if="${motel!=null}">
 							<a th:if="${motel.motelId!=item.motelId}"
 								th:href="@{/admin/manage-motel/{id}(id=${item.motelId})}" class="btn btn-primary">Quản
 								lý</a>

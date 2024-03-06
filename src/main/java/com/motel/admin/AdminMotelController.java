@@ -66,6 +66,11 @@ public class AdminMotelController {
     Model model,RedirectAttributes attributes) {
         return motelImpl.PostUpadateMotel(motel, model, files, bindingResult,attributes);
     }
+    @GetMapping("/admin/condition-motel")
+    public String getMethodName() {
+        return motelImpl.StatusUpdatesMotel();
+    }
+    
 
     // @GetMapping("/admin/manage-motel/{idmotel}")
     // public String getMethodName1(@PathVariable String idmotel, HttpServletResponse response, Model model) {

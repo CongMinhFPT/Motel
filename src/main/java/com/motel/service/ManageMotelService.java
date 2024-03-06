@@ -289,11 +289,13 @@ public class ManageMotelService implements ManageMotelImpl {
                     int idmotel = motel2.getMotelId();
                     Account account = motel2.getAccount();
                     Date day = motel2.getCreateDate();
+                    Boolean stasus =motel2.isStatus();
                     motel2 = motel;
                     motel2.setMotelId(idmotel);
                     motel2.setImage(nameimg);
                     motel2.setAccount(account);
                     motel2.setCreateDate(day);
+                    motel2.setStatus(stasus);
                     motelR.save(motel2);
                     attributes.addFlashAttribute("successMessageUpdate", "Cập nhật thành công!");
                     return "redirect:/admin/update-motel";
@@ -303,11 +305,13 @@ public class ManageMotelService implements ManageMotelImpl {
                     int idmotel = motel2.getMotelId();
                     Account account = motel2.getAccount();
                     Date day = motel2.getCreateDate();
+                    Boolean stasus =motel2.isStatus();
                     motel2 = motel;
                     motel2.setMotelId(idmotel);
                     motel2.setImage(nameimg);
                     motel2.setAccount(account);
                     motel2.setCreateDate(day);
+                    motel2.setStatus(stasus);
                     motelR.save(motel2);
                     attributes.addFlashAttribute("successMessageUpdate", "Cập nhật thành công!");
                     return "redirect:/admin/update-motel";

@@ -11,14 +11,9 @@ import org.springframework.data.repository.query.Param;
 import com.motel.entity.Account;
 import com.motel.entity.FavoriteRoom;
 import com.motel.entity.MotelRoom;
+import com.motel.entity.Renter;
 
-public interface AccountsRepository extends JpaRepository<Account, Integer>{
-
-	Account getByEmail(String email);
-
-	@Query(nativeQuery = true, value = "SELECT * FROM accounts WHERE phone LIKE CONCAT('%', :phone, '%')")
-    List<Account> getByPhone(@Param("phone") String phone);
-
-	@Query(nativeQuery = true, value = "select * from accounts a join renter b on a.account_id=b.account_id")
-    List<Account> getRenterByRenters();
+public interface RenterRepository extends JpaRepository<Renter, Integer> {
+    @Query("SELECT r FROM Renter r WHERE r.account = :account")
+    Renter findByAccount(Account account);
 }

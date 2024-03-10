@@ -49,9 +49,9 @@
 		<div class="breadcrumb-area mb-40 mt-150">
 			<div class="breadcrumb-content">
 				<ul>
-					<li><a href="index.html">Trang chủ</a></li>
+					<li><a href="/index">Trang chủ</a></li>
 					<li><a href="index.html">Nhà trọ</a></li>
-					<li class="active">Phòng trọ số #111</li>
+					<li class="active">Phòng trọ số #[[${roomDetails.postId}]]</li>
 				</ul>
 			</div>
 		</div>
@@ -140,15 +140,18 @@
 					<div class="col-lg-5 col-md-5">
 						<div class="product-details-view-content pt-30">
 							<div class="product-info">
-								<h2>Today is a good day Framed poster</h2>
+								<h2>[[${roomDetails.title}]]</h2>
 								<div class="price-box pt-20">
-									<span class="new-price new-price-2">$ 3.000.000/tháng</span>
+									<span class="new-price new-price-2">$ [[${#numbers.formatInteger(roomCash.roomBill,
+										3, 'POINT')}]]/tháng</span>
 								</div>
 								<div class="product-desc mt-40">
 									<p>
-										<span> <i class='bx bx-fullscreen pe-1'></i> Diện tích: 33m2
+										<span> <i class='bx bx-fullscreen pe-1'></i> Diện tích:
+											[[${#numbers.formatInteger(roomDetails.motelRoom.length, 1, 'POINT')}]] x
+											[[${#numbers.formatInteger(roomDetails.motelRoom.width, 1, 'POINT')}]]
 										</span>
-										<span class="float-end"> <i class='bx bx-location-plus'></i> Địa chỉ: Ninh Kiều,
+										<span class="float-end"> <i class='bx bx-location-plus'></i> Địa chỉ: [[${roomDetails.motelRoom.motel.detailAddress}]],
 											Cần Thơ
 										</span>
 									</p>

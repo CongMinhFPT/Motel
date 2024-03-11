@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,6 +35,7 @@ public class RequestAuthority {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "accountId")
+    @JsonBackReference
     Account account;
 
 

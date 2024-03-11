@@ -9,4 +9,8 @@ public class AdminController {
     public String index(){
         return "admin/home/index";
     }
+    @GetMapping("/authority")
+    public String authority() {
+    	return "admin/authority/auth";
+    }
 }

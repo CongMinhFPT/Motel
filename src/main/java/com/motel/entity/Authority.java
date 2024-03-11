@@ -28,10 +28,10 @@ public class Authority implements Serializable {
 	private Integer id;
 	@ManyToOne
 	@JoinColumn(name = "accountId")
-	@JsonBackReference
+
 	private Account account;
 	@ManyToOne
 	@JoinColumn(name = "RoleId")
-	@JsonBackReference
+
 	private Role role;
 }

@@ -27,6 +27,7 @@ import org.hibernate.annotations.Nationalized;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -72,7 +73,7 @@ public class Account implements Serializable {
 	boolean active = true;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "account")
-	@JsonManagedReference
+	@JsonIgnore
 	List<Authority> authorities;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
@@ -101,9 +102,11 @@ public class Account implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Account{" +
-				"id=" + email +
-				// ... Các thuộc tính khác không có lời gọi toString()
-				'}';
+	    return "Account{" +
+	            "email=" + email +
+	            ", accountId=" + accountId +
+	            // ... Các thuộc tính khác không có lời gọi toString()
+	            '}';
 	}
+	
 }

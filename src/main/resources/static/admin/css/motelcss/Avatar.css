@@ -13,3 +13,13 @@
     object-fit: cover;
     border-radius: 50%;
 }
+img {
+    transition: all 0.5s ease; /* Thiết lập hiệu ứng transition chậm trong 0.5s */
+}
+
+.enlarged {
+    transform: scale(1.2); /* Làm cho ảnh lớn hơn 1.2 lần */
+    border: 2px solid #51a6f5;
+    border-radius: 10px;
+}
+  

@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.DecimalMin;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class WifiCash {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer wifiCashId;
+    @DecimalMin( value = "0.1",message = "loi loi loi") 
     Double wifiBill;
     Double price;
     @Temporal(TemporalType.DATE)

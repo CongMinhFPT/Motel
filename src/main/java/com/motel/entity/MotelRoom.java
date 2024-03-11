@@ -15,6 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Nationalized;
 
@@ -36,10 +39,15 @@ public class MotelRoom {
     Integer motelRoomId;
     @Temporal(TemporalType.DATE)
     Date createDate = new Date();
+    @NotNull (message = "Vui lòng nhập chiều dài của phòng")
+    @Min(value = 1 ,message = "Vui lòng nhập chiều dài của phòng là số dương") 
     Double length;
+    @NotNull (message = "Vui lòng nhập chiều rộng của phòng")
+    @Min(value = 1 ,message = "Vui lòng nhập chiều rộng của phòng là số dương") 
     Double width;
     String video;
     @Nationalized
+      @NotEmpty (message ="không được để rỗng phần mô tả")
     String descriptions;
     boolean status = true;
 

@@ -20,4 +20,9 @@ public class AccountsImpl implements AccountService{
 		return accountsRepository.findById(id);
 	}
 
+	@Override
+	public Account getById(Integer id) {
+		return accountsRepository.findById(id).get();
+	}
+
 }

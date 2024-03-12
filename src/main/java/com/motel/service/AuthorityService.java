@@ -23,6 +23,8 @@ public class AuthorityService implements UserDetailsService{
 	@Autowired
 	AccountsRepository accountsRepository;
 	
+	@Autowired
+	AccountService accountService;
 //	@Autowired
 //	BCryptPasswordEncoder pe;
 	

@@ -38,6 +38,7 @@ import com.motel.entity.Role;
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.AuthorityRepository;
 import com.motel.repository.RoleRepository;
+import com.motel.service.AccountService;
 import com.motel.service.AuthorityService;
 import com.motel.service.MailerService;
 
@@ -53,6 +54,9 @@ public class RegisterController {
 
 	@Autowired
 	AuthorityRepository authorityRepository;
+	
+	@Autowired
+	AccountService accountService;
 
 	@Autowired
 	MailerService mailerService;
@@ -316,7 +320,7 @@ public class RegisterController {
 	public String InformationSubmit(@PathVariable("accountId") Integer accountId, Model model,
 			@ModelAttribute("account") Account account, @RequestParam("image") MultipartFile photo,
 			Authentication authentication) {
-		Account acccurrent = accountsRepository.getById(accountId);
+		Account acccurrent = accountService.getById(accountId);
 		String acc = authentication.getName();
 		model.addAttribute("acc", acc);
 		if (photo != null && !photo.isEmpty()) {

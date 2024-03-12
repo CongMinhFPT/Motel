@@ -21,7 +21,7 @@
 	<link href="/admin/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
 	<link href="/admin/vendor/owl-carousel/owl.carousel.css" rel="stylesheet">
 	<link href="/admin/css/style.css" rel="stylesheet">
-	<script th:src="@{/vendor/angular/angular.js}"></script>
+	<script th:src="@{/vendor/angular/angular.js}"></script> 
 
 </head>
 
@@ -62,6 +62,35 @@
 	<script src="/admin/js/demo.js"></script>
 	<script src="/admin/js/styleSwitcher.js"></script>
 	<script src="/Authority/auth.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+	<!--Đăng xuất-->
+<script>
+	var logoutButton = document.getElementById('logoutButton');
+	logoutButton.onclick = function (e) {
+		Swal.fire({
+			title: "Xác Nhận!",
+			text: "Bạn có muốn đăng xuất!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Đăng xuất",
+			cancelButtonText: "Không"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					icon: "success",
+					title: "Thành công!",
+					text: "Đăng xuất thành công!",
+					showConfirmButton: false,
+					timer: 1500
+				}).then(() => {
+					window.location.href = '/auth/logoff';
+				});
+			}
+		});
+	}
+</script>
 </body>
 
 </html>

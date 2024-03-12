@@ -5,42 +5,11 @@ app.controller("ctrl", function($scope, $http, $window) {
 		$scope.db = resp.data;
 		console.log(resp.data);
 	})
-/*	$scope.index_of = function(accountId, role) {
-		console.log(accountId, role);
-		console.log("authority>> ", $scope.db.authorities)
-		// Kiểm tra xem accountId và role có giá trị hợp lệ không
-		if (!accountId || !role) {
-			console.log("accountId hoặc role không hợp lệ");
-			return -1;
-		}
-
-		// Kiểm tra cấu trúc dữ liệu của db.authorities và tìm vị trí phù hợp
-		var index = $scope.db.authorities.findIndex(a => {
-			if (!a.account || !a.role) { // Kiểm tra xem account hoặc role có là null không
-				console.log("Có đối tượng authority với account hoặc role là null:", a);
-				return false; // Trả về false nếu có đối tượng authority không hợp lệ
-			}
-			return a.account.accountId == accountId && a.role.id == role;
-		});
-
-		// Kiểm tra xem có tìm thấy đối tượng hợp lệ không
-		if (index !== -1) {
-			// Trả về vị trí của phần tử nếu tìm thấy
-			console.log("Tìm thấy dữ liệu phù hợp tại index:", index);
-			return index;
-		} else {
-			// Xử lý trường hợp không tìm thấy dữ liệu
-			console.log("Không tìm thấy dữ liệu phù hợp trong mảng db.authorities");
-			// Thực hiện xử lý phù hợp, chẳng hạn thông báo lỗi
-			return -1; // hoặc trả về giá trị khác để biểu thị không tìm thấy
-		}
-	}*/
-
 
 	$scope.index_of = function(accountId, role) {
 		console.log(accountId, role);
 		console.log($scope.db.authorities);
-		
+
 		return $scope.db.authorities
 			.findIndex(a => a.account.accountId == accountId && a.role.id == role);
 	}
@@ -60,12 +29,12 @@ app.controller("ctrl", function($scope, $http, $window) {
 				console.log("Authority_Data>> ", $scope.db.authorities);
 
 				var id = $scope.db.authorities[index].id;
-				console.log("Hello id1: ", id);
-				if ($scope.db.authorities[index].account.accountId === accountName) {
-					$window.swal({
+				console.log("Hello id1 : ", id);
+				if ($scope.db.authorities[index].account.email === accountName) {
+					$window.Swal.fire({
 						title: "Lỗi",
 						text: "Không được xét quyền của chính mình!",
-						type: "error",
+						icon: "error",
 					});
 					$http.get("/rest/authorities").then(resp => {
 						$scope.db = resp.data;
@@ -76,10 +45,10 @@ app.controller("ctrl", function($scope, $http, $window) {
 
 				if ($scope.canUpdateRole(id)) {
 					console.error("Cannot update your own role.");
-					$window.swal({
+					$window.Swal.fire({
 						title: "Lỗi",
 						text: "Không được xét quyền cho người có cùng quyền!",
-						type: "error",
+						icon: "error",
 					});
 					$http.get("/rest/authorities").then(resp => {
 						$scope.db = resp.data;
@@ -89,6 +58,13 @@ app.controller("ctrl", function($scope, $http, $window) {
 				}
 				$http.delete(`/rest/authorities/${id}`).then(resp => {
 					console.log("Delete successful");
+					$window.Swal.fire({
+						icon: "success",
+						title: "Thành công!",
+						text: "Cập nhật quyền thành công!",
+						showConfirmButton: false,
+						timer: 1500
+					});
 					$scope.db.authorities.splice(index, 1); //xóa trong list phía cleint
 				})
 			} else {
@@ -98,11 +74,29 @@ app.controller("ctrl", function($scope, $http, $window) {
 				};
 				console.log("Hello index 2: ", index);
 				console.log(accountRole);
+
 				$http.post('/rest/authorities/', accountRole).then(resp => {
 					console.log("Update successful");
-					
+					$window.Swal.fire({
+						icon: "success",
+						title: "Thành công!",
+						text: "Cập nhật quyền thành công!",
+						showConfirmButton: false,
+						timer: 1500
+					});
 					$scope.db.authorities.push(resp.data);
 				});
+				/*$http.post('/rest/authorities/', JSON.stringify(accountRole), {
+					headers: {
+						'Content-Type': 'application/json' // Loại bỏ charset=UTF-8
+					}
+				}).then(resp => {
+					console.log("Update successful");
+					$scope.db.authorities.push(resp.data);
+				}).catch(error => {
+					console.error("Error:", error);
+				});*/
+
 			}
 		}
 	}).catch(function(error) {

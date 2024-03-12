@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Nationalized;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,10 +43,11 @@ public class Blog {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tagId")
+   
     Tag tag;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "accountId")
-    @JsonBackReference
+   
     Account account;
 }

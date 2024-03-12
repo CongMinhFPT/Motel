@@ -46,10 +46,4 @@ public class AdminCustomer {
 		accountsRepository.save(acc);
 		return "redirect:/customerList";
 	}
-	@GetMapping("/customerList2")
-	public String showList2(Model model) {
-		List<Authority> acc = authorityRepository.findAll();
-		model.addAttribute("customer",acc);
-		return "admin/customers/customerList2";
-	}
 }

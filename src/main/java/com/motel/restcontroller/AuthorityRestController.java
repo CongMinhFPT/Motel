@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,10 +39,17 @@ public class AuthorityRestController {
 		data.put("roles", roleRepository.findAll());
 		return data;
 	}
-	@GetMapping("/api/account")
-	public Principal getAccount(Authentication authentication) {
-		return authentication;
-	}
+//	@GetMapping("/api/account")
+//	public Principal getAccount(Authentication authentication) {
+//		return authentication;
+//	}
+	
+//	@GetMapping("/api/account")
+//	public Integer getAccountId(Authentication authentication) {
+//	    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//	    // Thay "getId()" bằng phương thức tương ứng để lấy ID từ UserDetails của bạn
+//	    return userDetails.getId();
+//	}
 	
 	@PostMapping("/rest/authorities")
 	public Authority create(@RequestBody Authority accRole) {

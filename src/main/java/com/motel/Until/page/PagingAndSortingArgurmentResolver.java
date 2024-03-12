@@ -1,4 +1,4 @@
-package com.motel.Until;
+package com.motel.Until.page;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;

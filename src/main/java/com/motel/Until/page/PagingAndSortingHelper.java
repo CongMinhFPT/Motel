@@ -1,4 +1,4 @@
-package com.motel.Until;
+package com.motel.Until.page;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.motel.entity.Tag;
 import com.motel.exception.TagNotFoundException;
-import com.motel.model.CreateTag;
+import com.motel.repository.BlogRepository;
 import com.motel.repository.TagRepository;
 import com.motel.service.TagService;
 
@@ -19,6 +19,8 @@ public class TagServiceImpl implements TagService{
 
 	@Autowired
 	private TagRepository tagRepo;
+	@Autowired
+	private BlogRepository blogRepo;
 	
 	@Override
 	public List<Tag> getListTag() {
@@ -33,7 +35,8 @@ public class TagServiceImpl implements TagService{
 		if(tag == null) {
 			throw new TagNotFoundException("không tìm thấy tag");
 		}
-		tagRepo.deleteById(tagId);
+		blogRepo.deleteByTagId(tagId);
+		tagRepo.deleteByIdTag(tagId);
 	}
 
 	@Override

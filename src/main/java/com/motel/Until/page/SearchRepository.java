@@ -1,6 +1,4 @@
-package com.motel.Until;
-
-import java.util.List;
+package com.motel.Until.page;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

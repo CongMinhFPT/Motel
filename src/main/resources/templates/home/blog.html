@@ -34,67 +34,75 @@
                 </div>
             </div>
             <div>
-                <h3>TIN TỨC MỚI NHẤT</h3>
+                <h3>TIN TỨC NHÀ TRỌ MỚI NHẤT 2024 </h3>
+                <form th:action="@{/blog/page/1}" class="form-inline" id="searchForm">
+					<input type="hidden" name="sortField" th:value="${sortField}"></input>
                 <div class="label">
-                    <label for="exampleFormControlInput1" class="form-label"
+                    <label for="exampleFormControlInput1" class="form-label" 
                         style="margin-bottom: 10px; margin-top: 15px;">Danh mục:</label>
-                    <select class="form-select " style="width: 140px;" aria-label="Default select example">
-                        <option selected>#Tag</option>
-                        <option value="1">#nhatrothang1</option>
-                        <option value="2">#nhatrogiare</option>
-                        <option value="3">#nhatrocantho</option>
+                    <select class="form-select " style="width: 140px;" aria-label="Default select example" name="tagId" id="dropdownCategory">
+                        <option value="0">#Tag</option>
+						<th:block th:each="tag : ${listTags}">
+							<option th:value="${tag.tagId}" th:selected="(${tagId} == ${tag.tagId})">[[${tag.title}]]</option>
+						</th:block>
                     </select>
+                    
+                    <div class="col-auto row fl-right" style="margin-left: auto;">
+										<label class="p-2">Tìm kiếm chi tiết</label> <input 
+											type="search" name="keyword" th:value="${keyword}"
+											class="form-control" placeholder="Nhập từ khóa"
+											aria-label="Search" aria-describedby="search-addon" />
 
-                    <select class="select" style="width: 100px;height: auto;">
+										<button type="submit" class="btn btn-secondary">
+											Tìm</i>
+										</button>
+										&nbsp;
+										<button type="button" class="btn btn-secondary"
+											onclick="clearFilter()">
+											Xóa</i>
+										</button>
+									</div>
+
+                    <select class="select" style="width: 100px;height: auto;" name="sortDir" id="sortDirTime">
                         <option selected>Sắp Xếp</option>
-                        <option value="1">Mặc định</option>
-                        <option value="2">Mới nhất</option>
-                        <option value="3">Cũ nhất</option>
+                        <option th:value="desc" th:selected="(${sortDir} == 'desc')">Mặc định</option>
+                        <option th:value="desc" th:selected="(${sortDir} == 'desc')">Mới nhất</option>
+                        <option th:value="asc" th:selected="(${sortDir} == 'asc')">Cũ nhất</option>
                     </select>
                 </div>
+                </form>
                 <hr>
             </div>
 
+			<th:block th:each="blog : ${listBlogs}">
             <div class="card " style="margin-top: 2rem;">
                 <div class="row">
                     <div class="col-lg-4">
-                        <img th:src="@{/img/phong tro.jpg}" class="img-fluid rounded-2 h-100" alt="">
+                        <img th:src="@{${blog.imagePath}}" class="img-fluid rounded-2 h-100" alt="">
                     </div>
                     <div class="col-lg-8">
                         <div class="card-body">
                             <div class="blog-details">
                                 <div class="icon-text">
                                     <span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}" alt=""> </span>
-                                    <span class="text">01/01/2024</span>
+                                    <span class="text">[[${blog.CreateDateFormat}]]</span>
                                 </div>
                                 <div class="icon-text">
                                     <span class="icon"><img th:src="@{/img/icons8-author-24.png}"></span>
-                                    <span class="text">#KimLoc</span>
+                                    <span class="text">[[${blog.account.fullname}]]</span>
                                 </div>
                                 
+                               <!-- <div class="icon-text">
+                                    <span class="icon"><img th:src="@{/img/icons8-author-24.png}"></span>
+                                    <span class="text">#[[${blog.tag.title}]]</span>
+                                </div>-->
                             </div>
-                            <h2 class="card-title">Top 10 website đăng tin cho thuê nhà trọ,
-                                phòng
-                                trọ
-                                hiệu quả nhất năm 2023 </h2>
-                            <p class="card-text" style="font-size: 1rem;">
-                                Những lợi ích khi đăng tin cho thuê nhà – phòng trọ online
-                                Dễ dàng tiếp cận những người có nhu cầu
-                                Nền tảng internet cho phép bạn có thể tiếp cận với lượng lớn khách hàng có nhu cầu thuê
-                                phòng.
-                                Việc
-                                gửi tin tức, thông tin đến cho khách hàng tiềm năng không bị hạn chế bởi các yếu tố như
-                                không
-                                gian
-                                hay thời gian.
-                                Ngay cả khi những người có nhu cầu thuê phòng đang không ở gần khu trọ, họ vẫn dễ dàng
-                                liên hệ
-                                và
-                                tìm hiểu được những thông tin từ bạn trước khi đến xem phòng, quyết định đặt cọc hay
-                                thuê trọ.
-                            </p>
+                            <h2 class="card-title">[[${blog.title}]]</h2>
+                            <div class="card-text" th:utext="${blog.ShortDes}">
+                               
+                            </div>
                             <div class="share">
-                                <a href="" class="button"  th:href="@{/blog_details}">Chi tiết</a>
+                                <a class="button"  th:href="@{/blog_details/} + ${blog.blogId}">Chi tiết</a>
                                 <!-- <button class="share-button">
                                     <img th:src="@{/img/icons8-share-24.png}">
                                 </button> -->
@@ -104,287 +112,55 @@
                     </div>
                 </div>
             </div>
+			</th:block>
 
 
-            <div class="card " style="margin-top: 2rem;">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <img th:src="@{/img/phong tro.jpg}" class="img-fluid rounded-2 h-100" alt="">
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="card-body">
-                            <div class="blog-details">
-                                <div class="icon-text">
-                                    <span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}" alt=""> </span>
-                                    <span class="text">01/01/2024</span>
-                                </div>
-                                <div class="icon-text">
-                                    <span class="icon"><img th:src="@{/img/icons8-author-24.png}"></span>
-                                    <span class="text">#KimLoc</span>
-                                </div>
-                                
-                            </div>
-                            <h2 class="card-title">Top 10 website đăng tin cho thuê nhà trọ,
-                                phòng
-                                trọ
-                                hiệu quả nhất năm 2023 </h2>
-                            <p class="card-text" style="font-size: 1rem;">
-                                Những lợi ích khi đăng tin cho thuê nhà – phòng trọ online
-                                Dễ dàng tiếp cận những người có nhu cầu
-                                Nền tảng internet cho phép bạn có thể tiếp cận với lượng lớn khách hàng có nhu cầu thuê
-                                phòng.
-                                Việc
-                                gửi tin tức, thông tin đến cho khách hàng tiềm năng không bị hạn chế bởi các yếu tố như
-                                không
-                                gian
-                                hay thời gian.
-
-                                Ngay cả khi những người có nhu cầu thuê phòng đang không ở gần khu trọ, họ vẫn dễ dàng
-                                liên hệ
-                                và
-                                tìm hiểu được những thông tin từ bạn trước khi đến xem phòng, quyết định đặt cọc hay
-                                thuê trọ.
-                            </p>
-                            <div class="share">
-                                <a href="" class="button" th:href="@{/blog_details}">Chi tiết</a>
-                                <!-- <button class="share-button">
-                                    <img th:src="@{/img/icons8-share-24.png}">
-                                </button> -->
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card " style="margin-top: 2rem;">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <img th:src="@{/img/phong tro.jpg}" class="img-fluid rounded-2 h-100" alt="">
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="card-body">
-                            <div class="blog-details">
-                                <div class="icon-text">
-                                    <span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}" alt=""> </span>
-                                    <span class="text">01/01/2024</span>
-                                </div>
-                                <div class="icon-text">
-                                    <span class="icon"><img th:src="@{/img/icons8-author-24.png}"></span>
-                                    <span class="text">#KimLoc</span>
-                                </div>
-                                
-                            </div>
-                            <h2 class="card-title">Top 10 website đăng tin cho thuê nhà trọ,
-                                phòng
-                                trọ
-                                hiệu quả nhất năm 2023 </h2>
-                            <p class="card-text" style="font-size: 1rem;">
-                                Những lợi ích khi đăng tin cho thuê nhà – phòng trọ online
-                                Dễ dàng tiếp cận những người có nhu cầu
-                                Nền tảng internet cho phép bạn có thể tiếp cận với lượng lớn khách hàng có nhu cầu thuê
-                                phòng.
-                                Việc
-                                gửi tin tức, thông tin đến cho khách hàng tiềm năng không bị hạn chế bởi các yếu tố như
-                                không
-                                gian
-                                hay thời gian.
-
-                                Ngay cả khi những người có nhu cầu thuê phòng đang không ở gần khu trọ, họ vẫn dễ dàng
-                                liên hệ
-                                và
-                                tìm hiểu được những thông tin từ bạn trước khi đến xem phòng, quyết định đặt cọc hay
-                                thuê trọ.
-                            </p>
-                            <div class="share">
-                                <a href="" class="button" th:href="@{/blog_details}">Chi tiết</a>
-                                <!-- <button class="share-button">
-                                    <img th:src="@{/img/icons8-share-24.png}">
-                                </button> -->
-                            </div>
-                           
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card " style="margin-top: 2rem;">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <img th:src="@{/img/phong tro.jpg}" class="img-fluid rounded-2 h-100" alt="">
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="card-body">
-                            <div class="blog-details">
-                                <div class="icon-text">
-                                    <span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}" alt=""> </span>
-                                    <span class="text">01/01/2024</span>
-                                </div>
-                                <div class="icon-text">
-                                    <span class="icon"><img th:src="@{/img/icons8-author-24.png}"></span>
-                                    <span class="text">#KimLoc</span>
-                                </div>
-                                
-                            </div>
-                            <h2 class="card-title">Top 10 website đăng tin cho thuê nhà trọ,
-                                phòng
-                                trọ
-                                hiệu quả nhất năm 2023 </h2>
-                            <p class="card-text" style="font-size: 1rem;">
-                                Những lợi ích khi đăng tin cho thuê nhà – phòng trọ online
-                                Dễ dàng tiếp cận những người có nhu cầu
-                                Nền tảng internet cho phép bạn có thể tiếp cận với lượng lớn khách hàng có nhu cầu thuê
-                                phòng.
-                                Việc
-                                gửi tin tức, thông tin đến cho khách hàng tiềm năng không bị hạn chế bởi các yếu tố như
-                                không
-                                gian
-                                hay thời gian.
-
-                                Ngay cả khi những người có nhu cầu thuê phòng đang không ở gần khu trọ, họ vẫn dễ dàng
-                                liên hệ
-                                và
-                                tìm hiểu được những thông tin từ bạn trước khi đến xem phòng, quyết định đặt cọc hay
-                                thuê trọ.
-                            </p>
-                            <div class="share">
-                                <a href="" class="button" th:href="@{/blog_details}">Chi tiết</a>
-                                <!-- <button class="share-button">
-                                    <img th:src="@{/img/icons8-share-24.png}">
-                                </button> -->
-                            </div>
-                           
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card " style="margin-top: 2rem;">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <img th:src="@{/img/phong tro.jpg}" class="img-fluid rounded-2 h-100" alt="">
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="card-body">
-                            <div class="blog-details">
-                                <div class="icon-text">
-                                    <span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}" alt=""> </span>
-                                    <span class="text">01/01/2024</span>
-                                </div>
-                                <div class="icon-text">
-                                    <span class="icon"><img th:src="@{/img/icons8-author-24.png}"></span>
-                                    <span class="text">#KimLoc</span>
-                                </div>
-                                
-                            </div>
-                            <h2 class="card-title">Top 10 website đăng tin cho thuê nhà trọ,
-                                phòng
-                                trọ
-                                hiệu quả nhất năm 2023 </h2>
-                            <p class="card-text" style="font-size: 1rem;">
-                                Những lợi ích khi đăng tin cho thuê nhà – phòng trọ online
-                                Dễ dàng tiếp cận những người có nhu cầu
-                                Nền tảng internet cho phép bạn có thể tiếp cận với lượng lớn khách hàng có nhu cầu thuê
-                                phòng.
-                                Việc
-                                gửi tin tức, thông tin đến cho khách hàng tiềm năng không bị hạn chế bởi các yếu tố như
-                                không
-                                gian
-                                hay thời gian.
-
-                                Ngay cả khi những người có nhu cầu thuê phòng đang không ở gần khu trọ, họ vẫn dễ dàng
-                                liên hệ
-                                và
-                                tìm hiểu được những thông tin từ bạn trước khi đến xem phòng, quyết định đặt cọc hay
-                                thuê trọ.
-                            </p>
-                            <div class="share">
-                                <a href="" class="button" th:href="@{/blog_details}">Chi tiết</a>
-                                <!-- <button class="share-button">
-                                    <img th:src="@{/img/icons8-share-24.png}">
-                                </button> -->
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card " style="margin-top: 2rem;">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <img th:src="@{/img/phong tro.jpg}" class="img-fluid rounded-2 h-100" alt="">
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="card-body">
-                            <div class="blog-details">
-                                <div class="icon-text">
-                                    <span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}" alt=""> </span>
-                                    <span class="text">01/01/2024</span>
-                                </div>
-                                <div class="icon-text">
-                                    <span class="icon"><img th:src="@{/img/icons8-author-24.png}"></span>
-                                    <span class="text">#KimLoc</span>
-                                </div>
-                               
-                            </div>
-                            <h2 class="card-title">Top 10 website đăng tin cho thuê nhà trọ,
-                                phòng
-                                trọ
-                                hiệu quả nhất năm 2023 </h2>
-                            <p class="card-text" style="font-size: 1rem;">
-                                Những lợi ích khi đăng tin cho thuê nhà – phòng trọ online
-                                Dễ dàng tiếp cận những người có nhu cầu
-                                Nền tảng internet cho phép bạn có thể tiếp cận với lượng lớn khách hàng có nhu cầu thuê
-                                phòng.
-                                Việc
-                                gửi tin tức, thông tin đến cho khách hàng tiềm năng không bị hạn chế bởi các yếu tố như
-                                không
-                                gian
-                                hay thời gian.
-
-                                Ngay cả khi những người có nhu cầu thuê phòng đang không ở gần khu trọ, họ vẫn dễ dàng
-                                liên hệ
-                                và
-                                tìm hiểu được những thông tin từ bạn trước khi đến xem phòng, quyết định đặt cọc hay
-                                thuê trọ.
-                            </p>
-                            <div class="share">
-                                <a href="" class="button" th:href="@{/blog_details}">Chi tiết</a>
-                                <!-- <button class="share-button">
-                                    <img th:src="@{/img/icons8-share-24.png}">
-                                </button> -->
-                            </div>
-                         
-                        </div>
-                    </div>
-                </div>
-            </div>
 
 
-            <div class="row" style="margin-top: 3rem; border: none;">
+           <div th:replace="layout/paging :: pagination('sản phẩm từ')"></div>
+				<!--<div class="row" style="margin-top: 3rem; border: none;">
+
                 <div class="col-12 d-flex justify-content-center" style="border: none;">
-                    <ul class="pagination" style="border: none;">
-                        <li class="page-item" style="border: none;">
-                            <a class="page-link" href="#" aria-label="Previous" style="border: none;">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item" style="border: none;"><a class="page-link" href="#"
-                                style="border: none;">1</a></li>
-                        <li class="page-item" style="border: none;"><a class="page-link" href="#"
-                                style="border: none;">2</a></li>
-                        <li class="page-item" style="border: none;"><a class="page-link" href="#"
-                                style="border: none;">3</a></li>
-                        <li class="page-item" style="border: none;">
-                            <a class="page-link" href="#" aria-label="Next" style="border: none;">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
 
+                    <ul class="pagination" style="border: none;">
+
+                        <li class="page-item" style="border: none;">
+
+                            <a class="page-link" href="#" aria-label="Previous" style="border: none;">
+
+                                <span aria-hidden="true">&laquo;</span>
+
+                            </a>
+
+                        </li>
+
+                        <li class="page-item" style="border: none;"><a class="page-link" href="#"
+
+                                style="border: none;">1</a></li>
+
+                        <li class="page-item" style="border: none;"><a class="page-link" href="#"
+
+                                style="border: none;">2</a></li>
+
+                        <li class="page-item" style="border: none;"><a class="page-link" href="#"
+
+                                style="border: none;">3</a></li>
+
+                        <li class="page-item" style="border: none;">
+
+                            <a class="page-link" href="#" aria-label="Next" style="border: none;">
+
+                                <span aria-hidden="true">&raquo;</span>
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>-->
 
         </div>
 
@@ -404,6 +180,29 @@
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
     <script th:src="@{/js/header.js}"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script type="text/javascript">
+		moduleURL = "[[@{/blog}]]";
+		
+		$(document).ready(function(){
+			
+			$("#dropdownCategory").on("change", function(){
+				$("#searchForm").submit();
+			});
+			
+			$("#sortDirTime").on("change", function(){
+				$("#searchForm").submit();
+			})
+		});
+		
+		function clearFilter() {
+				window.location = moduleURL;
+			}
+		
+	</script>
+    
 </body>
 
 </html>

@@ -1,5 +1,3 @@
-
-
 var themeOptionArr = {
 			typography: '',
 			version: '',

@@ -1,25 +1,26 @@
 ﻿<!DOCTYPE html>
-<html lang="en" xmlns="http://www.thymeleaf.org"
-th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+<html lang="en" xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
 </head>
-<body>	
+
+<body>
 	<div class="content-body">
 		<div class="container-fluid">
 			<div class="card">
 				<div class="card-header d-sm-flex d-block">
 					<div class="mr-auto mb-sm-0 mb-3">
 						<h4 class="card-title mb-2">Danh sách tin tức</h4>
-						<!--<span>Lorem Ipsum sit amet</span>-->
 					</div>
 					<a href="javascript:void(0);" class="btn btn-info light mr-3"><i
 							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
 					<a th:href="@{/admin/add-blog}" class="btn btn-info">+ Thêm tin tức</a>
 				</div>
-				<div th:if="${message != null}" >[[${message}]]</div>
+				<div th:if="${message != null}" id="messageAlert">[[${message}]]</div>
+
 				<div class="card-body">
 					<div class="table-responsive">
 						<table class="table style-1" id="ListDatatableView">
@@ -28,12 +29,12 @@ th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
 									<th>#</th>
 									<th>title</th>
 									<th>createDate</th>
-									<th>image</th>					
+									<th>image</th>
 									<th>tag</th>
 									<th>account</th>
 									<th>status</th>
 									<th>action</th>
-									
+
 								</tr>
 							</thead>
 							<tbody>
@@ -42,8 +43,12 @@ th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
 										<h6>[[${blog.blogId}]]</h6>
 									</td>
 									<td>[[${blog.title}]]</td>
-									<td>[[${blog.createDate}]]</td>
-									<td>[[${blog.image}]]</td>
+									<td>[[${blog.CreateDateFormat}]]</td>
+									<td>
+										<img class="img-fluid" width="150"
+											th:if="${blog.image != null || !blog.image.empty}"
+											th:src="@{${blog.imagePath}}" alt="Thumb image" id="thumbimage" />
+									</td>
 									<td>[[${blog.tag.title}]]</td>
 									<td>[[${blog.account.fullname}]]</td>
 									<td>
@@ -56,7 +61,8 @@ th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
 									</td>
 									<td>
 										<div class="d-flex action-button">
-											<a th:href="@{/admin/edit-blog/} + ${blog.blogId}" class="btn btn-info btn-xs light px-2">
+											<a th:href="@{/admin/edit-blog/} + ${blog.blogId}"
+												class="btn btn-info btn-xs light px-2">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
 													<path
@@ -65,8 +71,8 @@ th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
 														stroke-linejoin="round"></path>
 												</svg>
 											</a>
-											<a th:href="@{/admin/remove-blog/} + ${blog.blogId}"
-												class="ml-2 btn btn-xs px-2 light btn-danger">
+											<!--<a th:href="@{/admin/remove-blog/} + ${blog.blogId}"
+												class="ml-2 btn btn-xs px-2 light btn-danger remove-items">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
 													<path d="M3 6H5H21" stroke="#fff" stroke-width="2"
@@ -77,22 +83,47 @@ th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
 														stroke-linejoin="round"></path>
 												</svg>
 
-											</a>
+											</a>-->
+
+											<div
+												th:replace="layout/paging :: delete(${blog.blogId}, ${blog.blogId}, '/admin/remove-blog/' + ${blog.blogId}, true)">
+											</div>
+
 										</div>
 									</td>
 								</tr>
-								
-								
+
+
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
-			
+
 		</div>
 	</div>
-	
-	
+
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script th:src="@{/admin/js/commom-list.js}"></script>
+
+	<script type="text/javascript">
+		moduleURL = "[[@{/admin/blogs}]]";
+
+		$(document).ready(function () {
+			$(document).on("click", ".link-delete", function (e) {
+				e.preventDefault();
+				var entityName = $(this).attr("data-entityName");
+				showDeleteConfirm($(this), entityName, moduleURL);
+			});
+		});
+
+	</script>
+
+
 </body>
 
 

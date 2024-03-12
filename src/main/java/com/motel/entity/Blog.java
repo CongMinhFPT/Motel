@@ -1,5 +1,6 @@
 package com.motel.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Nationalized;
 
@@ -43,8 +45,9 @@ public class Blog {
     private String descriptions;
 
     private String image;
-    @Temporal(TemporalType.DATE)
-    Date createDate = new Date();
+    
+    Date createDate;
+    
     boolean status;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -55,8 +58,29 @@ public class Blog {
     @JoinColumn(name = "accountId")
     private Account account;
 
-    // @ManyToMany(fetch = FetchType.LAZY)
-    // @JoinTable(name = "blog", joinColumns = @JoinColumn(name = "blogId"), inverseJoinColumns = @JoinColumn(name = "tagId"))
-    // private Set<Tag> tags = new HashSet<>();
+    @Transient
+	public String getImagePath() {
+		if(this.blogId == null) return "/admin/images/default-image.jpg";
+		
+		return "/upload/blog-files/" + this.blogId + "/" + this.image;
+	}
+    
 
+	@Transient
+	public String getShortDes() {
+		if(descriptions.length() > 90) {
+			return descriptions.substring(0, 90).concat("...");
+		}
+		return descriptions;
+	}
+	
+	@Transient
+	public String getCreateDateFormat() {
+		if(createDate != null) {
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy | HH:ss");  
+			String strDate = formatter.format(createDate);
+			return strDate;
+		}
+		return "";
+	}
 }

@@ -2,24 +2,21 @@ package com.motel.service;
 
 import java.util.List;
 
-import com.motel.Until.PagingAndSortingHelper;
+import org.springframework.data.domain.Page;
+
+import com.motel.Until.page.PagingAndSortingHelper;
 import com.motel.entity.Blog;
 import com.motel.exception.BlogNotFoundException;
 
 
 public interface BlogService {
+	
+	public static final int BLOG_PER_PAGE = 9999;
 
      List<Blog> getListBlog();
 
-    List<Blog> getListNewest(int limit);
+    //List<Blog> getListNewest(int limit);
 
-//    Blog getBlog(int blogId);
-//
-//    Blog createBlog(CreateBlog request);
-//
-//    Blog updateBlog(int blogId,CreateBlog request);
-//
-//    void deleteBlog(int blogId);
     
     void deleteBlog(Integer blogId) throws BlogNotFoundException;
 
@@ -27,6 +24,11 @@ public interface BlogService {
 
    	Blog getId(Integer blogId);
 
-	void listByPage(int pageNum, PagingAndSortingHelper helper);
+	void listByPage(int pageNum,PagingAndSortingHelper helper, Integer tagId);
+
+	Page<Blog> listByPage(int pageNum, Integer tagId);
+
+	List<Blog> findBlogSimilar(Integer tagId);
+
 
 }

@@ -1,5 +1,7 @@
 package com.motel.admin;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +9,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.motel.Until.FileUploadUtil;
 import com.motel.entity.Blog;
 import com.motel.entity.Tag;
 import com.motel.service.BlogService;
@@ -33,7 +39,11 @@ public class AdminBlogController {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName();
+		
+		Date d = new Date();
+		
 		System.out.println("Name +==============     : " + name);
+		System.out.println("Date +==============     : " + d);
 		
 		return "admin/blog/blog-list";
 		
@@ -67,15 +77,34 @@ public class AdminBlogController {
 	public String removeBlog(@PathVariable(name = "blogId") Integer blogId, RedirectAttributes ra) {
 		try {
 			blogService.deleteBlog(blogId);
-			ra.addFlashAttribute("message", "Đã xóa blog");
+			ra.addFlashAttribute("message", "Đã xóa blog thành công!");
 		} catch (Exception e) {
 			ra.addFlashAttribute("message", e.getMessage());
 		}
 		return "redirect:/admin/blogs";
 	}
+
 	@PostMapping("/admin/save-blog")
-	public String saveBlog(Blog blog, RedirectAttributes ra) {
-		blogService.save(blog);
+	public String saveBlog(Blog blog, @RequestParam("uploadfile") MultipartFile multipartFile, RedirectAttributes ra)
+			throws IOException {
+
+		if (!multipartFile.isEmpty()) {
+
+			@SuppressWarnings("null")
+			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+			blog.setImage(fileName);
+
+			Blog savedBlog = blogService.save(blog);
+			String uploadDir = "upload/blog-files/" + savedBlog.getBlogId();
+
+			FileUploadUtil.cleanDir(uploadDir);
+			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+
+		} else {
+			blogService.save(blog);
+		}
+		ra.addFlashAttribute("message", "Lưu thành công!");
+
 		return "redirect:/admin/blogs";
 	}
 }

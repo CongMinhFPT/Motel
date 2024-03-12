@@ -6,6 +6,52 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
 </head>
+<style>
+	.upload-container {
+		text-align: center;
+	}
+	.upload-frame {
+		display: inline-block;
+		position: relative;
+		width: 300px;
+		height: 300px;
+		overflow: hidden;
+		border: 2px dashed #ddd;
+		border-radius: 15px;
+		transition: border-color 0.3s ease;
+	}
+
+	#uploaded-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.upload-text {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: 18px;
+		font-weight: bold;
+		color: #888;
+		transition: color 0.3s ease;
+	}
+
+	.upload-frame:hover,
+	.upload-frame:focus {
+		border-color: #aaa;
+	}
+
+	.upload-frame:hover .upload-text,
+	.upload-frame:focus .upload-text {
+		color: #555;
+	}
+
+	#file-input {
+		display: none;
+	}
+</style>
 
 <body>
 	<div class="content-body">
@@ -18,12 +64,13 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="basic-form">
-							<form th:action="@{/admin/save-blog}" method="post" th:object="${blog}">
+							<form th:action="@{/admin/save-blog}" method="post" th:object="${blog}" enctype="multipart/form-data">
 								<input type="hidden" th:field="*{blogId}">
 								<div class="form-row">
 									<div class="form-group col-md-6">
 										<label>Title</label>
 										<input type="text" class="form-control" placeholder="title" th:field="*{title}">
+										<p id="titleER" class="text-danger"</p>
 									</div>
 									<div class="form-group col-md-6">
 										<label class="control-label">Danh mục</label>
@@ -33,21 +80,44 @@
 												<option th:value="${tag.tagId}">[[${tag.title}]]</option>
 											</th:block>
 										</select>
+										<p id="tagER" class="text-danger"</p>
 									</div>
 									<div class="form-group col-md-12">
 										<label>Descriptions</label>
-										<textarea  id="descriptions" 
-											th:field="*{descriptions}"></textarea>
+										<textarea th:field="*{descriptions}"></textarea>
+										<p id="desER" class="text-danger"</p>
 									</div>
-
-
-
-
+									<div class="form-group col-md-12">
+										<div class="form-group col-md-2">
+											<label class="control-label">Ảnh danh mục</label>
+											<div id="myfileupload">
+												<input type="hidden" th:field="*{image}"/>
+												<input type="file" id="uploadfile" name="uploadfile" th:required="${blog.imagePath == null}"
+													onchange="readURL(this);" />
+													<p id="desIm" class="text-danger"</p>
+											</div>
+											<div id="boxchoice">
+												<a href="javascript:" class="Choicefile"></a>
+												<p style="clear:both"></p>
+											</div>
+										</div>
+										<div class="form-group col-md-3">
+											<div id="thumbbox">
+												<img title="Vui lòng chọn 1 hình đại diện" height="100" width="150" th:if="${blog.image == null}"
+													th:src="@{/admin/images/default-image.jpg}" alt="Thumb image" id="thumbimage" />
+												<img class="img-fluid" width="150" th:if="${blog.image != null}" th:src="@{${blog.imagePath}}"
+													alt="Thumb image" id="thumbimage" />
+												<a class="removeimg" href="javascript:"></a>
+											</div>
+										</div>
+									</div>
 
 								</div>
 								<div class="form-group">
 									<div class="form-check form-switch">
-										<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" th:field="*{status}">
+										<input
+										 class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"
+											th:field="*{status}">
 										<label class="form-check-label" for="flexSwitchCheckDefault">Trạng Thái</label>
 									</div>
 								</div>
@@ -59,9 +129,15 @@
 			</div>
 		</div>
 	</div>
+
+	<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+	<script th:src="@{/admin/js/commom-form.js}"></script>
 	
-	 <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
 	<script type="text/javascript">
+
+		
 
 		ClassicEditor
 			.create(document.querySelector('#descriptions'))
@@ -71,6 +147,40 @@
 			.catch(error => {
 				console.error(error);
 			});
+			
+		$(document).ready(function () {
+			
+			$('#title, #exampleSelect2').on('input', function() {
+				validateAll();
+			});
+
+			function validateAll() {
+				 var title = $('#title').val();
+				 if (!title) {
+					 $('#titleER').text('không được bỏ trống!');
+				 } else {
+					 $('#titleER').text('');
+				 }
+
+				 var tag = $('#exampleSelect2').val();
+				 if (tag == 0) {
+					 $('#tagER').text('vui lòng chọn Tag!');
+				 } else {
+					 $('#tagER').text('');
+				 }
+			 }
+
+				$('form').submit(function (event) {
+					validateAll();
+					var title = $('#title').val();
+					var tag = $('#exampleSelect2').val();
+					if(!title || tag == 0){
+						event.preventDefault();
+					}
+				})
+
+		});
+					
 	</script>
 </body>
 

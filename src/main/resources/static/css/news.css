@@ -47,13 +47,16 @@ h3{
     align-items: center;
 }
 .button{
-    padding: 0.7rem 1.2rem 0rem 1rem;
+    padding: 0.7rem 0.5rem 0.7rem 0.5rem;
     display: inline-block;
     background-color: var(--primary);
-    border-radius: 0.5rem;
+    border-radius: 0.4rem;
     color: var(--off-white);
     text-decoration: solid ;
-   
+    text-align: center;
+    width: 6rem;
+    height: 3rem;
+    margin-top: 6.5rem;
 
 }
 .share-button{
@@ -72,11 +75,7 @@ h3{
     display: flex;
     justify-content: space-between;
 }
-.share-button:focus{
-    background-color: var(--primary);
-    color: var(--off-white);
 
-}
 @media screen and (min-width:90px){
         .card-content{
             flex: 2;    

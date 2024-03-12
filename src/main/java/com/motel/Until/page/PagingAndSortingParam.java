@@ -1,4 +1,4 @@
-package com.motel.Until;
+package com.motel.Until.page;
 
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

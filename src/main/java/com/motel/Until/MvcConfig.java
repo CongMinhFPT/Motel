@@ -9,21 +9,16 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.motel.Until.PagingAndSortingArgurmentResolver;
+import com.motel.Until.page.PagingAndSortingArgurmentResolver;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
 	
+	@SuppressWarnings("null")
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		exposeDirectory("user-photos", registry);
-		exposeDirectory("../category-images", registry);
-		exposeDirectory("../brand-logos", registry);
-		exposeDirectory("../product-images", registry);
-		exposeDirectory("../site-logo", registry);
-		exposeDirectory("../site-logo", registry);
-		exposeDirectory("../board-images", registry);
+		exposeDirectory("upload/blog-files", registry);
 	}
 	
 	private void exposeDirectory(String pathPattern, ResourceHandlerRegistry registry) {
@@ -37,7 +32,7 @@ public class MvcConfig implements WebMvcConfigurer {
 	}
 
 	@Override
-	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+	public void addArgumentResolvers(@SuppressWarnings("null") List<HandlerMethodArgumentResolver> resolvers) {
 		resolvers.add(new PagingAndSortingArgurmentResolver());
 	}
 	

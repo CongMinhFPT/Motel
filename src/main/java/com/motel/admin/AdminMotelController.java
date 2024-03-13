@@ -89,19 +89,29 @@ public class AdminMotelController {
         return motelImpl.StatusUpdatesMotel();
     }
 
-    @GetMapping("/admin/add-demo")
+    @GetMapping("/admin/add-motelroom")
     public String getMethodName22(Model model ,@ModelAttribute ("motelroom") MotelRoom motelRoom) {
       return roomService.GetAddMotelRoom(model);
     }
-    @PostMapping("/admin/add-demo")
+    @PostMapping("/admin/add-motelroom")
     public String postMethodName(Model model ,@ModelAttribute ("motelroom")  @Valid MotelRoom motelRoom ,BindingResult bindingResult , @RequestParam("files") MultipartFile[] files
     ,RedirectAttributes attributes) {
         return roomService.PostAddMotelRoom(motelRoom, model, files, bindingResult, attributes);
     }
     
-  @GetMapping("/admin/Manage-MotelRoom")
+  @GetMapping("/admin/manage-motelroom")
   public String getMethodName(Model model) {
       return roomService.ManageMotelRoom(model);
+  }
+  @GetMapping("/admin/update-motelroom/{id}")
+  public String GetUpdateMotelRoom(@PathVariable Integer id ,Model model) {
+      return roomService.GetUpdateMotelRoom(model, id);
+  }
+  
+  @PostMapping("/admin/update-motelroom")
+  public String PostUpdateMotelRoom(Model model ,@ModelAttribute ("motelroom")  @Valid MotelRoom motelRoom ,BindingResult bindingResult , @RequestParam("files") MultipartFile[] files
+  ,RedirectAttributes attributes) {
+      return roomService.PostUpdateMotelRoom(motelRoom, model, files, bindingResult, attributes);
   }
   
     

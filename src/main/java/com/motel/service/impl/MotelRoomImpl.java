@@ -1,5 +1,6 @@
 package com.motel.service.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -93,11 +94,17 @@ public class MotelRoomImpl implements MotelRoomService {
                     if (motelRoom.getCategoryRoom().getCategoryRoomId() == null) {
                         model.addAttribute("categoryRoomerror", "Vui lòng chọn loại phòng");
                     }
+                    if (files == null || files.length <= 0 || files[0].isEmpty()) {
+                        model.addAttribute("Imgerror", "Vui lòng chọn ảnh");
+                    }
                     return "/admin/motel/add-room";
                 } else {
                     if (motelRoom.getCategoryRoom().getCategoryRoomId() == null) {
                         ListCategoryRoom(model);
                         model.addAttribute("categoryRoomerror", "Vui lòng chọn loại phòng");
+                        if (files == null || files.length <= 0 || files[0].isEmpty()) {
+                            model.addAttribute("Imgerror", "Vui lòng chọn ảnh");
+                        }
                         return "/admin/motel/add-room";
                     } else {
                         if (files != null && files.length > 0 && !files[0].isEmpty()) {
@@ -120,9 +127,8 @@ public class MotelRoomImpl implements MotelRoomService {
                                     image.setName(a);
                                     imageRepository.save(image);
                                 });
-                                System.out.println("them thanh cong");
-                                ListCategoryRoom(model);
-                                return "/admin/motel/add-room";
+                                attributes.addFlashAttribute("successMessageAddRoom", "Thêm phòng trọ thành công");
+                                return "redirect:/admin/manage-motelroom";
                             } else {
                                 MultipartFile[] first6Files = Arrays.copyOfRange(files, 0, Math.min(files.length, 6));
                                 List<String> listname = fileManager.save("ImgMotelRoom", first6Files);
@@ -132,23 +138,11 @@ public class MotelRoomImpl implements MotelRoomService {
                                     image.setName(a);
                                     imageRepository.save(image);
                                 });
-                                System.out.println("them thanh cong");
-                                ListCategoryRoom(model);
-                                return "/admin/motel/add-room";
+                                attributes.addFlashAttribute("successMessageAddRoom", "Thêm phòng trọ thành công");
+                                return "redirect:/admin/manage-motelroom";
                             }
                         } else {
-                            if (motelRoom.getVideo() != null) {
-                                String[] parts = motelRoom.getVideo().split("be/");
-                                String chuoi = parts[parts.length - 1];
-                                motelRoom.setVideo(chuoi);
-                            }
-                            CategoryRoom categoryRoom = categoryRoomRepository
-                                    .getById(motelRoom.getCategoryRoom().getCategoryRoomId());
-                            motelRoom.setCategoryRoom(categoryRoom);
-                            Motel motel = motelRepository.getById(condition.getMotelid());
-                            motelRoom.setMotel(motel);
-                            motelRoomRepository.save(motelRoom);
-                            System.out.println("them thanh cong");
+                            model.addAttribute("Imgerror", "Vui lòng chọn ảnh");
                             ListCategoryRoom(model);
                             return "/admin/motel/add-room";
                         }
@@ -183,8 +177,8 @@ public class MotelRoomImpl implements MotelRoomService {
             CustomUserDetails condition = impl.CheckLogin().get();
             if (impl.CheckAccountSetIdMotel(condition)) {
                 impl.SetModelMotel(model);
-              List<MotelRoom> listMotelRooms = motelRepository.getById(condition.getMotelid()).getMotelRoom();
-              model.addAttribute("ListMotelRooms", listMotelRooms);
+                List<MotelRoom> listMotelRooms = motelRepository.getById(condition.getMotelid()).getMotelRoom();
+                model.addAttribute("ListMotelRooms", listMotelRooms);
                 return "/admin/motel/manage-motelroom";
             } else {
                 return "redirect:/admin/manage-motel";
@@ -192,6 +186,146 @@ public class MotelRoomImpl implements MotelRoomService {
         } else {
             return "home/signin";
         }
+    }
+
+    @Override
+    public String GetUpdateMotelRoom(Model model, int idmotelroom) {
+        if (impl.CheckLogin().isPresent()) {
+            CustomUserDetails condition = impl.CheckLogin().get();
+            if (impl.CheckAccountSetIdMotel(condition)) {
+                if (CheckRoomInMotel(idmotelroom, condition.getMotelid())) {
+                    impl.SetModelMotel(model);
+                    MotelRoom motelRoom = motelRoomRepository.getById(idmotelroom);
+                    model.addAttribute("motelroom", motelRoom);
+                    ListCategoryRoom(model);
+                    List<String> nameimg = new ArrayList<>();
+                    if (!motelRoom.getImage().isEmpty() || motelRoom.getImage() != null) {
+                        motelRoom.getImage().forEach(a -> {
+                            nameimg.add(a.getName());
+                        });
+                        model.addAttribute("listimg", nameimg);
+                    }
+                    return "/admin/motel/update-room";
+                } else {
+                    return "/admin/error/error404";
+                }
+            } else {
+                return "redirect:/admin/manage-motel";
+            }
+        } else {
+            return "home/signin";
+        }
+    }
+
+    @Override
+    public String PostUpdateMotelRoom(MotelRoom motelRoom, Model model, MultipartFile[] files,
+            BindingResult bindingResult, RedirectAttributes attributes) {
+        if (impl.CheckLogin().isPresent()) {
+            CustomUserDetails condition = impl.CheckLogin().get();
+            if (impl.CheckAccountSetIdMotel(condition)) {
+                if (CheckRoomInMotel(motelRoom.getMotelRoomId(), condition.getMotelid())) {
+                    MotelRoom motelRoom2 =motelRoomRepository.getById(motelRoom.getMotelRoomId());
+                    impl.SetModelMotel(model);
+                    if (bindingResult.hasErrors()) {
+                        ListCategoryRoom(model);
+                        if (motelRoom.getCategoryRoom().getCategoryRoomId() == null) {
+                            model.addAttribute("categoryRoomerror", "Vui lòng chọn loại phòng");
+                        }
+                        return "/admin/motel/update-room";
+                    } else {
+                        if (motelRoom.getCategoryRoom().getCategoryRoomId() == null) {
+                            ListCategoryRoom(model);
+                            model.addAttribute("categoryRoomerror", "Vui lòng chọn loại phòng");
+                            return "/admin/motel/update-room";
+                        } else {
+                            if (files != null && files.length > 0 && !files[0].isEmpty()) {
+                                motelRoom2.setDescriptions(motelRoom.getDescriptions());
+                                motelRoom2.setLength(motelRoom.getLength());
+                                motelRoom2.setWidth(motelRoom.getWidth());
+                                if (motelRoom.getVideo() != null) {
+                                    String[] parts = motelRoom.getVideo().split("be/");
+                                    String chuoi = parts[parts.length - 1];
+                                    motelRoom2.setVideo(chuoi);
+                                }
+                              if (motelRoom2.getCategoryRoom().getCategoryRoomId()!=motelRoom.getCategoryRoom().getCategoryRoomId()) {
+                                CategoryRoom categoryRoom = categoryRoomRepository
+                                .getById(motelRoom.getCategoryRoom().getCategoryRoomId());
+                                motelRoom2.setCategoryRoom(categoryRoom);
+                              }
+                                MotelRoom idmotelroom =   motelRoomRepository.save(motelRoom2);
+                                if (CheckImgAddMotelRoom(files)) {
+                                    idmotelroom.getImage().forEach(a -> {
+                                        fileManager.delete("ImgMotelRoom", a.getName());
+                                    });
+                                    List<String> listname = fileManager.save("ImgMotelRoom", files);
+                                     List<Image> images =idmotelroom.getImage();
+                                     images.forEach(a->{
+                                        imageRepository.delete(a);
+                                     });
+                                     listname.forEach(a -> {
+                                        Image image = new Image();
+                                        image.setMotelRoom(idmotelroom);
+                                        image.setName(a);
+                                        imageRepository.save(image);
+                                    });
+                                    attributes.addFlashAttribute("successMessageAddRoom", "Thêm phòng trọ thành công");
+                                    return "redirect:/admin/manage-motelroom";
+                                } else {
+                                    idmotelroom.getImage().forEach(a -> {
+                                        fileManager.delete("ImgMotelRoom", a.getName());
+                                    });
+                                    MultipartFile[] first6Files = Arrays.copyOfRange(files, 0,
+                                            Math.min(files.length, 6));
+                                    List<String> listname = fileManager.save("ImgMotelRoom", first6Files);
+                                    listname.forEach(a -> {
+                                        Image image = new Image();
+                                        image.setMotelRoom(idmotelroom);
+                                        image.setName(a);
+                                        imageRepository.save(image);
+                                    });
+                                    attributes.addFlashAttribute("successMessageAddRoom", "Thêm phòng trọ thành công");
+                                    return "redirect:/admin/manage-motelroom";
+                                }
+                            } else {
+                                motelRoom2.setDescriptions(motelRoom.getDescriptions());
+                                motelRoom2.setLength(motelRoom.getLength());
+                                motelRoom2.setWidth(motelRoom.getWidth());
+                                if (motelRoom.getVideo() != null) {
+                                    String[] parts = motelRoom.getVideo().split("be/");
+                                    String chuoi = parts[parts.length - 1];
+                                    motelRoom2.setVideo(chuoi);
+                                }
+                              if (motelRoom2.getCategoryRoom().getCategoryRoomId()!=motelRoom.getCategoryRoom().getCategoryRoomId()) {
+                                CategoryRoom categoryRoom = categoryRoomRepository
+                                .getById(motelRoom.getCategoryRoom().getCategoryRoomId());
+                                motelRoom2.setCategoryRoom(categoryRoom);
+                              }
+                                motelRoomRepository.save(motelRoom2);
+                                attributes.addFlashAttribute("successMessageAddRoom", "Thêm phòng trọ thành công");
+                                return "redirect:/admin/manage-motelroom";
+                            }
+                        }
+                    }
+                } else {
+                    return "/admin/error/error404";
+                }
+            } else {
+                return "redirect:/admin/manage-motel";
+            }
+        } else {
+            return "home/signin";
+        }
+    }
+
+    @Override
+    public Boolean CheckRoomInMotel(int idroom, int motel) {
+        Motel motel2 = motelRepository.getById(motel);
+        for (MotelRoom motelRoom : motel2.getMotelRoom()) {
+            if (motelRoom.getMotelRoomId() == idroom) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -22,5 +22,8 @@ public interface MotelRoomService {
     public Boolean CheckImgAddMotelRoom(MultipartFile[] files);
     void ListCategoryRoom(Model model);
     public String ManageMotelRoom(Model model);
+    public String GetUpdateMotelRoom(Model model , int idmotelroom);
+    public String PostUpdateMotelRoom (MotelRoom motelRoom,Model model,MultipartFile[] files , BindingResult bindingResult,RedirectAttributes attributes);
+    public Boolean CheckRoomInMotel(int idroom  , int idmotel);
     
 }

@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Nationalized;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -60,41 +61,44 @@ public class MotelRoom {
 	List<Image> image;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-    @JsonManagedReference
+     
+     @JsonManagedReference
 	List<FavoriteRoom> favoriteRoom;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-    @JsonManagedReference
+     
+     @JsonManagedReference
 	List<ElectricityCash> electricityCash;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-    @JsonManagedReference
+     @JsonManagedReference
 	List<WaterCash> waterCash;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-    @JsonManagedReference
+     
+     @JsonManagedReference
 	List<WifiCash> wifiCash;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-    @JsonManagedReference
+     
+     @JsonManagedReference
 	List<RoomCash> roomCash;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-    @JsonManagedReference
+     
+     @JsonManagedReference
     List<Indexs> index;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-    @JsonManagedReference
+     @JsonManagedReference
     List<Renter> renter;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "motelId")
-    @JsonBackReference
     Motel motel;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "categoryRoomId")
-    @JsonBackReference
     CategoryRoom categoryRoom;
 
     @ManyToOne(cascade = CascadeType.ALL)

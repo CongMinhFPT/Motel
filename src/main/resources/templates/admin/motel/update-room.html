@@ -13,18 +13,28 @@
 	<div class="content-body ">
 		<div class="container-fluid">
 			<div class="form-head  d-flex flex-wrap align-items-center">
-				<h2 class="font-w600 title mb-2 mr-auto ">Thêm phòng trọ </h2>
+				<h2 class="font-w600 title mb-2 mr-auto ">Sửa phòng trọ </h2>
 			</div>
-			<form  id="your-form-id" action="#" th:action="@{/admin/add-motelroom}" th:object="${motelroom}" method="post"
+			<form  id="your-form-id" action="#" th:action="@{/admin/update-motelroom}" th:object="${motelroom}" method="post"
 				enctype="multipart/form-data">
 				<div class="row">
+					<label for="">Hiện ảnh</label>
 					<div class="col-12 col-md-6">
 						<div class=" d-flex  justify-content-center w-100 border-1  "
 							style="height: 25rem; background-color: #ffff;">
 							<img class="card-img-top rounded-3 " id="selected-image">
 						</div>
-						<div class="image-box row mt-5 " id="image-box"></div><br>
-						<input name="files" class="mt-3" type="file" id="input" accept="image/*" multiple><br>
+						<div class="image-box row mt-5 " th:if="${listimg!=null}">
+							<label class="p-2 ms-3 m-1  " for="">Ảnh hiện có</label>
+							<img id="imgthyme" onclick="clickimg(this)" class="col-2"  th:each="item : ${listimg}" th:src="@{'/files/ImgMotelRoom/'+${item}}" alt="">
+						</div>
+						<label class="p-2 mt-2 " for="">Ảnh đang chọn</label>
+						<div class="image-box row mt-3 " id="image-box"></div>
+						<br>
+						<label for="input" class="btn btn-primary mt-3">
+							<i for="input" class="fas fa-upload"></i> Chọn ảnh
+							<input class="d-none " name="files" type="file" id="input" accept="image/*" multiple>
+						  </label>
 						<label th:text="${Imgerror}" id="text-error-file" class="mt-2 " style="color: red;" for=""></label>
 					</div>
 					<div class="col-md-6">
@@ -38,6 +48,7 @@
 								<label id="descriptionsroom-error1" style="color: red; padding: 0.5rem; display: none; " for="">
 									</label>
 							</div>
+							<input class="d-none " th:field="*{motelRoomId}">
 						</div>
 						<div class="row ">
 							<div class="col-6 mt-1 ">

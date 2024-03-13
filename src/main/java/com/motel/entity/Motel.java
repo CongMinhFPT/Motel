@@ -19,6 +19,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Nationalized;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -57,9 +61,11 @@ public class Motel {
     boolean status = true;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motel")
+    @JsonManagedReference
 	List<MotelRoom> motelRoom;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "accountId")
+    @JsonIgnore
     Account account;
 }

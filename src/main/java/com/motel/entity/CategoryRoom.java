@@ -13,6 +13,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Nationalized;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +34,8 @@ public class CategoryRoom {
     @Nationalized
     String descriptions;
     boolean status;
-
+    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "categoryRoom")
+    @JsonIgnore 
 	List<MotelRoom> motelRoom;
 }

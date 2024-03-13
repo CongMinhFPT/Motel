@@ -11,6 +11,8 @@ input.addEventListener("change", function () {
   const fileserror = Array.from(input.files);
   if (fileserror.length >= 7) {
     texterrorfile.innerText = "Thông báo chỉ nhận 6 ảnh đầu ";
+  }else{
+    texterrorfile.innerText ='';
   }
   const reader = new FileReader();
   if (files[0] != null) {
@@ -125,6 +127,21 @@ function validateForm(event) {
     categoryRoomerror1.classList.add('d-block');
     check = false;
   }  
-  event.preventDefault(); // Ngăn việc gửi form khi có lỗi
+  if(!check){
+    event.preventDefault(); 
+  }
+  
 }
 document.getElementById('your-form-id').addEventListener('submit', validateForm);
+  var clickimg = function(img){
+     document.querySelectorAll(".image-box img").forEach(function (item) {
+          item.classList.remove("enlarged");
+        });
+        img.classList.add("enlarged");
+        selectedImage.src = img.src;
+  }
+  let imgElements = document.querySelectorAll('img#imgthyme');
+  if(imgElements.length!==0){
+    selectedImage.src = imgElements[0].src;
+  
+  }

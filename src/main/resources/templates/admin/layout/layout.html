@@ -22,7 +22,7 @@
 	<link href="/admin/vendor/owl-carousel/owl.carousel.css" rel="stylesheet">
 	<link href="/admin/css/style.css" rel="stylesheet">
 	<script th:src="@{/vendor/angular/angular.js}"></script> 
-
+	
 </head>
 
 <body>
@@ -37,6 +37,7 @@
         <nav th:replace="~{/admin/layout/header :: nav}"></nav>
         <main th:replace="${view}"></main>
         <div th:replace="~{/admin/layout/footer :: footer}"></div>
+        
 	</div>
 	
 	<script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
@@ -63,6 +64,7 @@
 	<script src="/admin/js/styleSwitcher.js"></script>
 	<script src="/Authority/auth.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+	
 	<!--Đăng xuất-->
 <script>
 	var logoutButton = document.getElementById('logoutButton');

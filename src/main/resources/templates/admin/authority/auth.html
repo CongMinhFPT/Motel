@@ -14,8 +14,6 @@
 						<h4 class="card-title mb-2">Phân Quyền</h4>
 						<!--<span>Lorem Ipsum sit amet</span>-->
 					</div>
-					<a href="javascript:void(0);" class="btn btn-info light mr-3"><i
-							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
 					
 				</div>
 				<div class="card-body">
@@ -29,7 +27,7 @@
 							</thead>
 							<tbody>
 								<tr ng-repeat="acc in db.accounts">
-									<th>{{acc.accountId}}</th>
+									<th>{{acc.email}}</th>
 									<th ng-repeat="role in db.roles">
 										<input type="checkbox" ng-checked="index_of(acc.accountId, role.id) >=0"
 											ng-click="update(acc.accountId, role.id)">

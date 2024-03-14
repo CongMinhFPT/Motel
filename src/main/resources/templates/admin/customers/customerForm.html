@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<div class="content-body">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-header d-sm-flex d-block">
+					<div class="mr-auto mb-sm-0 mb-3">
+						<h4 class="card-title mb-2">Cập nhật thông tin</h4>
+						<!--<span>Lorem Ipsum sit amet</span>-->
+					</div>
+					<a href="javascript:void(0);" class="btn btn-info light mr-3"><i
+							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
+					<a th:href="@{/admin/add-motel}" class="btn btn-info">+ Thêm Khách Hàng</a>
+				</div>
+				<div class="card-body">
+					<form class="signin-form mx-1 mx-md-4"
+						th:action="@{/edit/{accountId}(accountId=${account.accountId})}" th:object="${account}"
+						enctype="multipart/form-data" method="post">
+						<div class="row signin ">
+							<div class="col-lg-6">
+								<div class="form-group form-float">
+									<div class="form-line">
+										<img th:src="@{|/uploads/${account.avatar}|}" id="imagePreview"
+											class="img-fluid rounded-3 mb-3" alt="" style="height: 200px;">
+										<input type="file" id="uploadInput" class="form-control rounded-3" name="image"
+											placeholder="Chọn tệp" accept="image/*">
+									</div>
+									<i class="text-danger" th:text="${photo_message}"></i>
+								</div>
+							</div>
+							<div class="signin col-lg-6">
+								<div class="form-group form-float mb-3">
+									<div class="form-line">
+										<label class="form-label fw-bold" for="form3Example2c">Họ và tên</label>
+										<input type="text" id="form3Example2c" class="form-control rounded-3"
+											th:field="*{fullname}" placeholder="Nhập họ và tên">
+									</div>
+									<i class="text-danger" th:text="${fullname}"></i>
+									<i class="text-danger" th:errors="*{fullname}"></i>
+								</div>
+								<div class="form-group form-float mb-3">
+									<div class="form-line">
+										<label class="form-label fw-bold" for="form3Example4c">Số điện
+											thoại</label>
+										<input type="text" id="phone" name="phone" class="form-control rounded-3"
+											th:field="*{phone}" placeholder="Nhập số điện thoại">
+									</div>
+									<i class="text-danger" th:text="${phone}"></i>
+								</div>
+
+
+								<div class="d-flex flex-row align-items-center mb-3">
+
+									<div class="form-outline flex-fill mb-0">
+										<label class="form-label fw-bold" for="form3Example2c">Giới tính</label>
+										<br>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio" name="inlineRadioOptions"
+												id="inlineRadio1" th:value="true" th:field="*{gender}" required>
+											<label class="form-check-label" for="inlineRadio1">Nam</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="radio" name="inlineRadioOptions"
+												id="inlineRadio2" th:value="false" th:field="*{gender}" required>
+											<label class="form-check-label" for="inlineRadio2">Nữ</label>
+										</div>
+
+									</div>
+								</div>
+								<div class="form-group form-float mb-3">
+
+									<div class="form-line mb-0">
+										<label class="form-label fw-bold" for="form3Example3c">Ngày sinh</label>
+										<input type="date" id="form3Example3c" class="form-control rounded-3"
+											th:field="*{createDate}" placeholder="">
+									</div>
+									<i class="text-danger" th:text="${date}"></i>
+									<i class="text-danger" th:errors="*{createDate}"></i>
+								</div>
+								<div class="d-grid gap-2">
+									<button class="btn btn-secondary rounded-3">Cập nhật</button>
+									<a th:href="@{/customerList}" class="btn btn-secondary rounded-3">Quay về danh sách</a>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+	<!--information-->
+	<script th:if="${not #strings.isEmpty(update)}" th:inline="javascript">
+		var changeMessage = /*[[${update}]]*/ '';
+		Swal.fire({
+			icon: "success",
+			title: "Thành công!",
+			text: changeMessage,
+			showConfirmButton: false,
+			timer: 1500
+		});
+	</script>
+	<script>
+		document.getElementById('uploadInput').addEventListener('change', function () {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				document.getElementById('imagePreview').src = e.target.result;
+			}
+			reader.readAsDataURL(this.files[0]);
+		});
+	</script>
+</body>
+
+</html>

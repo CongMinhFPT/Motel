@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -25,6 +27,7 @@ import com.motel.repository.MotelRoomRepository;
 import com.motel.service.MotelRoomService;
 
 @Service
+@Transactional
 public class MotelRoomImpl implements MotelRoomService {
 
     @Autowired
@@ -252,39 +255,48 @@ public class MotelRoomImpl implements MotelRoomService {
                                 .getById(motelRoom.getCategoryRoom().getCategoryRoomId());
                                 motelRoom2.setCategoryRoom(categoryRoom);
                               }
-                                MotelRoom idmotelroom =   motelRoomRepository.save(motelRoom2);
+                                  motelRoomRepository.save(motelRoom2);
                                 if (CheckImgAddMotelRoom(files)) {
-                                    idmotelroom.getImage().forEach(a -> {
+                                    MotelRoom motelRoom3 =motelRoomRepository.getById(motelRoom.getMotelRoomId());
+                                    motelRoom3.getImage().forEach(a -> {
                                         fileManager.delete("ImgMotelRoom", a.getName());
                                     });
+                                    List<Image> images = motelRoom3.getImage();
+                                    for (Image image : images) {
+                                      image.setMotelRoom(null);
+                                      imageRepository.save(image);
+                                    }
+                                    imageRepository.deleteAllByMotelRoomIsNull();
                                     List<String> listname = fileManager.save("ImgMotelRoom", files);
-                                     List<Image> images =idmotelroom.getImage();
-                                     images.forEach(a->{
-                                        imageRepository.delete(a);
-                                     });
                                      listname.forEach(a -> {
                                         Image image = new Image();
-                                        image.setMotelRoom(idmotelroom);
+                                        image.setMotelRoom(motelRoom3);
                                         image.setName(a);
                                         imageRepository.save(image);
                                     });
-                                    attributes.addFlashAttribute("successMessageAddRoom", "Thêm phòng trọ thành công");
-                                    return "redirect:/admin/manage-motelroom";
+                                    attributes.addFlashAttribute("successMessageAddRoom", "Sửa phòng trọ thành công");
+                                    return "redirect:/admin/update-motelroom/"+motelRoom.getMotelRoomId();
                                 } else {
-                                    idmotelroom.getImage().forEach(a -> {
+                                    MotelRoom motelRoom3 = motelRoomRepository.getById(motelRoom.getMotelRoomId());
+                                    motelRoom3.getImage().forEach(a -> {
                                         fileManager.delete("ImgMotelRoom", a.getName());
                                     });
+                                    for (Image image : motelRoom3.getImage()) {
+                                        image.setMotelRoom(null);
+                                        imageRepository.save(image);
+                                    }
+                                    imageRepository.deleteAllByMotelRoomIsNull();
                                     MultipartFile[] first6Files = Arrays.copyOfRange(files, 0,
                                             Math.min(files.length, 6));
                                     List<String> listname = fileManager.save("ImgMotelRoom", first6Files);
                                     listname.forEach(a -> {
                                         Image image = new Image();
-                                        image.setMotelRoom(idmotelroom);
+                                        image.setMotelRoom(motelRoom3);
                                         image.setName(a);
                                         imageRepository.save(image);
                                     });
-                                    attributes.addFlashAttribute("successMessageAddRoom", "Thêm phòng trọ thành công");
-                                    return "redirect:/admin/manage-motelroom";
+                                    attributes.addFlashAttribute("successMessageAddRoom", "Sửa phòng trọ thành công");
+                                    return "redirect:/admin/update-motelroom/"+motelRoom.getMotelRoomId();
                                 }
                             } else {
                                 motelRoom2.setDescriptions(motelRoom.getDescriptions());
@@ -301,8 +313,8 @@ public class MotelRoomImpl implements MotelRoomService {
                                 motelRoom2.setCategoryRoom(categoryRoom);
                               }
                                 motelRoomRepository.save(motelRoom2);
-                                attributes.addFlashAttribute("successMessageAddRoom", "Thêm phòng trọ thành công");
-                                return "redirect:/admin/manage-motelroom";
+                                attributes.addFlashAttribute("successMessageAddRoom", "Sửa phòng trọ thành công");
+                                return "redirect:/admin/update-motelroom/"+motelRoom.getMotelRoomId();
                             }
                         }
                     }

@@ -29,7 +29,7 @@ public class Image {
 
     String name;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "motelRoomId")
     @JsonIgnore
     MotelRoom motelRoom;

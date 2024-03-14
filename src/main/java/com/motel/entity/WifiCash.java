@@ -14,6 +14,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.DecimalMin;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,5 +37,6 @@ public class WifiCash {
     
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "motelRoomId")
+    @JsonBackReference
     MotelRoom motelRoom;
 }

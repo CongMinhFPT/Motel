@@ -10,8 +10,8 @@
 </head>
 
 <body>
-	<div class="content-body ">
-		<div class="container-fluid">
+	<div class="content-body " ng-app="myAppUpdateMotelRoom" ng-controller="myCtrlUpdateMotelRoom">
+		<div class="container-fluid" >
 			<div class="form-head  d-flex flex-wrap align-items-center">
 				<h2 class="font-w600 title mb-2 mr-auto ">Sửa phòng trọ </h2>
 			</div>
@@ -89,7 +89,7 @@
 				<div>
 					<label class="form-label mt-4 text-black  " for="">Link video</label>
 					<div class="row ">
-						<input th:field="*{video}" type="text" class="form-control col-11  " id="Idinput-linkyoutube">
+						<input  th:field="*{video}" type="text" class="form-control col-11  " id="Idinput-linkyoutube">
 						<p class="col-1 form-control   btn btn-primary" data-bs-toggle="modal"
 							data-bs-target="#exampleModal" id="Idbutton-linkyoutube">Xem thử</p>
 					</div>
@@ -102,6 +102,75 @@
 				</div>
 				<button class="btn btn-light " type="submit">Thêm</button>
 			</form>
+			<div th:attr="ng-init='getallbill(\'' + ${motel.motelId} + '\', \'' + ${motelroom.motelRoomId} + '\')'">
+				<h2>Giá phòng và giá điện nước</h2>
+				<div class="row"> 
+					<div class="col-3 " ng-show="Checkbill!==''">
+						<div ng-show="Checkbill.ElectricityCash.length !== 0" class="card  text-center w-100  " >
+							<div>Ngày tạo {{ Checkbill.ElectricityCash[0].createDate | date:'dd/MM/yyyy' }}</div>
+							<div class="card-body">
+							  <h5 class="card-title">Giá điện</h5>
+							   <p>{{Checkbill.ElectricityCash[0].electricityBill }} /ký </p>
+							  <button ng-click="Updatabil('dien')" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-primary">Cập nhật</button>
+							</div>
+						  </div>
+						  <div ng-show="Checkbill.ElectricityCash.length === 0"  class="card  w-100  text-center">
+							<div class="card-body">
+								<h5 class="card-title">Giá điện</h5>
+								<button ng-click="Addbil('dien')"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm</button>
+							</div>
+						  </div>
+					</div>		
+					<div class="col-3 " ng-show="Checkbill!==''">
+						<div ng-show="Checkbill.WaterCash.length !== 0" class="card  text-center  w-100 " >
+							<div>Ngày tạo {{ Checkbill.WaterCash[0].createDate | date:'dd/MM/yyyy' }}</div>
+							<div class="card-body">
+							  <h5 class="card-title">Giá nước</h5>
+							   <p>{{Checkbill.WaterCash[0].waterBill }} /m2</p>
+							   <button ng-click="Updatabil('nuoc')" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-primary">Cập nhật</button>
+							</div>
+						  </div>
+						  <div ng-show="Checkbill.WaterCash.length === 0" class="card  w-100   text-center" >
+							<div class="card-body">
+								<h5 class="card-title">Giá nước</h5>
+								<button ng-click="Addbil('nuoc')"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm</button>
+							</div>
+						  </div>
+					</div>	
+					<div class="col-3 " ng-show="Checkbill!==''">
+						<div ng-show="Checkbill.WifiCash.length !== 0" class="card text-center  w-100 " >
+							<div>Ngày tạo {{ Checkbill.WifiCash[0].createDate | date:'dd/MM/yyyy' }}</div>
+							<div class="card-body">
+							  <h5 class="card-title">Giá wifi</h5>
+							   <p>{{ Checkbill.WifiCash[0].wifiBill}} / Tháng</p>
+							   <button ng-click="Updatabil('wifi')" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-primary">Cập nhật</button>
+							</div>
+						  </div>
+						  <div ng-show="Checkbill.WifiCash.length === 0" class="card w-100  text-center " >
+							<div class="card-body">
+								<h5 class="card-title">Giá wifi</h5>
+								<button ng-click="Addbil('wifi')"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm</button>
+							</div>
+						  </div>
+					</div>	
+					<div class="col-3 " ng-show="Checkbill!==''">
+						<div ng-show="Checkbill.RoomCash.length !== 0" class="card  text-center w-100 ">
+							<div>Ngày tạo {{ Checkbill.RoomCash[0].createDate | date:'dd/MM/yyyy' }}</div>
+							<div class="card-body">
+							  <h5 class="card-title">Giá Phòng</h5>
+							   <p>{{Checkbill.RoomCash[0].roomBill }} / Phòng</p>
+							   <button ng-click="Updatabil('giaphong')"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm</button>
+							</div>
+						  </div>
+						  <div ng-show="Checkbill.RoomCash.length === 0" class="card w-100  text-center" >
+							<div class="card-body">
+								<h5 class="card-title">Giá Room</h5>
+								<button ng-click="Addbil('giaphong')" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm</button>
+							</div>
+						  </div>
+					</div>		
+				</div>
+			</div>
 			<!-- Modal -->
 			<div class="modal fade " id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -117,6 +186,26 @@
 								title="YouTube video player" frameborder="0"
 								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 								allowfullscreen></iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+				<!-- Modal  Add update bill-->
+				<div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel"> {{addorupdata}} Tiền {{title}}</h1>
+							<button id="butclose" type="butto" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+						 <label class="form-label  " for="">Mời nhập chỉ số {{title}}</label>
+						 <input class="form-control mb-3  " type="text" ng-model="numberbill">
+						 <label  for="form-label " style="color: red;">{{error}}</label>
+						<div class="d-flex  justify-content-end ">
+							<button ng-click="PostBill()" class="btn btn-primary ">{{addorupdata}}</button>
+						</div>
 						</div>
 					</div>
 				</div>

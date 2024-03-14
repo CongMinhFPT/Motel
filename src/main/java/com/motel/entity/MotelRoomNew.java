@@ -35,7 +35,6 @@ public class MotelRoomNew {
     Double electricityBill;
     Double waterBill;
     Double wifiBill;
-    Double price;
     Double roomBill;
     Integer People;
     String title;
@@ -45,7 +44,6 @@ public class MotelRoomNew {
             Double electricityBill,
             Double waterBill,
             Double wifiBill,
-            Double price,
             Double roomBill,
             Integer People,
             String title,
@@ -61,7 +59,7 @@ public class MotelRoomNew {
         this.Numberphotos=Nameimg.size();
         this.electricityBill=electricityBill;
         this.waterBill=waterBill;
-        this.price = price;
+        this.wifiBill=wifiBill;
         this.roomBill =roomBill;
         this.People=People;
         this.title =title;

@@ -16,4 +16,5 @@ import com.motel.entity.Renter;
 public interface RenterRepository extends JpaRepository<Renter, Integer> {
     @Query("SELECT r FROM Renter r WHERE r.account = :account")
     Renter findByAccount(Account account);
+    
 }

@@ -10,4 +10,5 @@ public interface RoomCashRepository extends JpaRepository<RoomCash, Integer> {
 
     @Query("SELECT rc FROM RoomCash rc WHERE rc.motelRoom.motelRoomId = :motelRoomId")
     RoomCash findByMotelId(@Param("motelRoomId") Integer motelRoomId);
+    
 }

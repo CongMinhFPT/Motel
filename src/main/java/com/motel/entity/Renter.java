@@ -19,6 +19,7 @@ import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -31,7 +32,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 @Table(name = "renter")
-@ToString(exclude = { "invoice" })
+// @ToString(exclude = { "invoice" })
 public class Renter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +42,7 @@ public class Renter {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date renterDate;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "renter")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "renter")
     @JsonManagedReference
     List<Invoice> invoice;
 

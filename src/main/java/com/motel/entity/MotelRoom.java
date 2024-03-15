@@ -19,6 +19,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Nationalized;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -71,11 +72,11 @@ public class MotelRoom {
     @JsonManagedReference
     List<RoomCash> roomCash;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
     List<Indexs> index;
 
-    @OneToMany(mappedBy = "motelRoom")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
     List<Renter> renter;
 

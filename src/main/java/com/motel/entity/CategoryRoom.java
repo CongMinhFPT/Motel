@@ -31,5 +31,7 @@ public class CategoryRoom {
     @Nationalized
     String descriptions;
     boolean status;
- 
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "categoryRoom")
+	List<MotelRoom> motelRoom;
 }

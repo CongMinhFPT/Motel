@@ -16,6 +16,8 @@ import javax.validation.constraints.DecimalMin;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +33,6 @@ public class WifiCash {
     Integer wifiCashId;
     @DecimalMin( value = "0.1",message = "loi loi loi") 
     Double wifiBill;
-    Double price;
     @Temporal(TemporalType.DATE)
     Date createDate = new Date();
     

@@ -9,9 +9,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.motel.entity.FavoriteRoom;
+import com.motel.entity.Indexs;
 import com.motel.entity.MotelRoom;
 
 public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM motel_room AS m inner join favorite_room a on m.motel_room_id = a.motel_room_id WHERE EXISTS (SELECT 1 FROM favorite_room AS f WHERE f.motel_room_id = m.motel_room_id)")
     List<MotelRoom> findMotelRoomByFavoriteRoom();
+
+    @Query(nativeQuery = true, value = "select * from motel_room a inner join renter b on a.motel_room_id = b.motel_room_id")
+    List<MotelRoom> findMotelRooms();
+    
+    List<MotelRoom> findByMotel_DistrictAndMotel_Province(String district, String province);
 }

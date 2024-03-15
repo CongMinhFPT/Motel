@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org" th:fragment="dynamic(view)">
+
+<html lang="en" xmlns="http://www.thymeleaf.org" th:fragment="dynamic(view)">
+
 
 <head>
 	<meta charset="utf-8">
@@ -17,6 +19,7 @@
 	<title>Zenix - Crypto Admin Dashboard </title>
 	<!-- Favicon icon -->
 	<link rel="icon" type="image/png" sizes="16x16" href="/admin/images/favicon.png">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 	<link rel="stylesheet" href="/admin/vendor/chartist/css/chartist.min.css">
 	<link href="/admin/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
 	<link href="/admin/vendor/owl-carousel/owl.carousel.css" rel="stylesheet">
@@ -38,13 +41,14 @@
 		</div>
 	</div>
 	<div id="main-wrapper">
-        <nav th:replace="~{/admin/layout/header :: nav}"></nav>
-        <main th:replace="${view}"></main>
-        <div th:replace="~{/admin/layout/footer :: footer}"></div>
+		<nav th:replace="~{/admin/layout/header :: nav}"></nav>
+		<main th:replace="${view}"></main>
+		<div th:replace="~{/admin/layout/footer :: footer}"></div>
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.7.9/angular-locale_vi-vn.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-messages.js"></script>
+
 	<script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 	<script src="/admin/vendor/global/global.min.js"></script>
 	<script src="/admin/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
@@ -68,6 +72,7 @@
 	<script src="/admin/js/deznav-init.js"></script>
 	<script src="/admin/js/demo.js"></script>
 	<script src="/admin/js/styleSwitcher.js"></script>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 	<script src="/admin/js/motel/AddMotel.js"></script>
 	<script src="/admin/js/motel/AddRoom.js"></script>
@@ -137,6 +142,13 @@
 			});
 		}
 	</script>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="/js/renter.js"></script>
+	<script src="/js/invoice.js"></script>
+	<div th:replace="~{/admin/renter/scriptSweet}"></div>
+	<div th:replace="~{/admin/invoice/scriptSweet}"></div>
 
 </body>
 

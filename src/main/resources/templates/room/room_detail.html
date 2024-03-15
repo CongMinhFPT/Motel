@@ -6,7 +6,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
-	<title>Phòng trọ số #111</title>
+	<title>Phòng trọ số #[[${roomDetails.postId}]]</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- Font Awesome -->
@@ -34,6 +34,9 @@
 	<link rel="stylesheet" th:href="@{/css/main.css}">
 	<!-- Modernizr js -->
 	<script th:href="@{/vendor/js/vendor/modernizr-2.8.3.min.js}"></script>
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body>
@@ -49,9 +52,9 @@
 		<div class="breadcrumb-area mb-40 mt-150">
 			<div class="breadcrumb-content">
 				<ul>
-					<li><a href="index.html">Trang chủ</a></li>
+					<li><a href="/index">Trang chủ</a></li>
 					<li><a href="index.html">Nhà trọ</a></li>
-					<li class="active">Phòng trọ số #111</li>
+					<li class="active">Phòng trọ số #[[${roomDetails.postId}]]</li>
 				</ul>
 			</div>
 		</div>
@@ -64,74 +67,37 @@
 						<!-- Product Details Left -->
 						<div class="product-details-left">
 							<div class="product-details-images slider-navigation-1">
-								<div class="lg-image">
-									<a class="popup-img venobox vbox-item"
-										href="https://bandon.vn/resize/1000x700/a-c/zc-1/f/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"
-										data-gall="myGallery">
-										<img src="https://bandon.vn/resize/1000x700/a-c/zc-1/f/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"
-											alt="product image">
-									</a>
+								<div th:if="${roomDetails.motelRoom.video != null}" class="lg-image">
+									<!-- Nếu roomDetails.motelRoom.video không null, hiển thị iframe -->
+									<iframe style="width: 100%; height: 35rem;" th:src="${roomDetails.motelRoom.video}"
+										title="YouTube video player" frameborder="0"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+										allowfullscreen></iframe>
 								</div>
-								<div class="lg-image">
-									<a class="popup-img venobox vbox-item"
-										href="https://cdn1.123job.vn/123job/uploads/2022/03/04/2022_03_04______a9fde0454c1815792bc0e766d668f46b.jpg"
-										data-gall="myGallery">
-										<img src="https://cdn1.123job.vn/123job/uploads/2022/03/04/2022_03_04______a9fde0454c1815792bc0e766d668f46b.jpg"
-											alt="product image">
-									</a>
-								</div>
-								<div class="lg-image">
-									<a class="popup-img venobox vbox-item"
-										href="https://thietkenhadepmoi.com/wp-content/uploads/2020/11/phong-tro-dep-2023.jpg"
-										data-gall="myGallery">
-										<img src="https://thietkenhadepmoi.com/wp-content/uploads/2020/11/phong-tro-dep-2023.jpg"
-											alt="product image">
-									</a>
-								</div>
-								<div class="lg-image">
-									<a class="popup-img venobox vbox-item"
-										href="https://canthoplus.com/wp-content/uploads/2020/02/xay-nha-tro-can-tho.jpg"
-										data-gall="myGallery">
-										<img src="https://canthoplus.com/wp-content/uploads/2020/02/xay-nha-tro-can-tho.jpg"
-											alt="product image">
-									</a>
-								</div>
-								<div class="lg-image">
-									<a class="popup-img venobox vbox-item"
-										href="https://xaydungtienthanh.vn/wp-content/uploads/2020/09/xay-10-phong-tro-bao-nhieu-tien-5.jpg"
-										data-gall="myGallery">
-										<img src="https://xaydungtienthanh.vn/wp-content/uploads/2020/09/xay-10-phong-tro-bao-nhieu-tien-5.jpg"
-											alt="product image">
-									</a>
-								</div>
-								<div class="lg-image">
-									<a class="popup-img venobox vbox-item"
-										href="https://acihome.com.vn/uploads/15/thiet-ke-nha-tro-dep.jpg"
-										data-gall="myGallery">
-										<img src="https://acihome.com.vn/uploads/15/thiet-ke-nha-tro-dep.jpg"
-											alt="product image">
-									</a>
+								<div th:each="image : ${images}">
+									<div class="lg-image">
+										<a class="popup-img venobox vbox-item" th:href="@{|/uploads/${image.name}|}"
+											data-gall="myGallery">
+											<img th:src="@{|/uploads/${image.name}|}" alt="product image"
+												style="height: 35rem;">
+										</a>
+									</div>
 								</div>
 							</div>
 							<div class="product-details-thumbs slider-thumbs-1 mt-20">
-								<div class="sm-image"><img
-										src="https://bandon.vn/resize/1000x700/a-c/zc-1/f/uploads/posts/thiet-ke-nha-tro-dep-2020-bandon-0.jpg"
-										alt="product image thumb"></div>
-								<div class="sm-image"><img
-										src="https://cdn1.123job.vn/123job/uploads/2022/03/04/2022_03_04______a9fde0454c1815792bc0e766d668f46b.jpg"
-										alt="product image thumb"></div>
-								<div class="sm-image"><img
-										src="https://thietkenhadepmoi.com/wp-content/uploads/2020/11/phong-tro-dep-2023.jpg"
-										alt="product image thumb"></div>
-								<div class="sm-image"><img
-										src="https://canthoplus.com/wp-content/uploads/2020/02/xay-nha-tro-can-tho.jpg"
-										alt="product image thumb"></div>
-								<div class="sm-image"><img
-										src="https://xaydungtienthanh.vn/wp-content/uploads/2020/09/xay-10-phong-tro-bao-nhieu-tien-5.jpg"
-										alt="product image thumb"></div>
-								<div class="sm-image"><img
-										src="https://acihome.com.vn/uploads/15/thiet-ke-nha-tro-dep.jpg"
-										alt="product image thumb"></div>
+								<div th:if="${roomDetails.motelRoom.video != null}" class="sm-image">
+									<iframe style="width: 100%; height: 10rem;" th:src="${roomDetails.motelRoom.video}"
+										title="YouTube video player" frameborder="0"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+										allowfullscreen></iframe>
+								</div>
+								<div th:each="image : ${images}">
+									<div class="sm-image">
+										<img th:src="@{|/uploads/${image.name}|}" alt="product image thumb"
+											style="height: 10rem;">
+									</div>
+								</div>
+
 							</div>
 						</div>
 						<!--// Product Details Left -->
@@ -140,24 +106,56 @@
 					<div class="col-lg-5 col-md-5">
 						<div class="product-details-view-content pt-30">
 							<div class="product-info">
-								<h2>Today is a good day Framed poster</h2>
+								<h2>[[${roomDetails.title}]]</h2>
 								<div class="price-box pt-20">
-									<span class="new-price new-price-2">$ 3.000.000/tháng</span>
+									<span class="new-price new-price-2">$ [[${#numbers.formatInteger(roomCash.roomBill,
+										3, 'POINT')}]]/tháng</span>
 								</div>
 								<div class="product-desc mt-40">
 									<p>
-										<span> <i class='bx bx-fullscreen pe-1'></i> Diện tích: 33m2
+										<span> <i class='bx bx-fullscreen pe-1'></i> Diện tích:
+											[[${#numbers.formatInteger(roomDetails.motelRoom.length, 1, 'POINT')}]] x
+											[[${#numbers.formatInteger(roomDetails.motelRoom.width, 1, 'POINT')}]]
 										</span>
-										<span class="float-end"> <i class='bx bx-location-plus'></i> Địa chỉ: Ninh Kiều,
-											Cần Thơ
+										<span class="float-end"> <i class='bx bx-bed'></i></i> Số người:
+											[[${roomDetails.motelRoom.categoryRoom.title}]]
 										</span>
 									</p>
 								</div>
 								<div class="product-desc">
 									<p>
-										<span> <i class='bx bx-bed'></i></i> Số người: 2
+										<span> <i class='bx bx-location-plus'></i> Địa chỉ:
+											[[${roomDetails.motelRoom.motel.detailAddress}]],
+											[[${roomDetails.motelRoom.motel.ward}]],
+											[[${roomDetails.motelRoom.motel.district}]],
+											[[${roomDetails.motelRoom.motel.province}]]
 										</span>
-										<span class="float-end"> <i class='bx bx-wifi'></i> Wifi: Miễn phí
+									</p>
+								</div>
+								<div class="product-desc">
+									<p>
+										<span>
+											<i class='bx bx-vector'></i> Điện:
+											<span th:if="${roomElectricity.electricityBill eq 0}">Miễn phí</span>
+											<span
+												th:if="${roomElectricity.electricityBill > 0}">[[${#numbers.formatInteger(roomElectricity.electricityBill,
+												3, 'POINT')}]]/tháng</span>
+										</span>
+										<span class="float-end">
+											<i class='bx bx-wifi'></i></i> Wifi:
+											<span th:if="${roomWifi.wifiBill eq 0}">Miễn phí</span>
+											<spanlightning th:if="${roomWifi.wifiBill > 0}">
+												[[${#numbers.formatInteger(roomWifi.wifiBill,
+												3, 'POINT')}]]/tháng
+										</span>
+										</span>
+										<br>
+										<span>
+											<i class='bx bx-water'></i> Nước:
+											<span th:if="${roomWater.waterBill eq 0}">Miễn phí</span>
+											<span
+												th:if="${roomWater.waterBill > 0}">[[${#numbers.formatInteger(roomWater.waterBill,
+												3, 'POINT')}]]/tháng</span>
 										</span>
 									</p>
 								</div>
@@ -166,19 +164,32 @@
 									</span>
 									<div class="row mt-20">
 										<div class="col-2">
-											<img src="images/team/1.png" alt="" class="rounded-circle img-user">
+											<img th:src="@{|/uploads/${roomDetails.account.avatar}|}" alt=""
+												class="rounded-circle img-user mt-2">
 										</div>
 										<div class="col-9">
-											<span>Công Minh</span>
-											<p class="font-italic"> Ninh Kiều, Cần Thơ</p>
+											<span>[[${roomDetails.account.fullname}]]</span>
+											<p class="font-italic"> [[${roomDetails.account.email}]]</p>
 										</div>
 										<div class="col-1 my-auto">
 											<a href="#" class="float-end"><i class='bx bxs-chevron-right'></i>
 											</a>
 										</div>
 									</div>
-									<div class=" mt-50 mx-auto"><button type="button" class="btn px-5 btn-contact">Liện
-											hệ</button></div>
+									<div class=" mt-30 mx-auto d-flex flex-column">
+										<button type="button" class="btn px-5 btn-contact">
+											<i class='bx bx-phone'></i>
+											&nbsp;
+											[[${roomDetails.account.phone}]]</button>
+										<button type="button" class="btn px-5 btn-contact mt-10">
+											<i class='bx bxs-heart'></i>
+											&nbsp;
+											Yêu thích</button>
+										<button type="button" class="btn px-5 btn-contact mt-10">
+											<i class='bx bxs-message-dots'></i>
+											&nbsp;
+											Nhắn tin</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -201,18 +212,15 @@
 				<div class="tab-content">
 					<div id="description" class="tab-pane active show" role="tabpanel">
 						<div class="product-description">
-							<span>The best is yet to come! Give your walls a voice with a framed poster. This
-								aesthethic, optimistic poster will look great in your desk or in an open-space office.
-								Painted wooden frame with passe-partout for more depth.</span>
+							<span>[[${roomDetails.motelRoom.descriptions}]]</span>
 						</div>
 						<div class="product-description">
 							<span class="fw-bold">Vị trí trên bản đồ</span>
-							<p>● Khu ổ chuột tình cảm Ninh Kiều Cần Thơ</p>
-							<div class="gg-map">
-								<iframe
-									src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d982.202670984631!2d105.80876105436029!3d10.032475815403208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a062ea85686321%3A0xd9e437beb9e1ef66!2zQ-G6p3UgQ-G6p24gVGjGoSwgSMawbmcgUGjDuiwgQ8OhaSBSxINuZywgQ-G6p24gVGjGoSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1706541597033!5m2!1svi!2s"
-									style="border:0;" allowfullscreen="" loading="lazy"
-									referrerpolicy="no-referrer-when-downgrade" class="gg-map"></iframe>
+							<p>● [[${roomDetails.motelRoom.motel.detailAddress}]],
+								[[${roomDetails.motelRoom.motel.ward}]],
+								[[${roomDetails.motelRoom.motel.district}]],
+								[[${roomDetails.motelRoom.motel.province}]]</p>
+							<div class="gg-map" id="gg-map">
 							</div>
 						</div>
 					</div>
@@ -232,234 +240,51 @@
 					</div>
 					<div class="row">
 						<div class="product-active owl-carousel">
-							<div class="col-11">
+							<div class="col-11" th:each="room, iterStat : ${sameDistrictAndProvincePosts}">
 								<!-- single-product-wrap start -->
 								<div class="single-product-wrap">
 									<div class="product-image">
-										<a href="single-product.html">
-											<img src="https://acihome.com.vn/uploads/15/thiet-ke-nha-tro-dep.jpg"
-												alt="Li's Product Image">
+										<a th:href="@{'/room-details/' + ${room.postId}}">
+											<img th:src="@{|/uploads/${roomImage[iterStat.index]}|}"
+												alt="Li's Product Image" style="height: 20rem;">
 										</a>
 									</div>
 									<div class="product_desc">
 										<div class="product_desc_info">
-											<h4><a class="product_name" href="single-product.html">Nhà trọ ổ chuột tình
-													cảm sống chung với các bé chuột cống đáng yêu</a></h4>
+											<h4><a class="product_name" href="single-product.html"
+													th:text="${room.title}"></a></h4>
 											<div class="price-box mt-30">
-												<span class="new-price">$ 3 Triệu/tháng</span>
+												<span class="new-price"
+													th:text="'$ ' + ${#numbers.formatInteger(roomBills[iterStat.index],3, 'POINT')} + '/tháng'"></span>
 											</div>
 											<div class="product-desc mt-20">
 												<p>
-													<span> <i class='bx bx-fullscreen pe-1'></i> 33 m²
+													<span> <i
+															class='bx bx-fullscreen pe-1'></i>[[${#numbers.formatInteger(room.motelRoom.length,
+														1, 'POINT')}]] x
+														[[${#numbers.formatInteger(room.motelRoom.width, 1,
+														'POINT')}]]
 													</span>
-													<span class="float-end"> <i class='bx bxs-location-plus'></i> Ninh
-														Kiều, Cần Thơ
+													<span class="float-end"> <i class='bx bxs-location-plus'></i>
+														[[${room.motelRoom.motel.district}]],
+														[[${room.motelRoom.motel.province}]]
 													</span>
 												</p>
 											</div>
 											<div class="d-flex flex-column">
 												<div class="row mt-10">
 													<div class="col-2">
-														<img src="images/team/1.png" alt=""
-															class="rounded-circle img-user" style="width: 2.5rem;">
+														<img th:src="@{|/uploads/${room.account.avatar}|}" alt=""
+															class="rounded-circle img-user mt-2"
+															style="height: 2.5rem;">
 													</div>
 													<div class="col-8">
-														<span>Công Minh</span>
-														<p class="font-italic"> Ninh Kiều, Cần Thơ</p>
+														<span>[[${room.account.fullname}]]</span>
+														<p class="font-italic"> [[${room.account.email}]]</p>
 													</div>
 													<div class="col-2 my-auto">
 														<a href="#" class="float-end"><i
 																class='bx bxs-chevron-right'></i>
-														</a>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- single-product-wrap end -->
-							</div>
-							<div class="col-11">
-								<!-- single-product-wrap start -->
-								<div class="single-product-wrap">
-									<div class="product-image">
-										<a href="single-product.html">
-											<img src="https://acihome.com.vn/uploads/15/thiet-ke-nha-tro-dep.jpg"
-												alt="Li's Product Image">
-										</a>
-									</div>
-									<div class="product_desc">
-										<div class="product_desc_info">
-											<h4><a class="product_name" href="single-product.html">Nhà trọ ổ chuột tình
-													cảm sống chung với các bé chuột cống đáng yêu</a></h4>
-											<div class="price-box mt-30">
-												<span class="new-price">$ 3 Triệu/tháng</span>
-											</div>
-											<div class="product-desc mt-20">
-												<p>
-													<span> <i class="fa fa-arrows-alt"></i> 33 m²
-													</span>
-													<span class="float-end"> <i class="fa fa-map-marker"></i> Ninh Kiều,
-														Cần Thơ
-													</span>
-												</p>
-											</div>
-											<div class="d-flex flex-column">
-												<div class="row mt-10">
-													<div class="col-2">
-														<img src="images/team/1.png" alt=""
-															class="rounded-circle img-user" style="width: 2.5rem;">
-													</div>
-													<div class="col-8">
-														<span>Công Minh</span>
-														<p class="font-italic"> Ninh Kiều, Cần Thơ</p>
-													</div>
-													<div class="col-2 my-auto">
-														<a href="#" class="float-end"><i
-																class="fa fa-chevron-right"></i>
-														</a>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- single-product-wrap end -->
-							</div>
-							<div class="col-11">
-								<!-- single-product-wrap start -->
-								<div class="single-product-wrap">
-									<a href="index.html">
-										<div class="product-image">
-											<a href="single-product.html">
-												<img src="https://acihome.com.vn/uploads/15/thiet-ke-nha-tro-dep.jpg"
-													alt="Li's Product Image">
-											</a>
-										</div>
-										<div class="product_desc">
-											<div class="product_desc_info">
-												<h4><a class="product_name" href="single-product.html">Nhà trọ ổ chuột
-														tình cảm sống chung với các bé chuột cống đáng yêu</a></h4>
-												<div class="price-box mt-30">
-													<span class="new-price">$ 3 Triệu/tháng</span>
-												</div>
-												<div class="product-desc mt-20">
-													<p>
-														<span> <i class="fa fa-arrows-alt"></i> 33 m²
-														</span>
-														<span class="float-end"> <i class="fa fa-map-marker"></i> Ninh
-															Kiều, Cần Thơ
-														</span>
-													</p>
-												</div>
-												<div class="d-flex flex-column">
-													<div class="row mt-10">
-														<div class="col-2">
-															<img src="images/team/1.png" alt=""
-																class="rounded-circle img-user" style="width: 2.5rem;">
-														</div>
-														<div class="col-8">
-															<span>Công Minh</span>
-															<p class="font-italic"> Ninh Kiều, Cần Thơ</p>
-														</div>
-														<div class="col-2 my-auto">
-															<a href="#" class="float-end"><i
-																	class="fa fa-chevron-right"></i>
-															</a>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</a>
-								</div>
-								<!-- single-product-wrap end -->
-							</div>
-							<div class="col-11">
-								<!-- single-product-wrap start -->
-								<div class="single-product-wrap">
-									<div class="product-image">
-										<a href="single-product.html">
-											<img src="https://acihome.com.vn/uploads/15/thiet-ke-nha-tro-dep.jpg"
-												alt="Li's Product Image">
-										</a>
-									</div>
-									<div class="product_desc">
-										<div class="product_desc_info">
-											<h4><a class="product_name" href="single-product.html">Nhà trọ ổ chuột tình
-													cảm sống chung với các bé chuột cống đáng yêu</a></h4>
-											<div class="price-box mt-30">
-												<span class="new-price">$ 3 Triệu/tháng</span>
-											</div>
-											<div class="product-desc mt-20">
-												<p>
-													<span> <i class="fa fa-arrows-alt"></i> 33 m²
-													</span>
-													<span class="float-end"> <i class="fa fa-map-marker"></i> Ninh Kiều,
-														Cần Thơ
-													</span>
-												</p>
-											</div>
-											<div class="d-flex flex-column">
-												<div class="row mt-10">
-													<div class="col-2">
-														<img src="images/team/1.png" alt=""
-															class="rounded-circle img-user">
-													</div>
-													<div class="col-8">
-														<span>Công Minh</span>
-														<p class="font-italic"> Ninh Kiều, Cần Thơ</p>
-													</div>
-													<div class="col-2 my-auto">
-														<a href="#" class="float-end"><i
-																class="fa fa-chevron-right"></i>
-														</a>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- single-product-wrap end -->
-							</div>
-							<div class="col-11">
-								<!-- single-product-wrap start -->
-								<div class="single-product-wrap">
-									<div class="product-image">
-										<a href="single-product.html">
-											<img src="https://acihome.com.vn/uploads/15/thiet-ke-nha-tro-dep.jpg"
-												alt="Li's Product Image">
-										</a>
-									</div>
-									<div class="product_desc">
-										<div class="product_desc_info">
-											<h4><a class="product_name" href="single-product.html">Nhà trọ ổ chuột tình
-													cảm sống chung với các bé chuột cống đáng yêu</a></h4>
-											<div class="price-box mt-30">
-												<span class="new-price">$ 3 Triệu/tháng</span>
-											</div>
-											<div class="product-desc mt-20">
-												<p>
-													<span> <i class="fa fa-arrows-alt"></i> 33 m²
-													</span>
-													<span class="float-end"> <i class="fa fa-map-marker"></i> Ninh Kiều,
-														Cần Thơ
-													</span>
-												</p>
-											</div>
-											<div class="d-flex flex-column">
-												<div class="row mt-10">
-													<div class="col-2">
-														<img src="images/team/1.png" alt=""
-															class="rounded-circle img-user">
-													</div>
-													<div class="col-8">
-														<span>Công Minh</span>
-														<p class="font-italic"> Ninh Kiều, Cần Thơ</p>
-													</div>
-													<div class="col-2 my-auto">
-														<a href="#" class="float-end"><i
-																class="fa fa-chevron-right"></i>
 														</a>
 													</div>
 												</div>
@@ -478,6 +303,16 @@
 	</div>
 	<div th:replace="~{/layout/footer.html}">
 	</div>
+	<script>
+		const latitude = [[${latitude}]];
+		const longitude = [[${longitude}]];
+
+		const map = L.map('gg-map').setView([latitude, longitude], 17);
+		L.tileLayer(`https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}.png?key=TMaCmxPUt0XNH7bb7Wbt`, {
+			attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank"></a> <a href="https://www.openstreetmap.org/copyright" target="_blank"></a>'
+		}).addTo(map);
+		var marker = L.marker([latitude, longitude]).addTo(map);
+	</script>
 	<!-- Body Wrapper End Here -->
 	<!-- jQuery-V1.12.4 -->
 	<th:block id="javascriptResource">

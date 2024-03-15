@@ -36,7 +36,7 @@ public class Indexs {
     @Temporal(TemporalType.TIMESTAMP)
     Date createDate = new Date();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "motelRoomId")
     @JsonBackReference
     MotelRoom motelRoom;

@@ -20,7 +20,10 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Nationalized;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -66,6 +69,23 @@ public class Motel {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "accountId")
-    @JsonIgnore
+
+    @JsonBackReference
+
     Account account;
+
+    @Override
+public String toString() {
+    return "Motel{" +
+            "motelId=" + motelId +
+            ", descriptions='" + descriptions + '\'' +
+            ", province='" + province + '\'' +
+            ", district='" + district + '\'' +
+            ", ward='" + ward + '\'' +
+            ", detailAddress='" + detailAddress + '\'' +
+            ", image='" + image + '\'' +
+            ", createDate=" + createDate +
+            ", status=" + status +
+            '}';
+}
 }

@@ -24,11 +24,4 @@ public class HomeController {
     public String News_details(){
         return "home/news_details";
     }
-    
-    @GetMapping("/room-detail")
-    public String showRoomDetal(){
-        return "room/room_detail";
-    }
-
-    
 }

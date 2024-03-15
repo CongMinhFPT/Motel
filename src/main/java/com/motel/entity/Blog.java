@@ -68,8 +68,8 @@ public class Blog {
 
 	@Transient
 	public String getShortDes() {
-		if(descriptions.length() > 90) {
-			return descriptions.substring(0, 90).concat("...");
+		if(descriptions.length() > 100) {
+			return descriptions.substring(0, 100).concat("...");
 		}
 		return descriptions;
 	}
@@ -77,7 +77,7 @@ public class Blog {
 	@Transient
 	public String getCreateDateFormat() {
 		if(createDate != null) {
-			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy | HH:ss");  
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy | HH:mm:ss");  
 			String strDate = formatter.format(createDate);
 			return strDate;
 		}

@@ -25,6 +25,7 @@ public class PagingAndSortingHelper {
 		this.keyword = keyword;
 	}
 	
+	@SuppressWarnings("null")
 	public void updateModelAttributes(int pageNum, Page<?> page) {
 		List<?> listItems = page.getContent();
 		int pageSize = page.getSize();
@@ -44,6 +45,7 @@ public class PagingAndSortingHelper {
 		
 	}
 	
+	@SuppressWarnings("null")
 	public void listEntities(int pageNum, int pageSize, SearchRepository<?, Integer> repo) {
 //		Sort sort = Sort.by(sortField);
 //		

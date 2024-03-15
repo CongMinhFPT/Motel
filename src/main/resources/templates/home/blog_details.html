@@ -12,6 +12,7 @@
 	<link rel="stylesheet" th:href="@{/css/header.css}">
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
 	<link rel="stylesheet" th:href="@{/css/newdetails.css}">
+	<link rel="stylesheet" th:href="@{/css/news.css}">
 	<link rel="stylesheet" th:href="@{/css/main.css}">
 
 	<!-- Boxicons.css -->
@@ -39,53 +40,90 @@
 				</h2>
 				<p style="margin-bottom: 3rem;"> Ngày đăng: [[${blog.CreateDateFormat}]]</p>
 
-				<div th:utext="${blog.descriptions}"></div>
+				<div th:utext="${blog.descriptions}" style="background-color: none;"></div>
 				<img th:src="@{${blog.imagePath}}" style="width: 100%; margin-top: 1rem;" alt="">
 				<hr>
 
 				<h5>Tin tức liên quan về [[${tagName}]]</h5>
 
 
+				 
 
 
-				<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-					<div class="carousel-inner">
-						
-						
-						<div th:each="blog, start : ${blogSimilar}" th:classappend="${start.index == 0} ? 'carousel-item active' : 'carousel-item'" data-bs-interval="10000">
-							<div class="row g-0 d-flex ">
-								<div class="col-md-6">
-									<div class="card-body">
-										<h6 class="card-title" style="margin-bottom: 1rem;"><a th:href="@{/blog_details/} + ${blog.blogId}"> [[${blog.title}]] </a></h6>
-										<div th:utext="${blog.ShortDes}"></div>
-										<div class="blog-details">
-											<div class="icon-text"> <span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}"
-														alt=""></span> <span class="text">[[${blog.createDate}]]</span> </div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4"><a th:href="@{/blog_details/} + ${blog.blogId}"> <img th:src="@{${blog.imagePath}}" class="img-fluid rounded-1 h-100" alt=""> </a></div>
-							</div>
-						</div>
-						
-						
-						
-					</div>
-					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Previous</span>
-					</button>
-					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Next</span>
-					</button>
-				</div>
+
+
+
 
 				
 
-			</div>
+		
 
-		</div>
+				<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+					<div class="carousel-inner">
+						<div th:each="blog, start : ${blogSimilar}"
+							th:classappend="${start.index == 0} ? 'carousel-item active' : 'carousel-item'"
+							data-bs-interval="10000">
+							<div class="row g-0 d-flex">
+								<div class="col-md-7">
+									<!-- <div class="card-body">
+										<h6 class="card-title" style="margin-bottom: 1rem;"><a
+												th:href="@{/blog_details/} + ${blog.blogId}"> [[${blog.title}]] </a>
+										</h6>
+										<div th:utext="${blog.ShortDes}"></div>
+										<div class="blog-details">
+											<div class="icon-text"> <span class="icon"> <img
+														th:src="@{/img/icons8-calendar-24.png}" alt=""></span> <span
+													class="text">[[${blog.createDate}]]</span> </div>
+										</div>
+									</div>
+								</div>  -->
+
+									<div class="card-body">
+										<h6 class="card-title" style="margin-bottom: 1rem;">
+											<a th:href="@{/blog_details/} + ${blog.blogId}"> [[${blog.title}]] </a>
+										</h6>
+										<p style="font-size: 15px; margin-top: 1rem;" th:utext="${blog.ShortDes}">
+
+										</p>
+										<div class="blog-details">
+											<div class="icon-text">
+												<span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}"
+														alt=""></span>
+												<span class="text">[[${blog.createDate}]]</span>
+											</div>
+
+										</div>
+									</div>
+									<div class="col-md-5">
+										<a th:href="@{/blog_details/} + ${blog.blogId}">
+
+
+											<img th:src="@{${blog.imagePath}}" class="img-fluid rounded-1 h-100" alt="">
+										</a>
+									</div>
+								</div>
+							</div>
+
+
+
+						</div>
+						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+							data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+							data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
+					</div>
+
+
+
+				</div>
+
+			</div>
 
 	</main>
 

@@ -23,24 +23,20 @@ public interface BlogRepository extends SearchRepository<Blog, Integer> {
 	@Query("SELECT b FROM Blog b WHERE b.title LIKE %?1%")
 	public Page<Blog> findAll(String keyword, Pageable pageable);
 
-	@Query("SELECT b FROM Blog b WHERE (b.tag.tagId = ?1) AND" 
+	@Query("SELECT b FROM Blog b WHERE (b.tag.tagId = ?1) AND"
 			+ "(b.title LIKE %?2% OR "
-			+ "b.createDate LIKE %?2%)"
-			)
+			+ "b.createDate LIKE %?2%)")
 	public Page<Blog> searchInTag(Integer tagId, String keyword, Pageable pageable);
 
 	@Query("SELECT b FROM Blog b WHERE b.tag.tagId = ?1 ")
 	public Page<Blog> findAllInTag(Integer tagId, Pageable pageable);
 
-//    @Query(value = "Select * form Blog order by id desc limit :limit", nativeQuery = true)
-//    List<Blog> getListNewest(int limit);
+	@Modifying
+	@Query(value = "DELETE FROM blog WHERE blog_id = :blogId", nativeQuery = true)
+	void deleteByBlogId(@Param("blogId") Integer blogId);
 
 	@Modifying
-    @Query(value = "DELETE FROM blog WHERE blog_id = :blogId" , nativeQuery = true)
-    void deleteByBlogId(@Param("blogId") Integer blogId);
-	
-	@Modifying
-	@Query(value = "DELETE FROM blog WHERE tag_id = :tagId" , nativeQuery = true)
+	@Query(value = "DELETE FROM blog WHERE tag_id = :tagId", nativeQuery = true)
 	void deleteByTagId(@Param("tagId") Integer tagId);
 
 	@Query("SELECT b FROM Blog b WHERE b.tag.tagId = ?1 ")

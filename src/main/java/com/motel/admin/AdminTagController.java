@@ -47,7 +47,7 @@ public class AdminTagController {
 	public String removeTag(@PathVariable(name = "tagId") Integer tagId, RedirectAttributes ra) {
 		try {
 			tagService.deleteTag(tagId);
-			ra.addFlashAttribute("message", "Đã xóa Tag");
+			ra.addFlashAttribute("message", "Đã xóa thành công");
 		} catch (Exception e) {
 			ra.addFlashAttribute("message", e.getMessage());
 		}
@@ -55,7 +55,14 @@ public class AdminTagController {
 	}
 	@PostMapping("/admin/save-tag")
 	public String saveTag(Tag tag, RedirectAttributes ra) {
-		tagService.save(tag);
+
+		try {
+			tagService.save(tag);
+			ra.addFlashAttribute("message", "Đã lưu thành công");
+		} catch (Exception e) {
+			ra.addFlashAttribute("message", e.getMessage());
+		}
+		
 		return "redirect:/admin/tags";
 	}
 }

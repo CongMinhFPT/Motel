@@ -19,7 +19,7 @@
 							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
 					<a th:href="@{/admin/add-blog}" class="btn btn-info">+ Thêm tin tức</a>
 				</div>
-				<div th:if="${message != null}" id="messageAlert">[[${message}]]</div>
+				<div th:if="${message != null}" class="d-none" id="messageAlert">[[${message}]]</div>
 
 				<div class="card-body">
 					<div class="table-responsive">
@@ -27,13 +27,13 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>title</th>
-									<th>createDate</th>
-									<th>image</th>
-									<th>tag</th>
-									<th>account</th>
-									<th>status</th>
-									<th>action</th>
+									<th>Tiêu đề</th>
+									<th>Ngày tạo</th>
+									<th>Hình ảnh</th>
+									<th>Danh mục</th>
+									<th>Tài khoản</th>
+									<th>Trạng thái</th>
+									<th>Hoạt động</th>
 
 								</tr>
 							</thead>
@@ -53,10 +53,10 @@
 									<td>[[${blog.account.fullname}]]</td>
 									<td>
 										<th:block th:if="${blog.status == true}">
-											<span class="badge badge-warning">Pending</span>
+											<span class="badge badge-success" style="background-color: green;">Đang hoạt động</span>
 										</th:block>
 										<th:block th:if="${blog.status == false}">
-											<span class="badge badge-danger">Danger</span>
+											<span class="badge badge-secondary" style="background-color: grey;">Không hoạt động</span>
 										</th:block>
 									</td>
 									<td>

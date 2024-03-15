@@ -77,7 +77,7 @@ public class AdminBlogController {
 	public String removeBlog(@PathVariable(name = "blogId") Integer blogId, RedirectAttributes ra) {
 		try {
 			blogService.deleteBlog(blogId);
-			ra.addFlashAttribute("message", "Đã xóa blog thành công!");
+			ra.addFlashAttribute("message", "Đã xóa tin tức thành công!");
 		} catch (Exception e) {
 			ra.addFlashAttribute("message", e.getMessage());
 		}

@@ -12,23 +12,23 @@ th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
 			<div class="card">
 				<div class="card-header d-sm-flex d-block">
 					<div class="mr-auto mb-sm-0 mb-3">
-						<h4 class="card-title mb-2">Danh sách nhãn</h4>
+						<h4 class="card-title mb-2">Danh sách danh mục</h4>
 						<!--<span>Lorem Ipsum sit amet</span>-->
 					</div>
 					<a href="javascript:void(0);" class="btn btn-info light mr-3"><i
 							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
-					<a th:href="@{/admin/add-tag}" class="btn btn-info">+ Thêm tag</a>
+					<a th:href="@{/admin/add-tag}" class="btn btn-info">+ Thêm danh mục</a>
 				</div>
-				<div th:if="${message != null}" id="messageAlert"> >[[${message}]]</div>
+				<div th:if="${message != null}" class="d-none" id="messageAlert">[[${message}]]</div>
 				<div class="card-body">
 					<div class="table-responsive">
 						<table class="table style-1" id="ListDatatableView">
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>title</th>
-									<th>status</th>
-									<th>action</th>
+									<th>Tên danh mục</th>
+									<th>Trạng thái</th>
+									<th>Hoạt động</th>
 									
 								</tr>
 							</thead>
@@ -40,10 +40,10 @@ th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
 									<td>[[${tag.title}]]</td>
 									<td>
 										<th:block th:if="${tag.status == true}">
-											<span class="badge badge-warning">Pending</span>
+											<span class="badge badge-success" style="background-color: green;">Đang hoạt động</span>
 										</th:block>
 										<th:block th:if="${tag.status == false}">
-											<span class="badge badge-danger">Danger</span>
+											<span class="badge badge-secondary" style="background-color: grey;">Không hoạt động</span>
 										</th:block>
 									</td>
 									<td>

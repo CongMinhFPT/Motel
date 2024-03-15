@@ -111,7 +111,7 @@ public class BlogServiceImpl implements BlogService {
 
 	@Override
 	public List<Blog> findBlogSimilar(Integer tagId) {
-		// TODO Auto-generated method stub
+	
 		return blogRepo.listSimilar(tagId);
 	}
 

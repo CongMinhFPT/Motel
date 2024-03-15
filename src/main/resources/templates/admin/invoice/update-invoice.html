@@ -61,26 +61,24 @@
 						</div>
 					</div>
 				</div>
-				<!-- <div class="col-xl-6 col-lg-6">
+				<div class="col-xl-6 col-lg-6">
 					<div class="card">
 						<div class="card-body">
 							<div class="basic-form">
 								<form>
 									<div class="form-row">
 										<div class="form-group col-md-6">
-											<input type="number" id="amountVNPay" ng-value="invoices.totalPrice"
-												ng-model="amountVNPay" class="form-control">
-											<input type="number" id="invoiceIdVNPay" ng-model="invoiceIdVNPay"
-												ng-value="invoices.invoiceId" class="form-control">
+											<input type="number" ng-model="price" class="form-control">
+											<input type="number" ng-model="invoiceId" class="form-control">
 										</div>
-										<button class="btn btn-primary" ng-click="makePayment()">Lưu Lại</button>
+										<button class="btn btn-primary" ng-click="createPayment(invoices.totalPrice, invoices.invoiceId)">Lưu Lại</button>
 									</div>
 								</form>
 
 							</div>
 						</div>
 					</div>
-				</div> -->
+				</div>
 			</div>
 
 

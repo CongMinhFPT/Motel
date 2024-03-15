@@ -157,7 +157,7 @@ public class RegisterController {
 		if (error != null) {
 			model.addAttribute("error", "Đăng nhập thất bại!");
 		}
-		
+
 		return "home/signin";
 
 	}
@@ -173,12 +173,12 @@ public class RegisterController {
 		Account currentUser = accountsRepository.getByEmail(account.getEmail());
 		if (currentUser != null) {
 			session.setAttribute("currentUsername", currentUser.getEmail());
-			
+
 		}
 
 		session.setAttribute("user", currentUser);
 		System.out.println("user");
-		model.addAttribute("signin","Đăng nhập thành công!");
+		model.addAttribute("signin", "Đăng nhập thành công!");
 		return "home/signin";
 	}
 
@@ -186,7 +186,7 @@ public class RegisterController {
 	public String success(OAuth2AuthenticationToken oauth2, Model model) {
 		authorityService.loginFromOAuth2(oauth2);
 		OAuth2User oauth2User = oauth2.getPrincipal();
-//		String username = oauth2User.getAttribute("email");
+		// String username = oauth2User.getAttribute("email");
 		String email = oauth2User.getAttribute("email");
 		System.out.println("Email>> " + email);
 		String generatedString = randompassword();
@@ -212,7 +212,7 @@ public class RegisterController {
 			au.setRole(staff);
 			authorityRepository.save(au);
 		}
-		model.addAttribute("auth","Đăng nhập thành công!");
+		model.addAttribute("auth", "Đăng nhập thành công!");
 		return "home/signin";
 	}
 
@@ -226,7 +226,7 @@ public class RegisterController {
 	}
 
 	@PostMapping("/change/save")
-	public String changesubmit(Model model, @ModelAttribute("changepass") @Valid ChangePassword changepass, 
+	public String changesubmit(Model model, @ModelAttribute("changepass") @Valid ChangePassword changepass,
 			BindingResult bindingResult, Authentication authentication) {
 		String id = authentication.getName();
 		Account acc = accountsRepository.getByEmail(id);

@@ -10,12 +10,13 @@ public class HomeController {
     public String getMethodName() {
         return "home/index";
     }
-    @GetMapping("/news")
-    public String News(){
-        return "home/news";
+   
+    
+    @GetMapping("/room-detail")
+    public String showRoomDetal(){
+        return "room/room_detail";
     }
-    @GetMapping("/news_details")
-    public String News_details(){
-        return "home/news_details";
-    }
+
+
 }
+

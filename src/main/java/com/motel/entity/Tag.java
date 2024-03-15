@@ -3,6 +3,7 @@ package com.motel.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -27,9 +28,8 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer tagId;
     @Nationalized
+    @Column(name = "title")
     String title;
     boolean status;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tag")
-	List<Blog> blog;
 }

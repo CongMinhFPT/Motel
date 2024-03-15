@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-container input[type="search"],
+.search-container button {
+    margin-right: 5px;
+}
+
+.search-container button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: #e0e0e0;
+}
+
+</style>
+<body>
+    <div class="search-container">
+        <input type="search" name="keyword" class="form-control" placeholder="Nhập từ khóa bạn cần tìm" aria-label="Search" aria-describedby="search-addon">
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        <button type="button" class="btn btn-secondary">Xóa</button>
+    </div>
+</body>
+</html>

@@ -5,9 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.motel.entity.RoomCash;
-import com.motel.entity.WaterCash;
 
 public interface RoomCashRepository extends JpaRepository<RoomCash, Integer>{
-    @Query(nativeQuery = true, value = "select * from room_cash where motel_room_id = :motel_room_id")
-    RoomCash findByMotelRoomId(@Param("motel_room_id") Integer motelRoomId);
 }

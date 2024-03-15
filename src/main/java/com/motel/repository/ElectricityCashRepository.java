@@ -8,4 +8,6 @@ import com.motel.entity.ElectricityCash;
 
 
 public interface ElectricityCashRepository extends JpaRepository<ElectricityCash, Integer>{
+    @Query("SELECT rc FROM ElectricityCash rc WHERE rc.motelRoom.motelRoomId = :motelRoomId")
+    ElectricityCash findByMotelIdOfElectricityCash(@Param("motelRoomId") Integer motelRoomId);
 }

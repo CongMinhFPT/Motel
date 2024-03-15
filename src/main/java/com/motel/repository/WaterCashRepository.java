@@ -6,5 +6,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.motel.entity.WaterCash;
 
-public interface WaterCashRepository extends JpaRepository<WaterCash, Integer>{
+public interface WaterCashRepository extends JpaRepository<WaterCash, Integer> {
+    @Query("SELECT rc FROM WaterCash rc WHERE rc.motelRoom.motelRoomId = :motelRoomId")
+    WaterCash findByMotelIdOfWaterCash(@Param("motelRoomId") Integer motelRoomId);
 }

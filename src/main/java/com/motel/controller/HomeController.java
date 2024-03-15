@@ -17,6 +17,6 @@ public class HomeController {
         return "room/room_detail";
     }
 
-    
+
 }
 

@@ -1,5 +1,6 @@
 package com.motel.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,16 +26,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "cash")
-public class Cash {
+@Table(name = "electricityCash")
+public class ElectricityCash {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer cashId;
+    Integer electricityCashId;
     Double electricityBill;
-    Double waterBill;
+    @Temporal(TemporalType.DATE)
+    Date createDate = new Date();
     
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "motelRoomId")
+    @JsonBackReference
     MotelRoom motelRoom;
     
 }

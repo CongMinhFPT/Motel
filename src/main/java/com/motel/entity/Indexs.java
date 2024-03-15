@@ -9,11 +9,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,9 +33,11 @@ public class Indexs {
     Integer indexId;
     Double electricityIndex;
     Double waterIndex;
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     Date createDate = new Date();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "indexs")
-    List<MotelRoom> motelRoom;
+    @ManyToOne
+    @JoinColumn(name = "motelRoomId")
+    @JsonBackReference
+    MotelRoom motelRoom;
 }

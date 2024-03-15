@@ -28,26 +28,26 @@ import com.motel.service.MailerService;
 
 @Controller
 public class RegisterController {
-	
-	@Autowired 
+
+	@Autowired
 	AccountsRepository accountsRepository;
-    
+
 	@Autowired
 	RoleRepository roleRepository;
-	
+
 	@Autowired
 	AuthorityRepository authorityRepository;
-	
+
 	@Autowired
 	MailerService mailerService;
-	
+
 	@Autowired
 	HttpSession session;
 	@Autowired
 	BCryptPasswordEncoder pe;
-	
    
     
+	
     @GetMapping("/signup")
     public String Signup(@ModelAttribute("accounts") Account account) {
         return "home/signup";
@@ -89,37 +89,37 @@ public class RegisterController {
     	au.setRole(staff);
     	authorityRepository.save(au);
     	
-    	mailerService.add(memeMessage -> {
-    		MimeMessageHelper helper = new MimeMessageHelper(memeMessage);
-    		try {
+		mailerService.add(memeMessage -> {
+			MimeMessageHelper helper = new MimeMessageHelper(memeMessage);
+			try {
 				helper.setTo(account.getEmail());
 				helper.setSubject("Nhà Trọ F.E Xin Chào!");
 				helper.setText("Nhà trọ F.E luôn là lựa chọn tốt nhất. Hân hạnh được phục vụ quí khách!");
 			} catch (MessagingException e) {
 				e.printStackTrace();
 			}
-    	});
-    	
-    	model.addAttribute("create", "Thêm mới thành công!");
-    
-    	return "redirect:/signin";
-    }
-    
-    @RequestMapping("/signin")
-    public String error(Model model, @RequestParam(required = false) String error) {
-    	if (error != null) {
+		});
+
+		model.addAttribute("create", "Thêm mới thành công!");
+
+		return "redirect:/signin";
+	}
+
+	@RequestMapping("/signin")
+	public String error(Model model, @RequestParam(required = false) String error) {
+		if (error != null) {
 			model.addAttribute("error", "Đăng nhập thất bại!");
 		}
-        return "home/signin";
+		return "home/signin";
 
-    }
-    
-    @RequestMapping("/auth/access/denied")
-    public String denied(Model model) {
-    	model.addAttribute("error", "Bạn không có quyền truy cập!");
-    	return "home/signin";
-    }
-    
+	}
+
+	@RequestMapping("/auth/access/denied")
+	public String denied(Model model) {
+		model.addAttribute("error", "Bạn không có quyền truy cập!");
+		return "home/signin";
+	}
+
 	@PostMapping("/sigin/save")
 	public String sigin(Model model, @ModelAttribute("accounts") Account account) {
 		Account currentUser = accountsRepository.getByEmail(account.getEmail());
@@ -131,24 +131,24 @@ public class RegisterController {
 		System.out.println("user");
 		return "redirect:/index";
 	}
-	
-    @GetMapping("/change")
-    public String Change() {
-        return "home/change_password";
-    }
 
-    @GetMapping("/forgot")
-    public String Forgot() {
-        return "home/forgot_password";
-    }
+	@GetMapping("/change")
+	public String Change() {
+		return "home/change_password";
+	}
+
+	@GetMapping("/forgot")
+	public String Forgot() {
+		return "home/forgot_password";
+	}
 
     @GetMapping("/information")
     public String Information() {
-        return "home/information";
-    }
-    
-    @GetMapping("/logout")
-    public String logout() {
-    	return "forward:/signin";
-    }
+		return "home/information";
+	}
+
+	@GetMapping("/logout")
+	public String logout() {
+		return "forward:/signin";
+	}
 }

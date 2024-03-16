@@ -144,19 +144,19 @@ public class InvoiceController {
         return "/admin/invoice/update-invoice";
     }
 
-    @GetMapping("/payment_infor")
-    public String transaction(
-            @RequestParam(value = "vnp_OrderInfo") String orderInfo,
-            @RequestParam(value = "vnp_ResponseCode") String responseCode) {
-        String invoiceIdString = orderInfo.substring(orderInfo.length() - 2);
+    // @GetMapping("/payment_infor")
+    // public String transaction(
+    //         @RequestParam(value = "vnp_OrderInfo") String orderInfo,
+    //         @RequestParam(value = "vnp_ResponseCode") String responseCode) {
+    //     String invoiceIdString = orderInfo.substring(orderInfo.length() - 2);
 
-        if (responseCode.equals("00")) {
-            Invoice invoice = invoiceRepository.findById(Integer.parseInt(invoiceIdString))
-                    .orElseThrow(() -> new IllegalArgumentException("Không tồn tại hợp đồng này của sinh viên"));
-            invoice.setInvoiceStatus(invoiceStatusRepository.findAll().get(0));
-            invoiceRepository.save(invoice);
-        }
-        return "redirect:/admin/invoice";
-    }
+    //     if (responseCode.equals("00")) {
+    //         Invoice invoice = invoiceRepository.findById(Integer.parseInt(invoiceIdString))
+    //                 .orElseThrow(() -> new IllegalArgumentException("Không tồn tại hợp đồng này của sinh viên"));
+    //         invoice.setInvoiceStatus(invoiceStatusRepository.findAll().get(0));
+    //         invoiceRepository.save(invoice);
+    //     }
+    //     return "redirect:/admin/invoice";
+    // }
 
 }

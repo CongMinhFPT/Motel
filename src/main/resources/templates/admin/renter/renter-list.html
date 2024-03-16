@@ -17,7 +17,7 @@
 					</div>
 					<a onclick="printRenterTable()" class="btn btn-info light mr-3"><i
 							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
-					<a th:href="@{/admin/addRenter}" class="btn btn-info">+ Thêm Người Thuê</a>
+					<a th:href="@{/admin/renter/add-renter}" class="btn btn-info">+ Thêm Người Thuê</a>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
@@ -47,7 +47,7 @@
 									</td>
 									<td>
 										<div class="d-flex action-button">
-											<a th:href="@{|/admin/updateRenter/${renter.renterId}|}"
+											<a th:href="@{|/admin/renter/update-renter/${renter.renterId}|}"
 												class="btn btn-info btn-xs light px-2">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +81,8 @@
 														stroke="#fff" stroke-width="2" stroke-linecap="round"
 														stroke-linejoin="round"></path>
 												</svg>
-												</ </div>
+											</a>
+										</div>
 									</td>
 								</tr>
 							</tbody>

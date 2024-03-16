@@ -25,7 +25,7 @@ public class RenterController {
     @Autowired
     RenterRepository renterRepository;
 
-    @GetMapping("/admin/addRenter")
+    @GetMapping("/admin/renter/add-renter")
     public String getAddRenter() {
         return "/admin/renter/add-renter";
     }
@@ -37,7 +37,7 @@ public class RenterController {
         return "/admin/renter/renter-list";
     }
 
-    @GetMapping("/admin/updateRenter/{renterId}")
+    @GetMapping("/admin/renter/update-renter/{renterId}")
     public String getRenter(@PathVariable("renterId") Integer renterId, Model model) {
         Renter renter = renterService.getRenter(renterId);
         model.addAttribute("renter", renter);

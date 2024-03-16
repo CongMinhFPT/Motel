@@ -1,0 +1,26 @@
+<script th:inline="javascript">
+	var success = /*[[${success}]]*/ false;
+	if (success) {
+		Swal.fire({
+			title: "Thành công!",
+			icon: "success",
+			timer: 3000,
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+		})
+	}
+
+	var error = /*[[${error}]]*/ null;
+	if (error !== null) {
+		Swal.fire({
+			title: "Lỗi!",
+			text: error,
+			icon: "error",
+			timer: 3000,
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+		});
+	}
+</script>

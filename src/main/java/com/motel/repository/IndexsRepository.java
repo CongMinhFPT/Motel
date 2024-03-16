@@ -18,4 +18,6 @@ public interface IndexsRepository extends JpaRepository<Indexs, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM indexs WHERE motel_room_id = :motel_room_id ORDER BY YEAR(create_date) DESC, MONTH(create_date) DESC")
     List<Indexs> findByMotelRoomIdOrderByMonth(@Param("motel_room_id") Integer motelRoomId);
 
+    @Query(nativeQuery = true, value = "SELECT * FROM indexs ORDER BY YEAR(create_date) DESC, MONTH(create_date) DESC")
+    List<Indexs> findAllDESC();
 }

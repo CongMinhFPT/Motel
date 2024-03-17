@@ -7,7 +7,7 @@ import com.motel.exception.PostNotFoundException;
 
 public interface PostService {
    
-    List<Post> getListBlog();
+    List<Post> getListPost();
     
     void deleteBlog(Integer blogId) throws PostNotFoundException;
 

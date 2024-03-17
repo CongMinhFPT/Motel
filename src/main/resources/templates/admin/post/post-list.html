@@ -17,7 +17,7 @@
 					</div>
 					<a href="javascript:void(0);" class="btn btn-info light mr-3"><i
 							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
-					<a th:href="@{/admin/add-blog}" class="btn btn-info">+ Thêm tin tức</a>
+					<a th:href="@{/admin/add-post}" class="btn btn-info">+ Thêm tin tức</a>
 				</div>
 				<div th:if="${message != null}" class="d-none" id="messageAlert">[[${message}]]</div>
 
@@ -37,30 +37,25 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="blog : ${listBlogs}">
+								<tr th:each="p : ${listPosts}">
 									<td>
-										<h6>[[${blog.blogId}]]</h6>
+										<h6>[[${p.postId}]]</h6>
 									</td>
-									<td>[[${blog.title}]]</td>
-									<td>[[${blog.CreateDateFormat}]]</td>
+									<td>[[${p.title}]]</td>
+									<td>[[${p.CreateDateFormat}]]</td>
+									<td>[[${p.tag.title}]]</td>
+									<td>[[${p.account.fullname}]]</td>
 									<td>
-										<img class="img-fluid" width="150"
-											th:if="${blog.image != null || !blog.image.empty}"
-											th:src="@{${blog.imagePath}}" alt="Thumb image" id="thumbimage" />
-									</td>
-									<td>[[${blog.tag.title}]]</td>
-									<td>[[${blog.account.fullname}]]</td>
-									<td>
-										<th:block th:if="${blog.status == true}">
+										<th:block th:if="${p.status == true}">
 											<span class="badge badge-success" style="background-color: green;">Đang hoạt động</span>
 										</th:block>
-										<th:block th:if="${blog.status == false}">
+										<th:block th:if="${p.status == false}">
 											<span class="badge badge-secondary" style="background-color: grey;">Không hoạt động</span>
 										</th:block>
 									</td>
 									<td>
 										<div class="d-flex action-button">
-											<a th:href="@{/admin/edit-blog/} + ${blog.blogId}"
+											<a th:href="@{/admin/edit-post/} + ${p.blogId}"
 												class="btn btn-info btn-xs light px-2">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
@@ -85,7 +80,7 @@
 											</a>-->
 
 											<div
-												th:replace="layout/paging :: delete(${blog.blogId}, ${blog.blogId}, '/admin/remove-blog/' + ${blog.blogId}, true)">
+												th:replace="layout/paging :: delete(${p.postId}, ${p.postId}, '/admin/remove-post/' + ${p.postId}, true)">
 											</div>
 
 										</div>

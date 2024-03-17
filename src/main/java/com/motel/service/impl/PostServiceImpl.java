@@ -19,7 +19,7 @@ public class PostServiceImpl implements PostService {
 	private PostRepository postRepo;
 	
 	@Override
-	public List<Post> getListBlog() {
+	public List<Post> getListPost() {
 		// TODO Auto-generated method stub
 		return (List<Post>) postRepo.findAll();
 	}

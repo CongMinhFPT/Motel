@@ -19,19 +19,21 @@
 				<a class="p-3 btn btn-success  " th:href="@{/admin/add-motelroom}">Thêm phòng trọ </a>
 			</div>
 			<Label>Loại phòng</Label>
-			<select class="form-control mb-3 w-25  " ng-model="selectedCategory"  ng-change="filterItems()">
+			<select class="form-control mb-3 w-25  " ng-model="selectedCategory" ng-change="filterItems()">
 				<option value="">Tất cả</option>
 				<option ng-repeat="item in ListCategoryRoom" value="{{item}}">{{item}}</option>
 			</select>
 			<div class=" row ">
-				<div class=" col-12 "  ng-repeat="item in ListMotelRoom">
-					<div class="card mb-3 w-100 " >
+				<div class=" col-12 " ng-repeat="item in ListMotelRoom">
+					<div class="card mb-3 w-100 ">
 						<div class="row g-0">
 							<div class="col-md-5 p-3 ">
 								<div id="carouselExampleFade{{$index}}" class="carousel slide carousel-fade p-2 ">
 									<div class="carousel-inner" style="height: 250px;">
-										<div ng-class="{'carousel-item active': $index === 0, 'carousel-item': $index !== 0}"  ng-repeat="item in item.nameimg">
-											<img  src="/files/ImgMotelRoom/{{item}}"class="d-block w-100 rounded-2" alt="...">
+										<div ng-class="{'carousel-item active': $index === 0, 'carousel-item': $index !== 0}"
+											ng-repeat="item in item.nameimg">
+											<img src="/files/ImgMotelRoom/{{item}}" class="d-block w-100 rounded-2"
+												alt="...">
 										</div>
 									</div>
 									<button class="carousel-control-prev" type="button"
@@ -49,7 +51,9 @@
 							<div class="col-md-7">
 								<div class="card-body">
 									<div>
-                                        <h5 class="card-title d-flex  justify-content-between "> Mã # {{item.motelRoomId}}<span class="badge text-bg-warning h5 ">{{ item.createDate | date:'dd/MM/yyyy' }}</span>
+										<h5 class="card-title d-flex  justify-content-between "> <span
+												class="badge text-bg-warning h5 ">Ngày tạo:{{ item.createDate |
+												date:'dd/MM/yyyy' }}</span>
 											<span class="d-inline-block pe-2">
 												<span ng-show="item.status"><span
 														style="width: 10px; height: 10px; background-color: #31a24c; display: inline-block; border-radius: 50%;margin-left: 0.5rem;"></span>
@@ -61,22 +65,33 @@
 										</h5>
 									</div>
 									<p class="card-text">{{item.descriptions}}</p>
-									<p class="card-text row">
-										<span class="text-body-secondary col-4">Rộng  {{item.width}} Cm</span>
-										<span class="text-body-secondary col-4 ">Dài {{item.length}}</span>
-										<span class="text-body-secondary col-4">electricityBill {{item.electricityBill !==null ? item.electricityBill : 'Chưa có' }}</span>
-										<span class="text-body-secondary col-4">waterBill {{item.waterBill !==null ? item.waterBill : 'Chưa có' }}</span>
-										<span class="text-body-secondary col-4">wifiBill  {{item.wifiBill !==null ? item.wifiBill : 'Chưa có' }}</span>
-										<span class="text-body-secondary col-4">roomBill  {{item.roomBill !==null ? item.roomBill : 'Chưa có' }}</span>
-										<span class="text-body-secondary col-4">Loại nhà {{item.title}}</span>
-										<span class="text-body-secondary col-4">name      {{item.name !==null ? item.name : 'Chưa có' }}</span>
-										<span class="text-body-secondary  col-4">numberphotos {{item.numberphotos}}</span>
-										<span class="text-body-secondary  col-4">name {{item.people}}</span>
-									</p>
-								   <div class="d-flex  justify-content-between ">
-									<a class="btn btn-danger " href="/admin/update-motelroom/{{item.motelRoomId}}">Cập nhật</a>
-									<button ng-click="repvideo(item.video)" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#exampleModal">Xem Video</button>
-								   </div> 
+									<div class="card-text row w-100 ">
+										<div class="col-6 row">
+											<span class="text-body-secondary col-12">Loại phòng: {{item.title}}</span>
+											<span class="text-body-secondary col-6">Rộng: {{item.width}} cm</span>
+											<span class="text-body-secondary col-6 ">Dài: {{item.length}} cm</span>
+											<span class="text-body-secondary  col-6"> Số ảnh: {{item.numberphotos}}</span>
+											<span class="text-body-secondary  col-6">Số người: {{item.people}}</span>
+										</div>
+										<div class="col-6 row">
+											<span class="text-body-secondary col-12 m-1 ">Giá điện: {{item.electricityBill
+												!==null ?(item.electricityBill|number) +' '+ 'VND'+' '+'/ KWh' : 'Chưa
+												có' }}</span>
+											<span class="text-body-secondary col-12 m-1">Giá nước: {{item.waterBill !==null ?
+												(item.waterBill|number) +' '+ 'VND'+' '+'/ m³' : 'Chưa có' }}</span>
+											<span class="text-body-secondary col-12 m-1">Giá wifi: {{item.wifiBill !==null ?
+												(item.wifiBill|number) +' '+ 'VND'+' '+'/ Tháng' : 'Chưa có' }}</span>
+											<span class="text-body-secondary col-12 m-1">Giá phòng: {{item.roomBill !==null ?
+												(item.roomBill|number) +' '+ 'VND'+' '+'/ Tháng' : 'Chưa có' }}</span>
+										</div>
+
+									</div>
+									<div class="d-flex  justify-content-between mt-2  ">
+										<a class="btn btn-danger "
+											href="/admin/update-motelroom/{{item.motelRoomId}}">Cập nhật</a>
+										<button ng-click="repvideo(item.video)" class="btn btn-success "
+											data-bs-toggle="modal" data-bs-target="#exampleModal">Xem Video</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -86,23 +101,23 @@
 		</div>
 	</div>
 	<div class="modal fade " id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="exampleModalLabel">Xem Video</h1>
-				<button ng-click="daovideo()" type="butto" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-					<iframe  class="mt-3  w-100 " height="500"
-					ng-src="{{linkfull}}"
-					title="YouTube video player" frameborder="0"
-					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-					allowfullscreen></iframe>
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Xem Video</h1>
+					<button ng-click="daovideo()" type="butto" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<iframe class="mt-3  w-100 " height="500" ng-src="{{linkfull}}" title="YouTube video player"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						allowfullscreen></iframe>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 </body>
 
 </html>

@@ -31,7 +31,6 @@ public class WifiCash {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer wifiCashId;
-    @DecimalMin( value = "0.1",message = "loi loi loi") 
     Double wifiBill;
     @Temporal(TemporalType.DATE)
     Date createDate = new Date();

@@ -19,7 +19,7 @@
 			</div>
 			<div class=" row ">
 				<div class="col-12 col-md-4  p-2  " th:each="item : ${listmotel}">
-					<div class=" bg-white  h-100 pt-3   position-relative  ">
+					<div class=" bg-white  h-100 pt-3 p-2  position-relative  ">
 						<div class="avatar-frame ">
 							<img th:src="@{'/files/ImgMotel/' + ${item.image}}" class="avatar-image" alt="...">
 						</div>
@@ -44,9 +44,8 @@
 								[[${item.detailAddress}]]
 							</p>
 						</div>
-						<span class="h5 p-2  position-absolute top-0  end-0 "><span>Mã #
-							</span>[[${item.motelId}]]</span>
-						<div class="position-absolute top-0  " th:if="${motel!=null}">
+					
+						<div style="top: 10px;" class="position-absolute " th:if="${motel!=null}">
 							<a th:if="${motel.motelId!=item.motelId}"
 								th:href="@{/admin/manage-motel/{id}(id=${item.motelId})}" class="btn btn-primary">Quản
 								lý</a>

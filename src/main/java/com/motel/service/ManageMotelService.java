@@ -29,6 +29,7 @@ import com.motel.FileManager.FileManager;
 import com.motel.entity.Account;
 import com.motel.entity.CustomUserDetails;
 import com.motel.entity.Motel;
+import com.motel.entity.MotelRoom;
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.MotelRepository;
 import com.motel.service.impl.ManageMotelImpl;
@@ -241,6 +242,14 @@ public class ManageMotelService implements ManageMotelImpl {
             CustomUserDetails customUserDetails = CheckLogin().get();
             if (CheckAccountSetIdMotel(customUserDetails)) {
                 SetModelMotel(model);
+                int number=0;
+                List<MotelRoom>list = motelR.getById(customUserDetails.getMotelid()).getMotelRoom();
+                if (!list.isEmpty()) {
+                  for (MotelRoom list2 : list) {
+                    number+=list2.getRenter().size();
+                  }
+                }
+                model.addAttribute("number", number);
                 return "admin/motel/home-motel";
             } else {
                 return "redirect:/admin/manage-motel";

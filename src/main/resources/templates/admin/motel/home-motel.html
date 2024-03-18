@@ -22,7 +22,7 @@
               <button class="accordion-button h5" type="button" data-bs-toggle="collapse"
                 data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
                 aria-controls="panelsStayOpen-collapseOne">
-                Thông tin Nhà trọ #[[*{motelId}]] ,
+                Thông tin Nhà trọ,
                 <span th:if="*{status}==true"><span style="width: 10px; height: 10px; background-color: #31a24c; display: inline-block; border-radius: 50%;margin-left: 0.5rem;"
                   ></span> Đang Hoạt động </span>
                 <span th:if="*{status}==false"><span style="width: 10px; height: 10px; background-color: #959a96; display: inline-block; border-radius: 50%;margin-left: 0.5rem;"
@@ -39,11 +39,11 @@
                     </div>
                     <div class=" col-12 col-md-10   row">
                       <div class=" row ">
-                        <p class="h2 col-12 col-md-3   ">Mô tả</p>
-                        <p class="h5 col-12  col-md-3      ">Ngày tạo : [[*{#dates.format(createDate, 'dd/MM/yyyy')}]]</p>
-                        <p class="h5 col-12 col-md-3   ">Số phòng đang có : <span>5</span> <i class="bi bi-house-door"></i></p>
-                        <p class="h5 col-12  col-md-3    ">Số người ở hiện có : <span>8</span> <i class="bi bi-person"></i></p>
+                        <p class="h5 col-12  col-md-4    ">Ngày tạo : [[*{#dates.format(createDate, 'dd/MM/yyyy')}]]</p>
+                        <p class="h5 col-12 col-md-4   ">Số phòng đang có : <span th:text="*{#lists.size(motelRoom)}"></span> <i class="bi bi-house-door"></i></p>
+                        <p class="h5 col-12  col-md-4    ">Số người ở hiện có :  <span th:text="${number}"></span>  <i class="bi bi-person"></i></p>
                       </div>
+                      <p class="h4 col-12 col-md-3   ">Mô tả</p>
                       <p class="alert alert-primary h4 col-12 " role="alert">[[*{descriptions}]]</p>
                     </div>
                   </div>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="d-flex  justify-content-between ">
                   <a class="btn"  th:onclick="'javascript:conditionmotel(\'' + ${motel.status} + '\')'">
-                    <span  class="link-secondary " th:if="*{status}==true">Tắt Hoạt động</span>
+                    <span  class="link-secondary  " th:if="*{status}==true">Tắt hoạt động</span>
                     <span class="link-success" th:if="*{status}==false">Bật hoạt động</span> </a>
                   <a class="p-3 btn btn-success  " href="/admin/update-motel">Sửa thông tin nhà trọ nhà trọ </a>
                 </div>
@@ -68,5 +68,4 @@
   </div>
 </body>
 </style>
-
 </html>

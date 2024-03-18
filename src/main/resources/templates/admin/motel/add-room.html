@@ -24,7 +24,11 @@
 							<img class="card-img-top rounded-3 " id="selected-image">
 						</div>
 						<div class="image-box row mt-5 " id="image-box"></div><br>
-						<input name="files" class="mt-3" type="file" id="input" accept="image/*" multiple><br>
+						<label for="input" class="btn btn-primary mt-3">
+							<i for="input" class="fas fa-upload"></i> Chọn ảnh 
+							<input name="files" class="mt-3 d-none " type="file" id="input" accept="image/*" multiple><br>
+						  </label>
+	
 						<label th:text="${Imgerror}" id="text-error-file" class="mt-2 " style="color: red;" for=""></label>
 					</div>
 					<div class="col-md-6">
@@ -41,7 +45,7 @@
 						</div>
 						<div class="row ">
 							<div class="col-6 mt-1 ">
-								<label class="form-label text-black  " for="">Chiều dài</label>
+								<label class="form-label text-black  " for="">Chiều dài (cm)</label>
 								<input min="0" id="length" th:field="*{length}" type="number" class="form-control ">
 								<div>
 									<label th:errors="*{length}" id="length-error"
@@ -51,7 +55,7 @@
 								</div>
 							</div>
 							<div class="col-6 mt-1 ">
-								<label class="form-label text-black  " for="">Chiều rộng</label>
+								<label class="form-label text-black  " for="">Chiều rộng (cm)</label>
 								<input min="0" id="width" th:field="*{width}" type="number" class="form-control ">
 								<div>
 									<label th:errors="*{width}" id="width-error"
@@ -79,7 +83,7 @@
 					<label class="form-label mt-4 text-black  " for="">Link video</label>
 					<div class="row ">
 						<input th:field="*{video}" type="text" class="form-control col-11  " id="Idinput-linkyoutube">
-						<p class="col-1 form-control   btn btn-primary" data-bs-toggle="modal"
+						<p class="col-1 mt-1  btn btn-primary" data-bs-toggle="modal"
 							data-bs-target="#exampleModal" id="Idbutton-linkyoutube">Xem thử</p>
 					</div>
 					<div>
@@ -89,7 +93,7 @@
 						for=""></label>
 					</div>
 				</div>
-				<button class="btn btn-light " type="submit">Thêm</button>
+				<button class="btn btn-primary m-3  " type="submit">Thêm</button>
 			</form>
 			<!-- Modal -->
 			<div class="modal fade " id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

@@ -25,14 +25,14 @@
 							<img class="card-img-top rounded-3 " id="selected-image">
 						</div>
 						<div class="image-box row mt-5 " th:if="${listimg!=null}">
-							<label class="p-2 ms-3 m-1  " for="">Ảnh hiện có</label>
+							<label class="p-2 ms-3 m-1  " for="">Ảnh đang có </label>
 							<img id="imgthyme" onclick="clickimg(this)" class="col-2"  th:each="item : ${listimg}" th:src="@{'/files/ImgMotelRoom/'+${item}}" alt="">
 						</div>
-						<label class="p-2 mt-2 " for="">Ảnh đang chọn</label>
+						<label class=" mt-2 " for="">Ảnh đang chọn</label>
 						<div class="image-box row mt-3 " id="image-box"></div>
 						<br>
 						<label for="input" class="btn btn-primary mt-3">
-							<i for="input" class="fas fa-upload"></i> Chọn ảnh
+							<i for="input" class="fas fa-upload"></i> Chọn ảnh mới
 							<input class="d-none " name="files" type="file" id="input" accept="image/*" multiple>
 						  </label>
 						<label th:text="${Imgerror}" id="text-error-file" class="mt-2 " style="color: red;" for=""></label>
@@ -52,7 +52,7 @@
 						</div>
 						<div class="row ">
 							<div class="col-6 mt-1 ">
-								<label class="form-label text-black  " for="">Chiều dài</label>
+								<label class="form-label text-black  " for="">Chiều dài (cm)</label>
 								<input min="0" id="length" th:field="*{length}" type="number" class="form-control ">
 								<div>
 									<label th:errors="*{length}" id="length-error"
@@ -62,7 +62,7 @@
 								</div>
 							</div>
 							<div class="col-6 mt-1 ">
-								<label class="form-label text-black  " for="">Chiều rộng</label>
+								<label class="form-label text-black  " for="">Chiều rộng  (cm)</label>
 								<input min="0" id="width" th:field="*{width}" type="number" class="form-control ">
 								<div>
 									<label th:errors="*{width}" id="width-error"
@@ -90,7 +90,7 @@
 					<label class="form-label mt-4 text-black  " for="">Link video</label>
 					<div class="row ">
 						<input  th:field="*{video}" type="text" class="form-control col-11  " id="Idinput-linkyoutube">
-						<p class="col-1 form-control   btn btn-primary" data-bs-toggle="modal"
+						<p class="col-1 mt-1   btn btn-primary" data-bs-toggle="modal"
 							data-bs-target="#exampleModal" id="Idbutton-linkyoutube">Xem thử</p>
 					</div>
 					<div>
@@ -100,17 +100,17 @@
 						for=""></label>
 					</div>
 				</div>
-				<button class="btn btn-light " type="submit">Thêm</button>
+				<button class="btn btn-primary m-3  " type="submit">Thêm</button>
 			</form>
 			<div th:attr="ng-init='getallbill(\'' + ${motel.motelId} + '\', \'' + ${motelroom.motelRoomId} + '\')'">
 				<h2>Giá phòng và giá điện nước</h2>
 				<div class="row"> 
 					<div class="col-3 " ng-show="Checkbill!==''">
 						<div ng-show="Checkbill.ElectricityCash.length !== 0" class="card  text-center w-100  " >
-							<div>Ngày tạo {{ Checkbill.ElectricityCash[0].createDate | date:'dd/MM/yyyy' }}</div>
+							<div class="alert alert-primary" role="alert">Ngày tạo {{ Checkbill.ElectricityCash[0].createDate | date:'dd/MM/yyyy' }}</div>
 							<div class="card-body">
 							  <h5 class="card-title">Giá điện</h5>
-							   <p>{{Checkbill.ElectricityCash[0].electricityBill }} /ký </p>
+							   <p>{{(Checkbill.ElectricityCash[0].electricityBill|number)  }} VND /KWh </p>
 							  <button ng-click="Updatabil('dien')" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-primary">Cập nhật</button>
 							</div>
 						  </div>
@@ -123,10 +123,10 @@
 					</div>		
 					<div class="col-3 " ng-show="Checkbill!==''">
 						<div ng-show="Checkbill.WaterCash.length !== 0" class="card  text-center  w-100 " >
-							<div>Ngày tạo {{ Checkbill.WaterCash[0].createDate | date:'dd/MM/yyyy' }}</div>
+							<div  class="alert alert-primary" role="alert">Ngày tạo {{ Checkbill.WaterCash[0].createDate | date:'dd/MM/yyyy' }}</div>
 							<div class="card-body">
 							  <h5 class="card-title">Giá nước</h5>
-							   <p>{{Checkbill.WaterCash[0].waterBill }} /m2</p>
+							   <p>{{ (Checkbill.WaterCash[0].waterBill|number)  }} VND / m³</p>
 							   <button ng-click="Updatabil('nuoc')" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-primary">Cập nhật</button>
 							</div>
 						  </div>
@@ -139,10 +139,10 @@
 					</div>	
 					<div class="col-3 " ng-show="Checkbill!==''">
 						<div ng-show="Checkbill.WifiCash.length !== 0" class="card text-center  w-100 " >
-							<div>Ngày tạo {{ Checkbill.WifiCash[0].createDate | date:'dd/MM/yyyy' }}</div>
+							<div class="alert alert-primary" role="alert">Ngày tạo {{ Checkbill.WifiCash[0].createDate | date:'dd/MM/yyyy' }}</div>
 							<div class="card-body">
 							  <h5 class="card-title">Giá wifi</h5>
-							   <p>{{ Checkbill.WifiCash[0].wifiBill}} / Tháng</p>
+							   <p>{{ ( Checkbill.WifiCash[0].wifiBill|number)}}  VND / Tháng</p>
 							   <button ng-click="Updatabil('wifi')" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-primary">Cập nhật</button>
 							</div>
 						  </div>
@@ -155,11 +155,11 @@
 					</div>	
 					<div class="col-3 " ng-show="Checkbill!==''">
 						<div ng-show="Checkbill.RoomCash.length !== 0" class="card  text-center w-100 ">
-							<div>Ngày tạo {{ Checkbill.RoomCash[0].createDate | date:'dd/MM/yyyy' }}</div>
+							<div class="alert alert-primary" role="alert">Ngày tạo {{ Checkbill.RoomCash[0].createDate | date:'dd/MM/yyyy' }}</div>
 							<div class="card-body">
 							  <h5 class="card-title">Giá Phòng</h5>
-							   <p>{{Checkbill.RoomCash[0].roomBill }} / Phòng</p>
-							   <button ng-click="Updatabil('giaphong')"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm</button>
+							   <p>{{ (Checkbill.RoomCash[0].roomBill|number) }} VND / Tháng</p>
+							   <button ng-click="Updatabil('giaphong')"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Cập nhật</button>
 							</div>
 						  </div>
 						  <div ng-show="Checkbill.RoomCash.length === 0" class="card w-100  text-center" >

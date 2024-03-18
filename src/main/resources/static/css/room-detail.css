@@ -586,3 +586,6 @@ p {
 .leaflet-marker-icon {
 	filter: hue-rotate(140deg) brightness(0.5) saturate(2);
 }
+.leaflet-routing-alt >table {
+  display: none;
+}

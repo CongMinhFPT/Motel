@@ -5,14 +5,22 @@ app.controller("myCtrlMotelRoom", function($scope, $http, $rootScope,$sce) {
  $scope.ListMotelRooms=[];
  $scope.ListCategoryRoom=[];
  $scope.selectedCategory = ''; 
+ $scope.ListroomStatus =[];
+ $scope.selectedroomStatus='';
  $scope.GetListMotelRoom =function(key){
     let url =host+'/api/all/MotelRoom/'+key;
     $http.get(url).then(function (response){
        $scope.ListMotelRoom =response.data;
        $scope.ListMotelRooms =response.data;
+       console.log(response.data)
        response.data.forEach(element => {
         if($scope.ListCategoryRoom.indexOf(element.title)===-1){
             $scope.ListCategoryRoom.push(element.title)
+        }
+       });
+       response.data.forEach(element => {
+        if($scope.ListroomStatus.indexOf(element.name)===-1){
+            $scope.ListroomStatus.push(element.name)
         }
        });
        console.log($scope.ListCategoryRoom)
@@ -22,12 +30,20 @@ app.controller("myCtrlMotelRoom", function($scope, $http, $rootScope,$sce) {
        });
  }
  $scope.filterItems = function() {
-   if($scope.selectedCategory===''){
-    $scope.ListMotelRoom =$scope.ListMotelRooms;
-   }else{
+   if($scope.selectedCategory==='' && $scope.selectedroomStatus===''){
+    $scope.ListMotelRoom = $scope.ListMotelRooms;
+   }else if($scope.selectedCategory==='' && $scope.selectedroomStatus!==''){
     $scope.ListMotelRoom = $scope.ListMotelRooms.filter(function(item) {
-        return item.title === $scope.selectedCategory;
+        return item.name === $scope.selectedroomStatus;
       });
+   }else if($scope.selectedCategory!=='' && $scope.selectedroomStatus===''){
+    $scope.ListMotelRoom = $scope.ListMotelRooms.filter(function(item) {
+      return item.title === $scope.selectedCategory;
+    });
+   }else if($scope.selectedCategory!=='' && $scope.selectedroomStatus!==''){
+    $scope.ListMotelRoom = $scope.ListMotelRooms.filter(function(item) {
+      return item.title === $scope.selectedCategory && item.name === $scope.selectedroomStatus;
+    });
    }
  }
  $scope.repvideo=function(src){

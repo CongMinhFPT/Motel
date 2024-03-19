@@ -18,11 +18,22 @@
 				<h2 class="font-w600 title mb-2 mr-auto ">Danh sách phòng trọ</h2>
 				<a class="p-3 btn btn-success  " th:href="@{/admin/add-motelroom}">Thêm phòng trọ </a>
 			</div>
-			<Label>Loại phòng</Label>
-			<select class="form-control mb-3 w-25  " ng-model="selectedCategory" ng-change="filterItems()">
-				<option value="">Tất cả</option>
-				<option ng-repeat="item in ListCategoryRoom" value="{{item}}">{{item}}</option>
-			</select>
+			<div class="row">
+				<div class="col-6 ">
+					<Label>Loại phòng</Label>
+					<select class="form-control mb-3 w-1 w-75 " ng-model="selectedCategory" ng-change="filterItems()">
+						<option value="">Tất cả</option>
+						<option ng-repeat="item in ListCategoryRoom" value="{{item}}">{{item}}</option>
+					</select>
+				</div>
+				<div class="col-6 ">
+					<Label>Trạng thái phòng</Label>
+					<select class="form-control mb-3 w-75" ng-model="selectedroomStatus" ng-change="filterItems()">
+						<option value="">Tất cả</option>
+						<option ng-repeat="item in ListroomStatus" value="{{item}}">{{item}}</option>
+					</select>
+				</div>
+			</div>
 			<div class=" row ">
 				<div class=" col-12 " ng-repeat="item in ListMotelRoom">
 					<div class="card mb-3 w-100 ">
@@ -50,19 +61,12 @@
 							</div>
 							<div class="col-md-7">
 								<div class="card-body">
-									<div>
-										<h5 class="card-title d-flex  justify-content-between "> <span
-												class="badge text-bg-warning h5 ">Ngày tạo:{{ item.createDate |
+									<div class="card-title d-flex  justify-content-between ">
+										<h5> <span class="badge text-bg-warning h5 ">Ngày tạo:{{ item.createDate |
 												date:'dd/MM/yyyy' }}</span>
-											<span class="d-inline-block pe-2">
-												<span ng-show="item.status"><span
-														style="width: 10px; height: 10px; background-color: #31a24c; display: inline-block; border-radius: 50%;margin-left: 0.5rem;"></span>
-													Đang Hoạt động</span>
-												<span ng-show="item.status==false"><span
-														style="width: 10px; height: 10px; background-color: #959a96; display: inline-block; border-radius: 50%;margin-left: 0.5rem;"></span>
-													Không hoạt động</span>
-											</span>
+
 										</h5>
+											<span class="text-body-secondary fs-6 badge">Trạng thái: <span>{{item.name}}</span></span>									
 									</div>
 									<p class="card-text">{{item.descriptions}}</p>
 									<div class="card-text row w-100 ">
@@ -70,18 +74,23 @@
 											<span class="text-body-secondary col-12">Loại phòng: {{item.title}}</span>
 											<span class="text-body-secondary col-6">Rộng: {{item.width}} cm</span>
 											<span class="text-body-secondary col-6 ">Dài: {{item.length}} cm</span>
-											<span class="text-body-secondary  col-6"> Số ảnh: {{item.numberphotos}}</span>
+											<span class="text-body-secondary  col-6"> Số ảnh:
+												{{item.numberphotos}}</span>
 											<span class="text-body-secondary  col-6">Số người: {{item.people}}</span>
 										</div>
 										<div class="col-6 row">
-											<span class="text-body-secondary col-12 m-1 ">Giá điện: {{item.electricityBill
+											<span class="text-body-secondary col-12 m-1 ">Giá điện:
+												{{item.electricityBill
 												!==null ?(item.electricityBill|number) +' '+ 'VND'+' '+'/ KWh' : 'Chưa
 												có' }}</span>
-											<span class="text-body-secondary col-12 m-1">Giá nước: {{item.waterBill !==null ?
+											<span class="text-body-secondary col-12 m-1">Giá nước: {{item.waterBill
+												!==null ?
 												(item.waterBill|number) +' '+ 'VND'+' '+'/ m³' : 'Chưa có' }}</span>
-											<span class="text-body-secondary col-12 m-1">Giá wifi: {{item.wifiBill !==null ?
+											<span class="text-body-secondary col-12 m-1">Giá wifi: {{item.wifiBill
+												!==null ?
 												(item.wifiBill|number) +' '+ 'VND'+' '+'/ Tháng' : 'Chưa có' }}</span>
-											<span class="text-body-secondary col-12 m-1">Giá phòng: {{item.roomBill !==null ?
+											<span class="text-body-secondary col-12 m-1">Giá phòng: {{item.roomBill
+												!==null ?
 												(item.roomBill|number) +' '+ 'VND'+' '+'/ Tháng' : 'Chưa có' }}</span>
 										</div>
 

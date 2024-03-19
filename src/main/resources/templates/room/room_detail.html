@@ -218,7 +218,7 @@
 						<div class="product-description">
 							<div class="row">
 								<div class="col-6">
-									<span class="fw-bold">Vị trí trên bản đồ</span>
+									<span class="fw-bold">Vị trí nhà trọ</span>
 									<p>● [[${roomDetails.motelRoom.motel.detailAddress}]],
 										[[${roomDetails.motelRoom.motel.ward}]],
 										[[${roomDetails.motelRoom.motel.district}]],
@@ -233,9 +233,13 @@
 												class='bx bx-search'></i></button>
 									</div>
 								</div>
-							</div>
+							</div>	
 							<div class="gg-map mt-5" id="gg-map">
+								<div class="loading" id="loadingOverplay">
+									<div class="pac-man"></div>
+								</div>
 							</div>
+
 						</div>
 					</div>
 				</div>
@@ -318,6 +322,20 @@
 	<div th:replace="~{/layout/footer.html}">
 	</div>
 	<script>
+		const loadingOverlays = document.getElementsByClassName('loading');
+
+		function showLoadingSpinner() {
+			for (let i = 0; i < loadingOverlays.length; i++) {
+				loadingOverlays[i].style.display = 'block';
+			}
+		}
+
+		function hideLoadingSpinner() {
+			for (let i = 0; i < loadingOverlays.length; i++) {
+				loadingOverlays[i].style.display = 'none';
+			}
+		}
+		hideLoadingSpinner();
 		const latitude = [[${latitude}]];
 		const longitude = [[${longitude}]];
 		const map = L.map('gg-map').setView([latitude, longitude], 17);
@@ -329,6 +347,7 @@
 		const apiUrl = `https://nominatim.openstreetmap.org/search`;
 		let routingControl;
 		function displayRouteToAddress(address) {
+			showLoadingSpinner();
 			const currentLatLng = marker.getLatLng();
 			fetch(`${apiUrl}?q=${address}&format=json`)
 				.then(response => response.json())
@@ -347,6 +366,7 @@
 						waypoints: waypoints,
 						routeWhileDragging: true
 					}).addTo(map);
+					hideLoadingSpinner();
 				})
 				.catch(error => console.error('Error:', error));
 		}
@@ -355,6 +375,7 @@
 		searchButton.addEventListener('click', function () {
 			const address = document.getElementById('inp-location').value;
 			displayRouteToAddress(address);
+
 		});
 	</script>
 	<!-- Body Wrapper End Here -->

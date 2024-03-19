@@ -20,10 +20,12 @@ import com.motel.entity.CustomUserDetails;
 import com.motel.entity.Image;
 import com.motel.entity.Motel;
 import com.motel.entity.MotelRoom;
+import com.motel.entity.RoomStatus;
 import com.motel.repository.CategoryRoomRepository;
 import com.motel.repository.ImageRepository;
 import com.motel.repository.MotelRepository;
 import com.motel.repository.MotelRoomRepository;
+import com.motel.repository.RoomStatusRepository;
 import com.motel.service.MotelRoomService;
 
 @Service
@@ -42,7 +44,9 @@ public class MotelRoomImpl implements MotelRoomService {
     @Autowired
     FileManager fileManager;
     @Autowired
-    ImageRepository imageRepository;;
+    ImageRepository imageRepository;
+    @Autowired 
+    RoomStatusRepository roomStatusRepository;
 
     @Override
     public List<MotelRoom> getAll() {
@@ -116,6 +120,8 @@ public class MotelRoomImpl implements MotelRoomService {
                                 String chuoi = parts[parts.length - 1];
                                 motelRoom.setVideo(chuoi);
                             }
+                            RoomStatus roomStatus = roomStatusRepository.getById(1);
+                            motelRoom.setRoomStatus(roomStatus);
                             CategoryRoom categoryRoom = categoryRoomRepository
                                     .getById(motelRoom.getCategoryRoom().getCategoryRoomId());
                             motelRoom.setCategoryRoom(categoryRoom);

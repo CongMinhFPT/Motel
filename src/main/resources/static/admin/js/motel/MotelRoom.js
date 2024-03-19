@@ -19,10 +19,13 @@ app.controller("myCtrlMotelRoom", function($scope, $http, $rootScope,$sce) {
         }
        });
        response.data.forEach(element => {
+       if(element.name!==null){
         if($scope.ListroomStatus.indexOf(element.name)===-1){
-            $scope.ListroomStatus.push(element.name)
-        }
+          $scope.ListroomStatus.push(element.name)
+      }
+       }
        });
+       console.log($scope.ListroomStatus)
        console.log($scope.ListCategoryRoom)
        console.table($scope.ListMotelRoom);
        }, function (error) {

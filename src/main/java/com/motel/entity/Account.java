@@ -17,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 
 import org.hibernate.annotations.Nationalized;
@@ -66,6 +67,10 @@ public class Account implements Serializable {
 	boolean gender;
 
 	boolean active = true;
+	
+//	@Pattern(regexp = "^\\d{9}|\\d{12}$", message = "Số căn cước không hợp lệ. Vui lòng nhập 9 hoặc 12 chữ số.")
+     String citizen;
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "account")
 	List<Authority> authorities;

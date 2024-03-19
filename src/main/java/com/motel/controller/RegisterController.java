@@ -84,9 +84,12 @@ public class RegisterController {
 			if (account.getPhone().isBlank()) {
 				model.addAttribute("phone", "Vui lòng nhập số điện thoại!");
 			}
+			if(account.getCitizen().isBlank()) {
+				model.addAttribute("citizen", "Vui lòng nhập số căn cước công dân!");
+			}
 			if (account.getCreateDate() == null) {
 				model.addAttribute("date", "Vui lòng chọn ngày tháng năm sinh!");
-				return "home/signup";
+				
 			}
 			return "home/signup";
 		}
@@ -95,12 +98,23 @@ public class RegisterController {
 			model.addAttribute("phone", "Sai định dạng số điện thoại!");
 			return "home/signup";
 		}
-
+		
 		if (accountsRepository.getByEmail(account.getEmail()) != null) {
 			model.addAttribute("email", "Email này đã tồn tại!");
 			return "home/signup";
 		}
-
+		if(accountsRepository.getByPhone(account.getPhone()) != null ) {
+			model.addAttribute("phone", "Số điện thoại đã tồn tại. Vui lòng nhập số điện thoại khác!");
+			return "home/signup";
+		}
+		if(!account.getCitizen().matches("^\\d{9}|\\d{12}$")) {
+			model.addAttribute("citizen", "Sai định dạng số căn cước công dân. Vui lòng nhập 9 hoặc 12 chữ số!");
+			return "home/signup";
+		}
+		if(accountsRepository.getByCitizen(account.getCitizen()) != null ) {
+			model.addAttribute("citizen", "Số căn cước công dân này đã tồn tại.!");
+			return "home/signup";
+		}
 		Calendar calNow = Calendar.getInstance(); // lấy thời gian hiện tại
 		System.out.println("calNow>> " + calNow);
 		Calendar calBirth = Calendar.getInstance(); // lấy ngày tháng năm sinh người dùng
@@ -118,7 +132,7 @@ public class RegisterController {
 			model.addAttribute("date", "Bạn phải đủ 18 tuổi trở lên!");
 			return "home/signup";
 		}
-
+		
 		String passw = randompassword();
 		System.out.println("passw>> " + passw);
 		String passpe = pe.encode(passw);
@@ -348,6 +362,14 @@ public class RegisterController {
 			model.addAttribute("phone", "Sai định dạng số điện thoại!");
 			return "home/information";
 		}
+		if(account.getCitizen().isBlank()) {
+			model.addAttribute("citizen", "Vui lòng nhập số căn cước công dân!");
+			return "home/information";
+		}
+		if(!account.getCitizen().matches("^\\d{9}|\\d{12}$")) {
+			model.addAttribute("citizen", "Sai định dạng số căn cước công dân. Vui lòng nhập 9 hoặc 12 chữ số!");
+			return "home/information";
+		}
 		if (account.getCreateDate() == null) {
 			model.addAttribute("date", "Vui lòng chọn ngày tháng năm sinh!");
 			return "home/information";
@@ -370,6 +392,7 @@ public class RegisterController {
 				return "home/information";
 			}
 		}
+		
 		String email = acccurrent.getEmail();
 		String pass = acccurrent.getPassword();
 		System.out.println("pass>> " + pass);

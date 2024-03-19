@@ -32,13 +32,14 @@ public class RequestAuthority {
     Integer requestAuthorityId;
     String descriptions;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "requestAuthority")
-    
-	List<RequestAuthorityStatus> requestAuthorityStatus;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "requestAuthorityStatusId")
+    RequestAuthorityStatus requestAuthorityStatus;
+    
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "accountId")
-   
+
     Account account;
 
 

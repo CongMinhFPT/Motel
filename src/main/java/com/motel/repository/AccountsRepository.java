@@ -8,5 +8,7 @@ public interface AccountsRepository extends JpaRepository<Account, Integer>{
 
 	Account getByEmail(String email);
 	
+	Account getByPhone(String phone);
 	
+	Account getByCitizen(String citizen);
 }

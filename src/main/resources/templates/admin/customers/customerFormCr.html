@@ -12,22 +12,21 @@
 			<div class="card">
 				<div class="card-header d-sm-flex d-block">
 					<div class="mr-auto mb-sm-0 mb-3">
-						<h4 class="card-title mb-2">Cập nhật thông tin</h4>
+						<h4 class="card-title mb-2">Thêm mới</h4>
 						<!--<span>Lorem Ipsum sit amet</span>-->
 					</div>
 					<a href="javascript:void(0);" class="btn btn-info light mr-3"><i
 							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
-					<a th:href="@{/admin/add-motel}" class="btn btn-info">+ Thêm Khách Hàng</a>
+					<a th:href="@{/customerList}" class="btn btn-info">+ Quay về danh sách</a>
 				</div>
 				<div class="card-body">
-					<form class="signin-form mx-1 mx-md-4"
-						th:action="@{/edit/{accountId}(accountId=${account.accountId})}" th:object="${account}"
+					<form class="signin-form mx-1 mx-md-4" th:action="@{/add/save}" th:object="${accounts}"
 						enctype="multipart/form-data" method="post">
 						<div class="row signin ">
 							<div class="col-lg-6">
 								<div class="form-group form-float">
 									<div class="form-line">
-										<img th:src="@{|/uploads/${account.avatar}|}" id="imagePreview"
+										<img th:src="@{|/uploads/${accounts.avatar}|}" id="imagePreview"
 											class="img-fluid rounded-3 mb-3" alt="" style="height: 200px;">
 										<input type="file" id="uploadInput" class="form-control rounded-3" name="image"
 											placeholder="Chọn tệp" accept="image/*">
@@ -45,6 +44,17 @@
 									<i class="text-danger" th:text="${fullname}"></i>
 									<i class="text-danger" th:errors="*{fullname}"></i>
 								</div>
+								<div class="d-flex flex-row align-items-center mb-4">
+
+									<div class="form-outline flex-fill mb-0">
+										<label class="form-label fw-bold" for="form3Example3c">Email</label>
+										<input type="email" id="form3Example3c" class="form-control rounded-3"
+											th:field="*{email}" placeholder="Nhập email">
+										<i th:errors="*{email}" class="text-danger"></i>
+										<i th:text="${email}" class="text-danger"></i>
+									</div>
+
+								</div>
 								<div class="form-group form-float mb-3">
 									<div class="form-line">
 										<label class="form-label fw-bold" for="form3Example4c">Số điện
@@ -60,8 +70,7 @@
 										<label class="form-label fw-bold" for="form3Example3c">Số căn cước công dân
 											:</label>
 										<input type="text" id="form3Example3c" class="form-control rounded-3"
-											th:field="*{citizen}"
-											placeholder="Nhập số căn cước công dân">
+											th:field="*{citizen}" placeholder="Nhập số căn cước công dân">
 										<i th:errors="*{citizen}" class="text-danger"></i>
 										<i th:text="${citizen}" class="text-danger"></i>
 									</div>
@@ -97,9 +106,8 @@
 									<i class="text-danger" th:errors="*{createDate}"></i>
 								</div>
 								<div class="d-grid gap-2">
-									<button class="btn btn-secondary rounded-3">Cập nhật</button>
-									<a th:href="@{/customerList}" class="btn btn-secondary rounded-3">Quay về danh
-										sách</a>
+									<button class="btn btn-secondary rounded-3">Thêm mới</button>
+									<a th:href="@{/add}" class="btn btn-secondary rounded-3">Làm mới</a>
 								</div>
 							</div>
 						</div>
@@ -109,15 +117,13 @@
 		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
-	<!--information-->
-	<script th:if="${not #strings.isEmpty(update)}" th:inline="javascript">
-		var changeMessage = /*[[${update}]]*/ '';
+	<!--Đăng ký-->
+	<script th:if="${not #strings.isEmpty(create)}" th:inline="javascript">
+		var changeMessage = /*[[${create}]]*/ '';
 		Swal.fire({
 			icon: "success",
 			title: "Thành công!",
-			text: changeMessage,
-			showConfirmButton: false,
-			timer: 1500
+			text: changeMessage
 		});
 	</script>
 	<script>

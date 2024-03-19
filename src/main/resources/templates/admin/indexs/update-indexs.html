@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body ng-app="indexesApp" ng-controller="indexesCtrl">
+	<div class="content-body">
+		<div class="container-fluid">
+			<div class="form-head mb-sm-5 mb-3 d-flex flex-wrap align-items-center">
+				<h2 class="font-w600 title mb-2 mr-auto ">HÓA ĐƠN</h2>
+			</div>
+			<div class="row">
+				<div class="col-xl-12 col-lg-12">
+					<div class="card">
+						<div class="card-body">
+							<div class="basic-form">
+								<form th:action="@{/admin/indexs/update-indexs/{indexsId}(indexsId=${indexes.indexId})}"
+									th:object="${indexs}" method="post">
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label>Chỉ Số Điện</label>
+											<input type="number" class="form-control" min="0"
+												ng-value="indexes.electricityIndex" th:field="*{electricityIndex}">
+										</div>
+										<input type="hidden" id="indexesIdInput" th:attr="value=${indexes.indexId}">
+										<div class="form-group col-md-6">
+											<label>Chỉ Số Nước</label>
+											<input type="number" class="form-control" min="0" th:field="*{waterIndex}"
+												ng-value="indexes.waterIndex">
+										</div>
+										<div class="form-group col-md-6">
+											<label for="inputState">Phòng Trọ</label>
+											<label th:attr="value=${indexes.motelRoom.motelRoomId}"
+												class="form-control"
+												th:field="*{motelRoom}">[[${indexes.motelRoom.descriptions}]]</label>
+										</div>
+										<button class="btn btn-primary">Lưu Lại</button>
+									</div>
+								</form>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</body>
+
+</html>

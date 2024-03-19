@@ -7,17 +7,17 @@
 	<title>Document</title>
 </head>
 
-<body ng-app="renterApp" ng-controller="renterCtrl">
+<body ng-app="indexesApp" ng-controller="indexesCtrl">
 	<div class="content-body">
 		<div class="container-fluid">
 			<div class="card">
 				<div class="card-header d-sm-flex d-block">
 					<div class="mr-auto mb-sm-0 mb-3">
-						<h4 class="card-title mb-2">Danh Sách Thuê Trọ</h4>
+						<h4 class="card-title mb-2">Danh Sách Chỉ Số Điện & Nước</h4>
 					</div>
 					<a onclick="printRenterTable()" class="btn btn-info light mr-3"><i
 							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
-					<a th:href="@{/admin/renter/add-renter}" class="btn btn-info">+ Thêm Người Thuê</a>
+					<a th:href="@{/admin/indexs/add-indexs}" class="btn btn-info">+ Thêm Chỉ Số Điện & Nước</a>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
@@ -25,29 +25,29 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>HỌ TÊN</th>
-									<th>SỐ ĐIỆN THOẠI</th>
-									<th>GIỚI TÍNH</th>
+									<th>NGÀY TẠO</th>
+									<th>CHỈ SỐ ĐIỆN</th>
+									<th>CHỈ SỐ NƯỚC</th>
 									<th>PHÒNG TRỌ</th>
 									<th>CHỌN</th>
 								</tr>
 							</thead>
-							<tbody th:each="renter, index : ${renters}">
+							<tbody th:each="indexs, index : ${indexs}">
 								<tr>
 									<td th:text="${index.count}">
 									</td>
-									<td th:text="${renter.account.fullname}">
+									<td th:text="${#dates.format(indexs.createDate, 'dd - MM - yyyy')}">
 									</td>
-									<td th:text="${renter.account.phone}">
+									<td th:text="${indexs.electricityIndex}">
 									</td>
-									<td th:text="${renter.account.gender ?
-										'Nam':'Nữ'}">
+									<td th:text="${indexs.waterIndex}">
 									</td>
-									<td th:text="${renter.motelRoom.descriptions}">
+									<td th:text="${indexs.motelRoom.descriptions}">
 									</td>
 									<td>
 										<div class="d-flex action-button">
-											<a th:href="@{|/admin/renter/update-renter/${renter.renterId}|}"
+											<a th:href="@{|/admin/indexs/update-indexs/${indexs.indexId}|}"
+											th:attr="ng-click=@{|getAllIndexs(${indexs.indexId})|}"
 												class="btn btn-info btn-xs light px-2">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
@@ -71,7 +71,7 @@
 
 											</a> -->
 											<a class="ml-2 btn btn-xs px-2 light btn-danger"
-												th:attr="onclick='confirmDelete(\'' + ${renter.renterId} + '\')'">
+												th:attr="onclick='confirmAndDelete(\'' + ${indexs.motelRoom.motelRoomId} + '\')'">
 												<svg width="20" height="20" viewBox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
 													<path d="M3 6H5H21" stroke="#fff" stroke-width="2"

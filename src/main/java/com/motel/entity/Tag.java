@@ -32,4 +32,14 @@ public class Tag {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tag")
 	List<Blog> blog;
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "tagId=" + tagId +
+                ", title='" + title + '\'' +
+                ", status=" + status +
+                
+                '}';
+    }
 }

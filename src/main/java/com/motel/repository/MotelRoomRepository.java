@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -20,4 +21,8 @@ public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
     List<MotelRoom> findMotelRooms();
     
     List<MotelRoom> findByMotel_DistrictAndMotel_Province(String district, String province);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "SELECT * FROM motel_room a LEFT JOIN indexs b ON a.motel_room_id = b.motel_room_id WHERE b.motel_room_id IS NULL")
+    List<MotelRoom> findMotelRoomByIndex();
 }

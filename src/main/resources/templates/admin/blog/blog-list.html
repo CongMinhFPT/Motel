@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
 
 <head>
@@ -7,47 +7,61 @@
 	<title>Document</title>
 </head>
 
-<body ng-app="renterApp" ng-controller="renterCtrl">
+<body>
 	<div class="content-body">
 		<div class="container-fluid">
 			<div class="card">
 				<div class="card-header d-sm-flex d-block">
 					<div class="mr-auto mb-sm-0 mb-3">
-						<h4 class="card-title mb-2">Danh Sách Thuê Trọ</h4>
+						<h4 class="card-title mb-2">Danh sách tin tức</h4>
 					</div>
-					<a onclick="printRenterTable()" class="btn btn-info light mr-3"><i
+					<a href="javascript:void(0);" class="btn btn-info light mr-3"><i
 							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
-					<a th:href="@{/admin/renter/add-renter}" class="btn btn-info">+ Thêm Người Thuê</a>
+					<a th:href="@{/admin/add-blog}" class="btn btn-info">+ Thêm tin tức</a>
 				</div>
+				<div th:if="${message != null}" class="d-none" id="messageAlert">[[${message}]]</div>
+
 				<div class="card-body">
 					<div class="table-responsive">
 						<table class="table style-1" id="ListDatatableView">
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>HỌ TÊN</th>
-									<th>SỐ ĐIỆN THOẠI</th>
-									<th>GIỚI TÍNH</th>
-									<th>PHÒNG TRỌ</th>
-									<th>CHỌN</th>
+									<th>Tiêu đề</th>
+									<th>Ngày tạo</th>
+									<th>Hình ảnh</th>
+									<th>Danh mục</th>
+									<th>Trạng thái</th>
+									<th>Hoạt động</th>
+
 								</tr>
 							</thead>
-							<tbody th:each="renter, index : ${renters}">
-								<tr>
-									<td th:text="${index.count}">
+							<tbody>
+								<tr th:each="blog : ${listBlogs}">
+									<td>
+										<h6>[[${blog.blogId}]]</h6>
 									</td>
-									<td th:text="${renter.account.fullname}">
+									<td>[[${blog.title}]]</td>
+									<td>[[${blog.CreateDateFormat}]]</td>
+									<td>
+										<img class="img-fluid" width="150"
+											th:if="${blog.image != null || !blog.image.empty}"
+											th:src="@{${blog.imagePath}}" alt="Thumb image" id="thumbimage" />
 									</td>
-									<td th:text="${renter.account.phone}">
-									</td>
-									<td th:text="${renter.account.gender ?
-										'Nam':'Nữ'}">
-									</td>
-									<td th:text="${renter.motelRoom.descriptions}">
+									<td>[[${blog.tag.title}]]</td>
+									<td>
+										<th:block th:if="${blog.status == true}">
+											<span class="badge badge-success" style="background-color: green;">Đang hoạt
+												động</span>
+										</th:block>
+										<th:block th:if="${blog.status == false}">
+											<span class="badge badge-secondary" style="background-color: grey;">Không
+												hoạt động</span>
+										</th:block>
 									</td>
 									<td>
 										<div class="d-flex action-button">
-											<a th:href="@{|/admin/renter/update-renter/${renter.renterId}|}"
+											<a th:href="@{/admin/edit-blog/} + ${blog.blogId}"
 												class="btn btn-info btn-xs light px-2">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
@@ -57,8 +71,8 @@
 														stroke-linejoin="round"></path>
 												</svg>
 											</a>
-											<!-- <a class="ml-2 btn btn-xs px-2 light btn-danger"
-												th:href="@{/admin/deleteRenter/{renterId}(renterId=${renter.renterId})}">
+											<!--<a th:href="@{/admin/remove-blog/} + ${blog.blogId}"
+												class="ml-2 btn btn-xs px-2 light btn-danger remove-items">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
 													<path d="M3 6H5H21" stroke="#fff" stroke-width="2"
@@ -69,29 +83,49 @@
 														stroke-linejoin="round"></path>
 												</svg>
 
-											</a> -->
-											<a class="ml-2 btn btn-xs px-2 light btn-danger"
-												th:attr="onclick='confirmDelete(\'' + ${renter.renterId} + '\')'">
-												<svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-													xmlns="http://www.w3.org/2000/svg">
-													<path d="M3 6H5H21" stroke="#fff" stroke-width="2"
-														stroke-linecap="round" stroke-linejoin="round"></path>
-													<path
-														d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z"
-														stroke="#fff" stroke-width="2" stroke-linecap="round"
-														stroke-linejoin="round"></path>
-												</svg>
-											</a>
+											</a>-->
+
+											<div
+												th:replace="home/paging :: delete(${blog.blogId}, ${blog.blogId}, '/admin/remove-blog/' + ${blog.blogId}, true)">
+											</div>
+
 										</div>
 									</td>
 								</tr>
+
+
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
+
 		</div>
 	</div>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.all.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script th:src="@{/admin/js/commom-list.js}"></script>
+
+	<script type="text/javascript">
+		moduleURL = "[[@{/admin/blogs}]]";
+
+		$(document).ready(function () {
+			$(document).on("click", ".link-delete", function (e) {
+				e.preventDefault();
+				var entityName = $(this).attr("data-entityName");
+				showDeleteConfirm($(this), entityName, moduleURL);
+			});
+		});
+
+	</script>
+
+
 </body>
+
+
 
 </html>

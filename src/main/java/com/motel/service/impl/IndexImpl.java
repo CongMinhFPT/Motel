@@ -3,7 +3,10 @@ package com.motel.service.impl;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,6 +89,14 @@ public class IndexImpl implements IndexsService {
                 throw new IllegalArgumentException("Chỉ số đang tạo phải lớn hơn tháng trước !");
             }
 
+            if (indexsModel.getElectricityIndex() < 0) {
+                throw new IllegalArgumentException("Chỉ số điện đang tạo phải lớn hơn 0 !");
+            }
+
+            if (indexsModel.getWaterIndex() < 0) {
+                throw new IllegalArgumentException("Chỉ số nước đang tạo phải lớn hơn 0 !");
+            }
+
             indexs.setCreateDate(new Date());
             indexs.setElectricityIndex(indexsModel.getElectricityIndex());
             indexs.setWaterIndex(indexsModel.getWaterIndex());
@@ -99,6 +110,83 @@ public class IndexImpl implements IndexsService {
             return indexs;
         }
 
+    }
+
+    @Override
+    public Indexs updateIndexs(Integer indexsId, Indexs updatedIndexs) {
+        Indexs existingIndexs = indexsRepository.findById(indexsId)
+                .orElseThrow(() -> new IllegalArgumentException("Index with ID " + indexsId + " not found"));
+        StringBuilder errorMessage = new StringBuilder();
+
+        if (updatedIndexs.getElectricityIndex() == null) {
+            errorMessage.append("Không tìm thấy chỉ số điện !\n");
+        }
+
+        if (updatedIndexs.getWaterIndex() == null) {
+            errorMessage.append("Không tìm thấy chỉ số nước !\n");
+        }
+
+        if (errorMessage.length() > 0) {
+            throw new IllegalArgumentException(errorMessage.toString());
+        }
+
+        List<Indexs> currentIndexsElectricWater = indexsRepository.findAll()
+                .stream()
+                .filter(inv -> inv.getMotelRoom().getMotelRoomId()
+                        .equals(existingIndexs.getMotelRoom().getMotelRoomId()))
+                .filter(inv -> {
+                    Double electricityIndexCurrent = inv.getElectricityIndex();
+                    Double waterIndexCurrent = inv.getWaterIndex();
+                    return (electricityIndexCurrent == updatedIndexs.getElectricityIndex()
+                            || electricityIndexCurrent > updatedIndexs.getElectricityIndex())
+                            || (waterIndexCurrent == updatedIndexs.getWaterIndex()
+                                    || waterIndexCurrent > updatedIndexs.getWaterIndex());
+                })
+                .collect(Collectors.toList());
+
+        if (!currentIndexsElectricWater.isEmpty()) {
+            throw new IllegalArgumentException("Chỉ số đang tạo phải lớn hơn tháng trước !");
+        }
+
+        if (updatedIndexs.getElectricityIndex() < 0) {
+            throw new IllegalArgumentException("Chỉ số điện đang tạo phải lớn hơn 0 !");
+        }
+
+        if (updatedIndexs.getWaterIndex() < 0) {
+            throw new IllegalArgumentException("Chỉ số nước đang tạo phải lớn hơn 0 !");
+        }
+
+        existingIndexs.setElectricityIndex(updatedIndexs.getElectricityIndex());
+        existingIndexs.setWaterIndex(updatedIndexs.getWaterIndex());
+
+        Indexs savedIndexs = indexsRepository.save(existingIndexs);
+        return savedIndexs;
+    }
+
+    @Override
+    public Optional<Indexs> getById(Integer indexsId) {
+        return indexsRepository.findById(indexsId);
+    }
+
+    @Override
+    public Indexs addIndexsOrigin() {
+        Indexs indexs = new Indexs();
+        List<MotelRoom> motelRoom = motelRoomRepository.findMotelRoomByIndex();
+
+        indexs.setElectricityIndex(0.0);
+        indexs.setWaterIndex(0.0);
+        indexs.setCreateDate(new Date());
+        indexs.setMotelRoom(motelRoom.get(0));
+
+        Indexs savedIndexs = indexsRepository.save(indexs);
+        return savedIndexs;
+    }
+
+    @Override
+    @Transactional
+    public void deleteIndexs(Integer motelRoomId) {
+        indexsRepository.deleteIndexByMotelRoom(motelRoomId);
+        // this.addIndexsOrigin();
     }
 
 }

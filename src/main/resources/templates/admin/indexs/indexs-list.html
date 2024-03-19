@@ -7,7 +7,7 @@
 	<title>Document</title>
 </head>
 
-<body ng-app="renterApp" ng-controller="renterCtrl">
+<body ng-app="indexesApp" ng-controller="indexesCtrl">
 	<div class="content-body">
 		<div class="container-fluid">
 			<div class="card">
@@ -46,7 +46,8 @@
 									</td>
 									<td>
 										<div class="d-flex action-button">
-											<a th:href="@{|/admin/renter/update-renter/${indexs.indexId}|}"
+											<a th:href="@{|/admin/indexs/update-indexs/${indexs.indexId}|}"
+											th:attr="ng-click=@{|getAllIndexs(${indexs.indexId})|}"
 												class="btn btn-info btn-xs light px-2">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
@@ -70,7 +71,7 @@
 
 											</a> -->
 											<a class="ml-2 btn btn-xs px-2 light btn-danger"
-												th:attr="onclick='confirmAndDelete(\'' + ${indexs.indexId} + '\')'">
+												th:attr="onclick='confirmAndDelete(\'' + ${indexs.motelRoom.motelRoomId} + '\')'">
 												<svg width="20" height="20" viewBox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
 													<path d="M3 6H5H21" stroke="#fff" stroke-width="2"

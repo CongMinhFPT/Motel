@@ -24,3 +24,25 @@
 		});
 	}
 </script>
+
+<script th:inline="javascript">
+	function confirmAndDelete(motelRoomId) {
+		Swal.fire({
+			title: 'Bạn có chắc chắn muốn xóa?',
+			text: "Khi xóa thì các chỉ số của phòng sẽ bị xóa!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#d33',
+			cancelButtonColor: '#3085d6',
+			confirmButtonText: 'Xóa',
+			cancelButtonText: 'Hủy'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = "/admin/indexs/delete-indexs/" + motelRoomId;
+				setTimeout(() => {
+					window.location.href = "/admin/indexs";
+				}, 1000)
+			}
+		});
+	}
+</script>

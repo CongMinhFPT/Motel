@@ -23,14 +23,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "roomStatus")
 public class RoomStatus {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer roomStatusId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Integer roomStatusId;
 
-    @Nationalized
-    String name;
+	@Nationalized
+	String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "motelRoomId")
-    MotelRoom motelRoom;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "motelRoomId")
+	MotelRoom motelRoom;
 }

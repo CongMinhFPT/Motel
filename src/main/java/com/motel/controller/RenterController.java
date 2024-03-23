@@ -26,7 +26,9 @@ public class RenterController {
     RenterRepository renterRepository;
 
     @GetMapping("/admin/renter/add-renter")
-    public String getAddRenter() {
+    public String getAddRenter(Model model) {
+        // List<MotelRoom> motelRooms = renterService.getAll();
+        // model.addAttribute("motelRooms", motelRooms);
         return "/admin/renter/add-renter";
     }
 
@@ -46,25 +48,13 @@ public class RenterController {
         return "/admin/renter/update-renter";
     }
 
-    @PostMapping("/admin/updateRenter/{renterId}")
+    @PostMapping("/admin/renter/update-renter/{renterId}")
     public String getUpdate(@PathVariable("renterId") Integer renterId, Model model,
             @ModelAttribute("renter") Renter renter) {
         List<MotelRoom> motelRooms = renterService.getAll();
         model.addAttribute("motelRooms", motelRooms);
         Renter renterCurrent = renterService.getRenter(renterId);
-        if (renter.getRenterDate() == null) {
-            model.addAttribute("date", "Vui lòng chọn ngày tháng năm thuê phòng!");
-            return "/admin/renter/update-renter";
-        } else {
-            Calendar calNow = Calendar.getInstance();
-            Calendar renterDate = Calendar.getInstance();
-            renterDate.setTime(renter.getRenterDate());
-
-            if (renterDate.before(calNow)) {
-                model.addAttribute("date", "Chọn ngày tháng năm thuê phòng phù hợp!");
-                return "/admin/renter/update-renter";
-            }
-        }
+        
         renterRepository.save(renter);
         model.addAttribute("successUpdate", true);
         return "/admin/renter/update-renter";

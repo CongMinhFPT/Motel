@@ -26,7 +26,7 @@
 								<tr>
 									<th>#</th>
 									<th>PHÒNG TRỌ</th>
-									<th>NGÀY THUÊ</th>
+									<th>NGÀY TẠO</th>
 									<th>CHỈ SỐ ĐIỆN CŨ</th>
 									<th>CHỈ SỐ ĐIỆN MỚI</th>
 									<th>CHỈ SỐ NƯỚC CŨ</th>
@@ -42,7 +42,7 @@
 									</td>
 									<td th:text="${invoice.renter.motelRoom.descriptions}">
 									</td>
-									<td th:text="${#dates.format(invoice.renter.renterDate, 'dd - MM - yyyy')}"></td>
+									<td th:text="${#dates.format(invoice.createDate, 'dd - MM - yyyy')}"></td>
 
 									<td>
 										<span

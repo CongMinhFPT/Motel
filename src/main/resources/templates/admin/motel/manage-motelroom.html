@@ -66,7 +66,10 @@
 												date:'dd/MM/yyyy' }}</span>
 
 										</h5>
-											<span class="text-body-secondary fs-6 badge">Trạng thái: <span>{{item.name}}</span></span>									
+											<span class="text-body-secondary fs-6 badge">Trạng thái: <span>{{item.name}}</span> 
+											<span ng-show="item.checkoutdate!=null" class="badge text-bg-light ">Ngày: {{ item.checkoutdate |
+												date:'dd/MM/yyyy' }}</span>	
+										</span>								
 									</div>
 									<p class="card-text">{{item.descriptions}}</p>
 									<div class="card-text row w-100 ">

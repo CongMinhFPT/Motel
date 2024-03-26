@@ -104,7 +104,7 @@
 			</form>
 			<div th:attr="ng-init='getallbill(\'' + ${motel.motelId} + '\', \'' + ${motelroom.motelRoomId} + '\')'">
 				<h2>Giá phòng và giá điện nước</h2>
-				<div class="row"> 
+				<div class="row" th:attr="ng-init='getallroomstatus(\'' + ${motelroom.motelRoomId} + '\')'"> 
 					<div class="col-3 " ng-show="Checkbill!==''">
 						<div ng-show="Checkbill.ElectricityCash.length !== 0" class="card  text-center w-100  " >
 							<div class="alert alert-primary" role="alert">Ngày tạo {{ Checkbill.ElectricityCash[0].createDate | date:'dd/MM/yyyy' }}</div>
@@ -171,6 +171,11 @@
 					</div>		
 				</div>
 			</div>
+			<select  ng-change="checkandupdateroomstatus()" ng-model="selectedStatus">
+				<option ng-repeat="status in roomStatuses.listStatus"
+						value="{{status.roomStatusId}}">{{status.name}}</option>
+			</select>
+			<button ng-show="checkesttus!=null" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdropf">Cập nhật lại ngày trả phòng</button>
 			<!-- Modal -->
 			<div class="modal fade " id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -205,6 +210,26 @@
 						 <label  for="form-label " style="color: red;">{{error}}</label>
 						<div class="d-flex  justify-content-end ">
 							<button ng-click="PostBill()" class="btn btn-primary ">{{addorupdata}}</button>
+						</div>
+						</div>
+					</div>
+				</div>
+			</div>
+				<!-- Modal  Add roomstatus bill-->
+				<div class="modal fade " id="staticBackdropf" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel">Chọn ngày trả phòng</h1>
+							<button id="butclosee" ng-click="setroomstatus()" type="butto" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+						 <label class="form-label  " for="">Ngày trả phòng</label>
+						 <input id="datepick" class="form-control mb-3  " type="date" ng-model="dateroomstatus">
+						 <label  for="form-label " style="color: red;">{{errorstatus}}</label>
+						<div class="d-flex  justify-content-end ">
+							<button ng-click="updateroomstatus()" class="btn btn-primary ">Lưu</button>
 						</div>
 						</div>
 					</div>

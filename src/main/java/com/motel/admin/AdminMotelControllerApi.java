@@ -1,6 +1,7 @@
 package com.motel.admin;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +15,14 @@ import com.motel.entity.ElectricityCash;
 import com.motel.entity.MotelRoom;
 import com.motel.entity.MotelRoomNew;
 import com.motel.entity.RoomCash;
+import com.motel.entity.RoomStatus;
 import com.motel.entity.WaterCash;
 import com.motel.entity.WifiCash;
 import com.motel.repository.ElectricityCashRepository;
 import com.motel.repository.MotelRepository;
 import com.motel.repository.MotelRoomRepository;
 import com.motel.repository.RoomCashRepository;
+import com.motel.repository.RoomStatusRepository;
 import com.motel.repository.WaterCashRepository;
 import com.motel.repository.WifiCashRepository;
 import com.motel.service.MotelRoomService;
@@ -48,6 +51,8 @@ public class AdminMotelControllerApi {
     ElectricityCashRepository electricityCashRepository;
     @Autowired
     RoomCashRepository roomCashRepository;
+    @Autowired
+    RoomStatusRepository roomStatusRepository;
 
     @GetMapping("/api/all/MotelRoom/{id}")
     public ResponseEntity<List<MotelRoomNew>> GetAllMotelRoom(@PathVariable int id) {
@@ -69,7 +74,18 @@ public class AdminMotelControllerApi {
         });
         return ResponseEntity.ok(motelRoomNews);
     }
-
+       @GetMapping("/api/all/motel/getallroomstatus/{idmotel}")
+       public ResponseEntity<Map<String, Object>> GetAllRoomStatus(@PathVariable int idmotel) {
+           List<RoomStatus>listStatus = roomStatusRepository.findAll();
+           MotelRoom motelRoom = motelRoomRepository.getById(idmotel);
+           Map<String, Object> map = new HashMap<String, Object>();
+           map.put("listStatus", listStatus);
+           map.put("roomStatus", motelRoom.getRoomStatus());
+           map.put("number", motelRoom.getRenter().size());
+           map.put("datestatus",motelRoom.getCheckoutdate());
+           return ResponseEntity.ok(map);
+       }
+       
     @GetMapping("/api/all/Motel/{idmotel}/BilliMotelRoom/{id}")
     public ResponseEntity<Map<String, Object>> GetAllBillMotelRoom(@PathVariable int idmotel, @PathVariable int id) {
         if (motelRoomService.CheckMotelRoomInMotel(idmotel, id)) {
@@ -146,5 +162,42 @@ public class AdminMotelControllerApi {
         }
         return ResponseEntity.badRequest().build();
     }
+    @PostMapping("api/motel/roomstatus/{idmotelroom}/{idstatus}")
+    public  ResponseEntity<Void> postUpdataroomstatus(@PathVariable int idmotelroom,@PathVariable int idstatus,@RequestBody Date date) {
+       MotelRoom entity = motelRoomRepository.getById(idmotelroom);
+       RoomStatus roomStatus = roomStatusRepository.getById(idstatus);
+       if (entity.getRoomStatus()!=roomStatus) {
+        entity.setRoomStatus(roomStatus);
+        entity.setCheckoutdate(date);
+        motelRoomRepository.save(entity);
+        return ResponseEntity.ok().build();
+       }else{
+        entity.setCheckoutdate(date);
+        motelRoomRepository.save(entity);
+        return ResponseEntity.ok().build();
+       }
+    }
+    @GetMapping("api/motel/roomstatus/{idmotelroom}/{idstatus}")
+    public ResponseEntity<Void> postUpdataroomstatus2(@PathVariable int idmotelroom,@PathVariable int idstatus) {
+        MotelRoom motelRoom = motelRoomRepository.getById(idmotelroom);
+        RoomStatus roomStatus = roomStatusRepository.getById(idstatus);
+        if (motelRoom.getRenter().size()==0) {
+            motelRoom.setRoomStatus(roomStatus);
+            motelRoom.setCheckoutdate(null);
+            motelRoomRepository.save(motelRoom);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    @GetMapping("api/motel/roomstatus2/{idmotelroom}/{idstatus}")
+    public ResponseEntity<Void> postUpdataroomstatus3(@PathVariable int idmotelroom,@PathVariable int idstatus) {
+        MotelRoom motelRoom = motelRoomRepository.getById(idmotelroom);
+        RoomStatus roomStatus = roomStatusRepository.getById(idstatus);
+         motelRoom.setCheckoutdate(null);
+         motelRoom.setRoomStatus(roomStatus);
+         motelRoomRepository.save(motelRoom);
+        return ResponseEntity.ok().build();
+    }
+    
 
 }

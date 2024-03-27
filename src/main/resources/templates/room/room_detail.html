@@ -37,6 +37,7 @@
 
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 </head>
 
 <body>
@@ -215,13 +216,30 @@
 							<span>[[${roomDetails.motelRoom.descriptions}]]</span>
 						</div>
 						<div class="product-description">
-							<span class="fw-bold">Vị trí trên bản đồ</span>
-							<p>● [[${roomDetails.motelRoom.motel.detailAddress}]],
-								[[${roomDetails.motelRoom.motel.ward}]],
-								[[${roomDetails.motelRoom.motel.district}]],
-								[[${roomDetails.motelRoom.motel.province}]]</p>
-							<div class="gg-map" id="gg-map">
+							<div class="row">
+								<div class="col-6">
+									<span class="fw-bold">Vị trí nhà trọ</span>
+									<p>● [[${roomDetails.motelRoom.motel.detailAddress}]],
+										[[${roomDetails.motelRoom.motel.ward}]],
+										[[${roomDetails.motelRoom.motel.district}]],
+										[[${roomDetails.motelRoom.motel.province}]]</p>
+								</div>
+								<div class="col-6">
+									<span class="fw-bold">Tìm đến vị trí</span>
+									<div class="d-flex">
+										<input type="text" id="inp-location" class="form-control"
+											style=" background: none; outline: none; color: #DCBF7D;">
+										<button class="btn btn-warning ms-1 btn-location-search" type="submit"><i
+												class='bx bx-search'></i></button>
+									</div>
+								</div>
+							</div>	
+							<div class="gg-map mt-5" id="gg-map">
+								<div class="loading" id="loadingOverplay">
+									<div class="pac-man"></div>
+								</div>
 							</div>
+
 						</div>
 					</div>
 				</div>
@@ -304,14 +322,61 @@
 	<div th:replace="~{/layout/footer.html}">
 	</div>
 	<script>
+		const loadingOverlays = document.getElementsByClassName('loading');
+
+		function showLoadingSpinner() {
+			for (let i = 0; i < loadingOverlays.length; i++) {
+				loadingOverlays[i].style.display = 'block';
+			}
+		}
+
+		function hideLoadingSpinner() {
+			for (let i = 0; i < loadingOverlays.length; i++) {
+				loadingOverlays[i].style.display = 'none';
+			}
+		}
+		hideLoadingSpinner();
 		const latitude = [[${latitude}]];
 		const longitude = [[${longitude}]];
-
 		const map = L.map('gg-map').setView([latitude, longitude], 17);
 		L.tileLayer(`https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}.png?key=TMaCmxPUt0XNH7bb7Wbt`, {
 			attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank"></a> <a href="https://www.openstreetmap.org/copyright" target="_blank"></a>'
 		}).addTo(map);
 		var marker = L.marker([latitude, longitude]).addTo(map);
+
+		const apiUrl = `https://nominatim.openstreetmap.org/search`;
+		let routingControl;
+		function displayRouteToAddress(address) {
+			showLoadingSpinner();
+			const currentLatLng = marker.getLatLng();
+			fetch(`${apiUrl}?q=${address}&format=json`)
+				.then(response => response.json())
+				.then(data => {
+					const newLatitude = parseFloat(data[0].lat);
+					const newLongitude = parseFloat(data[0].lon);
+					const waypoints = [
+						L.latLng(currentLatLng.lat, currentLatLng.lng),
+						L.latLng(newLatitude, newLongitude)
+					];
+					if (routingControl) {
+						map.removeControl(routingControl);
+					}
+
+					routingControl = L.Routing.control({
+						waypoints: waypoints,
+						routeWhileDragging: true
+					}).addTo(map);
+					hideLoadingSpinner();
+				})
+				.catch(error => console.error('Error:', error));
+		}
+
+		const searchButton = document.querySelector('.btn-location-search');
+		searchButton.addEventListener('click', function () {
+			const address = document.getElementById('inp-location').value;
+			displayRouteToAddress(address);
+
+		});
 	</script>
 	<!-- Body Wrapper End Here -->
 	<!-- jQuery-V1.12.4 -->

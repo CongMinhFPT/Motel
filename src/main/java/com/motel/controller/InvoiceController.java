@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.motel.entity.ElectricityCash;
 import com.motel.entity.Indexs;
@@ -140,5 +143,20 @@ public class InvoiceController {
         }
         return "/admin/invoice/update-invoice";
     }
+
+    // @GetMapping("/payment_infor")
+    // public String transaction(
+    //         @RequestParam(value = "vnp_OrderInfo") String orderInfo,
+    //         @RequestParam(value = "vnp_ResponseCode") String responseCode) {
+    //     String invoiceIdString = orderInfo.substring(orderInfo.length() - 2);
+
+    //     if (responseCode.equals("00")) {
+    //         Invoice invoice = invoiceRepository.findById(Integer.parseInt(invoiceIdString))
+    //                 .orElseThrow(() -> new IllegalArgumentException("Không tồn tại hợp đồng này của sinh viên"));
+    //         invoice.setInvoiceStatus(invoiceStatusRepository.findAll().get(0));
+    //         invoiceRepository.save(invoice);
+    //     }
+    //     return "redirect:/admin/invoice";
+    // }
 
 }

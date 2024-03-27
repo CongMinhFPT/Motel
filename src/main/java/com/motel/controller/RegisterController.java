@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 
 import javax.mail.MessagingException;
@@ -34,9 +35,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.motel.entity.Account;
 import com.motel.entity.Authority;
 import com.motel.entity.ChangePassword;
+import com.motel.entity.Invoice;
 import com.motel.entity.Role;
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.AuthorityRepository;
+import com.motel.repository.InvoiceRepository;
+import com.motel.repository.InvoiceStatusRepository;
 import com.motel.repository.RoleRepository;
 import com.motel.service.AuthorityService;
 import com.motel.service.MailerService;
@@ -65,6 +69,12 @@ public class RegisterController {
 
 	@Autowired
 	BCryptPasswordEncoder pe;
+
+	@Autowired
+    InvoiceRepository invoiceRepository;
+
+	@Autowired
+    InvoiceStatusRepository invoiceStatusRepository;
 
 	private static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
 
@@ -157,7 +167,7 @@ public class RegisterController {
 		if (error != null) {
 			model.addAttribute("error", "Đăng nhập thất bại!");
 		}
-		
+
 		return "home/signin";
 
 	}
@@ -173,12 +183,12 @@ public class RegisterController {
 		Account currentUser = accountsRepository.getByEmail(account.getEmail());
 		if (currentUser != null) {
 			session.setAttribute("currentUsername", currentUser.getEmail());
-			
+
 		}
 
 		session.setAttribute("user", currentUser);
 		System.out.println("user");
-		model.addAttribute("signin","Đăng nhập thành công!");
+		model.addAttribute("signin", "Đăng nhập thành công!");
 		return "home/signin";
 	}
 
@@ -186,7 +196,7 @@ public class RegisterController {
 	public String success(OAuth2AuthenticationToken oauth2, Model model) {
 		authorityService.loginFromOAuth2(oauth2);
 		OAuth2User oauth2User = oauth2.getPrincipal();
-//		String username = oauth2User.getAttribute("email");
+		// String username = oauth2User.getAttribute("email");
 		String email = oauth2User.getAttribute("email");
 		System.out.println("Email>> " + email);
 		String generatedString = randompassword();
@@ -212,7 +222,7 @@ public class RegisterController {
 			au.setRole(staff);
 			authorityRepository.save(au);
 		}
-		model.addAttribute("auth","Đăng nhập thành công!");
+		model.addAttribute("auth", "Đăng nhập thành công!");
 		return "home/signin";
 	}
 
@@ -226,7 +236,7 @@ public class RegisterController {
 	}
 
 	@PostMapping("/change/save")
-	public String changesubmit(Model model, @ModelAttribute("changepass") @Valid ChangePassword changepass, 
+	public String changesubmit(Model model, @ModelAttribute("changepass") @Valid ChangePassword changepass,
 			BindingResult bindingResult, Authentication authentication) {
 		String id = authentication.getName();
 		Account acc = accountsRepository.getByEmail(id);
@@ -399,6 +409,35 @@ public class RegisterController {
 			}
 		});
 	}
+
+	@GetMapping("/payment/{email}")
+    public String payment(@PathVariable("email") String email, Model model) {
+        List<Invoice> invoices = invoiceRepository.findByAccountEmail(email);
+		if(invoices == null){
+			model.addAttribute("hideForm", true);
+		} else {
+			model.addAttribute("hideForm", false);
+			model.addAttribute("invoicess", invoices);
+		}
+		return "/home/payment_invoice";
+    }
+
+	@GetMapping("/payment_infor")
+    public String transaction(
+            @RequestParam(value = "vnp_OrderInfo") String orderInfo,
+            @RequestParam(value = "vnp_ResponseCode") String responseCode, Model model) {
+        String invoiceIdString = orderInfo.substring(orderInfo.length() - 2);
+
+        if (responseCode.equals("00")) {
+            Invoice invoice = invoiceRepository.findById(Integer.parseInt(invoiceIdString))
+                    .orElseThrow(() -> new IllegalArgumentException("Không tồn tại hợp đồng này của sinh viên"));
+            invoice.setInvoiceStatus(invoiceStatusRepository.findAll().get(0));
+            invoiceRepository.save(invoice);
+
+			model.addAttribute("paymentSuccess", true);
+        }
+        return "/home/payment_invoice";
+    }
 
 	private String randompassword() {
 		int leftLimit = 97;

@@ -49,7 +49,7 @@ app.controller('renterCtrl', function ($scope, $http, $location) {
                     showConfirmButton: false,
                     timer: 3000
                 }).then(() => {
-                    window.location.href = '/admin/addRenter';
+                    window.location.href = '/admin/renter/add-renter';
                 });
             })
             .catch(function (error) {

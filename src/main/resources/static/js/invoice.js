@@ -16,19 +16,30 @@ app.controller('invoiceCtrl', function ($scope, $http) {
     $scope.getAllInvoice($scope.invoiceId);
 
 
-    $scope.makePayment = function () {
-        var amount = $('#amountVNPay').val();
-        var invoiceId = $('#invoiceIdVNPay').val();
-        var url = '/pay?price=' + amount + '&invoiceId=' + invoiceId;
+    // $scope.makePayment = function () {
+    //     var amount = $('#amountVNPay').val();
+    //     var invoiceId = $('#invoiceIdVNPay').val();
+    //     var url = '/pay?price=' + amount + '&invoiceId=' + invoiceId;
 
-        $http.get(url)
+    //     $http.get(url)
+    //         .then(function (response) {
+    //             window.location.href = response.data;
+    //         })
+    //         .catch(function (error) {
+    //             console.error('Error making payment: ', error);
+    //         });
+    // };
+
+    $scope.createPayment = function (totalPrice, invoiceId) {
+        $http.get('/api/payment/create_payment/' + totalPrice+'/'+invoiceId)
             .then(function (response) {
-                window.location.href = response.data;
+                window.location.href = response.data.url;
             })
             .catch(function (error) {
-                console.error('Error making payment: ', error);
-            });
-    };
+                $scope.message = 'An error occurred while processing your request.';
+                console.error('Error:', error);
+            })
 
+    };
 });
 

@@ -144,13 +144,14 @@ app.controller(
           $scope.roomStatuses = response.data;
           $scope.selectedStatus = response.data.roomStatus.roomStatusId + "";
           $scope.checke = response.data.roomStatus.roomStatusId;
-          $scope.checkesttus=null;
+          $scope.checkesttus = null;
           if ($scope.checke === 3) {
-            $scope.checkesttus=response.data.datestatus;
+            $scope.checkesttus = response.data.datestatus;
             var today = new Date(response.data.datestatus);
             var day = ("0" + today.getUTCDate()).slice(-2);
             var month = ("0" + (today.getUTCMonth() + 1)).slice(-2);
-            var todayAsString = today.getUTCFullYear() + "-" + month + "-" + day;
+            var todayAsString =
+              today.getUTCFullYear() + "-" + month + "-" + day;
             $scope.dateroomstatus = new Date(todayAsString);
           }
           $scope.number = response.data.number;
@@ -189,46 +190,52 @@ app.controller(
               $http.get(url).then(
                 function (response) {
                   $scope.getallroomstatus($scope.idmotelroom);
-                  toastr.success(
-                    "Thông Báo",
-                    "lưu trạng thái thành công",
-                    { positionClass: "toast-top-right" }
-                  );
-                },
-                function (error) {
-                  toastr.error("Đã có lỗi xảy ra thử lại sau ít phút", "Thất bại", {
+                  toastr.success("lưu trạng thái thành công", "Thông Báo", {
                     positionClass: "toast-top-right",
                   });
+                },
+                function (error) {
+                  $scope.getallroomstatus($scope.idmotelroom);
+                  toastr.error(
+                    "Đã có lỗi xảy ra thử lại sau ít phút",
+                    "Thất bại",
+                    {
+                      positionClass: "toast-top-right",
+                    }
+                  );
                   console.log(error);
                 }
               );
-            }else{
-              toastr.success(
-                "Thông Báo",
-                "Phòng đang có người không thể lưu trạng thái chưa có người",
-                { positionClass: "toast-top-right" }
-              );
+            } else {
+              $scope.getallroomstatus($scope.idmotelroom);
+              toastr.warning( "Phòng đang có người không thể lưu trạng thái chưa có người",
+              "Thông Báo", {
+                positionClass: "toast-top-right",
+             });
             }
-          }else {
+          } else {
             let url =
-            $scope.host +
-            "/api/motel/roomstatus2/" +
-            $scope.idmotelroom +
-            "/" +
-            $scope.selectedStatus;
+              $scope.host +
+              "/api/motel/roomstatus2/" +
+              $scope.idmotelroom +
+              "/" +
+              $scope.selectedStatus;
             $http.get(url).then(
               function (response) {
                 $scope.getallroomstatus($scope.idmotelroom);
-                toastr.success(
-                  "Thông Báo",
-                  "lưu trạng thái thành công",
-                  { positionClass: "toast-top-right" }
-                );
-              },
-              function (error) {
-                toastr.error("Đã có lỗi xảy ra thử lại sau ít phút", "Thất bại", {
+                toastr.success("lưu trạng thái thành công", "Thông Báo", {
                   positionClass: "toast-top-right",
                 });
+              },
+              function (error) {
+                $scope.getallroomstatus($scope.idmotelroom);
+                toastr.error(
+                  "Đã có lỗi xảy ra thử lại sau ít phút",
+                  "Thất bại",
+                  {
+                    positionClass: "toast-top-right",
+                  }
+                );
                 console.log(error);
               }
             );
@@ -249,7 +256,7 @@ app.controller(
       } else if (selected <= today) {
         $scope.errorstatus = "Ngày trả phòng phải lớn hơn ngày hiện tại";
       } else {
-        $scope.errorstatus = '';
+        $scope.errorstatus = "";
         let url =
           $scope.host +
           "/api/motel/roomstatus/" +
@@ -258,14 +265,13 @@ app.controller(
           $scope.selectedStatus;
         $http.post(url, selected).then(
           function (response) {
-            toastr.success(
-              "Lưu ",
-              " Thành công",
-              { positionClass: "toast-top-right" }
-            );
+            toastr.success("lưu trạng thái thành công", "Thông Báo", {
+              positionClass: "toast-top-right",
+            });
             document.getElementById("butclosee").click();
           },
           function (error) {
+            document.getElementById("butclosee").click();
             toastr.error("Đã có lỗi xảy ra thử lại sau ít phút", "Thất bại", {
               positionClass: "toast-top-right",
             });

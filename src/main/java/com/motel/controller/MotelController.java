@@ -1,26 +1,27 @@
 package com.motel.controller;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.motel.entity.Account;
-import com.motel.entity.CategoryRoom;
-import com.motel.entity.Motel;
-import com.motel.entity.MotelRoom;
+
+
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.CategoryRoomRepository;
 import com.motel.repository.MotelRepository;
 import com.motel.repository.MotelRoomRepository;
 import com.motel.service.RoomService;
+
+import DTO.roomDTO;
 
 @Controller
 public class MotelController {
@@ -39,29 +40,11 @@ public class MotelController {
 	private CategoryRoomRepository categoryrep;
 
 	@GetMapping("/room")
-	public String showRoomDetails(Model model) {
-		List<Motel> motels = roomService.findAllMotel();
-		List<MotelRoom> motelRooms = roomService.findAllMotelRoom();
-		List<Account> accounts = roomService.findAllAccount();
-		List<CategoryRoom> category = roomService.findAllCategory();
-
-		model.addAttribute("motels", motels);
-		model.addAttribute("motelRooms", motelRooms);
-		model.addAttribute("accounts", accounts);
-		model.addAttribute("category", category);
-
-		return "home/room";
+	public String showRoomDetails(Model model, Pageable pageable) {
+	    Page<roomDTO> roomPage = roomService.getAllRoomDTOs(pageable);
+	    model.addAttribute("rooms", roomPage.getContent());
+	    model.addAttribute("page", roomPage);
+	    return "home/room";
 	}
 	
-//	@GetMapping("/room")
-//	public ResponseEntity<Map<String, Object>> getAuthorities() {
-//		Map<String, Object> data = new HashMap<>();
-//		data.put("motels", motelrep.findAll());
-//        data.put("motelRooms", motelroomrep.findAll());
-//        data.put("accounts", accountsrep.findAll());
-//        data.put("category", categoryrep.findAll());
-//
-//		return new ResponseEntity<>(data, HttpStatus.OK);
-//	}
-
 }

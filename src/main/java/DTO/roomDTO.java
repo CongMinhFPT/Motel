@@ -1,6 +1,6 @@
 package DTO;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,11 +12,12 @@ import lombok.NoArgsConstructor;
 public class roomDTO {
 	private String image;
     private String address;
-    private int price;
+    private String ward;
+    private double price;
     private double area;
-    private String category;
-    private String ownerName;
-    private LocalDate createDate;
+    private String title;
+    private String fullname;
+    private Date createDate;
     private String district;
-    private String province;
+    private String city;
 }

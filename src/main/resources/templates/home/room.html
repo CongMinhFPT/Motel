@@ -65,18 +65,23 @@
 					<div class="col-lg-3">
 						<div class="custom-select-wrapper mb-0">
 							<h6 class="mb-0 w-50">Danh mục:</h6>
-							<select class="custom-select w-50" id="categorySelect">
-								<option value="1">Tất cả</option>
+							<select class="custom-select w-50" id="categorySelect" onchange="filterByCategory()">
+								<option value="0">Tất cả</option>
+								<th:block th:each="rooms : ${rooms}">
+									<option th:value="${rooms.title}" th:text="${rooms.title}">
+									</option>
+								</th:block>
 							</select>
 						</div>
+
 					</div>
 					<div class="col-lg-6"></div>
 					<div class="col-lg-3">
 						<div class="custom-select-wrapper mb-4">
-							<h6 class="mb-0 w-50">Sắp xếp theo ngày:</h6>
-							<select class="custom-select w-50" id="categorySelect">
-								<option value="desc">Mới nhất</option>
-								<option value="asc">Cũ nhất</option>
+							<h6 class="mb-0 w-50">Ngày:</h6>
+							<select class="custom-select w-50" name="sortDir" id="sortDirTime" onchange="sortCards()">
+								<option value="desc" th:selected="${sortDir == 'desc'}">Mới nhất</option>
+								<option value="asc" th:selected="${sortDir == 'asc'}">Cũ nhất</option>
 							</select>
 						</div>
 					</div>
@@ -92,24 +97,27 @@
 							<!-- Combobox 1 -->
 							<div class="custom-select-wrapper mb-3">
 								<h6 class="mb-0 w-50">Tỉnh/Thành Phố:</h6>
-								<select class="custom-select w-50" id="city">
+								<select class="custom-select w-50" id="city" onchange="filterByAddress()">
 									<option value="">Tất cả</option>
+									<!-- Thêm các option từ dữ liệu của bạn -->
 								</select>
 							</div>
 							<hr />
 							<!-- Combobox 2 -->
 							<div class="custom-select-wrapper mb-3">
 								<h6 class="mb-0 w-50">Quận/huyện:</h6>
-								<select class="custom-select w-50" id="district">
+								<select class="custom-select w-50" id="district" onchange="filterByAddress()">
 									<option value="">Tất cả</option>
+									<!-- Thêm các option từ dữ liệu của bạn -->
 								</select>
 							</div>
 							<hr />
 							<!-- Combobox 3 -->
 							<div class="custom-select-wrapper mb-3">
 								<h6 class="mb-0 w-50">Phường/xã:</h6>
-								<select class="custom-select w-50" id="ward">
+								<select class="custom-select w-50" id="ward" onchange="filterByAddress()">
 									<option value="">Tất cả</option>
+									<!-- Thêm các option từ dữ liệu của bạn -->
 								</select>
 							</div>
 
@@ -117,27 +125,37 @@
 							<!-- Combobox 4 -->
 							<div class="custom-select-wrapper mb-3">
 								<h6 class="mb-0 w-50">Diện tích:</h6>
-								<select class="custom-select w-50" id="categorySelect4">
+								<select class="custom-select w-50" id="categorySelect4" onchange="filterByArea()">
 									<option value="1">Tất cả</option>
+									<option value="2">Dưới 20m2</option>
+									<option value="3">Từ 20m2 đến 50m2</option>
+									<option value="4">Trên 50m2</option>
 								</select>
 							</div>
+
 							<hr />
 							<!-- Combobox 5 -->
 							<div class="custom-select-wrapper mb-3">
 								<h6 class="mb-0 w-50">Mức giá:</h6>
-								<select class="custom-select w-50" id="categorySelect5">
-									<option value="1">Tất cả</option>
+								<select class="custom-select w-50" id="categorySelect5" onchange="filterByPrice()">
+									<option value="0">Tất cả</option>
+									<option value="1">Dưới 1 triệu</option>
+									<option value="2">Từ 1 triệu đến 2 triệu</option>
+									<option value="3">Trên 2 triệu</option>
 								</select>
 							</div>
+
+
+
 						</div>
 
-						<div class="col-lg-9">
-							<!-- Sử dụng vòng lặp để duyệt qua từng motel -->
-							<div class="card mb-3" style="background-color: #545454; color: #dcbf7d"
-								th:each="motel : ${motels}">
+						<div class="col-lg-9" id="room-cards">
+							<!-- Sử dụng vòng lặp để duyệt qua từng phòng trọ -->
+							<div class="card mb-3 room-card" style="background-color: #545454; color: #dcbf7d"
+								th:each="room : ${rooms}">
 								<div class="row g-0">
 									<div class="col-md-4">
-										<img class="img-fluid" style="height: 100%" th:src="@{|/img/${motel.image}|}"
+										<img class="img-fluid" style="height: 100%" th:src="@{|/img/${room.image}|}"
 											alt="" />
 									</div>
 									<div class="col-md-8">
@@ -145,65 +163,64 @@
 											<div class="row">
 												<div class="col-10">
 													<!-- Hiển thị địa chỉ -->
-													<p class="card-text"
-														th:text="${motel.detailAddress + ', ' + motel.ward}"></p>
+													<p class=" card-text" th:text="${room.address}"></p>
+													<p class="ward card-text" th:text="${room.ward}"></p>
 												</div>
 												<div class="col-2 d-flex align-items-center justify-content-end">
 													<img class="" style="max-width: 75%; max-height: 75%;"
 														th:src="@{/img/heart.png}" alt="" />
 												</div>
 											</div>
-											<!-- Sử dụng vòng lặp để duyệt qua từng phòng trong motel -->
-											<div th:each="room : ${motel.motelRoom}">
-												<div class="row py-0 p-0">
-													<!-- Hàng cho giá tiền -->
-													<div class="col-12 card-text">
-														<h4 class="card-title mt-1"
-															th:text="${#numbers.formatInteger(room.price,3,'POINT')+ ' /tháng'}">
-														</h4>
-													</div>
+											<!-- Hiển thị giá tiền -->
+											<div class="row py-0 p-0">
+												<div class="col-12 card-text">
+													<h4 class="card-title mt-1 price"
+														th:text="${#numbers.formatInteger(room.price,3,'POINT')+ ' /tháng'}">
+													</h4>
 												</div>
-												<div class="row py-0 p-0">
-													<!-- Hàng cho diện tích -->
-													<div class="col-4 card-text d-flex align-items-center">
-														<img class="" style="max-height: 30%; max-width: 30%;"
-															th:src="@{/img/block.png}" alt="" />
-														<p th:text="${'Diện tích: ' + room.length * room.width + 'm2'}"
-															class="m-0"></p>
-													</div>
-													<!-- Cột cho category -->
-													<div class="col-4 card-text d-flex align-items-center">
-														<img class="" style="max-height: 30%; max-width: 30%;"
-															th:src="@{/img/double-bed.png}" alt="" />
-														<p th:text="${room.categoryRoom.descriptions}" class="m-0"></p>
-													</div>
-													<!-- Cột cho miễn phí Wifi -->
-													<div class="col-4 card-text d-flex align-items-center">
-														<img class="" style="max-height: 30% ; max-width: 30%;"
-															th:src="@{/img/wifi.png}" alt="" />
-														<span class="ml-2">Miễn phí Wifi</span>
-													</div>
+											</div>
+
+											<!-- Hiển thị diện tích -->
+											<div class="row py-0 p-0">
+												<div class="col-4 card-text d-flex align-items-center">
+													<img class="" style="max-height: 30%; max-width: 30%;"
+														th:src="@{/img/block.png}" alt="" />
+													<p th:text="${'Diện tích: ' + room.area + 'm2'}" class="area m-0">
+													</p>
+												</div>
+												<!-- Hiển thị loại phòng -->
+												<div class="col-4 card-text d-flex align-items-center">
+													<img class="" style="max-height: 30%; max-width: 30%;"
+														th:src="@{/img/double-bed.png}" alt="" />
+													<p class="title my-0" th:text="${room.title}"></p>
+												</div>
+												<!-- Hiển thị miễn phí Wifi -->
+												<div class="col-4 card-text d-flex align-items-center">
+													<img class="" style="max-height: 30% ; max-width: 30%;"
+														th:src="@{/img/wifi.png}" alt="" />
+													<span class="ml-2">Wifi</span>
 												</div>
 											</div>
 											<!-- Hiển thị thông tin cá nhân -->
 											<div class="card-person py-0 p-0">
 												<div class="row">
 													<div class="col-lg-5">
-														<h5 class="card-text mb-0" th:text="${motel.account.fullname}">
-														</h5>
+														<h5 class="card-text mb-0" th:text="${room.fullname}"></h5>
 													</div>
 													<div class="col-lg-4">
 														<p class="my-0">></p>
 													</div>
 													<div class="col-lg-3">
 														<!-- Hiển thị ngày tạo -->
-														<p class="my-0" th:text="${motel.createDate}"></p>
+														<p class="my-0" th:text="${room.createDate}"></p>
 													</div>
 												</div>
 												<!-- Hiển thị quận/huyện và tỉnh/thành phố -->
 												<div class="col-12 card-text my-0">
-													<h6 th:text="${motel.district + ', ' + motel.province}">Ninh Kiều,
-														Cần Thơ</h6>
+													<!-- Hiển thị quận/huyện -->
+													<h6 class="district" th:text="${room.district}"></h6>
+													<!-- Hiển thị tỉnh/thành phố -->
+													<h6 class="city" th:text="${room.city}"></h6>
 												</div>
 											</div>
 										</div>
@@ -212,30 +229,34 @@
 							</div>
 						</div>
 
-
 						<div class="col-lg-12 text-center">
 							<ul class="pagination justify-content-center">
-								<li class="page-item">
-									<a class="page-link" href="#" aria-label="Previous">
+								<li th:class="${page.first ? 'disabled' : ''}" class="page-item">
+									<a class="page-link" href="#" aria-label="Previous"
+										th:attr="data-page=${page.number - 1}">
 										<span aria-hidden="true">&laquo;</span>
 									</a>
 								</li>
-								<li class="page-item"><a class="page-link" href="#">1</a></li>
-								<li class="page-item active"><a class="page-link" href="#">2</a></li>
-								<li class="page-item"><a class="page-link" href="#">3</a></li>
-								<li class="page-item">
-									<a class="page-link" href="#" aria-label="Next">
+								<li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+									th:class="${page.number == i ? 'active' : ''}" class="page-item">
+									<a class="page-link" href="#" th:text="${i + 1}" th:attr="data-page=${i}"></a>
+								</li>
+								<li th:class="${page.last ? 'disabled' : ''}" class="page-item">
+									<a class="page-link" href="#" aria-label="Next"
+										th:attr="data-page=${page.number + 1}">
 										<span aria-hidden="true">&raquo;</span>
 									</a>
 								</li>
 							</ul>
 						</div>
+
 					</div>
 				</div>
 			</div>
 		</div>
 		</div>
 	</main>
+
 
 	<div th:replace="~{/layout/footer.html}"></div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
@@ -251,8 +272,133 @@
 		integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
 		crossorigin="anonymous"></script>
 
+
 	<script>
+		$(document).ready(function () {
+			// Xử lý khi click vào nút phân trang
+			$('.pagination .page-link').click(function (event) {
+				event.preventDefault();
+				var page = $(this).attr('data-page');
+				if (page !== undefined) {
+					loadPage(page);
+				}
+			});
+		});
+
+		// Hàm load dữ liệu trang mới
+		function loadPage(page) {
+			$.get('/room', {page: page}, function (data) {
+				$('#room-cards').html(data);
+			});
+		}
 	</script>
+	<script>
+		function filterByAddress() {
+			var selectedCity = document.getElementById("city").value;
+			var selectedDistrict = document.getElementById("district").value;
+			var selectedWard = document.getElementById("ward").value;
+			var cards = document.getElementsByClassName("room-card");
+
+			for (var i = 0; i < cards.length; i++) {
+				var cityElement = cards[i].querySelector(".city").innerText;
+				var districtElement = cards[i].querySelector(".district").innerText;
+				var wardElement = cards[i].querySelector(".ward").innerText;
+
+				if ((selectedCity === "" || selectedCity === cityElement) &&
+					(selectedDistrict === "" || selectedDistrict === districtElement) &&
+					(selectedWard === "" || selectedWard === wardElement)) {
+					cards[i].style.display = "block";
+				} else {
+					cards[i].style.display = "none";
+				}
+			}
+		}
+	</script>
+
+
+
+	<script>
+		function filterByArea() {
+			var selectedAreaRange = document.getElementById("categorySelect4").value;
+			var cards = document.getElementsByClassName("room-card");
+
+			for (var i = 0; i < cards.length; i++) {
+				var areaText = cards[i].querySelector(".area").innerText;
+				var area = parseFloat(areaText.match(/\d+/)); // Tách số từ văn bản
+
+				if (selectedAreaRange === "1" || // Hiển thị tất cả
+					(selectedAreaRange === "2" && area < 20) || // Diện tích dưới 20m2
+					(selectedAreaRange === "3" && area >= 20 && area <= 50) || // Diện tích từ 20m2 đến 50m2
+					(selectedAreaRange === "4" && area > 50)) { // Diện tích trên 50m2
+					cards[i].style.display = "block";
+				} else {
+					cards[i].style.display = "none";
+				}
+			}
+		}
+	</script>
+
+	<script>
+		function filterByPrice() {
+			var selectedPriceRange = document.getElementById("categorySelect5").value;
+			var cards = document.getElementsByClassName("room-card");
+
+			for (var i = 0; i < cards.length; i++) {
+				var priceElement = cards[i].querySelector(".price").innerText;
+				var price = parseFloat(priceElement.replace(/\D/g, '')); // Loại bỏ ký tự không phải số và chuyển đổi sang dạng số
+
+				if (selectedPriceRange === "0" ||
+					(selectedPriceRange === "1" && price < 1000000) ||
+					(selectedPriceRange === "2" && price >= 1000000 && price < 2000000) ||
+					(selectedPriceRange === "3" && price >= 2000000)) {
+					cards[i].style.display = "block";
+				} else {
+					cards[i].style.display = "none";
+				}
+			}
+		}
+	</script>
+	<script>
+		function filterByCategory() {
+			var selectedCategory = document.getElementById("categorySelect").value;
+			var cards = document.getElementsByClassName("room-card");
+
+			for (var i = 0; i < cards.length; i++) {
+				var titleElement = cards[i].querySelector(".title").innerText;
+
+				if (selectedCategory === "0" || selectedCategory === titleElement) {
+					cards[i].style.display = "block";
+				} else {
+					cards[i].style.display = "none";
+				}
+			}
+		}
+	</script>
+
+	<script>
+		function sortCards() {
+			var selectElement = document.getElementById("sortDirTime");
+			var selectedValue = selectElement.value;
+
+			// Lấy danh sách các card
+			var cards = document.querySelectorAll(".card.mb-3");
+
+			// Sắp xếp các card dựa trên giá trị được chọn
+			if (selectedValue === "desc") {
+				cards.forEach(function (card) {
+					card.parentNode.prepend(card);
+				});
+			} else if (selectedValue === "asc") {
+				// Nếu sắp xếp theo chiều tăng dần, chúng ta cần sắp xếp lại mảng ngược lại
+				var reversedCards = Array.prototype.slice.call(cards).reverse();
+				reversedCards.forEach(function (card) {
+					card.parentNode.appendChild(card);
+				});
+			}
+		}
+
+	</script>
+
 	<script th:src="@{/js/header.js}"></script>
 	<script src="/js/address.js"></script>
 </body>

@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -29,6 +30,7 @@ import com.motel.entity.Authority;
 import com.motel.entity.Role;
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.AuthorityRepository;
+import com.motel.repository.RequestAuthorityRepository;
 import com.motel.repository.RoleRepository;
 import com.motel.service.AccountService;
 import com.motel.service.MailerService;
@@ -55,13 +57,32 @@ public class AdminCustomer {
 	@Autowired
 	MailerService mailerService;
 	
+	@Autowired
+	RequestAuthorityRepository requestAuthorityRepository;
+	
 	private static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
 	
 	@GetMapping("/customerList")
 	public String showList(Model model) {
 		List<Account> acc = accountsRepository.findAll();
-		
+		Collections.sort(acc, (acc1, acc2) -> {
+		    // Lấy trạng thái của tài khoản
+		    boolean isActive1 = acc1.isActive();
+		    boolean isActive2 = acc2.isActive();
+		    
+		    // Xét trường hợp tài khoản 1 hoạt động và tài khoản 2 không hoạt động
+		    if (isActive1 && !isActive2) {
+		        return -1; // Tài khoản 1 được đưa lên đầu danh sách
+		    } else if (!isActive1 && isActive2) {
+		        return 1; // Tài khoản 2 được đưa lên đầu danh sách
+		    }
+		    
+		    return 0; // Giữ nguyên vị trí của các tài khoản khác
+		});
+
 		model.addAttribute("customer",acc);
+		int count = requestAuthorityRepository.findRequestCount();
+    	model.addAttribute("requestCount", count);
 		return "admin/customers/customerList";
 	}
 	

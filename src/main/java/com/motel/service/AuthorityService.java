@@ -25,40 +25,41 @@ public class AuthorityService implements UserDetailsService{
 	
 	@Autowired
 	AccountService accountService;
-//	@Autowired
-//	BCryptPasswordEncoder pe;
+
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		try {
-			Account acc = accountsRepository.getByEmail(username);
-			System.out.println("Email>> " + acc);
-			String password = acc.getPassword();
-			System.out.println("Pass>> " + password);
-			String[] roles = acc.getAuthorities().stream()
-							.map(au -> au.getRole().getId())
-							.collect(Collectors.toList()).toArray(new String[0]);
-			System.out.println("role>> "+ roles);
-			return User.withUsername(username).password(password).roles(roles).build();
-		} catch (Exception e) {
-			System.out.println("Không tồn tại tài khoản này " + username);
-			System.out.println("Đã xảy ra lỗi khi tìm kiếm tài khoản: " + e.getMessage());
-			e.printStackTrace();
-			throw new UsernameNotFoundException(username + "not found!");
-		}
+		 Account acc = accountsRepository.getByEmail(username);
+		    if (acc != null) {
+		        String password = acc.getPassword();
+		        String[] roles = acc.getAuthorities().stream()
+		                        .map(au -> au.getRole().getId())
+		                        .collect(Collectors.toList())
+		                        .toArray(new String[0]);
+		        return User.withUsername(username).password(password).roles(roles).build();
+		    } else {
+		        return null; // Trả về null nếu không tìm thấy tài khoản
+		    }
+
 	}
 
 	public void loginFromOAuth2(OAuth2AuthenticationToken oauth2) {
 		//đọc thông tin từ mạng xã hội 
 		String email = oauth2.getPrincipal().getAttribute("email");
-		String password = Long.toHexString(System.currentTimeMillis());
+		
 		//Tạo đối tượng UserDetails
-		UserDetails user = User.withUsername(email)
-							.password(password)
-							.roles("STAFF").build();
-		//tạo đối tượng authentication từ userDetail
-		Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-		//Thay đổi thông tin đăng nhập từ hệ thống
-		SecurityContextHolder.getContext().setAuthentication(auth);
+		 UserDetails userDetails = loadUserByUsername(email);
+		    if (userDetails == null) {
+		        // Nếu người dùng chưa tồn tại, tạo một người dùng mới với quyền "CUSTOMER"
+		        userDetails = User.withUsername(email)
+		                          .password(Long.toHexString(System.currentTimeMillis()))
+		                          .roles("CUSTOMER")
+		                          .build();
+		    }
+
+		    // Tạo đối tượng authentication từ UserDetails
+		    Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+		    // Thay đổi thông tin đăng nhập từ hệ thống
+		    SecurityContextHolder.getContext().setAuthentication(auth);
 	}
 }

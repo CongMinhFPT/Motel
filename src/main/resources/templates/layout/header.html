@@ -34,8 +34,10 @@
                             <li><a class="dropdown-item" th:href="@{|/information/${#request.remoteUser}|}">Thông tin</a></li>
                             <li><a class="dropdown-item" th:href="@{/favorite}">Trang yêu thích</a></li>
                             <li><a class="dropdown-item" th:href="@{/change}">Thay đổi mật khẩu</a></li>
+                            <li><a class="dropdown-item" th:href="@{/request}">Yêu cầu cấp quyền</a></li>
+                            <li><a class="dropdown-item" th:href="@{/requestList}">Danh sách yêu cầu</a></li>
                             <li><a class="dropdown-item" id="logoutButton">Đăng xuất</a></li>
-                            <li><a class="dropdown-item" th:href="@{/admin}" >Admin</a></li>
+                            <li><a class="dropdown-item" th:href="@{/admin}" th:if="${#request.isUserInRole('MANAGER') or #request.isUserInRole('SUPPER')}">Admin</a></li>
                         </ul>
                     </div>
                 </ul>

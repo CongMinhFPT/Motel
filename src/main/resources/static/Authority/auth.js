@@ -73,14 +73,7 @@ app.controller("ctrl", function($scope, $http, $window) {
 						// Thực hiện xóa
 						$http.delete(`/rest/authorities/${id}`).then(resp => {
 							console.log("Delete successful");
-							// Hiển thị thông báo xóa thành công
-							$window.Swal.fire({
-								icon: "success",
-								title: "Thành công!",
-								text: "Xóa vai trò thành công!",
-								showConfirmButton: false,
-								timer: 1500
-							});
+							
 							$scope.db.authorities.splice(index, 1); // Xóa trong danh sách client
 						});
 					} else {
@@ -88,13 +81,7 @@ app.controller("ctrl", function($scope, $http, $window) {
 							$scope.db = resp.data;
 							console.log(resp.data);
 						})
-						$window.Swal.fire({
-							icon: "info",
-							title: "Thông báo",
-							text: "Hủy cập nhật quyền!",
-							showConfirmButton: false,
-							timer: 1500
-						});
+						
 					}
 				});
 			}
@@ -118,14 +105,7 @@ app.controller("ctrl", function($scope, $http, $window) {
 						};
 						$http.post('/rest/authorities/', accountRole).then(resp => {
 							console.log("Update successful");
-							// Hiển thị thông báo cập nhật thành công
-							$window.Swal.fire({
-								icon: "success",
-								title: "Thành công!",
-								text: "Cập nhật quyền thành công!",
-								showConfirmButton: false,
-								timer: 1500
-							});
+							
 							$scope.db.authorities.push(resp.data);
 						});
 					} else {
@@ -133,28 +113,12 @@ app.controller("ctrl", function($scope, $http, $window) {
 							$scope.db = resp.data;
 							console.log(resp.data);
 						})
-						$window.Swal.fire({
-							icon: "info",
-							title: "Thông báo",
-							text: "Hủy cập nhật quyền!",
-							showConfirmButton: false,
-							timer: 1500
-						});
+						
 					}
 				});
 			}
 		}
-		/*$http.post('/rest/authorities/', JSON.stringify(accountRole), {
-			headers: {
-				'Content-Type': 'application/json' // Loại bỏ charset=UTF-8
-			}
-		}).then(resp => {
-			console.log("Update successful");
-			$scope.db.authorities.push(resp.data);
-		}).catch(error => {
-			console.error("Error:", error);
-		});*/
-
+		
 
 
 	}).catch(function(error) {
@@ -170,7 +134,7 @@ app.controller("ctrl", function($scope, $http, $window) {
 	}
 
 	$scope.isAdmin = function(accountId) {
-		var adminIndex = $scope.index_of(accountId, 'SUPPERMANAGER');
+		var adminIndex = $scope.index_of(accountId, 'SUPPER');
 		console.log("isAdmin: ", adminIndex >= 0);
 		return adminIndex >= 0;
 	};

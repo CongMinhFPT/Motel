@@ -9,6 +9,6 @@ import com.motel.entity.Role;
 
 public interface RoleRepository extends JpaRepository<Role, String>{
 
-	@Query(nativeQuery = true, value = "  select * from roles where id LIKE 'MANAGER' OR id LIKE 'STAFF'")
+	@Query(nativeQuery = true, value = "  select * from roles where id LIKE 'MANAGER' OR id LIKE 'CUSTOMER' OR id LIKE 'OWNER'")
 	List<Role> findAllRole();
 }

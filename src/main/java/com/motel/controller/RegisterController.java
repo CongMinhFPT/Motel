@@ -140,9 +140,9 @@ public class RegisterController {
 		account.setPassword(passpe);
 		accountsRepository.save(account);
 
-		Role staff = roleRepository.findById("STAFF").orElseGet(() -> {
+		Role staff = roleRepository.findById("CUSTOMER").orElseGet(() -> {
 			Role newRole = new Role();
-			newRole.setId("STAFF");
+			newRole.setId("CUSTOMER");
 			return roleRepository.save(newRole);
 		});
 
@@ -202,37 +202,76 @@ public class RegisterController {
 
 	@RequestMapping("/oauth2/login/success")
 	public String success(OAuth2AuthenticationToken oauth2, Model model) {
-		authorityService.loginFromOAuth2(oauth2);
-		OAuth2User oauth2User = oauth2.getPrincipal();
-//		String username = oauth2User.getAttribute("email");
-		String email = oauth2User.getAttribute("email");
-		System.out.println("Email>> " + email);
-		String generatedString = randompassword();
-		System.out.println("pass>> " + generatedString);
-		Account acc = new Account();
-		acc.setEmail(email);
-		acc.setFullname(email);
-		acc.setPassword(pe.encode(generatedString));
-		acc.setActive(true);
-		if (accountsRepository.getByEmail(email) != null) {
-			model.addAttribute("auth", "Đăng nhập thành công!");
-			return "home/signin";
-		} else {
-			accountsRepository.save(acc);
-			Role staff = roleRepository.findById("STAFF").orElseGet(() -> {
-				Role newRole = new Role();
-				newRole.setId("STAFF");
-				return roleRepository.save(newRole);
-			});
+	    authorityService.loginFromOAuth2(oauth2);
+	    OAuth2User oauth2User = oauth2.getPrincipal();
+	    String email = oauth2User.getAttribute("email");
+	    System.out.println("Email>> " + email);
 
-			Authority au = new Authority();
-			au.setAccount(acc);
-			au.setRole(staff);
-			authorityRepository.save(au);
-		}
-		model.addAttribute("auth","Đăng nhập thành công!");
-		return "home/signin";
+	    Account existingAccount = accountsRepository.getByEmail(email);
+	    if (existingAccount != null) {
+	        // Nếu tài khoản đã tồn tại, không cần tạo mới, sử dụng tài khoản hiện có để đăng nhập
+	        model.addAttribute("auth", "Đăng nhập thành công!");
+	        return "home/signin";
+	    }
+
+	    // Nếu tài khoản chưa tồn tại, tạo một tài khoản mới và lưu vào CSDL
+	    String generatedString = randompassword();
+	    System.out.println("pass>> " + generatedString);
+	    Account acc = new Account();
+	    acc.setEmail(email);
+	    acc.setFullname(email);
+	    acc.setPassword(pe.encode(generatedString));
+	    acc.setActive(true);
+	    accountsRepository.save(acc);
+
+	    // Tạo quyền cho tài khoản mới
+	    Role customerRole = roleRepository.findById("CUSTOMER").orElseGet(() -> {
+	        Role newRole = new Role();
+	        newRole.setId("CUSTOMER");
+	        return roleRepository.save(newRole);
+	    });
+	    Authority au = new Authority();
+	    au.setAccount(acc);
+	    au.setRole(customerRole);
+	    authorityRepository.save(au);
+
+	    model.addAttribute("auth", "Đăng nhập thành công!");
+	    return "home/signin";
 	}
+
+//	@RequestMapping("/oauth2/login/success")
+//	public String success(OAuth2AuthenticationToken oauth2, Model model) {
+//		authorityService.loginFromOAuth2(oauth2);
+//		OAuth2User oauth2User = oauth2.getPrincipal();
+////		String username = oauth2User.getAttribute("email");
+//		String email = oauth2User.getAttribute("email");
+//		System.out.println("Email>> " + email);
+//		String generatedString = randompassword();
+//		System.out.println("pass>> " + generatedString);
+//		Account acc = new Account();
+//		acc.setEmail(email);
+//		acc.setFullname(email);
+//		acc.setPassword(pe.encode(generatedString));
+//		acc.setActive(true);
+//		if (accountsRepository.getByEmail(email) != null) {
+//			model.addAttribute("auth", "Đăng nhập thành công!");
+//			return "home/signin";
+//		} else {
+//			accountsRepository.save(acc);
+//			Role staff = roleRepository.findById("CUSTOMER").orElseGet(() -> {
+//				Role newRole = new Role();
+//				newRole.setId("CUSTOMER");
+//				return roleRepository.save(newRole);
+//			});
+//
+//			Authority au = new Authority();
+//			au.setAccount(acc);
+//			au.setRole(staff);
+//			authorityRepository.save(au);
+//		}
+//		model.addAttribute("auth","Đăng nhập thành công!");
+//		return "home/signin";
+//	}
 
 	@GetMapping("/change")
 	public String Change(Model model, @ModelAttribute("changepass") ChangePassword changepass,

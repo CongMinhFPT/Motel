@@ -4,21 +4,28 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.motel.entity.RequestAuthority;
+import com.motel.repository.RequestAuthorityRepository;
 
 @Controller
 public class AdminController {
     
 	@Autowired
-    private HttpServletRequest request;
+    private RequestAuthorityRepository requestAuthority;
+	
 	@GetMapping("/admin")
-    public String index(){
-    	boolean isSuperManager = request.isUserInRole("STAFF");
-    	System.out.println("Is SUPERMANAGER: " + isSuperManager);
+    public String index(Model model){
+    	int count = requestAuthority.findRequestCount();
+    	model.addAttribute("requestCount", count);
         return "admin/home/index";
     }
     @GetMapping("/authority")
-    public String authority() {
+    public String authority(Model model) {
+    	int count = requestAuthority.findRequestCount();
+    	model.addAttribute("requestCount", count);
     	return "admin/authority/auth";
     }
 }

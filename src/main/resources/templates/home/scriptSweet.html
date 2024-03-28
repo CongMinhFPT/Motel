@@ -148,3 +148,61 @@
 		});
 	}
 </script>
+<!--Yêu cầu-->
+<script th:if="${not #strings.isEmpty(creates)}" th:inline="javascript">
+	var changeMessage = /*[[${creates}]]*/ '';
+	Swal.fire({
+		icon: "success",
+		title: "Thành công!",
+		text: changeMessage,
+		showConfirmButton: false,
+		timer: 1500
+	});
+</script>
+
+<script>
+	function confirmDelete(id) {
+		Swal.fire({
+			title: "Xác Nhận!",
+			text: "Bạn có muốn hủy không!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Hủy yêu cầu",
+			cancelButtonText: "Không"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					icon: "success",
+					title: "Thành công!",
+					text: "Hủy thành công!",
+					showConfirmButton: false,
+					timer: 1500
+				}).then(() => {
+					window.location.href = '/deleteRe/' + id;
+				});
+			}
+		});
+	}
+</script>
+<!--yêu cầu-->
+<script th:if="${not #strings.isEmpty(req)}" th:inline="javascript">
+    var changeMessage = /*[[${req}]]*/ '';
+    Swal.fire({
+        icon: "warning",
+        title: "Xác nhận!",
+        text: changeMessage,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Đồng ý",
+        cancelButtonText: "Không"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/request/update';
+        }
+    });
+</script>
+
+

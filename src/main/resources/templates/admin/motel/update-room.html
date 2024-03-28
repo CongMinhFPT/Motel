@@ -84,6 +84,19 @@
 								<label id="categoryRoomerror1" style="color: red; padding: 0.5rem; display: none;" for=""></label>
 							</div>
 						</div>
+						<div class="mt-5 row ">
+							<label class="form-label " for="">Trạng thái</label>
+							<div class="col-9">
+								
+							<select class="form-control "  ng-change="checkandupdateroomstatus()" ng-model="selectedStatus">
+								<option ng-repeat="status in roomStatuses.listStatus"
+										value="{{status.roomStatusId}}">{{status.name}}</option>
+							</select>
+							</div>
+							<div class="col-3">
+								<button type="button" ng-show="checkesttus!=null" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdropf">Sửa Ngày</button>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div>
@@ -171,11 +184,7 @@
 					</div>		
 				</div>
 			</div>
-			<select  ng-change="checkandupdateroomstatus()" ng-model="selectedStatus">
-				<option ng-repeat="status in roomStatuses.listStatus"
-						value="{{status.roomStatusId}}">{{status.name}}</option>
-			</select>
-			<button ng-show="checkesttus!=null" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdropf">Cập nhật lại ngày trả phòng</button>
+			
 			<!-- Modal -->
 			<div class="modal fade " id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -4,7 +4,7 @@ app.controller(
   function ($scope, $http, $rootScope, $sce) {
     $scope.host = "http://localhost:8080";
     $scope.Checkbill = {};
-    $scope.title = "dầ";
+    $scope.title = "";
     $scope.idmotel = 0;
     $scope.idmotelroom = 0;
     $scope.namebill = "";
@@ -77,14 +77,14 @@ app.controller(
     $scope.PostBill = function () {
       console.log($scope.idmotelroom);
       if (!$scope.numberbill) {
-        $scope.error = "không được để trống";
+        $scope.error = "Vui lòng nhập giá tiền "+$scope.title;
       } else if (
         typeof $scope.numberbill === "string" &&
         !$scope.numberbill.match(/^\d+$/)
       ) {
-        $scope.error = "phải là số";
+        $scope.error = "Vui lòng nhập giá tiền điện là số dương lớn hơn 0";
       } else if (Number($scope.numberbill) <= 0) {
-        $scope.error = "phải lớn hơn 0";
+        $scope.error = "Vui lòng nhập giá tiền điện là số dương lớn hơn 0";
       } else {
         $scope.error = "";
         let url =

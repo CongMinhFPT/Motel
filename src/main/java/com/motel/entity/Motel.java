@@ -39,23 +39,23 @@ public class Motel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer motelId;
-    @NotEmpty (message ="Không được để trống mô tả")
+    @NotEmpty (message ="Vui lòng nhập mô tả")
     @Nationalized
     String descriptions;
-    @NotEmpty (message ="Không được để trống tỉnh")
+    @NotEmpty (message ="Vui lòng chọn tỉnh")
     @Nationalized
     String province;
     @NotEmpty (message ="Không được để trống mã tỉnh")
     String provinceID;
-    @NotEmpty (message ="Không được để trống huyện")
+    @NotEmpty (message ="Vui lòng chọn huyện")
     @Nationalized
     String district;
     @NotEmpty (message ="Không được để trống mã huyện")
     String districtID;
-    @NotEmpty(message ="Không được để trống phường")
+    @NotEmpty(message ="Vui lòng chọn phường")
     @Nationalized
     String ward;
-    @NotEmpty (message ="Không được để trống số nhà")
+    @NotEmpty (message ="Vui lòng nhập số nhà")
     @Nationalized
     String detailAddress;
     String image;

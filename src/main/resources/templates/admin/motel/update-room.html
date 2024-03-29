@@ -130,7 +130,7 @@
 						  <div ng-show="Checkbill.ElectricityCash.length === 0"  class="card  w-100  text-center">
 							<div class="card-body">
 								<h5 class="card-title">Giá điện</h5>
-								<button ng-click="Addbil('dien')"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm</button>
+								<button ng-click="Addbil('dien')"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm tiền điện</button>
 							</div>
 						  </div>
 					</div>		
@@ -146,7 +146,7 @@
 						  <div ng-show="Checkbill.WaterCash.length === 0" class="card  w-100   text-center" >
 							<div class="card-body">
 								<h5 class="card-title">Giá nước</h5>
-								<button ng-click="Addbil('nuoc')"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm</button>
+								<button ng-click="Addbil('nuoc')"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm tiền nước</button>
 							</div>
 						  </div>
 					</div>	
@@ -162,7 +162,7 @@
 						  <div ng-show="Checkbill.WifiCash.length === 0" class="card w-100  text-center " >
 							<div class="card-body">
 								<h5 class="card-title">Giá wifi</h5>
-								<button ng-click="Addbil('wifi')"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm</button>
+								<button ng-click="Addbil('wifi')"  class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm tiền wifi</button>
 							</div>
 						  </div>
 					</div>	
@@ -178,7 +178,7 @@
 						  <div ng-show="Checkbill.RoomCash.length === 0" class="card w-100  text-center" >
 							<div class="card-body">
 								<h5 class="card-title">Giá Room</h5>
-								<button ng-click="Addbil('giaphong')" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm</button>
+								<button ng-click="Addbil('giaphong')" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Thêm tiền phòng</button>
 							</div>
 						  </div>
 					</div>		
@@ -215,7 +215,7 @@
 						</div>
 						<div class="modal-body">
 						 <label class="form-label  " for="">Mời nhập chỉ số {{title}}</label>
-						 <input class="form-control mb-3  " type="text" ng-model="numberbill">
+						 <input  class="form-control mb-3  " type="number" ng-model="numberbill">
 						 <label  for="form-label " style="color: red;">{{error}}</label>
 						<div class="d-flex  justify-content-end ">
 							<button ng-click="PostBill()" class="btn btn-primary ">{{addorupdata}}</button>

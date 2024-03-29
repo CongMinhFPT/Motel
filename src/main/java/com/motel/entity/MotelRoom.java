@@ -50,7 +50,7 @@ public class MotelRoom {
     Double width;
     String video;
     @Nationalized
-      @NotEmpty (message ="không được để rỗng phần mô tả")
+      @NotEmpty (message ="Vui lòng nhập mô tả")
     String descriptions;
     boolean status = true;
 

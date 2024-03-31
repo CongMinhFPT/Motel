@@ -9,4 +9,7 @@ public interface MotelRoomService {
     List<MotelRoom> getAll();
 
     Optional<MotelRoom> getById(Integer motelRoomId);
+    
+    MotelRoom getMotelRoomId(Integer id);
 }
+

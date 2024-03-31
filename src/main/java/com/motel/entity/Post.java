@@ -1,5 +1,6 @@
 package com.motel.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Nationalized;
 
@@ -44,4 +46,13 @@ public class Post {
     @JoinColumn(name = "motelRoomId")
     MotelRoom motelRoom;
 
+    @Transient
+    public String getCreateDateFormat() {
+        if (createDate != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy | HH:mm:ss");
+            String strDate = formatter.format(createDate);
+            return strDate;
+        }
+        return "";
+    }
 }

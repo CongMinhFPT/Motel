@@ -1,17 +1,19 @@
 package com.motel.entity;
 
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,19 +23,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "detailInvoice")
-public class DetailInvoice {
+@Table(name = "wifiCash")
+public class WifiCash {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer detailInvoiceId;
-    Double usedElectricityIndex;
-    Double usedWaterIndex;
-
+    Integer wifiCashId;
+    Double wifiBill;
+    @Temporal(TemporalType.DATE)
+    Date createDate = new Date();
+    
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "motelRoomId")
+    @JsonBackReference
     MotelRoom motelRoom;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "invoiceId")
-    Invoice invoice;
 }

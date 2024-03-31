@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body ng-app="invoiceApp" ng-controller="invoiceCtrl">
+	<div class="content-body">
+		<div class="container-fluid">
+			<div class="form-head mb-sm-5 mb-3 d-flex flex-wrap align-items-center">
+				<h2 class="font-w600 title mb-2 mr-auto ">HÓA ĐƠN</h2>
+			</div>
+			<div class="row">
+				<div class="col-xl-12 col-lg-12">
+					<div class="card">
+						<div class="card-body">
+							<div class="basic-form">
+								<form
+									th:action="@{/admin/invoice/update-invoice/{invoiceId}(invoiceId=${invoices.invoiceId})}"
+									th:object="${invoice}" method="post">
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<input type="hidden" th:field="*{createDate}"
+												ng-value="invoices.createDate">
+											<input type="hidden" th:field="*{totalPrice}"
+												ng-value="invoices.totalPrice">
+											<input type="hidden" id="invoiceIdInput"
+												th:attr="value=${invoice.invoiceId}">
+											<input type="hidden" th:field="*{newElectricityIndex}"
+												ng-value="invoices.newElectricityIndex">
+											<input type="hidden" th:field="*{oldElectricityIndex}"
+												ng-value="invoices.oldElectricityIndex">
+											<input type="hidden" th:field="*{newWaterIndex}"
+												ng-value="invoices.newWaterIndex">
+											<input type="hidden" th:field="*{oldWaterIndex}"
+												ng-value="invoices.oldWaterIndex">
+											<label>Phòng Trọ</label>
+											<label for="inputState" class="form-control" th:field="*{renter}"
+												th:value="${invoices.renter.renterId}"
+												th:text="${invoices.renter.motelRoom.descriptions}"></label>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="inputState">Trạng Thái</label>
+											<select id="inputState" class="form-control" th:field="*{invoiceStatus}">
+												<!-- <option th:value="${invoices.invoiceStatus.invoiceStatusId}"
+													th:text="${invoices.invoiceStatus.title}"></option> -->
+												<option th:each="invoiceStatus : ${invoiceStatuses}"
+													th:value="${invoiceStatus.invoiceStatusId}"
+													th:text="${invoiceStatus.title}">
+												</option>
+											</select>
+										</div>
+										<button class="btn btn-primary">Lưu Lại</button>
+									</div>
+								</form>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-6 col-lg-6">
+					<div class="card">
+						<div class="card-body">
+							<div class="basic-form">
+								<form>
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<input type="number" ng-model="price" class="form-control">
+											<input type="number" ng-model="invoiceId" class="form-control">
+										</div>
+										<button class="btn btn-primary" ng-click="createPayment(invoices.totalPrice, invoices.invoiceId)">Lưu Lại</button>
+									</div>
+								</form>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</body>
+
+</html>

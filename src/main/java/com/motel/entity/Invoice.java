@@ -16,6 +16,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,11 +35,34 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer invoiceId;
+
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date createDate = new Date();
+
     Double totalPrice;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "invoice")
-	List<DetailInvoice> detailInvoice;
-    
+    Double newElectricityIndex;
+    Double oldElectricityIndex;
+
+    Double newWaterIndex;
+    Double oldWaterIndex;
+
+    @ManyToOne
+    @JoinColumn(name = "renterId")
+    @JsonIgnore
+    Renter renter;
+
+    @ManyToOne
+    @JoinColumn(name = "invoiceStatusId")
+    @JsonIgnore
+    InvoiceStatus invoiceStatus;
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "invoiceId=" + invoiceId +
+                ", createDate=" + createDate +
+                ", totalPrice=" + totalPrice ;
+    }
 }

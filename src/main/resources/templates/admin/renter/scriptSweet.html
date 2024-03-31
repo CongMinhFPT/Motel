@@ -1,0 +1,51 @@
+<script th:inline="javascript">
+	var successUpdate = /*[[${successUpdate}]]*/ false;
+	if (successUpdate) {
+		Swal.fire({
+			title: "Thành công!",
+			text: "Dữ liệu đã được cập nhật thành công.",
+			icon: "success",
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000
+		})
+	}
+</script>
+<script th:inline="javascript">
+	function confirmDelete(renterId) {
+		Swal.fire({
+			title: 'Bạn có chắc chắn muốn xóa?',
+			text: "Hành động này không thể hoàn tác!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#d33',
+			cancelButtonColor: '#3085d6',
+			confirmButtonText: 'Xóa',
+			cancelButtonText: 'Hủy'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = "/admin/deleteRenter/" + renterId;
+				setTimeout(() => {
+					window.location.href = "/admin/renter";
+				}, 1000)
+			}
+		});
+	}
+</script>
+<script th:inline="javascript">
+	function printRenterTable() {
+		var table = document.getElementById("ListDatatableView");
+
+		var rows = table.rows;
+		for (var i = 0; i < rows.length; i++) {
+			rows[i].deleteCell(-1);
+		}
+
+		var newWin = window.open('', 'Print-Window');
+		newWin.document.open();
+		newWin.document.write('<html><head><style>table {width: 100%;border-collapse: collapse;} th, td{border: 1px solid black;padding: 8px; text-align: center; vertical-align: middle;} th {background-color: #f2f2f2;} h6 {text-align: center; vertical-align: middle;}</style></head><body>' + table.outerHTML + '</body></html>');
+		newWin.document.close();
+		newWin.print();
+	}
+</script>

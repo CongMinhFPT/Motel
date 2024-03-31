@@ -16,36 +16,44 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.Nationalized;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "services")
-public class Services {
+@Table(name = "renter")
+// @ToString(exclude = { "invoice" })
+public class Renter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer serviceId;
+    Integer renterId;
 
-    @Nationalized
-    String title;
-    @Nationalized
-    String description;
     @Temporal(TemporalType.DATE)
-    Date timeStart = new Date();
-    @Temporal(TemporalType.DATE)
-    Date timeEnd = new Date();
-    boolean status;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date renterDate;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "services")
-	List<Account> account;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "renter")
+    @JsonManagedReference
+    List<Invoice> invoice;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "serviceStatusId")
-    ServiceStatus serviceStatus;
+    @ManyToOne
+    @JoinColumn(name = "motelRoomId")
+    @JsonBackReference
+    MotelRoom motelRoom;
+
+    @ManyToOne
+    @JoinColumn(name = "accountId")
+    @JsonBackReference
+    Account account;
+
 }

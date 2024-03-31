@@ -23,8 +23,10 @@
 							<label for="descriptions" class="form-label text-black">Mô tả</label>
 							<textarea th:field="*{descriptions}" class="form-control" id="descriptions"
 								name="descriptions" rows="3" required ></textarea>
+								
 							<label th:errors="*{descriptions}" id="descriptions-error"
 								style="color: red; padding: 0.5rem; display: block;" for=""></label>
+								
 						</div>
 						<div class="mb-3 row">
 							<div class="col">

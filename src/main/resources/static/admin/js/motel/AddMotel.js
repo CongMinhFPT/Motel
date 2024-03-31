@@ -113,3 +113,22 @@ imageInput.addEventListener("change", function () {
     reader.readAsDataURL(file);
   }
 });
+function setCustomMessage(inputElem, message) {
+  inputElem.oninvalid = function(event) {
+      event.target.setCustomValidity(message);
+  }
+  inputElem.oninput = function(event) {
+      event.target.setCustomValidity('');
+      
+  }
+}
+const mota = document.getElementById('descriptions');
+const city = document.getElementById('city');
+const district = document.getElementById('district');
+const ward = document.getElementById('ward');
+const detailAddress = document.getElementById('detailAddress');
+setCustomMessage(mota, 'Vui lòng nhập mô tả');
+setCustomMessage(city, 'Vui lòng chọn thành phố');
+setCustomMessage(district, 'Vui lòng chọn thành huyện');
+setCustomMessage(ward, 'Vui lòng chọn thành phường');
+setCustomMessage(detailAddress, 'Vui lòng nhập số nhà');

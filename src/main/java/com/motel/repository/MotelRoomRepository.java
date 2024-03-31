@@ -12,4 +12,5 @@ public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
 	@Query("SELECT mr FROM MotelRoom mr WHERE mr.motel.motelId = :motelId")
 	List<MotelRoom> findByMotelId(Integer motelId);
 
+	
 }

@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.Nationalized;
 
@@ -27,13 +26,11 @@ public class CategoryRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer categoryRoomId;
-    @NotBlank(message = "Tên tiêu đề không được bỏ trống")
     @Nationalized
     String title;
-    @NotBlank(message = "Mô tả không được bỏ trống")
     @Nationalized
     String descriptions;
-    boolean status=true;
+    boolean status;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "categoryRoom")
 	List<MotelRoom> motelRoom;

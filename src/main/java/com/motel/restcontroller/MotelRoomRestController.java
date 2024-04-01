@@ -28,4 +28,5 @@ public class MotelRoomRestController {
     public ResponseEntity<Optional<MotelRoom>> listMotelRoom(@PathVariable("motelRoomId") Integer motelRoomId) {
         return ResponseEntity.ok(motelRoomService.getById(motelRoomId));
     }
+
 }

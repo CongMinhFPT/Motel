@@ -268,4 +268,14 @@ public class InvoiceImpl implements InvoiceService {
         return invoice;
     }
 
+    @Override
+    public List<Object> getRevenueByMonth() {
+        return invoiceRepository.getRevenueByMonth();
+    }
+
+    @Override
+    public List<Object> getRevenueByYear() {
+        return invoiceRepository.getRevenueByYear();
+    }
+
 }

@@ -27,56 +27,41 @@
 									<th>#</th>
 									<th>PHÒNG TRỌ</th>
 									<th>NGÀY TẠO</th>
-									<th>CHỈ SỐ ĐIỆN CŨ</th>
-									<th>CHỈ SỐ ĐIỆN MỚI</th>
-									<th>CHỈ SỐ NƯỚC CŨ</th>
-									<th>CHỈ SỐ NƯỚC MỚI</th>
-									<th>TỔNG TIỀN</th>
 									<th>TRẠNG THÁI</th>
 									<th>CHỌN</th>
 								</tr>
 							</thead>
-							<tbody th:each="invoice, index : ${invoices}">
-								<tr>
+							<tbody>
+								<tr  th:each="invoice, index : ${invoices}">
 									<td th:text="${index.count}">
 									</td>
 									<td th:text="${invoice.renter.motelRoom.descriptions}">
 									</td>
 									<td th:text="${#dates.format(invoice.createDate, 'dd - MM - yyyy')}"></td>
 
-									<td>
-										<span
-											th:text="${#numbers.formatDecimal(invoice.oldElectricityIndex, 0, 'WHITESPACE', 0, 'POINT')}"></span>
-										kwh
-									</td>
-									<td>
-										<span
-											th:text=" ${#numbers.formatDecimal(invoice.newElectricityIndex, 0, 'WHITESPACE', 0, 'POINT')}"></span>
-										kwh
-									</td>
-									<td>
-										<span
-											th:text="${#numbers.formatDecimal(invoice.oldWaterIndex, 0, 'WHITESPACE', 0, 'POINT')}">
-										</span>
-										m³
-									</td>
-									<td>
-										<span
-											th:text="${#numbers.formatDecimal(invoice.newWaterIndex, 0, 'WHITESPACE', 0, 'POINT')}"></span>
-										m³
-									</td>
-									<td>
-										<span
-											th:text="${#numbers.formatDecimal(invoice.totalPrice, 0, 'WHITESPACE', 0, 'POINT')}"></span>
-										VNĐ
-									</td>
 									<td th:text="${invoice.invoiceStatus.title}">
 									</td>
 									<td>
-										<div class="d-flex action-button">
+										<div class="d-flex action-button pe-3">
+											<a href="javascript:void(0);" data-toggle="modal"
+												data-target="#exampleModalCenter" type="button"
+												class="btn btn-success btn-xs light btn-view-details" th:attr="data-old-electricity-index=${#numbers.formatDecimal(invoice.oldElectricityIndex, 0, 'WHITESPACE', 0, 'POINT')}, 
+												data-new-electricity-index=${#numbers.formatDecimal(invoice.newElectricityIndex, 0, 'WHITESPACE', 0, 'POINT')},
+												data-old-water-index=${#numbers.formatDecimal(invoice.oldWaterIndex, 0, 'WHITESPACE', 0, 'POINT')},
+												data-new-water-index=${#numbers.formatDecimal(invoice.newWaterIndex, 0, 'WHITESPACE', 0, 'POINT')},
+												data-total-price=${#numbers.formatDecimal(invoice.totalPrice, 0, 'WHITESPACE', 0, 'POINT')},
+												data-motelRoom=${invoice.renter.motelRoom.descriptions}">
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+													fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+													<path
+														d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+													<path
+														d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+												</svg>
+											</a>
 											<a th:href="@{|/admin/invoice/update-invoice/${invoice.invoiceId}|}"
 												th:attr="ng-click=@{|getAllInvoice(${invoice.invoiceId})|}"
-												class="btn btn-info btn-xs light px-2">
+												class="btn btn-info btn-xs light ">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
 													<path
@@ -85,16 +70,7 @@
 														stroke-linejoin="round"></path>
 												</svg>
 											</a>
-											<a href="javascript:void(0);" onclick="printRenterTable()"
-												class="ml-2 btn btn-xs px-2 light btn-success">
-												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-													fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
-													<path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
-													<path
-														d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1" />
-												</svg>
 
-											</a>
 										</div>
 									</td>
 								</tr>
@@ -105,6 +81,27 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="modal fade" id="exampleModalCenter">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Chi tiết hóa đơn</h5>
+					<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="modalBodyContent">
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" onclick="printModalContent()">In</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
 </body>
 
 </html>

@@ -15,6 +15,7 @@ import com.motel.entity.Motel;
 import com.motel.entity.MotelRoom;
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.MotelRepository;
+import com.motel.service.AccountService;
 import com.motel.service.MotelRoomService;
 
 
@@ -26,7 +27,7 @@ public class RoomController {
     MotelRoomService motelRoomService;
     @Autowired MotelRepository motelRepository;
 
-    @GetMapping("/showroom")
+    @GetMapping("/room")
     public String getMethodName(Authentication authentication, Model model) {
         String emailAccount = authentication.getName();
         Account account = accountsRepository.getByEmail(emailAccount);

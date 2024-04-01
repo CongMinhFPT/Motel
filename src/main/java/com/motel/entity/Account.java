@@ -69,9 +69,7 @@ public class Account implements Serializable {
 
 	String avatar;
 
-	@Column(columnDefinition = "BIT DEFAULT 0") // Thêm giá trị mặc định cho cột gender
-    Boolean gender; // Sử dụng kiểu dữ liệu Boolean để cho phép giá trị null
-
+	boolean gender;
 
 	boolean active = true;
 

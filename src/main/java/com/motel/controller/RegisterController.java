@@ -45,7 +45,6 @@ import com.motel.repository.RoleRepository;
 import com.motel.service.AuthorityService;
 import com.motel.service.MailerService;
 
-
 @MultipartConfig
 @Controller
 public class RegisterController {
@@ -454,4 +453,3 @@ public class RegisterController {
 		return generatedString;
 	}
 }
-

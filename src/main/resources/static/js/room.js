@@ -1,4 +1,3 @@
-
 var app = angular.module("roomApp", []);
 let hostAddRoom = "http://localhost:8080/api/addFavoriteRoom"
 let hostMotelRoom = "http://localhost:8080/api/listMotelRoom"

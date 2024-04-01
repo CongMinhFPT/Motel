@@ -29,7 +29,7 @@ app.controller('favoriteRoomCtrl', function ($scope, $http, $timeout, $rootScope
     $scope.deleteFavoriteRoom = (favoriteRoomId) => {
         Swal.fire({
             icon: 'question',
-            title: 'Question!',
+            title: 'Xác Nhận!',
             text: 'Bạn muốn xóa khỏi danh sách yêu thích?',
             showCancelButton: true,
             confirmButtonText: 'Yes',
@@ -38,15 +38,13 @@ app.controller('favoriteRoomCtrl', function ($scope, $http, $timeout, $rootScope
             if (result.isConfirmed) {
                 const url = `${hostFavoriteRoom}/${favoriteRoomId}`;
                 $http.delete(url).then(resp => {
-                    Swal.fire('Deleted', 'Phòng đã được xóa khỏi danh sách yêu thích!', 'success').then(() => {
+                    Swal.fire('Thông Báo!', 'Phòng đã được xóa khỏi danh sách yêu thích!', 'success').then(() => {
                         window.location.reload();
                     });
                 }).catch(error => {
                     console.log(error);
                     Swal.fire('Error', 'Đã có lỗi xảy ra khi xóa phòng!', 'error');
                 });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire('Cancelled', 'Bạn đã hủy!', 'error');
             }
         });
     }

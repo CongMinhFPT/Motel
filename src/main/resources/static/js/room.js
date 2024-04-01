@@ -25,9 +25,7 @@ app.controller('roomCtrl', function ($scope, $http) {
                 position: 'top-end',
                 showConfirmButton: false,
                 timer: 1000
-            }).then(() => {
-                window.location.reload();
-            });
+            })
         }).catch(error => {
             console.log(error);
         })

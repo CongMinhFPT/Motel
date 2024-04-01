@@ -1,6 +1,7 @@
 package com.motel.repository;
 
 import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,9 +17,6 @@ public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM motel_room AS m inner join favorite_room a on m.motel_room_id = a.motel_room_id WHERE EXISTS (SELECT 1 FROM favorite_room AS f WHERE f.motel_room_id = m.motel_room_id)")
     List<MotelRoom> findMotelRoomByFavoriteRoom();
 
-    @Query("SELECT mr FROM MotelRoom mr WHERE mr.motel.motelId = :motelId")
-	List<MotelRoom> findByMotelId(Integer motelId);
-
     @Query(nativeQuery = true, value = "select * from motel_room a inner join renter b on a.motel_room_id = b.motel_room_id")
     List<MotelRoom> findMotelRooms();
     
@@ -28,4 +26,6 @@ public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM motel_room a LEFT JOIN indexs b ON a.motel_room_id = b.motel_room_id WHERE b.motel_room_id IS NULL")
     List<MotelRoom> findMotelRoomByIndex();
 
+    @Query(nativeQuery = true, value = "SELECT mr.descriptions, COUNT(*) AS total_renters FROM motel_room mr INNER JOIN renter r ON mr.motel_room_id = r.motel_room_id GROUP BY mr.descriptions;")
+    List<Object> statisticRenter();
 }

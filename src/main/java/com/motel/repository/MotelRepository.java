@@ -1,17 +1,20 @@
 package com.motel.repository;
 
+import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.motel.entity.Motel;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+public interface MotelRepository extends JpaRepository<Motel, Integer> {
+    @Query(nativeQuery = true, value = "select * from motels a INNER JOIN motel_room b ON a.motel_id = b.motel_id where b.motel_room_id = :motel_room_id")
+    List<Motel> statisticMotels(@Param("motel_room_id") Integer motelRoomId);
 
-import com.motel.entity.Motel;
+    @Query(nativeQuery = true, value = "select * from motels a LEFT JOIN motel_room b ON a.motel_id = b.motel_id WHERE b.motel_room_id NOT IN (SELECT motel_room_id FROM renter)")
+    List<Motel> statisticMotelsNotInRenter();
 
-public interface MotelRepository extends JpaRepository<Motel, Integer>{
-	Page<Motel> findAll(Pageable pageable);
+    @Query(nativeQuery = true, value = "SELECT a.descriptions AS nha_tro, b.descriptions AS phong_tro, COUNT(c.motel_room_id) AS total_renter FROM motels a LEFT JOIN motel_room b ON a.motel_id = b.motel_id LEFT JOIN renter c ON b.motel_room_id= c.motel_room_id GROUP BY a.descriptions, b.descriptions")
+    List<Object> statisticMotelsRenter();
 }

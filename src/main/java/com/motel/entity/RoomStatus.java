@@ -27,14 +27,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "roomStatus")
 public class RoomStatus {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer roomStatusId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Integer roomStatusId;
 
-    @Nationalized
-    String name;
-
+	@Nationalized
+	String name;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "roomStatus")
     @JsonManagedReference
     List<MotelRoom> motelRoom;
+
 }

@@ -15,6 +15,7 @@ import com.motel.entity.Account;
 import com.motel.entity.CategoryRoom;
 import com.motel.entity.Motel;
 import com.motel.entity.MotelRoom;
+import com.motel.entity.RoomCash;
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.CategoryRoomRepository;
 import com.motel.repository.MotelRepository;
@@ -33,7 +34,7 @@ public class RoomService {
     
     public Page<roomDTO> getAllRoomDTOs(Pageable pageable) {
        
-        Pageable pageableWithSize5 = PageRequest.of(pageable.getPageNumber(), 5);
+        Pageable pageableWithSize5 = PageRequest.of(pageable.getPageNumber(), 10);
         
         
         Page<Motel> motelsPage = motelRepository.findAll(pageableWithSize5);
@@ -48,7 +49,6 @@ public class RoomService {
         dto.setAddress(motel.getDetailAddress());
         
         MotelRoom room = motel.getMotelRoom().isEmpty() ? null : motel.getMotelRoom().get(0);
-        dto.setPrice(room.getPrice());
         dto.setArea(room.getLength() * room.getWidth());
         if (room.getCategoryRoom() != null) {
             dto.setTitle(room.getCategoryRoom().getTitle());
@@ -60,6 +60,14 @@ public class RoomService {
         dto.setCity(motel.getProvince());
         dto.setDistrict(motel.getDistrict());
         dto.setWard(motel.getWard());
+        
+        // Lấy roomCash từ danh sách roomCash của room
+        List<RoomCash> roomCashList = room.getRoomCash();
+        if (!roomCashList.isEmpty()) {
+            // Lấy roomBill từ phần tử đầu tiên trong danh sách roomCash
+            dto.setPrice(roomCashList.get(0).getRoomBill());
+        }
+        
         return dto;
     }
 

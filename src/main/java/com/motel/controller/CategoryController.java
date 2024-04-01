@@ -38,12 +38,12 @@ public class CategoryController {
 		return "admin/category/add-category";
 	}
 
-	@PostMapping("/admin/category/search")
-	public String searchCategory(@RequestParam("keyword") String keyword, Model model) {
-		List<CategoryRoom> searchResult = categoryrep.findByTitle("%" + keyword + "%");
-		model.addAttribute("categoryList", searchResult);
-		return "admin/category/category-list";
-	}
+//	@PostMapping("/admin/category/search")
+//	public String searchCategory(@RequestParam("keyword") String keyword, Model model) {
+//		List<CategoryRoom> searchResult = categoryrep.findByTitle("%" + keyword + "%");
+//		model.addAttribute("categoryList", searchResult);
+//		return "admin/category/category-list";
+//	}
 
 	@PostMapping("/admin/addcategory")
 	public String addCategory(@Valid @ModelAttribute("category") CategoryRoom category, BindingResult result,

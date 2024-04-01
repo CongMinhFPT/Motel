@@ -17,6 +17,7 @@ import com.motel.entity.MotelRoom;
 import com.motel.entity.Renter;
 import com.motel.model.RenterModel;
 import com.motel.repository.AccountsRepository;
+import com.motel.service.AccountService;
 import com.motel.service.MotelRoomService;
 import com.motel.service.RenterService;
 

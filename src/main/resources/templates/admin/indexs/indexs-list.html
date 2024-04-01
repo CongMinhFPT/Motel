@@ -32,8 +32,8 @@
 									<th>CHỌN</th>
 								</tr>
 							</thead>
-							<tbody th:each="indexs, index : ${indexs}">
-								<tr>
+							<tbody>
+								<tr th:each="indexs, index : ${indexs}">
 									<td th:text="${index.count}">
 									</td>
 									<td th:text="${#dates.format(indexs.createDate, 'dd - MM - yyyy')}">

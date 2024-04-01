@@ -13,4 +13,6 @@ public interface InvoiceService {
     Invoice addInvoice(InvoiceModel invoiceModel);
     Optional<Invoice> getById(Integer invoiceId);
     Invoice updateInvoice(Integer invoiceId, Invoice invoice);
+    List<Object> getRevenueByMonth();
+    List<Object> getRevenueByYear();
 }

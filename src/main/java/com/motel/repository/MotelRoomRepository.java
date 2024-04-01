@@ -25,4 +25,7 @@ public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
     @Modifying
     @Query(nativeQuery = true, value = "SELECT * FROM motel_room a LEFT JOIN indexs b ON a.motel_room_id = b.motel_room_id WHERE b.motel_room_id IS NULL")
     List<MotelRoom> findMotelRoomByIndex();
+
+    @Query(nativeQuery = true, value = "SELECT mr.descriptions, COUNT(*) AS total_renters FROM motel_room mr INNER JOIN renter r ON mr.motel_room_id = r.motel_room_id GROUP BY mr.descriptions;")
+    List<Object> statisticRenter();
 }

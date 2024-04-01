@@ -25,28 +25,39 @@
 	}
 </script>
 <script th:inline="javascript">
-	function printRenterTable() {
-		var table = document.getElementById("ListDatatableView").cloneNode(true); // Clone bảng gốc để không ảnh hưởng đến hiển thị trên trang web
+	function printModalContent() {
+		var content = document.getElementById('modalBodyContent').innerHTML;
+		var originalContent = document.body.innerHTML;
 
-		// Duyệt qua từng hàng của bảng
-		for (var i = 0; i < table.rows.length; i++) {
-			var row = table.rows[i];
-			// Bỏ cột cuối cùng của mỗi hàng
-			row.deleteCell(-1);
-		}
+		document.body.innerHTML = content;
 
-		var newWin = window.open('', 'Print-Window');
-		newWin.document.open();
-		newWin.document.write('<html><head><title>Print-Window</title><style>@media print { body { font-family: Opensans, sans-serif; }  { width: 100%; border-collapse: collapse; }  th,  td { padding: 8px; text-align: center; } .invoice-header { text-align: center; padding: 20px; background-color: #f2f2f2; } }</style></head><body>');
-		newWin.document.write('<style> td { border-left: 1px solid #000; }</style>'); // Thêm đường kẻ cho các ô của bảng
-		newWin.document.write('<div class="invoice-header">');
-		newWin.document.write('<h2>HÓA ĐƠN</h2>');
-		newWin.document.write('<p>Ngày: 15/03/2024</p>');
-		newWin.document.write('</div>');
-		newWin.document.write(table.outerHTML);
-		newWin.document.write('</body></html>');
-		newWin.document.close();
-		newWin.print();
+		window.print();
+
+		document.body.innerHTML = originalContent;
+		window.location.reload();
 	}
+	var viewDetailButtons = document.querySelectorAll('.btn-view-details');
+	viewDetailButtons.forEach(function (button) {
+		button.addEventListener('click', function () {
+
+			var oldElectricityIndex = this.getAttribute('data-old-electricity-index');
+			var newElectricityIndex = this.getAttribute('data-new-electricity-index');
+			var oldWaterIndex = this.getAttribute('data-old-water-index');
+			var newWaterIndex = this.getAttribute('data-new-water-index');
+			var totalPrice = this.getAttribute('data-total-price');
+			var motelRoom = this.getAttribute('data-motelRoom');
+
+			var modalBody = document.querySelector('#exampleModalCenter .modal-body');
+			modalBody.innerHTML = '<p>Phòng: ' + motelRoom + '</p>' + '<div class="row pb-3">' +
+				'<div class="col-md-6">Chỉ số điện cũ: ' + oldElectricityIndex + 'kwh</div>' +
+				'<div class="col-md-6">Chỉ số điện mới: ' + newElectricityIndex + 'kwh</div>' +
+				'</div>' +
+				'<div class="row pb-3">' +
+				'<div class="col-md-6">Chỉ số nước cũ: ' + oldWaterIndex + 'm³</div>' +
+				'<div class="col-md-6">Chỉ số nước mới: ' + newWaterIndex + 'm³</div>' +
+				'</div>' +
+				'<p>Tổng tiền: ' + totalPrice + 'VND</p>';
+		});
+	});
 
 </script>

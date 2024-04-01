@@ -102,113 +102,121 @@ public class InvoiceImpl implements InvoiceService {
             }
 
             if (newIndexs != null && !newIndexs.isEmpty() && oldIndexs != null && !oldIndexs.isEmpty()) {
-                Indexs newIndex = newIndexs.get(0);
-                Indexs oldIndex = oldIndexs.get(1);
 
-                Calendar newCalendar = Calendar.getInstance();
-                newCalendar.setTime(newIndex.getCreateDate());
-                int newYear = newCalendar.get(Calendar.YEAR);
-                int newMonth = newCalendar.get(Calendar.MONTH);
-                int newDay = newCalendar.get(Calendar.DATE);
+                if (newIndexs.size() > 0 && oldIndexs.size() > 1 && newIndexs.get(0) != null
+                        && !newIndexs.get(0).equals("")
+                        && oldIndexs.get(1) != null && !oldIndexs.get(1).equals("")) {
+                    Indexs newIndex = newIndexs.get(0);
+                    Indexs oldIndex = oldIndexs.get(1);
+                    Calendar newCalendar = Calendar.getInstance();
+                    newCalendar.setTime(newIndex.getCreateDate());
+                    int newYear = newCalendar.get(Calendar.YEAR);
+                    int newMonth = newCalendar.get(Calendar.MONTH);
+                    int newDay = newCalendar.get(Calendar.DATE);
 
-                Calendar oldCalendar = Calendar.getInstance();
-                oldCalendar.setTime(oldIndex.getCreateDate());
-                int oldYear = oldCalendar.get(Calendar.YEAR);
-                int oldMonth = oldCalendar.get(Calendar.MONTH);
-                int oldDay = oldCalendar.get(Calendar.DATE);
+                    Calendar oldCalendar = Calendar.getInstance();
+                    oldCalendar.setTime(oldIndex.getCreateDate());
+                    int oldYear = oldCalendar.get(Calendar.YEAR);
+                    int oldMonth = oldCalendar.get(Calendar.MONTH);
+                    int oldDay = oldCalendar.get(Calendar.DATE);
 
-                if (newYear == oldYear && newMonth > oldMonth) {
-                    Calendar newCalendars = Calendar.getInstance();
-                    newCalendars.setTime(invoice.getCreateDate());
-                    int newYearInvoice = newCalendars.get(Calendar.YEAR);
-                    int newMonthInvoice = newCalendars.get(Calendar.MONTH);
+                    if (newYear == oldYear && newMonth > oldMonth) {
+                        Calendar newCalendars = Calendar.getInstance();
+                        newCalendars.setTime(invoice.getCreateDate());
+                        int newYearInvoice = newCalendars.get(Calendar.YEAR);
+                        int newMonthInvoice = newCalendars.get(Calendar.MONTH);
 
-                    List<Invoice> currentMonthInvoices = invoiceRepository.findAll()
-                            .stream()
-                            .filter(inv -> inv.getRenter().getRenterId().equals(invoiceModel.getRenterId()))
-                            .filter(inv -> {
-                                Calendar invoiceCalendar = Calendar.getInstance();
-                                invoiceCalendar.setTime(inv.getCreateDate());
-                                int invoiceYear = invoiceCalendar.get(Calendar.YEAR);
-                                int invoiceMonth = invoiceCalendar.get(Calendar.MONTH);
-                                return invoiceYear == newYearInvoice && invoiceMonth == newMonthInvoice;
-                            })
-                            .collect(Collectors.toList());
+                        List<Invoice> currentMonthInvoices = invoiceRepository.findAll()
+                                .stream()
+                                .filter(inv -> inv.getRenter().getRenterId().equals(invoiceModel.getRenterId()))
+                                .filter(inv -> {
+                                    Calendar invoiceCalendar = Calendar.getInstance();
+                                    invoiceCalendar.setTime(inv.getCreateDate());
+                                    int invoiceYear = invoiceCalendar.get(Calendar.YEAR);
+                                    int invoiceMonth = invoiceCalendar.get(Calendar.MONTH);
+                                    return invoiceYear == newYearInvoice && invoiceMonth == newMonthInvoice;
+                                })
+                                .collect(Collectors.toList());
 
-                    if (!currentMonthInvoices.isEmpty()) {
-                        throw new IllegalArgumentException("Hóa đơn đã tạo tháng này rồi!");
+                        if (!currentMonthInvoices.isEmpty()) {
+                            throw new IllegalArgumentException("Hóa đơn đã tạo tháng này rồi!");
+                        }
+
+                        Double newElectricityIndex = newIndex.getElectricityIndex();
+                        Double oldElectricityIndex = oldIndex.getElectricityIndex();
+
+                        Double newWaterIndex = newIndex.getWaterIndex();
+                        Double oldWaterIndex = oldIndex.getWaterIndex();
+
+                        invoice.setNewElectricityIndex(newElectricityIndex);
+                        invoice.setOldElectricityIndex(oldElectricityIndex);
+                        invoice.setNewWaterIndex(newWaterIndex);
+                        invoice.setOldWaterIndex(oldWaterIndex);
+
+                        Double electricityDifference = newElectricityIndex - oldElectricityIndex;
+                        Double waterDifference = newWaterIndex - oldWaterIndex;
+
+                        Double wifiBill = wifiCash.getWifiBill() != null ? wifiCash.getWifiBill() : 0.0;
+                        Double total = roomCash.getRoomBill()
+                                + (electricityDifference * electricityCash.getElectricityBill())
+                                + (waterDifference * waterCash.getWaterBill()) + wifiBill;
+
+                        invoice.setTotalPrice(total);
+                        invoice.setCreateDate(new Date());
+                    } else if (newYear > oldYear || (newYear == oldYear && newMonth < oldMonth)) {
+                        Calendar newCalendars = Calendar.getInstance();
+                        newCalendars.setTime(invoice.getCreateDate());
+                        int newYearInvoice = newCalendars.get(Calendar.YEAR);
+                        int newMonthInvoice = newCalendars.get(Calendar.MONTH);
+
+                        List<Invoice> currentMonthInvoices = invoiceRepository.findAll()
+                                .stream()
+                                .filter(inv -> inv.getRenter().getRenterId().equals(invoiceModel.getRenterId()))
+                                .filter(inv -> {
+                                    Calendar invoiceCalendar = Calendar.getInstance();
+                                    invoiceCalendar.setTime(inv.getCreateDate());
+                                    int invoiceYear = invoiceCalendar.get(Calendar.YEAR);
+                                    int invoiceMonth = invoiceCalendar.get(Calendar.MONTH);
+                                    return invoiceYear == newYearInvoice && invoiceMonth == newMonthInvoice;
+                                })
+                                .collect(Collectors.toList());
+
+                        if (!currentMonthInvoices.isEmpty()) {
+                            throw new IllegalArgumentException("Hóa đơn đã tạo tháng này rồi!");
+                        }
+
+                        Double newElectricityIndex = newIndex.getElectricityIndex();
+                        Double oldElectricityIndex = oldIndex.getElectricityIndex();
+
+                        Double newWaterIndex = newIndex.getWaterIndex();
+                        Double oldWaterIndex = oldIndex.getWaterIndex();
+
+                        invoice.setNewElectricityIndex(newElectricityIndex);
+                        invoice.setOldElectricityIndex(oldElectricityIndex);
+                        invoice.setNewWaterIndex(newWaterIndex);
+                        invoice.setOldWaterIndex(oldWaterIndex);
+
+                        Double electricityDifference = newElectricityIndex - oldElectricityIndex;
+                        Double waterDifference = newWaterIndex - oldWaterIndex;
+
+                        Double wifiBill = wifiCash.getWifiBill() != null ? wifiCash.getWifiBill() : 0.0;
+                        Double total = roomCash.getRoomBill()
+                                + (electricityDifference * electricityCash.getElectricityBill())
+                                + (waterDifference * waterCash.getWaterBill() + wifiBill);
+
+                        invoice.setTotalPrice(total);
+                        invoice.setCreateDate(new Date());
+                    } else {
+                        throw new IllegalArgumentException("Tháng của chỉ số không phù hợp!");
                     }
-
-                    Double newElectricityIndex = newIndex.getElectricityIndex();
-                    Double oldElectricityIndex = oldIndex.getElectricityIndex();
-
-                    Double newWaterIndex = newIndex.getWaterIndex();
-                    Double oldWaterIndex = oldIndex.getWaterIndex();
-
-                    invoice.setNewElectricityIndex(newElectricityIndex);
-                    invoice.setOldElectricityIndex(oldElectricityIndex);
-                    invoice.setNewWaterIndex(newWaterIndex);
-                    invoice.setOldWaterIndex(oldWaterIndex);
-
-                    Double electricityDifference = newElectricityIndex - oldElectricityIndex;
-                    Double waterDifference = newWaterIndex - oldWaterIndex;
-
-                    Double wifiBill = wifiCash.getWifiBill() != null ? wifiCash.getWifiBill() : 0.0;
-                    Double total = roomCash.getRoomBill()
-                            + (electricityDifference * electricityCash.getElectricityBill())
-                            + (waterDifference * waterCash.getWaterBill()) + wifiBill;
-
-                    invoice.setTotalPrice(total);
-                    invoice.setCreateDate(new Date());
-                } else if (newYear > oldYear || (newYear == oldYear && newMonth < oldMonth)) {
-                    Calendar newCalendars = Calendar.getInstance();
-                    newCalendars.setTime(invoice.getCreateDate());
-                    int newYearInvoice = newCalendars.get(Calendar.YEAR);
-                    int newMonthInvoice = newCalendars.get(Calendar.MONTH);
-
-                    List<Invoice> currentMonthInvoices = invoiceRepository.findAll()
-                            .stream()
-                            .filter(inv -> inv.getRenter().getRenterId().equals(invoiceModel.getRenterId()))
-                            .filter(inv -> {
-                                Calendar invoiceCalendar = Calendar.getInstance();
-                                invoiceCalendar.setTime(inv.getCreateDate());
-                                int invoiceYear = invoiceCalendar.get(Calendar.YEAR);
-                                int invoiceMonth = invoiceCalendar.get(Calendar.MONTH);
-                                return invoiceYear == newYearInvoice && invoiceMonth == newMonthInvoice;
-                            })
-                            .collect(Collectors.toList());
-
-                    if (!currentMonthInvoices.isEmpty()) {
-                        throw new IllegalArgumentException("Hóa đơn đã tạo tháng này rồi!");
-                    }
-
-                    Double newElectricityIndex = newIndex.getElectricityIndex();
-                    Double oldElectricityIndex = oldIndex.getElectricityIndex();
-
-                    Double newWaterIndex = newIndex.getWaterIndex();
-                    Double oldWaterIndex = oldIndex.getWaterIndex();
-
-                    invoice.setNewElectricityIndex(newElectricityIndex);
-                    invoice.setOldElectricityIndex(oldElectricityIndex);
-                    invoice.setNewWaterIndex(newWaterIndex);
-                    invoice.setOldWaterIndex(oldWaterIndex);
-
-                    Double electricityDifference = newElectricityIndex - oldElectricityIndex;
-                    Double waterDifference = newWaterIndex - oldWaterIndex;
-
-                    Double wifiBill = wifiCash.getWifiBill() != null ? wifiCash.getWifiBill() : 0.0;
-                    Double total = roomCash.getRoomBill()
-                            + (electricityDifference * electricityCash.getElectricityBill())
-                            + (waterDifference * waterCash.getWaterBill() + wifiBill);
-
-                    invoice.setTotalPrice(total);
-                    invoice.setCreateDate(new Date());
                 } else {
-                    throw new IllegalArgumentException("Tháng của chỉ số không phù hợp!");
+                    throw new IllegalArgumentException(
+                            "Chỉ số điện và nước không phù hợp của " + motelRoom.getDescriptions());
                 }
+
             } else {
                 throw new IllegalArgumentException(
-                        "Chỉ số điện và nước chưa được tạo cho phòng " + motelRoom.getDescriptions());
+                        "Chỉ số điện và nước chưa được tạo cho " + motelRoom.getDescriptions());
             }
 
             Integer invoiceStatusId = invoiceModel.getInvoiceStatusId();
@@ -239,6 +247,11 @@ public class InvoiceImpl implements InvoiceService {
     public Invoice updateInvoice(Integer invoiceId, Invoice invoice) {
         Invoice invoiceById = invoiceRepository.findById(invoiceId).orElse(null);
 
+        if (invoice.getInvoiceStatus().getInvoiceStatusId() == 2) {
+            throw new IllegalArgumentException(
+                    "Hóa đơn đã được thanh toán: " + invoice.getInvoiceStatus().getInvoiceStatusId());
+        }
+
         InvoiceStatus invoiceStatus = invoiceStatusRepository.findById(invoice.getInvoiceStatus().getInvoiceStatusId())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Invalid invoice status Id: " + invoiceById.getInvoiceStatus().getInvoiceStatusId()));
@@ -253,6 +266,16 @@ public class InvoiceImpl implements InvoiceService {
         invoiceRepository.save(invoice);
 
         return invoice;
+    }
+
+    @Override
+    public List<Object> getRevenueByMonth() {
+        return invoiceRepository.getRevenueByMonth();
+    }
+
+    @Override
+    public List<Object> getRevenueByYear() {
+        return invoiceRepository.getRevenueByYear();
     }
 
 }

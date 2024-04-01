@@ -3,443 +3,449 @@
 
 
 <head>
-    <title>Trang Chủ</title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Trang Chủ</title>
+	<!-- Required meta tags -->
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <!-- Bootstrap CSS v5.2.1 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
-    <link rel="stylesheet" th:href="@{/css/header.css}" />
-    <link rel="stylesheet" th:href="@{/css/footer.css}" />
-    <link rel="stylesheet" th:href="@{/css/main.css}" />
-    <!-- ===== Boxicons CSS ===== -->
-    <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
-    <style>
-        /* Thêm style cho combobox */
-        .custom-select-wrapper {
-            display: flex;
-            align-items: center;
-        }
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+	<!-- Bootstrap CSS v5.2.1 -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+	<link rel="stylesheet" th:href="@{/css/header.css}" />
+	<link rel="stylesheet" th:href="@{/css/footer.css}" />
+	<link rel="stylesheet" th:href="@{/css/main.css}" />
+	<!-- ===== Boxicons CSS ===== -->
+	<link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
+	<style>
+		/* Thêm style cho combobox */
+		.custom-select-wrapper {
+			display: flex;
+			align-items: center;
+		}
 
-        .custom-select {
-            padding: 0.375rem 2rem 0.375rem 0.75rem;
-            line-height: 1.5;
-            color: #495057;
-            background-color: #ffc270;
-            background-clip: padding-box;
-            border: 1px solid #ced4da;
-            border-radius: 0.25rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-            width: 150px;
-            /* Điều chỉnh kích thước combobox theo ý muốn */
-        }
+		.custom-select {
+			padding: 0.375rem 2rem 0.375rem 0.75rem;
+			line-height: 1.5;
+			color: #495057;
+			background-color: #ffc270;
+			background-clip: padding-box;
+			border: 1px solid #ced4da;
+			border-radius: 0.25rem;
+			transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+			width: 150px;
+			/* Điều chỉnh kích thước combobox theo ý muốn */
+		}
 
-        .pagination .page-link {
-            color: black;
-            /* Màu chữ của số trang */
-            border-color: #FFECBF;
-            /* Màu khung của số trang */
-            background-color: #FFECBF;
-        }
+		.pagination .page-link {
+			color: black;
+			/* Màu chữ của số trang */
+			border-color: #FFECBF;
+			/* Màu khung của số trang */
+			background-color: #FFECBF;
+		}
 
-        .pagination .page-item.active .page-link {
-            background-color: #FFECBF;
-            /* Màu nền của số trang hiện tại */
-            border-color: #FFECBF;
-            /* Màu khung của số trang hiện tại */
-        }
-    </style>
+		.pagination .page-item.active .page-link {
+			background-color: #FFECBF;
+			/* Màu nền của số trang hiện tại */
+			border-color: #FFECBF;
+			/* Màu khung của số trang hiện tại */
+		}
+	</style>
 </head>
 
 <body ng-app="roomApp">
-    <div th:replace="~{/layout/header.html}"></div>
-
-   
-
-<body>
 	<div th:replace="~{/layout/header.html}"></div>
-	<main>
-		<div class="container" style="margin-top: 10rem">
-			<div class="area m-1">
-				<h3>Cho Thuê Phòng Trọ, Thuê Nhà Trọ Giá Rẻ, MỚI NHẤT</h3>
-				<div class="row mt-5" style="border-bottom: 3px solid black">
-					<div class="col-lg-3">
-						<div class="custom-select-wrapper mb-0">
-							<h6 class="mb-0 w-50">Danh mục:</h6>
-							<select class="custom-select w-50" id="categorySelect" onchange="filterByCategory()">
-								<option value="0">Tất cả</option>
-								<th:block th:each="rooms : ${rooms}">
-									<option th:value="${rooms.title}" th:text="${rooms.title}">
-									</option>
-								</th:block>
-							</select>
-						</div>
 
-					</div>
-					<div class="col-lg-6"></div>
-					<div class="col-lg-3">
-						<div class="custom-select-wrapper mb-4">
-							<h6 class="mb-0 w-50">Ngày:</h6>
-							<select class="custom-select w-50" name="sortDir" id="sortDirTime" onchange="sortCards()">
-								<option value="desc" th:selected="${sortDir == 'desc'}">Mới nhất</option>
-								<option value="asc" th:selected="${sortDir == 'asc'}">Cũ nhất</option>
-							</select>
 
-						</div>
-					</div>
 
-				</div>
-			</div>
-
-			<div class="mt-4">
-				<div class="container mt-1 p-2">
-					<div class="row">
-						<!-- Combobox nằm bên trái -->
+	<body>
+		<div th:replace="~{/layout/header.html}"></div>
+		<main>
+			<div class="container" style="margin-top: 10rem">
+				<div class="area m-1">
+					<h3>Cho Thuê Phòng Trọ, Thuê Nhà Trọ Giá Rẻ, MỚI NHẤT</h3>
+					<div class="row mt-5" style="border-bottom: 3px solid black">
 						<div class="col-lg-3">
-							<div class="custom-select-wrapper mb-3">
-								<h6 class="mb-0 w-50">Tỉnh/Thành Phố:</h6>
-								<select class="custom-select w-50" id="city" name="city" onchange="filterByAddress()">
-									<option value="">Tất cả</option>
-									<!-- Thêm các option từ dữ liệu của bạn -->
-								</select>
-							</div>
-							<hr />
-							<!-- Combobox 2 -->
-							<div class="custom-select-wrapper mb-3">
-								<h6 class="mb-0 w-50">Quận/huyện:</h6>
-								<select class="custom-select w-50" id="district" name="district"
-									onchange="filterByAddress()">
-									<option value="">Tất cả</option>
-									<!-- Thêm các option từ dữ liệu của bạn -->
-								</select>
-							</div>
-							<hr />
-							<!-- Combobox 3 -->
-							<div class="custom-select-wrapper mb-3">
-								<h6 class="mb-0 w-50">Phường/xã:</h6>
-								<select class="custom-select w-50" id="ward" name="ward" onchange="filterByAddress()">
-									<option value="">Tất cả</option>
-									<!-- Thêm các option từ dữ liệu của bạn -->
-								</select>
-							</div>
-
-
-							<hr />
-							<!-- Combobox 4 -->
-							<div class="custom-select-wrapper mb-3">
-								<h6 class="mb-0 w-50">Diện tích:</h6>
-								<select class="custom-select w-50" id="categorySelect4" onchange="filterByArea()">
-									<option value="1">Tất cả</option>
-									<option value="2">Dưới 20m2</option>
-									<option value="3">Từ 20m2 đến 50m2</option>
-									<option value="4">Trên 50m2</option>
-								</select>
-							</div>
-
-							<hr />
-							<!-- Combobox 5 -->
-							<div class="custom-select-wrapper mb-3">
-								<h6 class="mb-0 w-50">Mức giá:</h6>
-								<select class="custom-select w-50" id="categorySelect5" onchange="filterByPrice()">
+							<div class="custom-select-wrapper mb-0">
+								<h6 class="mb-0 w-50">Danh mục:</h6>
+								<select class="custom-select w-50" id="categorySelect" onchange="filterByCategory()">
 									<option value="0">Tất cả</option>
-									<option value="1">Dưới 1 triệu</option>
-									<option value="2">Từ 1 triệu đến 2 triệu</option>
-									<option value="3">Trên 2 triệu</option>
+									<th:block th:each="rooms : ${rooms}">
+										<option th:value="${rooms.title}" th:text="${rooms.title}">
+										</option>
+									</th:block>
 								</select>
 							</div>
-
-
 
 						</div>
+						<div class="col-lg-6"></div>
+						<div class="col-lg-3">
+							<div class="custom-select-wrapper mb-4">
+								<h6 class="mb-0 w-50">Ngày:</h6>
+								<select class="custom-select w-50" name="sortDir" id="sortDirTime"
+									onchange="sortCards()">
+									<option value="desc" th:selected="${sortDir == 'desc'}">Mới nhất</option>
+									<option value="asc" th:selected="${sortDir == 'asc'}">Cũ nhất</option>
+								</select>
 
-						<div class="col-lg-9" id="room-cards">
-							<!-- Sử dụng vòng lặp để duyệt qua từng phòng trọ -->
-							<div class="card mb-3 room-card" style="background-color: #545454; color: #dcbf7d"
-								th:each="room : ${rooms}">
-								<div class="row g-0">
-									<div class="col-md-4">
-										<img class="img-fluid" style="height: 100%" th:src="@{|/img/${room.image}|}"
-											alt="" />
-									</div>
-									<div class="col-md-8">
-										<div class="card-body">
-											<div class="row">
-												<div class="col-10">
-													<!-- Hiển thị địa chỉ -->
-													<p class="card-text d-inline-block" th:text="${room.address}"></p>,
-													<p class="card-text ward d-inline-block" th:text="${room.ward}"></p>
-												</div>
-												<div class="col-2 d-flex align-items-center justify-content-end">
-													<img class="" style="max-width: 75%; max-height: 75%;"
-														th:src="@{/img/heart.png}" alt="" />
-												</div>
-											</div>
-											<!-- Hiển thị giá tiền -->
-											<div class="row py-0 p-0">
-												<div class="col-12 card-text">
-													<h4 class="card-title mt-1 price"
-														th:text="${#numbers.formatInteger(room.price,3,'POINT')+ ' /tháng'}">
-													</h4>
-												</div>
-											</div>
+							</div>
+						</div>
 
-											<!-- Hiển thị diện tích -->
-											<div class="row py-0 p-0">
-												<div class="col-4 card-text d-flex align-items-center">
-													<img class="" style="max-height: 30%; max-width: 30%;"
-														th:src="@{/img/block.png}" alt="" />
-													<p th:text="${'Diện tích: ' + room.area + 'm2'}" class="area m-0">
-													</p>
-												</div>
-												<!-- Hiển thị loại phòng -->
-												<div class="col-4 card-text d-flex align-items-center">
-													<img class="" style="max-height: 30%; max-width: 30%;"
-														th:src="@{/img/double-bed.png}" alt="" />
-													<p class="title my-0" th:text="${room.title}"></p>
-												</div>
-												<!-- Hiển thị miễn phí Wifi -->
-												<div class="col-4 card-text d-flex align-items-center">
-													<img class="" style="max-height: 30% ; max-width: 30%;"
-														th:src="@{/img/wifi.png}" alt="" />
-													<span class="ml-2">Wifi</span>
-												</div>
-											</div>
-											<!-- Hiển thị thông tin cá nhân -->
-											<div class="card-person py-0 p-0">
+					</div>
+				</div>
+
+				<div class="mt-4">
+					<div class="container mt-1 p-2">
+						<div class="row">
+							<!-- Combobox nằm bên trái -->
+							<div class="col-lg-3">
+								<div class="custom-select-wrapper mb-3">
+									<h6 class="mb-0 w-50">Tỉnh/Thành Phố:</h6>
+									<select class="custom-select w-50" id="city" name="city"
+										onchange="filterByAddress()">
+										<option value="">Tất cả</option>
+										<!-- Thêm các option từ dữ liệu của bạn -->
+									</select>
+								</div>
+								<hr />
+								<!-- Combobox 2 -->
+								<div class="custom-select-wrapper mb-3">
+									<h6 class="mb-0 w-50">Quận/huyện:</h6>
+									<select class="custom-select w-50" id="district" name="district"
+										onchange="filterByAddress()">
+										<option value="">Tất cả</option>
+										<!-- Thêm các option từ dữ liệu của bạn -->
+									</select>
+								</div>
+								<hr />
+								<!-- Combobox 3 -->
+								<div class="custom-select-wrapper mb-3">
+									<h6 class="mb-0 w-50">Phường/xã:</h6>
+									<select class="custom-select w-50" id="ward" name="ward"
+										onchange="filterByAddress()">
+										<option value="">Tất cả</option>
+										<!-- Thêm các option từ dữ liệu của bạn -->
+									</select>
+								</div>
+
+
+								<hr />
+								<!-- Combobox 4 -->
+								<div class="custom-select-wrapper mb-3">
+									<h6 class="mb-0 w-50">Diện tích:</h6>
+									<select class="custom-select w-50" id="categorySelect4" onchange="filterByArea()">
+										<option value="0">Tất cả</option>
+										<option value="2">Dưới 20m2</option>
+										<option value="3">Từ 20m2 đến 50m2</option>
+										<option value="4">Trên 50m2</option>
+									</select>
+								</div>
+
+								<hr />
+								<!-- Combobox 5 -->
+								<div class="custom-select-wrapper mb-3">
+									<h6 class="mb-0 w-50">Mức giá:</h6>
+									<select class="custom-select w-50" id="categorySelect5" onchange="filterByPrice()">
+										<option value="0">Tất cả</option>
+										<option value="1">Dưới 1 triệu</option>
+										<option value="2">Từ 1 triệu đến 2 triệu</option>
+										<option value="3">Trên 2 triệu</option>
+									</select>
+								</div>
+
+
+
+							</div>
+
+							<div class="col-lg-9" id="room-cards">
+								<!-- Sử dụng vòng lặp để duyệt qua từng phòng trọ -->
+								<div class="card mb-3 room-card" style="background-color: #545454; color: #dcbf7d"
+									th:each="room : ${rooms}">
+									<div class="row g-0">
+										<div class="col-md-4">
+											<img class="img-fluid" style="height: 100%" th:src="@{|/img/${room.image}|}"
+												alt="" />
+										</div>
+										<div class="col-md-8">
+											<div class="card-body">
 												<div class="row">
-													<div class="col-lg-5">
-														<h5 class="card-text mb-0" th:text="${room.fullname}"></h5>
+													<div class="col-10">
+														<!-- Hiển thị địa chỉ -->
+														<p class="card-text d-inline-block" th:text="${room.address}">
+														</p>,
+														<p class="card-text ward d-inline-block" th:text="${room.ward}">
+														</p>
 													</div>
-													<div class="col-lg-4">
-														<p class="my-0">></p>
+													<div class="col-2 d-flex align-items-center justify-content-end">
+														<img class="" style="max-width: 75%; max-height: 75%;"
+															th:src="@{/img/heart.png}" alt="" />
 													</div>
-													<div class="col-lg-3">
-														<!-- Hiển thị ngày tạo -->
-														<p class="my-0 createDate" th:text="${room.createDate}"></p>
+												</div>
+												<!-- Hiển thị giá tiền -->
+												<div class="row py-0 p-0">
+													<div class="col-12 card-text">
+														<h4 class="card-title mt-1 price"
+															th:text="${#numbers.formatInteger(room.price,3,'POINT')+ ' /tháng'}">
+														</h4>
+													</div>
+												</div>
+
+												<!-- Hiển thị diện tích -->
+												<div class="row py-0 p-0">
+													<div class="col-4 card-text d-flex align-items-center">
+														<img class="" style="max-height: 30%; max-width: 30%;"
+															th:src="@{/img/block.png}" alt="" />
+														<p th:text="${'Diện tích: ' + room.area + 'm2'}"
+															class="area m-0">
+														</p>
+													</div>
+													<!-- Hiển thị loại phòng -->
+													<div class="col-4 card-text d-flex align-items-center">
+														<img class="" style="max-height: 30%; max-width: 30%;"
+															th:src="@{/img/double-bed.png}" alt="" />
+														<p class="title my-0" th:text="${room.title}"></p>
+													</div>
+													<!-- Hiển thị miễn phí Wifi -->
+													<div class="col-4 card-text d-flex align-items-center">
+														<img class="" style="max-height: 30% ; max-width: 30%;"
+															th:src="@{/img/wifi.png}" alt="" />
+														<span class="ml-2">Wifi</span>
+													</div>
+												</div>
+												<!-- Hiển thị thông tin cá nhân -->
+												<div class="card-person py-0 p-0">
+													<div class="row">
+														<div class="col-lg-5">
+															<h5 class="card-text mb-0" th:text="${room.fullname}"></h5>
+														</div>
+														<div class="col-lg-4">
+															<p class="my-0">></p>
+														</div>
+														<div class="col-lg-3">
+															<!-- Hiển thị ngày tạo -->
+															<p class="my-0 createDate" th:text="${room.createDate}"></p>
+														</div>
+
+													</div>
+													<!-- Hiển thị quận/huyện và tỉnh/thành phố -->
+													<div class="col-12 card-text my-0">
+														<!-- Hiển thị quận/huyện và tỉnh/thành phố cùng một hàng với dấu phẩy ngăn cách -->
+														<h6 class="card-text district d-inline-block"
+															th:text="${room.district}"></h6>,
+														<h6 class="card-text city d-inline-block ml-2"
+															th:text="${room.city}"></h6>
 													</div>
 
 												</div>
-												<!-- Hiển thị quận/huyện và tỉnh/thành phố -->
-												<div class="col-12 card-text my-0">
-													<!-- Hiển thị quận/huyện và tỉnh/thành phố cùng một hàng với dấu phẩy ngăn cách -->
-													<h6 class="card-text district d-inline-block"
-														th:text="${room.district}"></h6>,
-													<h6 class="card-text city d-inline-block ml-2"
-														th:text="${room.city}"></h6>
-												</div>
-
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
 
-						<div class="col-lg-12 text-center">
-							<ul class="pagination justify-content-center">
-								<li th:class="${page.first ? 'page-item disabled' : 'page-item'}">
-									<a class="page-link"
-										th:href="@{${#httpServletRequest.requestURI}(page=0)}">&lt;&lt;</a>
-								</li>
-								<li th:class="${page.first ? 'page-item disabled' : 'page-item'}">
-									<a class="page-link"
-										th:href="@{${#httpServletRequest.requestURI}(page=${page.number - 1})}">&lt;</a>
-								</li>
-								<li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
-									th:class="${page.number == i ? 'page-item active' : 'page-item'}">
-									<a class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=${i})}"
-										th:text="${i + 1}"></a>
-								</li>
-								<li th:class="${page.last ? 'page-item disabled' : 'page-item'}">
-									<a class="page-link"
-										th:href="@{${#httpServletRequest.requestURI}(page=${page.number + 1})}">&gt;</a>
-								</li>
-								<li th:class="${page.last ? 'page-item disabled' : 'page-item'}">
-									<a class="page-link"
-										th:href="@{${#httpServletRequest.requestURI}(page=${page.totalPages - 1})}">&gt;&gt;</a>
-								</li>
-							</ul>
+							<div class="col-lg-12 text-center">
+								<ul class="pagination justify-content-center">
+									<li th:class="${page.first ? 'page-item disabled' : 'page-item'}">
+										<a class="page-link"
+											th:href="@{${#httpServletRequest.requestURI}(page=0)}">&lt;&lt;</a>
+									</li>
+									<li th:class="${page.first ? 'page-item disabled' : 'page-item'}">
+										<a class="page-link"
+											th:href="@{${#httpServletRequest.requestURI}(page=${page.number - 1})}">&lt;</a>
+									</li>
+									<li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+										th:class="${page.number == i ? 'page-item active' : 'page-item'}">
+										<a class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=${i})}"
+											th:text="${i + 1}"></a>
+									</li>
+									<li th:class="${page.last ? 'page-item disabled' : 'page-item'}">
+										<a class="page-link"
+											th:href="@{${#httpServletRequest.requestURI}(page=${page.number + 1})}">&gt;</a>
+									</li>
+									<li th:class="${page.last ? 'page-item disabled' : 'page-item'}">
+										<a class="page-link"
+											th:href="@{${#httpServletRequest.requestURI}(page=${page.totalPages - 1})}">&gt;&gt;</a>
+									</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		</div>
-	</main>
+			</div>
+		</main>
 
 
-	<div th:replace="~{/layout/footer.html}"></div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+		<div th:replace="~{/layout/footer.html}"></div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-	<!-- Bootstrap JavaScript Libraries -->
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-		crossorigin="anonymous"></script>
-
-
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-		integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-		crossorigin="anonymous"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+		<!-- Bootstrap JavaScript Libraries -->
+		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+			integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+			crossorigin="anonymous"></script>
 
 
-	<script>
-		function filterByAddress() {
-
-			var selectedCityElement = document.getElementsByName("city")[0];
-			var selectedDistrictElement = document.getElementsByName("district")[0];
-			var selectedWardElement = document.getElementsByName("ward")[0];
-
-			var selectedCity = selectedCityElement.value !== "" ? selectedCityElement.options[selectedCityElement.selectedIndex].text : "";
-			var selectedDistrict = selectedDistrictElement.value !== "" ? selectedDistrictElement.options[selectedDistrictElement.selectedIndex].text : "";
-			var selectedWard = selectedWardElement.value !== "" ? selectedWardElement.options[selectedWardElement.selectedIndex].text : "";
-			console.log("json", selectedCity, selectedDistrict, selectedWard);
-
-			var cards = document.getElementsByClassName("room-card");
-
-			for (var i = 0; i < cards.length; i++) {
-				var card = cards[i];
-				var cityElement = card.querySelector(".city");
-				var districtElement = card.querySelector(".district");
-				var wardElement = card.querySelector(".ward");
-				console.log("card", card);
-
-				if (!cityElement || !districtElement || !wardElement) {
-					console.log("Không thể lấy thông tin địa chỉ từ thẻ card.");
-					continue; // Bỏ qua thẻ card không có đủ thông tin địa chỉ và chuyển sang thẻ card tiếp theo
-				}
-
-				var city = cityElement.innerText;
-				var district = districtElement.innerText;
-				var ward = wardElement.innerText;
-
-				console.log("Thông tin địa chỉ từ thẻ card:", city, district, ward);
-
-				if ((selectedCity === "" || city.includes(selectedCity)) &&
-					(selectedDistrict === "" || district.includes(selectedDistrict)) &&
-					(selectedWard === "" || ward.includes(selectedWard))) {
-					card.style.display = ""; // Hiển thị thẻ card nếu nó khớp với điều kiện lọc
-					console.log("so sanh thanh cong");
-					console.log("du lie json", selectedCity, selectedDistrict, selectedWard);
-				} else {
-					card.style.display = "none"; // Ẩn thẻ card nếu không khớp với điều kiện lọc
-					console.log("so sanh that bai");
-				}
-			}
-		}
-		// Gọi hàm lọc ban đầu để hiển thị tất cả card
-		filterByAddress();
-	</script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+			integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+			crossorigin="anonymous"></script>
 
 
+		<script>
+			function filterByAddress() {
 
+				var selectedCityElement = document.getElementsByName("city")[0];
+				var selectedDistrictElement = document.getElementsByName("district")[0];
+				var selectedWardElement = document.getElementsByName("ward")[0];
 
-	<script>
-		function filterByArea() {
-			var selectedAreaRange = document.getElementById("categorySelect4").value;
-			var cards = document.getElementsByClassName("room-card");
+				var selectedCity = selectedCityElement.value !== "" ? selectedCityElement.options[selectedCityElement.selectedIndex].text : "";
+				var selectedDistrict = selectedDistrictElement.value !== "" ? selectedDistrictElement.options[selectedDistrictElement.selectedIndex].text : "";
+				var selectedWard = selectedWardElement.value !== "" ? selectedWardElement.options[selectedWardElement.selectedIndex].text : "";
+				console.log("json", selectedCity, selectedDistrict, selectedWard);
 
-			for (var i = 0; i < cards.length; i++) {
-				var areaText = cards[i].querySelector(".area").innerText;
-				var area = parseFloat(areaText.match(/\d+/)); // Tách số từ văn bản
+				var cards = document.getElementsByClassName("room-card");
 
-				if (selectedAreaRange === "1" || // Hiển thị tất cả
-					(selectedAreaRange === "2" && area < 20) || // Diện tích dưới 20m2
-					(selectedAreaRange === "3" && area >= 20 && area <= 50) || // Diện tích từ 20m2 đến 50m2
-					(selectedAreaRange === "4" && area > 50)) { // Diện tích trên 50m2
-					cards[i].style.display = "block";
-				} else {
-					cards[i].style.display = "none";
+				for (var i = 0; i < cards.length; i++) {
+					var card = cards[i];
+					var cityElement = card.querySelector(".city");
+					var districtElement = card.querySelector(".district");
+					var wardElement = card.querySelector(".ward");
+					console.log("card", card);
+
+					if (!cityElement || !districtElement || !wardElement) {
+						console.log("Không thể lấy thông tin địa chỉ từ thẻ card.");
+						continue; // Bỏ qua thẻ card không có đủ thông tin địa chỉ và chuyển sang thẻ card tiếp theo
+					}
+
+					var city = cityElement.innerText;
+					var district = districtElement.innerText;
+					var ward = wardElement.innerText;
+
+					console.log("Thông tin địa chỉ từ thẻ card:", city, district, ward);
+
+					if ((selectedCity === "" || city.includes(selectedCity)) &&
+						(selectedDistrict === "" || district.includes(selectedDistrict)) &&
+						(selectedWard === "" || ward.includes(selectedWard))) {
+						card.style.display = ""; // Hiển thị thẻ card nếu nó khớp với điều kiện lọc
+						console.log("so sanh thanh cong");
+						console.log("du lie json", selectedCity, selectedDistrict, selectedWard);
+					} else {
+						card.style.display = "none"; // Ẩn thẻ card nếu không khớp với điều kiện lọc
+						console.log("so sanh that bai");
+					}
 				}
 			}
-		}
-	</script>
+			// Gọi hàm lọc ban đầu để hiển thị tất cả card
+			filterByAddress();
+		</script>
 
-	<script>
-		function filterByPrice() {
-			var selectedPriceRange = document.getElementById("categorySelect5").value;
-			var cards = document.getElementsByClassName("room-card");
 
-			for (var i = 0; i < cards.length; i++) {
-				var priceElement = cards[i].querySelector(".price").innerText;
-				var price = parseFloat(priceElement.replace(/\D/g, '')); // Loại bỏ ký tự không phải số và chuyển đổi sang dạng số
 
-				if (selectedPriceRange === "0" ||
-					(selectedPriceRange === "1" && price < 1000000) ||
-					(selectedPriceRange === "2" && price >= 1000000 && price <= 2000000) ||
-					(selectedPriceRange === "3" && price > 2000000)) {
-					cards[i].style.display = "block";
-				} else {
-					cards[i].style.display = "none";
+
+		<script>
+			function filterByArea() {
+				var selectedAreaRange = document.getElementById("categorySelect4").value;
+				var cards = document.getElementsByClassName("room-card");
+
+				for (var i = 0; i < cards.length; i++) {
+					var areaText = cards[i].querySelector(".area").innerText;
+					var area = parseFloat(areaText.match(/\d+/)); // Tách số từ văn bản
+
+					if (selectedAreaRange === "1" || // Hiển thị tất cả
+						(selectedAreaRange === "2" && area < 20) || // Diện tích dưới 20m2
+						(selectedAreaRange === "3" && area >= 20 && area <= 50) || // Diện tích từ 20m2 đến 50m2
+						(selectedAreaRange === "4" && area > 50)) { // Diện tích trên 50m2
+						cards[i].style.display = "block";
+					} else {
+						cards[i].style.display = "none";
+					}
 				}
 			}
-		}
-	</script>
-	<script>
-		function filterByCategory() {
-			var selectedCategory = document.getElementById("categorySelect").value;
-			var cards = document.getElementsByClassName("room-card");
+		</script>
 
-			for (var i = 0; i < cards.length; i++) {
-				var titleElement = cards[i].querySelector(".title").innerText;
+		<script>
+			function filterByPrice() {
+				var selectedPriceRange = document.getElementById("categorySelect5").value;
+				var cards = document.getElementsByClassName("room-card");
 
-				if (selectedCategory === "0" || selectedCategory === titleElement) {
-					cards[i].style.display = "block";
-				} else {
-					cards[i].style.display = "none";
+				for (var i = 0; i < cards.length; i++) {
+					var priceElement = cards[i].querySelector(".price").innerText;
+					var price = parseFloat(priceElement.replace(/\D/g, '')); // Loại bỏ ký tự không phải số và chuyển đổi sang dạng số
+
+					if (selectedPriceRange === "0" ||
+						(selectedPriceRange === "1" && price < 1000000) ||
+						(selectedPriceRange === "2" && price >= 1000000 && price <= 2000000) ||
+						(selectedPriceRange === "3" && price > 2000000)) {
+						cards[i].style.display = "block";
+					} else {
+						cards[i].style.display = "none";
+					}
 				}
 			}
-		}
-	</script>
+		</script>
+		<script>
+			function filterByCategory() {
+				var selectedCategory = document.getElementById("categorySelect").value;
+				var cards = document.getElementsByClassName("room-card");
 
-	<script>
-		function sortCards() {
-			var selectElement = document.getElementById("sortDirTime");
-			var selectedValue = selectElement.value;
+				for (var i = 0; i < cards.length; i++) {
+					var titleElement = cards[i].querySelector(".title").innerText;
 
-			// Lấy danh sách các card
-			var cards = document.querySelectorAll(".card.mb-3");
-
-			// Sắp xếp các card dựa trên giá trị được chọn
-			if (selectedValue === "desc") {
-				// Sắp xếp theo thứ tự giảm dần của ngày
-				cards.forEach(function (card) {
-					var cardCreateDate = new Date(card.querySelector(".createDate").innerText);
-					card.parentNode.prepend(card);
-				});
-			} else if (selectedValue === "asc") {
-				// Sắp xếp theo thứ tự tăng dần của ngày
-				var sortedCards = Array.from(cards).sort(function (a, b) {
-					var dateA = new Date(a.querySelector(".createDate").innerText);
-					var dateB = new Date(b.querySelector(".createDate").innerText);
-					return dateA - dateB;
-				});
-				sortedCards.forEach(function (card) {
-					card.parentNode.appendChild(card);
-				});
+					if (selectedCategory === "0" || selectedCategory === titleElement) {
+						cards[i].style.display = "block";
+					} else {
+						cards[i].style.display = "none";
+					}
+				}
 			}
-		}
+		</script>
 
-	</script>
+		<script>
+			function sortCards() {
+				var selectElement = document.getElementById("sortDirTime");
+				var selectedValue = selectElement.value;
 
-	<script th:src="@{/js/header.js}"></script>
-	<script src="/js/address.js"></script>
+				// Lấy danh sách các card
+				var cards = document.querySelectorAll(".card.mb-3");
 
-    <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
+				// Sắp xếp các card dựa trên giá trị được chọn
+				if (selectedValue === "desc") {
+					// Sắp xếp theo thứ tự giảm dần của ngày
+					cards.forEach(function (card) {
+						var cardCreateDate = new Date(card.querySelector(".createDate").innerText);
+						card.parentNode.prepend(card);
+					});
+				} else if (selectedValue === "asc") {
+					// Sắp xếp theo thứ tự tăng dần của ngày
+					var sortedCards = Array.from(cards).sort(function (a, b) {
+						var dateA = new Date(a.querySelector(".createDate").innerText);
+						var dateB = new Date(b.querySelector(".createDate").innerText);
+						return dateA - dateB;
+					});
+					sortedCards.forEach(function (card) {
+						card.parentNode.appendChild(card);
+					});
+				}
+			}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script th:src="@{/js/header.js}"></script>
-    <script th:src="@{/js/room.js}"></script>
-</body>
+		</script>
+
+		<script th:src="@{/js/header.js}"></script>
+		<script src="/js/address.js"></script>
+
+		<!-- Bootstrap JavaScript Libraries -->
+		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+			integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+			crossorigin="anonymous"></script>
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+			integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+			crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script th:src="@{/js/header.js}"></script>
+		<script th:src="@{/js/room.js}"></script>
+	</body>
 
 </html>

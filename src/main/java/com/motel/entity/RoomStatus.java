@@ -31,10 +31,8 @@ public class RoomStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer roomStatusId;
-
     @Nationalized
     String name;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "roomStatus")
     @JsonIgnore
     List<MotelRoom> motelRoom;

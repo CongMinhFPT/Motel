@@ -2,29 +2,28 @@ document.addEventListener("DOMContentLoaded",()=>{
     let name =document.getElementById("name")
     let phone =document.getElementById("phone")
     let content =document.getElementById("content")
-    let submit =document.getElementById("submit")
-    submit.addEventListener("click", (e)=>{
-        e.preventDefault();
-      if(check()){
-        const data ={
-            Name: name.value ,
-            Phone: phone.value ,
+    let form = document.getElementById('yourFormId'); // Thay 'yourFormId' bằng Id của form của bạn
+    form.onsubmit = function(event) {
+           event.preventDefault();
+        const data = {
+            Name: name.value,
+            Phone: phone.value,
             Content: content.value,
-          };
-        postgg(data)
+        };
+        postgg(data);
         Swal.fire({
-            title: 'Đã gửi Feedback',
-            icon: 'success',
-            timer: 500,
-            showConfirmButton: false
-        });
+			title: "Thành công!",
+			text: "Đã gửi Feedback!",
+			icon: "success",
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000
+		})
         name.value='';
-       phone.value='';
-       content.value='';
-      }
-   
-  
-    });
+        phone.value='';
+        content.value='';
+    }
     async function postgg(data){
         const formURL ="https://docs.google.com/forms/d/e/1FAIpQLSftK8c2jDNMpfog5qLCvJ1IUXrhcRnJs7hGDuBvlCwncsu0Rg/formResponse";
         const formData = new FormData();
@@ -36,37 +35,28 @@ document.addEventListener("DOMContentLoaded",()=>{
             body:formData,
         });
     };
-    var check = function(){
-     var checktrue = true;
-        if(name.value ===''){
-           let errorname = document.getElementById('errorname');
-           errorname.innerText='Vui lòng nhập họ tên';
-           checktrue=false;
-        }else{
-            errorname.innerText='';
+    let phonePattern = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+    function setCustomMessage(inputElem, message) {
+        inputElem.oninvalid = function(event) {
+            event.target.setCustomValidity(message);
         }
-        if(phone.value === '') {
-            let errorphone = document.getElementById('errorphone');
-            errorphone.innerText = 'Vui lòng nhập số điện thoại';
-            checktrue =false;
-       } else {
-            let phonePattern = /((09|03|07|08|05)+([0-9]{8})\b)/g;
-       
-            if (!phonePattern.test(phone.value)) {
-                 let errorphone = document.getElementById('errorphone');
-                 errorphone.innerText = 'Số điện thoại không hợp lệ';
-                 checktrue = false;
-            }else{
-                errorphone.innerText = '';
-            }
-       }
-       if(content.value===''){
-        let errorcontent = document.getElementById('errorcontent');
-        errorcontent.innerText = 'Vui lòng nhập Nội dung Feedback';
-        checktrue =false;
-       }else{
-        errorcontent.innerText = '';
-       }
-       return checktrue;
-    }
+        inputElem.oninput = function(event) {
+            event.target.setCustomValidity('');   
+        }
+      }
+      function setCustomMessagephone(inputElem, message) {
+        inputElem.oninvalid = function(event) {
+            event.target.setCustomValidity(message);
+        }
+        inputElem.oninput = function(event) {
+            event.target.setCustomValidity('');
+           if(!phonePattern.test(inputElem.value)){
+            event.target.setCustomValidity('Số điện thoại chưa đúng');
+           } 
+        }
+      }
+
+    setCustomMessage(name ,'Vui lòng nhập họ tên');
+    setCustomMessagephone(phone ,'Vui lòng nhập số điện thoại');
+    setCustomMessage(content ,'Vui lòng nhập nội dung Feedback');
 })

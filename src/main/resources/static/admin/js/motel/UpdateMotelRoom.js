@@ -169,6 +169,7 @@ app.controller(
         showCancelButton: false,
         confirmButtonText: "Có",
         denyButtonText: "Không",
+        icon: "question", 
       }).then((result) => {
         if (result.isConfirmed) {
           if ($scope.selectedStatus == 3) {

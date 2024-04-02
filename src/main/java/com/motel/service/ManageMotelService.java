@@ -200,7 +200,7 @@ public class ManageMotelService implements ManageMotelImpl {
                 motel2.setAccount(account1);
                 motelR.save(motel2);
                 SetModelMotel(model);
-                attributes.addFlashAttribute("successMessage", "Thêm thành công!");
+                attributes.addFlashAttribute("successMessage", "Thêm nhà trọ thành công!");
                 return "redirect:/admin/manage-motel";
             } else {
                 Motel motel2 = motel;
@@ -210,7 +210,7 @@ public class ManageMotelService implements ManageMotelImpl {
                 motel2.setAccount(account1);
                 motelR.save(motel2);
                 SetModelMotel(model);
-                attributes.addFlashAttribute("successMessage", "Thêm thành công!");
+                attributes.addFlashAttribute("successMessage", "Thêm nhà trọ thành công!");
                 return "redirect:/admin/manage-motel";
             }
         }
@@ -306,7 +306,7 @@ public class ManageMotelService implements ManageMotelImpl {
                     motel2.setCreateDate(day);
                     motel2.setStatus(stasus);
                     motelR.save(motel2);
-                    attributes.addFlashAttribute("successMessageUpdate", "Cập nhật thành công!");
+                    attributes.addFlashAttribute("successMessageUpdate", "Cập nhật nhà trọ thành công!");
                     return "redirect:/admin/update-motel";
                 } else {
                     Motel motel2 = motelR.getById(customUserDetails.getMotelid());
@@ -322,7 +322,7 @@ public class ManageMotelService implements ManageMotelImpl {
                     motel2.setCreateDate(day);
                     motel2.setStatus(stasus);
                     motelR.save(motel2);
-                    attributes.addFlashAttribute("successMessageUpdate", "Cập nhật thành công!");
+                    attributes.addFlashAttribute("successMessageUpdate", "Cập nhật nhà trọ thành công!");
                     return "redirect:/admin/update-motel";
                 }
             } else {

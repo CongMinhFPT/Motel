@@ -280,7 +280,7 @@ public class MotelRoomImpl implements MotelRoomService {
                                         image.setName(a);
                                         imageRepository.save(image);
                                     });
-                                    attributes.addFlashAttribute("successMessageAddRoom", "Sửa phòng trọ thành công");
+                                    attributes.addFlashAttribute("successMessageAddRoom", "Cập nhật phòng trọ thành công");
                                     return "redirect:/admin/update-motelroom/"+motelRoom.getMotelRoomId();
                                 } else {
                                     MotelRoom motelRoom3 = motelRoomRepository.getById(motelRoom.getMotelRoomId());
@@ -301,7 +301,7 @@ public class MotelRoomImpl implements MotelRoomService {
                                         image.setName(a);
                                         imageRepository.save(image);
                                     });
-                                    attributes.addFlashAttribute("successMessageAddRoom", "Sửa phòng trọ thành công");
+                                    attributes.addFlashAttribute("successMessageAddRoom", "Cập nhật phòng trọ thành công");
                                     return "redirect:/admin/update-motelroom/"+motelRoom.getMotelRoomId();
                                 }
                             } else {
@@ -319,7 +319,7 @@ public class MotelRoomImpl implements MotelRoomService {
                                 motelRoom2.setCategoryRoom(categoryRoom);
                               }
                                 motelRoomRepository.save(motelRoom2);
-                                attributes.addFlashAttribute("successMessageAddRoom", "Sửa phòng trọ thành công");
+                                attributes.addFlashAttribute("successMessageAddRoom", "Cập nhật phòng trọ thành công");
                                 return "redirect:/admin/update-motelroom/"+motelRoom.getMotelRoomId();
                             }
                         }

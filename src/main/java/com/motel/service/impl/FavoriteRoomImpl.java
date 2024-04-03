@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +49,16 @@ public class FavoriteRoomImpl implements FavoriteRoomService {
     @Override
     public List<MotelRoom> getPagedFavoriteRooms() {
         return motelRoomRepository.findMotelRoomByFavoriteRoom();
+    }
+
+    @Override
+    public Page<FavoriteRoom> getAllFavoriteRoom(Pageable pageable) {
+        Pageable pageableWithSize5 = PageRequest.of(pageable.getPageNumber(), 5);
+        
+        
+        Page<FavoriteRoom> motelsPage = favoriteRoomRepository.findAll(pageableWithSize5);
+       
+        return motelsPage;
     }
 
 }

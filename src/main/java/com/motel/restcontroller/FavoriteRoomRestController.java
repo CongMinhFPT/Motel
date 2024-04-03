@@ -50,4 +50,11 @@ public class FavoriteRoomRestController {
         return ResponseEntity.ok(favoriteRoomPage);
     }
 
+    // @GetMapping("/api/listFavoriteRoom")
+    // public Page<MotelRoom> listFavoriteRooms(@RequestParam(defaultValue = "0") int page,
+    //                                             @RequestParam(defaultValue = "5") int size) {
+    //     Pageable pageable = PageRequest.of(page, size);
+    //     return favoriteRoomService.getPagedFavoriteRooms(pageable);
+    // }
+
 }

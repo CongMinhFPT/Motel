@@ -77,8 +77,8 @@ public class Account implements Serializable {
 	@JsonManagedReference
 	List<Authority> authorities;
 
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
-	@JsonManagedReference
 	List<Post> posts;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")

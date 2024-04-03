@@ -18,6 +18,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Nationalized;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,10 +42,12 @@ public class Post {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "accountId")
+    @JsonBackReference
     Account account;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "motelRoomId")
+    @JsonBackReference
     MotelRoom motelRoom;
 
     @Transient

@@ -55,7 +55,6 @@ public class Invoice {
 
     @ManyToOne
     @JoinColumn(name = "invoiceStatusId")
-    @JsonIgnore
     InvoiceStatus invoiceStatus;
 
     @Override

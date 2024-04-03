@@ -40,12 +40,12 @@ public class Post {
     @Nationalized
     String title;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "accountId")
     @JsonBackReference
     Account account;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "motelRoomId")
     @JsonBackReference
     MotelRoom motelRoom;
@@ -58,5 +58,15 @@ public class Post {
             return strDate;
         }
         return "";
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "postId=" + postId +
+                ", status=" + status +
+                ", createDate=" + createDate +
+                ", title='" + title  +
+                '}';
     }
 }

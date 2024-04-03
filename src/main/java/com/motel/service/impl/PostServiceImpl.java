@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.motel.entity.Account;
+import com.motel.entity.MotelRoom;
 import com.motel.entity.Post;
 import com.motel.repository.AccountsRepository;
+import com.motel.repository.MotelRoomRepository;
 import com.motel.repository.PostRepository;
 import com.motel.service.PostService;
 
@@ -22,6 +24,9 @@ public class PostServiceImpl implements PostService{
 	private PostRepository postRepo;
 	@Autowired
 	private AccountsRepository acRepo;
+
+	@Autowired
+	MotelRoomRepository motelRoomRepository;
 	
 	@Override
 	public List<Post> getListPost() {
@@ -55,7 +60,32 @@ public class PostServiceImpl implements PostService{
 	@Override
 	public List<Post> getListPostEnable() {
 		// TODO Auto-generated method stub
-		return postRepo.getListPostEnable();
+		return postRepo.findAll();
+	}
+
+	@Override
+	public Post update(Post post, Integer postId) {
+		Post post2 = postRepo.findById(postId).orElse(null);
+
+		post.setPostId(post2.getPostId());
+		post.setAccount(post2.getAccount());
+		post.setCreateDate(post2.getCreateDate());
+		MotelRoom motelRoom = motelRoomRepository.findById(post.getMotelRoom().getMotelRoomId()).orElse(null);
+
+		post.setMotelRoom(motelRoom);
+		post.setStatus(post2.isStatus());
+		post.setTitle(post.getTitle());
+		postRepo.save(post);
+		return post;
+	}
+
+	@Override
+	public void deletePost(Integer postId) {
+		if (postId == null) {
+            throw new IllegalStateException("Bài đăng không tồn tại!");
+        } else {
+            postRepo.deleteById(postId);
+        }
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.motel.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Nationalized;
 
@@ -38,14 +40,33 @@ public class Post {
     @Nationalized
     String title;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "accountId")
     @JsonBackReference
     Account account;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "motelRoomId")
     @JsonBackReference
     MotelRoom motelRoom;
 
+    @Transient
+    public String getCreateDateFormat() {
+        if (createDate != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy | HH:mm:ss");
+            String strDate = formatter.format(createDate);
+            return strDate;
+        }
+        return "";
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "postId=" + postId +
+                ", status=" + status +
+                ", createDate=" + createDate +
+                ", title='" + title  +
+                '}';
+    }
 }

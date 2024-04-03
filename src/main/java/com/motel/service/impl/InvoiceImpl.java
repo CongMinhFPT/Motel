@@ -249,7 +249,7 @@ public class InvoiceImpl implements InvoiceService {
 
         if (invoice.getInvoiceStatus().getInvoiceStatusId() == 2) {
             throw new IllegalArgumentException(
-                    "Hóa đơn đã được thanh toán: " + invoice.getInvoiceStatus().getInvoiceStatusId());
+                    "Hóa đơn đã được thanh toán: " + invoiceById.getCreateDate());
         }
 
         InvoiceStatus invoiceStatus = invoiceStatusRepository.findById(invoice.getInvoiceStatus().getInvoiceStatusId())

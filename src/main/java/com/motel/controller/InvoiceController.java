@@ -109,6 +109,7 @@ public class InvoiceController {
             @ModelAttribute("invoice") Invoice invoice) {
         Invoice invoices = invoiceRepository.getById(invoiceId);
         model.addAttribute("invoices", invoices);
+        model.addAttribute("invoiceStatusId", invoices.getInvoiceStatus().getInvoiceStatusId());
 
         System.out.println(invoices.getTotalPrice() + " : " + invoices.getCreateDate());
 

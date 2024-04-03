@@ -38,7 +38,7 @@ public class InvoiceStatus {
     @Nationalized
     String title;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "invoiceStatus")
-    @JsonManagedReference
     List<Invoice> invoice;
 }

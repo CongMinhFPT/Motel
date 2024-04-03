@@ -35,11 +35,11 @@
 									<th></th>
 								</tr>
 							</thead>
-							<tbody  id="categoryList">
+							<tbody id="categoryList">
 								<!-- Sử dụng Thymeleaf để lặp qua danh sách CategoryRoom -->
-								<tr th:each="category : ${category}">
+								<tr th:each="category , index: ${category}">
 									<!-- Hiển thị số thứ tự -->
-									<td th:text="${category.categoryRoomId}"></td>
+									<td th:text="${index.count}"></td>
 									<!-- Hiển thị tiêu đề -->
 									<td th:text="${category.title}"></td>
 									<!-- Hiển thị mô tả -->
@@ -57,7 +57,7 @@
 														stroke-linejoin="round"></path>
 												</svg>
 											</a>
-											<a th:onclick="'return confirmDelete(' + ${category.categoryRoomId} + ');'"
+											<a th:onclick="'return confirmDeleteCategory(' + ${category.categoryRoomId} + ');'"
 												class="ml-2 btn btn-xs px-2 light btn-danger">
 												<svg width="20" height="20" viewBox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
@@ -81,15 +81,17 @@
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	
+
 	<script>
-		function confirmDelete(id) {
+		function confirmDeleteCategory(id) {
 			Swal.fire({
 				title: 'Bạn có chắc muốn xóa không?',
 				icon: 'question',
 				showCancelButton: true,
 				confirmButtonText: 'Có',
 				cancelButtonText: 'Không',
+				toast: true,
+				position: 'top-end'
 			}).then((result) => {
 				if (result.isConfirmed) {
 					// Chuyển hướng đến địa chỉ URL
@@ -100,14 +102,16 @@
 						title: 'Xóa thành công!',
 						icon: 'success',
 						showConfirmButton: false,
-						timer: 1500 // Tự động đóng sau 1.5 giây
+						timer: 1500,
+						toast: true,
+						position: 'top-end'// Tự động đóng sau 1.5 giây
 					});
 				}
 			});
 			return false;
 		}
 	</script>
-	
+
 </body>
 
 </html>

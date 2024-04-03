@@ -32,7 +32,7 @@ public class CategoryRoom {
     String title;
     @Nationalized
     String descriptions;
-    boolean status;
+    boolean status = true;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "categoryRoom")

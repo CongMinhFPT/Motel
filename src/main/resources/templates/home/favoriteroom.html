@@ -16,6 +16,22 @@
 
     <!-- Boxicons.css -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .pagination .page-link {
+            color: black;
+            /* Màu chữ của số trang */
+            border-color: #FFECBF;
+            /* Màu khung của số trang */
+            background-color: #FFECBF;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #FFECBF;
+            /* Màu nền của số trang hiện tại */
+            border-color: #FFECBF;
+            /* Màu khung của số trang hiện tại */
+        }
+    </style>
 </head>
 
 <body ng-app="favoriteRoomApp" ng-controller="favoriteRoomCtrl">
@@ -38,11 +54,10 @@
                 <div class="label">
                     <label for="exampleFormControlInput1" class="form-label"
                         style="margin-bottom: 10px; margin-top: 15px;">Sắp xếp:</label>
-                    <select class="form-select " style="width: 130px;" aria-label="Default select example">
-                        <option selected>Tất cả</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select class="form-select " style="width: 130px;" name="sortDir" id="sortDirTime"
+                        onchange="sortCards()">
+                        <option value="desc" th:selected="${sortDir == 'desc'}">Mới nhất</option>
+                        <option value="asc" th:selected="${sortDir == 'asc'}">Cũ nhất</option>
                     </select>
 
                 </div>
@@ -59,7 +74,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-10">
-                                        <p class="card-text">{{favoriteRoom.descriptions}}</p>
+                                        <p class="card-text">{{favoriteRoom.posts[$index].title}}</p>
                                     </div>
                                     <div class="col-2">
                                         <img class="" style="max-width: 75%; max-height: 75%;"
@@ -68,7 +83,8 @@
                                             id="img" alt="" />
                                     </div>
                                 </div>
-                                <h4 class="card-title mt-1"></h4>
+                                <h4 class="card-title mt-1">
+                                    {{favoriteRoom.roomCash[$index].roomBill}} triệu/tháng</h4>
                                 <div class="row py-0 p-0">
                                     <div class="col-4 card-text">
                                         <img class="" style="max-height: 30% ; max-width: 30%;"
@@ -78,28 +94,33 @@
                                     <div class="col-4 card-text">
                                         <img class="" style="max-height: 30% ; max-width: 30%;"
                                             th:src="@{/img/double-bed.png}" alt="" />
-
+                                        {{ favoriteRoom.categoryRoom.title}}
                                     </div>
                                     <div class="col-4 card-text">
                                         <img class="" style="max-height: 30% ; max-width: 30%;"
                                             th:src="@{/img/wifi.png}" alt="" />
-                                        Miễn phí Wifi
+                                        {{ favoriteRoom.wifiCash[0].wifiBill == 0 ?
+                                        0:favoriteRoom.wifiCash[0].wifiBill}} VND
                                     </div>
                                 </div>
                                 <div class="card-person py-0 p-0">
                                     <div class="row">
-                                        <div class="col-lg-5">
-                                            <h5 class="card-text mb-0">Thanh Kha</h5>
+                                        <div class="col-lg-6">
+                                            <h6 class="card-text mb-0 createDate">
+                                                {{favoriteRoom.posts[$index].createDate
+                                                |
+                                                date:'dd-MM-yyyy' }}</h6>
                                         </div>
-                                        <div class="col-lg-4">
-                                            <p class="my-0">></p>
+                                        <div class="col-lg-6">
+                                            <h6 class="card-text ward d-inline-block">
+                                                {{favoriteRoom.motel.ward}}
+                                            </h6>,
+                                            <h6 class="card-text district d-inline-block">
+                                                {{favoriteRoom.motel.district}}
+                                            </h6>,
+                                            <h6 class="card-text city d-inline-block ml-2">
+                                                {{favoriteRoom.motel.province}}</h6>
                                         </div>
-                                        <div class="col-lg-3">
-                                            <p class="my-0">10/1/2024</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 card-text my-0">
-                                        <h6>Ninh Kiều, Cần Thơ</h6>
                                     </div>
                                 </div>
                             </div>
@@ -107,35 +128,7 @@
                     </div>
                 </div>
             </div>
-
-
-            <div class="row" style="margin-top: 3rem; border: none;">
-                <div class="col-12 d-flex justify-content-center" style="border: none;">
-                    <ul class="pagination" style="border: none;">
-                        <li class="page-item" style="border: none;">
-                            <a class="page-link" href="" aria-label="Previous" style="border: none;">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item" style="border: none;"><a class="page-link" href="#"
-                                style="border: none;">1</a></li>
-                        <li class="page-item" style="border: none;"><a class="page-link" href="#"
-                                style="border: none;">2</a></li>
-                        <li class="page-item" style="border: none;"><a class="page-link" href="#"
-                                style="border: none;">3</a></li>
-                        <li class="page-item" style="border: none;">
-                            <a class="page-link" href="" aria-label="Next" style="border: none;">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-
         </div>
-
-
     </main>
 
 
@@ -153,6 +146,35 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/js/header.js}"></script>
     <script th:src="@{/js/favoriteroom.js}"></script>
+    <script th:inline="javascript">
+        function sortCards() {
+            var selectElement = document.getElementById("sortDirTime");
+            var selectedValue = selectElement.value;
+
+            // Lấy danh sách các card
+            var cards = document.querySelectorAll(".card.mb-3");
+
+            // Sắp xếp các card dựa trên giá trị được chọn
+            if (selectedValue === "desc") {
+                // Sắp xếp theo thứ tự giảm dần của ngày
+                cards.forEach(function (card) {
+                    var cardCreateDate = new Date(card.querySelector(".createDate").innerText);
+                    card.parentNode.prepend(card);
+                });
+            } else if (selectedValue === "asc") {
+                // Sắp xếp theo thứ tự tăng dần của ngày
+                var sortedCards = Array.from(cards).sort(function (a, b) {
+                    var dateA = new Date(a.querySelector(".createDate").innerText);
+                    var dateB = new Date(b.querySelector(".createDate").innerText);
+                    return dateA - dateB;
+                });
+                sortedCards.forEach(function (card) {
+                    card.parentNode.appendChild(card);
+                });
+            }
+        }
+
+    </script>
 </body>
 
 </html>

@@ -82,12 +82,10 @@ public class MotelRoom {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "motelId")
-    @JsonBackReference
     Motel motel;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "categoryRoomId")
-    @JsonBackReference
     CategoryRoom categoryRoom;
 
     @ManyToOne(cascade = CascadeType.ALL)

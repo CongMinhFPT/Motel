@@ -33,12 +33,20 @@ app.controller('favoriteRoomCtrl', function ($scope, $http, $timeout, $rootScope
             text: 'Bạn muốn xóa khỏi danh sách yêu thích?',
             showCancelButton: true,
             confirmButtonText: 'Yes',
-            cancelButtonText: 'No'
+            cancelButtonText: 'No',
+            toast: true,
+            position: 'top-end'
         }).then((result) => {
             if (result.isConfirmed) {
                 const url = `${hostFavoriteRoom}/${favoriteRoomId}`;
                 $http.delete(url).then(resp => {
-                    Swal.fire('Thông Báo!', 'Phòng đã được xóa khỏi danh sách yêu thích!', 'success').then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành Công!',
+                        toast: true,
+                        position: 'top-end',
+                        timer: 1000
+                    }).then(() => {
                         window.location.reload();
                     });
                 }).catch(error => {
@@ -65,4 +73,6 @@ app.controller('favoriteRoomCtrl', function ($scope, $http, $timeout, $rootScope
     };
 
     $scope.getFavoriteRoom();
+
+
 })

@@ -27,7 +27,7 @@ public class RoomController {
     MotelRoomService motelRoomService;
     @Autowired MotelRepository motelRepository;
 
-    @GetMapping("/room")
+    @GetMapping("/rooms")
     public String getMethodName(Authentication authentication, Model model) {
         String emailAccount = authentication.getName();
         Account account = accountsRepository.getByEmail(emailAccount);

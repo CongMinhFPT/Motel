@@ -37,6 +37,8 @@ public class AdminRequestAuthorityController {
 	@Autowired
 	MailerService mailerService;
 
+
+	
 	@GetMapping("/requestauth")
 	public String show(Model model) {
 		List<RequestAuthority> re = requestAuthorityRepository.findRequestadmin();

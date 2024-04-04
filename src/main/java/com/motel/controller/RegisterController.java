@@ -42,6 +42,7 @@ import com.motel.repository.AuthorityRepository;
 import com.motel.repository.InvoiceRepository;
 import com.motel.repository.InvoiceStatusRepository;
 import com.motel.repository.RoleRepository;
+import com.motel.service.AccountService;
 import com.motel.service.AuthorityService;
 import com.motel.service.MailerService;
 
@@ -57,6 +58,9 @@ public class RegisterController {
 
 	@Autowired
 	AuthorityRepository authorityRepository;
+	
+	@Autowired
+	AccountService accountService;
 
 	@Autowired
 	MailerService mailerService;
@@ -90,9 +94,12 @@ public class RegisterController {
 			if (account.getPhone().isBlank()) {
 				model.addAttribute("phone", "Vui lòng nhập số điện thoại!");
 			}
+			if(account.getCitizen().isBlank()) {
+				model.addAttribute("citizen", "Vui lòng nhập số căn cước công dân!");
+			}
 			if (account.getCreateDate() == null) {
 				model.addAttribute("date", "Vui lòng chọn ngày tháng năm sinh!");
-				return "home/signup";
+				
 			}
 			return "home/signup";
 		}
@@ -101,12 +108,23 @@ public class RegisterController {
 			model.addAttribute("phone", "Sai định dạng số điện thoại!");
 			return "home/signup";
 		}
-
+		
 		if (accountsRepository.getByEmail(account.getEmail()) != null) {
 			model.addAttribute("email", "Email này đã tồn tại!");
 			return "home/signup";
 		}
-
+		if(accountsRepository.getByPhone(account.getPhone()) != null ) {
+			model.addAttribute("phone", "Số điện thoại đã tồn tại. Vui lòng nhập số điện thoại khác!");
+			return "home/signup";
+		}
+		if(!account.getCitizen().matches("^\\d{9}|\\d{12}$")) {
+			model.addAttribute("citizen", "Sai định dạng số căn cước công dân. Vui lòng nhập 9 hoặc 12 chữ số!");
+			return "home/signup";
+		}
+		if(accountsRepository.getByCitizen(account.getCitizen()) != null ) {
+			model.addAttribute("citizen", "Số căn cước công dân này đã tồn tại.!");
+			return "home/signup";
+		}
 		Calendar calNow = Calendar.getInstance(); // lấy thời gian hiện tại
 		System.out.println("calNow>> " + calNow);
 		Calendar calBirth = Calendar.getInstance(); // lấy ngày tháng năm sinh người dùng
@@ -124,7 +142,7 @@ public class RegisterController {
 			model.addAttribute("date", "Bạn phải đủ 18 tuổi trở lên!");
 			return "home/signup";
 		}
-
+		
 		String passw = randompassword();
 		System.out.println("passw>> " + passw);
 		String passpe = pe.encode(passw);
@@ -132,9 +150,9 @@ public class RegisterController {
 		account.setPassword(passpe);
 		accountsRepository.save(account);
 
-		Role staff = roleRepository.findById("STAFF").orElseGet(() -> {
+		Role staff = roleRepository.findById("CUSTOMER").orElseGet(() -> {
 			Role newRole = new Role();
-			newRole.setId("STAFF");
+			newRole.setId("CUSTOMER");
 			return roleRepository.save(newRole);
 		});
 
@@ -194,37 +212,43 @@ public class RegisterController {
 
 	@RequestMapping("/oauth2/login/success")
 	public String success(OAuth2AuthenticationToken oauth2, Model model) {
-		authorityService.loginFromOAuth2(oauth2);
-		OAuth2User oauth2User = oauth2.getPrincipal();
-		// String username = oauth2User.getAttribute("email");
-		String email = oauth2User.getAttribute("email");
-		System.out.println("Email>> " + email);
-		String generatedString = randompassword();
-		System.out.println("pass>> " + generatedString);
-		Account acc = new Account();
-		acc.setEmail(email);
-		acc.setFullname(email);
-		acc.setPassword(pe.encode(generatedString));
-		acc.setActive(true);
-		if (accountsRepository.getByEmail(email) != null) {
-			model.addAttribute("auth", "Đăng nhập thành công!");
-			return "home/signin";
-		} else {
-			accountsRepository.save(acc);
-			Role staff = roleRepository.findById("STAFF").orElseGet(() -> {
-				Role newRole = new Role();
-				newRole.setId("STAFF");
-				return roleRepository.save(newRole);
-			});
+	    authorityService.loginFromOAuth2(oauth2);
+	    OAuth2User oauth2User = oauth2.getPrincipal();
+	    String email = oauth2User.getAttribute("email");
+	    System.out.println("Email>> " + email);
 
-			Authority au = new Authority();
-			au.setAccount(acc);
-			au.setRole(staff);
-			authorityRepository.save(au);
-		}
-		model.addAttribute("auth", "Đăng nhập thành công!");
-		return "home/signin";
+	    Account existingAccount = accountsRepository.getByEmail(email);
+	    if (existingAccount != null) {
+	        // Nếu tài khoản đã tồn tại, không cần tạo mới, sử dụng tài khoản hiện có để đăng nhập
+	        model.addAttribute("auth", "Đăng nhập thành công!");
+	        return "home/signin";
+	    }
+
+	    // Nếu tài khoản chưa tồn tại, tạo một tài khoản mới và lưu vào CSDL
+	    String generatedString = randompassword();
+	    System.out.println("pass>> " + generatedString);
+	    Account acc = new Account();
+	    acc.setEmail(email);
+	    acc.setFullname(email);
+	    acc.setPassword(pe.encode(generatedString));
+	    acc.setActive(true);
+	    accountsRepository.save(acc);
+
+	    // Tạo quyền cho tài khoản mới
+	    Role customerRole = roleRepository.findById("CUSTOMER").orElseGet(() -> {
+	        Role newRole = new Role();
+	        newRole.setId("CUSTOMER");
+	        return roleRepository.save(newRole);
+	    });
+	    Authority au = new Authority();
+	    au.setAccount(acc);
+	    au.setRole(customerRole);
+	    authorityRepository.save(au);
+
+	    model.addAttribute("auth", "Đăng nhập thành công!");
+	    return "home/signin";
 	}
+
 
 	@GetMapping("/change")
 	public String Change(Model model, @ModelAttribute("changepass") ChangePassword changepass,
@@ -326,7 +350,7 @@ public class RegisterController {
 	public String InformationSubmit(@PathVariable("accountId") Integer accountId, Model model,
 			@ModelAttribute("account") Account account, @RequestParam("image") MultipartFile photo,
 			Authentication authentication) {
-		Account acccurrent = accountsRepository.getById(accountId);
+		Account acccurrent = accountService.getById(accountId);
 		String acc = authentication.getName();
 		model.addAttribute("acc", acc);
 		if (photo != null && !photo.isEmpty()) {
@@ -354,6 +378,14 @@ public class RegisterController {
 			model.addAttribute("phone", "Sai định dạng số điện thoại!");
 			return "home/information";
 		}
+		if(account.getCitizen().isBlank()) {
+			model.addAttribute("citizen", "Vui lòng nhập số căn cước công dân!");
+			return "home/information";
+		}
+		if(!account.getCitizen().matches("^\\d{9}|\\d{12}$")) {
+			model.addAttribute("citizen", "Sai định dạng số căn cước công dân. Vui lòng nhập 9 hoặc 12 chữ số!");
+			return "home/information";
+		}
 		if (account.getCreateDate() == null) {
 			model.addAttribute("date", "Vui lòng chọn ngày tháng năm sinh!");
 			return "home/information";
@@ -376,6 +408,7 @@ public class RegisterController {
 				return "home/information";
 			}
 		}
+		
 		String email = acccurrent.getEmail();
 		String pass = acccurrent.getPassword();
 		System.out.println("pass>> " + pass);

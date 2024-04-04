@@ -50,7 +50,7 @@
 												<label class="form-label fw-bold" for="form3Example3c">Email</label>
 												<input type="email" id="form3Example3c" class="form-control rounded-3"
 													th:field="*{email}" placeholder="Nhập email">
-												<i th:errors="*{fullname}" class="text-danger"></i>
+												<i th:errors="*{email}" class="text-danger"></i>
 												<i th:text="${email}" class="text-danger"></i>
 											</div>
 
@@ -65,6 +65,18 @@
 													th:field="*{phone}" placeholder="Nhập số điện thoại">
 												<i th:errors="*{phone}" class="text-danger"></i>
 												<i th:text="${phone}" class="text-danger"></i>
+											</div>
+
+										</div>
+										<div class="d-flex flex-row align-items-center mb-4">
+
+											<div class="form-outline flex-fill mb-0">
+												<label class="form-label fw-bold" for="form3Example3c">Số căn cước công dân
+													:</label>
+												<input type="text" id="form3Example3c" class="form-control rounded-3"
+													th:field="*{citizen}" placeholder="Nhập số căn cước công dân">
+												<i th:errors="*{citizen}" class="text-danger"></i>
+												<i th:text="${citizen}" class="text-danger"></i>
 											</div>
 
 										</div>

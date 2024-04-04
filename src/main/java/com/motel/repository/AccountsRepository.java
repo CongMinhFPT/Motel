@@ -16,9 +16,16 @@ public interface AccountsRepository extends JpaRepository<Account, Integer>{
 
 	Account getByEmail(String email);
 
+	
+	Account findByPhone(String phone);
+	
+	Account getByCitizen(String citizen);
+
+
 	@Query(nativeQuery = true, value = "SELECT * FROM accounts WHERE phone LIKE CONCAT('%', :phone, '%')")
     List<Account> getByPhone(@Param("phone") String phone);
 
 	@Query(nativeQuery = true, value = "select * from accounts a join renter b on a.account_id=b.account_id")
     List<Account> getRenterByRenters();
+
 }

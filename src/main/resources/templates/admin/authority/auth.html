@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+</head>
+<body>
+	<div class="content-body">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-header d-sm-flex d-block">
+					<div class="mr-auto mb-sm-0 mb-3">
+						<h4 class="card-title mb-2">Phân Quyền</h4>
+						<!--<span>Lorem Ipsum sit amet</span>-->
+					</div>
+					<a th:href="@{/requestauth}" class="btn btn-info">+ Phản hồi yêu cầu</a>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-primary" ng-app="app" ng-controller="ctrl" >
+							<thead>
+								<tr>
+									<th></th>
+									<th ng-repeat="role in db.roles">{{role.name}}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="acc in db.accounts">
+									<th >{{acc.email}}</th>
+									<th ng-repeat="role in db.roles">
+										<input type="checkbox" ng-checked="index_of(acc.accountId, role.id) >=0"
+											ng-click="update(acc.accountId, role.id)">
+									</th>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

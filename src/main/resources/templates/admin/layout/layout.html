@@ -21,7 +21,9 @@
 	<link href="/admin/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
 	<link href="/admin/vendor/owl-carousel/owl.carousel.css" rel="stylesheet">
 	<link href="/admin/css/style.css" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+	<script th:src="@{/vendor/angular/angular.js}"></script> 
+
 </head>
 
 <body>
@@ -33,9 +35,11 @@
 		</div>
 	</div>
 	<div id="main-wrapper">
+
 		<nav th:replace="~{/admin/layout/header :: nav}"></nav>
 		<main th:replace="${view}"></main>
 		<div th:replace="~{/admin/layout/footer :: footer}"></div>
+
 	</div>
 
 	<script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
@@ -61,7 +65,11 @@
 	<script src="/admin/js/deznav-init.js"></script>
 	<script src="/admin/js/demo.js"></script>
 	<script src="/admin/js/styleSwitcher.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<script src="/Authority/auth.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+	
+	
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="/js/renter.js"></script>
 	<script src="/js/invoice.js"></script>
@@ -71,6 +79,7 @@
 	<div th:replace="~{/admin/indexs/scriptSweet}"></div>
 	<div th:replace="~{/admin/home/scriptSweet}"></div>
 	<div th:replace="~{/admin/post/scriptSweet}"></div>
+
 </body>
 
 </html>

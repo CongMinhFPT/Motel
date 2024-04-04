@@ -21,7 +21,8 @@ public class AdminController {
 
 	@GetMapping("/admin")
 	public String index(Model model) {
-
+		int count = requestAuthorityRepository.findRequestCount();
+		model.addAttribute("requestCount", count);
 		return "admin/home/index";
 	}
 

@@ -6,6 +6,7 @@
 	integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
 	crossorigin="anonymous"></script>
 <script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/invoice.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
 <!--Quên mk-->
 <script th:if="${not #strings.isEmpty(message)}">
@@ -148,6 +149,7 @@
 		});
 	}
 </script>
+
 <!--Yêu cầu-->
 <script th:if="${not #strings.isEmpty(creates)}" th:inline="javascript">
 	var changeMessage = /*[[${creates}]]*/ '';
@@ -205,4 +207,16 @@
     });
 </script>
 
+
+
+
+<script th:if="${paymentSuccess}">
+	Swal.fire({
+		title: "Thành công!",
+		text: "Thanh toán hóa đơn thành công!",
+		icon: "success"
+	}).then(() => {
+		window.location.href = '/index';
+	});
+</script>
 

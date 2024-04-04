@@ -18,6 +18,10 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Nationalized;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,10 +50,27 @@ public class Motel {
     Date createDate = new Date();
     boolean status = true;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motel")
 	List<MotelRoom> motelRoom;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "accountId")
+    @JsonBackReference
     Account account;
+
+    @Override
+public String toString() {
+    return "Motel{" +
+            "motelId=" + motelId +
+            ", descriptions='" + descriptions + '\'' +
+            ", province='" + province + '\'' +
+            ", district='" + district + '\'' +
+            ", ward='" + ward + '\'' +
+            ", detailAddress='" + detailAddress + '\'' +
+            ", image='" + image + '\'' +
+            ", createDate=" + createDate +
+            ", status=" + status +
+            '}';
+}
 }

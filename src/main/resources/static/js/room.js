@@ -11,6 +11,7 @@ app.controller('roomCtrl', function ($scope, $http) {
 
     $scope.usernameId = username;
 
+    $scope.isFavorite = false;
     $scope.addFavoriteRoom = (motelRoomId) => {
         const url = `${hostAddRoom}/${$scope.usernameId}/${motelRoomId}`;
         const item = '';
@@ -18,17 +19,30 @@ app.controller('roomCtrl', function ($scope, $http) {
             console.log(resp.data);
             Swal.fire({
                 icon: 'success',
-                title: 'Thành Công  !',
+                title: 'Thành Công !',
                 text: 'Đã thêm vào trang yêu thích!',
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
                 timer: 1000
-            }).then(() => {
-                window.location.reload();
-            });
+            })
+            const imgElement = document.getElementById('img' + motelRoomId);
+            // Kiểm tra và thay đổi hình ảnh
+            if (imgElement.src.includes('icons8-heart-50.png')) {
+                imgElement.src = '/img/icons8-heart-filled-50.png';
+            } else {
+                imgElement.src = '/img/icons8-heart-50.png';
+            }
         }).catch(error => {
-            console.log(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Thất Bại !',
+                text: 'Vui lòng đăng nhập!',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1000
+            })
         })
     }
 
@@ -42,7 +56,5 @@ app.controller('roomCtrl', function ($scope, $http) {
         })
     }
     $scope.getMotelRoom();
-
-
 
 })

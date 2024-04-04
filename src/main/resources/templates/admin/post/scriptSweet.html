@@ -1,0 +1,21 @@
+<script th:inline="javascript">
+	function confirmDeletePost(postId) {
+		Swal.fire({
+			title: 'Bạn có chắc chắn muốn xóa?',
+			text: "Hành động này không thể hoàn tác!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#d33',
+			cancelButtonColor: '#3085d6',
+			confirmButtonText: 'Xóa',
+			cancelButtonText: 'Hủy'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = "/admin/deletePost/" + postId;
+				setTimeout(() => {
+					window.location.href = "/admin/posts";
+				}, 1000)
+			}
+		});
+	}
+</script>

@@ -1,0 +1,63 @@
+<script th:inline="javascript">
+	var success = /*[[${success}]]*/ false;
+	if (success) {
+		Swal.fire({
+			title: "Thành công!",
+			icon: "success",
+			timer: 3000,
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+		})
+	}
+
+	var error = /*[[${error}]]*/ null;
+	if (error !== null) {
+		Swal.fire({
+			title: "Lỗi!",
+			text: error,
+			icon: "error",
+			timer: 3000,
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+		});
+	}
+</script>
+<script th:inline="javascript">
+	function printModalContent() {
+		var content = document.getElementById('modalBodyContent').innerHTML;
+		var originalContent = document.body.innerHTML;
+
+		document.body.innerHTML = content;
+
+		window.print();
+
+		document.body.innerHTML = originalContent;
+		window.location.reload();
+	}
+	var viewDetailButtons = document.querySelectorAll('.btn-view-details');
+	viewDetailButtons.forEach(function (button) {
+		button.addEventListener('click', function () {
+
+			var oldElectricityIndex = this.getAttribute('data-old-electricity-index');
+			var newElectricityIndex = this.getAttribute('data-new-electricity-index');
+			var oldWaterIndex = this.getAttribute('data-old-water-index');
+			var newWaterIndex = this.getAttribute('data-new-water-index');
+			var totalPrice = this.getAttribute('data-total-price');
+			var motelRoom = this.getAttribute('data-motelRoom');
+
+			var modalBody = document.querySelector('#exampleModalCenter .modal-body');
+			modalBody.innerHTML = '<p>Phòng: ' + motelRoom + '</p>' + '<div class="row pb-3">' +
+				'<div class="col-md-6">Chỉ số điện cũ: ' + oldElectricityIndex + 'kwh</div>' +
+				'<div class="col-md-6">Chỉ số điện mới: ' + newElectricityIndex + 'kwh</div>' +
+				'</div>' +
+				'<div class="row pb-3">' +
+				'<div class="col-md-6">Chỉ số nước cũ: ' + oldWaterIndex + 'm³</div>' +
+				'<div class="col-md-6">Chỉ số nước mới: ' + newWaterIndex + 'm³</div>' +
+				'</div>' +
+				'<p>Tổng tiền: ' + totalPrice + 'VND</p>';
+		});
+	});
+
+</script>

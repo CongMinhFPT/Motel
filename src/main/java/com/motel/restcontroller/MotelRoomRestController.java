@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.motel.entity.MotelRoom;
+import com.motel.repository.MotelRoomRepository;
 import com.motel.service.MotelRoomService;
 
 @RestController
@@ -19,13 +20,17 @@ public class MotelRoomRestController {
     @Autowired
     MotelRoomService motelRoomService;
 
+    @Autowired
+    MotelRoomRepository motelRoomRepository;
+
     @GetMapping("/api/listMotelRoom")
     public ResponseEntity<List<MotelRoom>> listMotelRoom() {
-        return ResponseEntity.ok(motelRoomService.getAll());
+        return ResponseEntity.ok(motelRoomRepository.findMotelRoomsByPost());
     }
 
     @GetMapping("/api/motelRoom/{motelRoomId}")
     public ResponseEntity<Optional<MotelRoom>> listMotelRoom(@PathVariable("motelRoomId") Integer motelRoomId) {
         return ResponseEntity.ok(motelRoomService.getById(motelRoomId));
     }
+
 }

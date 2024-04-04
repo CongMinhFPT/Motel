@@ -19,6 +19,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Nationalized;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -45,51 +46,62 @@ public class MotelRoom {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
-	List<Post> posts;
+    List<Post> posts;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
-	List<Image> image;
+    List<Image> image;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
-	List<FavoriteRoom> favoriteRoom;
+    List<FavoriteRoom> favoriteRoom;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
-	List<ElectricityCash> electricityCash;
+    List<ElectricityCash> electricityCash;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
-	List<WaterCash> waterCash;
+    List<WaterCash> waterCash;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
-	List<WifiCash> wifiCash;
+    List<WifiCash> wifiCash;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
-	List<RoomCash> roomCash;
+    List<RoomCash> roomCash;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
     List<Indexs> index;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "motelRoom")
     @JsonManagedReference
     List<Renter> renter;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "motelId")
-    @JsonBackReference
     Motel motel;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "categoryRoomId")
-    @JsonBackReference
     CategoryRoom categoryRoom;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "roomStatusId")
     RoomStatus roomStatus;
-}   
+
+    @Override
+    public String toString() {
+        return "MotelRoom{" +
+                "motelRoomId=" + motelRoomId +
+                ", createDate=" + createDate +
+                ", length=" + length +
+                ", width=" + width +
+                ", video='" + video + '\'' +
+                ", descriptions='" + descriptions + '\'' +
+                ", status=" + status +
+                '}';
+    }
+}

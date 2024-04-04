@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body ng-app="invoiceApp" ng-controller="invoiceCtrl">
+	<div class="content-body">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-header d-sm-flex d-block">
+					<div class="mr-auto mb-sm-0 mb-3">
+						<h4 class="card-title mb-2">Danh Sách Hóa Đơn</h4>
+					</div>
+					<a onclick="printRenterTable()" class="btn btn-info light mr-3"><i
+							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
+					<a th:href="@{/admin/invoice/add-invoice}" class="btn btn-info">+ Thêm Hóa Đơn</a>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table style-1" id="ListDatatableView">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>PHÒNG TRỌ</th>
+									<th>NGÀY TẠO</th>
+									<th>TRẠNG THÁI</th>
+									<th>CHỌN</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr  th:each="invoice, index : ${invoices}">
+									<td th:text="${index.count}">
+									</td>
+									<td th:text="${invoice.renter.motelRoom.descriptions}">
+									</td>
+									<td th:text="${#dates.format(invoice.createDate, 'dd - MM - yyyy')}"></td>
+
+									<td th:text="${invoice.invoiceStatus.title}">
+									</td>
+									<td>
+										<div class="d-flex action-button pe-3">
+											<a href="javascript:void(0);" data-toggle="modal"
+												data-target="#exampleModalCenter" type="button"
+												class="btn btn-success btn-xs light btn-view-details" th:attr="data-old-electricity-index=${#numbers.formatDecimal(invoice.oldElectricityIndex, 0, 'WHITESPACE', 0, 'POINT')}, 
+												data-new-electricity-index=${#numbers.formatDecimal(invoice.newElectricityIndex, 0, 'WHITESPACE', 0, 'POINT')},
+												data-old-water-index=${#numbers.formatDecimal(invoice.oldWaterIndex, 0, 'WHITESPACE', 0, 'POINT')},
+												data-new-water-index=${#numbers.formatDecimal(invoice.newWaterIndex, 0, 'WHITESPACE', 0, 'POINT')},
+												data-total-price=${#numbers.formatDecimal(invoice.totalPrice, 0, 'WHITESPACE', 0, 'POINT')},
+												data-motelRoom=${invoice.renter.motelRoom.descriptions}">
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+													fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+													<path
+														d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+													<path
+														d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+												</svg>
+											</a>
+											<a th:href="@{|/admin/invoice/update-invoice/${invoice.invoiceId}|}"
+												th:attr="ng-click=@{|getAllInvoice(${invoice.invoiceId})|}"
+												class="btn btn-info btn-xs light ">
+												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
+													xmlns="http://www.w3.org/2000/svg">
+													<path
+														d="M17 3C17.2626 2.73735 17.5744 2.52901 17.9176 2.38687C18.2608 2.24473 18.6286 2.17157 19 2.17157C19.3714 2.17157 19.7392 2.24473 20.0824 2.38687C20.4256 2.52901 20.7374 2.73735 21 3C21.2626 3.26264 21.471 3.57444 21.6131 3.9176C21.7553 4.26077 21.8284 4.62856 21.8284 5C21.8284 5.37143 21.7553 5.73923 21.6131 6.08239C21.471 6.42555 21.2626 6.73735 21 7L7.5 20.5L2 22L3.5 16.5L17 3Z"
+														stroke="#fff" stroke-width="2" stroke-linecap="round"
+														stroke-linejoin="round"></path>
+												</svg>
+											</a>
+
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="exampleModalCenter">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Chi tiết hóa đơn</h5>
+					<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="modalBodyContent">
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" onclick="printModalContent()">In</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+</body>
+
+</html>

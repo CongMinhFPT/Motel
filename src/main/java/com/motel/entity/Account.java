@@ -22,7 +22,6 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.Nationalized;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -46,7 +45,8 @@ public class Account implements Serializable {
 
 	// @NotBlank(message = "Vui lòng nhập số điện thoại!")
 	// @Size(max = 10, min = 10, message = "Số điện thoài phải 10 số!")
-	// @Pattern(regexp = "^(0[2|3|5|7|8|9])+([0-9]{8})", message = "Sai định dạng số điện thoại!")
+	// @Pattern(regexp = "^(0[2|3|5|7|8|9])+([0-9]{8})", message = "Sai định dạng số
+	// điện thoại!")
 	String phone;
 
 	@NotBlank(message = "Vui lòng nhập email!")
@@ -75,8 +75,8 @@ public class Account implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "account")
 	List<Authority> authorities;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
 	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
 	List<Post> posts;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
@@ -91,21 +91,29 @@ public class Account implements Serializable {
 	@JsonIgnore
 	List<RequestAuthority> requestAuthorities;
 
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
 	@JsonIgnore
     List<Renter> renter;
+
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
 	@JsonIgnore
 	List<Motel> motel;
 
+
 	@Override
 	public String toString() {
-	    return "Account{" +
-	            "email=" + email +
-	            ", accountId=" + accountId +
-	            // ... Các thuộc tính khác không có lời gọi toString()
-	            '}';
+		return "Account{" +
+				"accountId=" + accountId +
+				", fullname='" + fullname + '\'' +
+				", phone='" + phone + '\'' +
+				", email='" + email + '\'' +
+				", createDate=" + createDate +
+				", avatar='" + avatar + '\'' +
+				", gender=" + gender +
+				", active=" + active +
+				'}';
 	}
-	
+
 }

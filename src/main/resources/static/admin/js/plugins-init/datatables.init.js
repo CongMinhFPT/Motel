@@ -148,8 +148,6 @@
 		
 	});
 	
-	
-	
 	// 
 	var table = $('#example3, #example4, #example5').DataTable({
 		language: {

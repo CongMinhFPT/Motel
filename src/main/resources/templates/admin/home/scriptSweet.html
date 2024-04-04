@@ -1,0 +1,318 @@
+<script th:inline="javascript">
+	var app = angular.module('indexApp', []);
+
+	app.controller('indexCtrl', function ($scope, $http) {
+		$scope.getAllRevenue = function () {
+			let url = "http://localhost:8080/api/revenue-by-year";
+			$http.get(url)
+				.then(function (response) {
+					$scope.indexes = response.data;
+					console.log(response.data);
+				});
+		};
+		$scope.getAllRevenue();
+		function getMonth() {
+			let url = "http://localhost:8080/api/revenue-by-month";
+			$http.get(url)
+				.then(function (response) {
+					const data = response.data;
+					$http.get('/api/month?year=2024')
+						.then(function (response) {
+							const month = response.data;
+							const monthLabels = Object.values(month);
+							drawChart(data, monthLabels);
+							console.log(data, month);
+						});
+				});
+			function drawChart(data, monthLabels) {
+				var options = {
+					series: [{
+						name: 'Doanh Thu',
+						data: data
+					}],
+					chart: {
+						height: 300,
+						type: 'area',
+						toolbar: {
+							show: false
+						}
+					},
+					colors: ["#FFAB2D", "#00ADA3"],
+					dataLabels: {
+						enabled: false
+					},
+					stroke: {
+						curve: 'smooth',
+						width: 3
+					},
+					legend: {
+						show: false
+					},
+					grid: {
+						show: false,
+						strokeDashArray: 6,
+						borderColor: '#dadada',
+					},
+					yaxis: {
+						labels: {
+							style: {
+								colors: '#B5B5C3',
+								fontSize: '12px',
+								fontFamily: 'Poppins',
+								fontWeight: 400
+
+							},
+							formatter: function (value) {
+								return value;
+							}
+						},
+					},
+					xaxis: {
+						categories: monthLabels,
+						labels: {
+							style: {
+								colors: '#B5B5C3',
+								fontSize: '12px',
+								fontFamily: 'Poppins',
+								fontWeight: 400
+
+							},
+						}
+					},
+					fill: {
+						type: 'solid',
+						opacity: 0.05
+					},
+					tooltip: {
+						x: {
+							format: 'dd/MM/yy HH:mm'
+						},
+					},
+				};
+
+				var chart = new ApexCharts(document.querySelector("#marketChart"), options);
+				chart.render();
+			}
+		}
+
+		$scope.getYear = function (year) {
+			let url = `http://localhost:8080/api/year?year=${year}`;
+			$http.get(url)
+				.then(function (response) {
+					const data = response.data;
+					let urll = `http://localhost:8080/api/month?year=${year}`;
+					$http.get(urll)
+						.then(function (response) {
+							const monthLabels = response.data;
+							// Xóa biểu đồ hiện tại trước khi vẽ biểu đồ mới
+							var chartElement = document.querySelector("#marketChart");
+							if (chartElement) {
+								chartElement.innerHTML = '';
+							}
+							drawChart(data, monthLabels);
+							console.log(data, monthLabels);
+						});
+				});
+		};
+
+		function drawChart(data, monthLabels) {
+			var options = {
+				series: [{
+					name: 'Doanh Thu',
+					data: data
+				}],
+				chart: {
+					height: 300,
+					type: 'area',
+					toolbar: {
+						show: false
+					}
+				},
+				colors: ["#FFAB2D", "#00ADA3"],
+				dataLabels: {
+					enabled: false
+				},
+				stroke: {
+					curve: 'smooth',
+					width: 3
+				},
+				legend: {
+					show: false
+				},
+				grid: {
+					show: false,
+					strokeDashArray: 6,
+					borderColor: '#dadada',
+				},
+				yaxis: {
+					labels: {
+						style: {
+							colors: '#B5B5C3',
+							fontSize: '12px',
+							fontFamily: 'Poppins',
+							fontWeight: 400
+
+						},
+						formatter: function (value) {
+							return value;
+						}
+					},
+				},
+				xaxis: {
+					categories: monthLabels,
+					labels: {
+						style: {
+							colors: '#B5B5C3',
+							fontSize: '12px',
+							fontFamily: 'Poppins',
+							fontWeight: 400
+
+						},
+					}
+				},
+				fill: {
+					type: 'solid',
+					opacity: 0.05
+				},
+				tooltip: {
+					x: {
+						format: 'dd/MM/yy HH:mm'
+					},
+				},
+			};
+
+			var chart = new ApexCharts(document.querySelector("#marketChart"), options);
+			chart.render();
+		}
+
+		getMonth();
+
+		$scope.getPostToDay = function () {
+			let urlPost = "http://localhost:8080/api/post-to-day";
+			$http.get(urlPost)
+				.then(function (response) {
+					$scope.postToDays = response.data;
+					console.log(response.data);
+				});
+		};
+		$scope.getPostToDay();
+
+		$scope.getFavoriteToDay = function () {
+			let urlFavorite = "http://localhost:8080/api/favorite-to-day";
+			$http.get(urlFavorite)
+				.then(function (response) {
+					$scope.favoriteToDays = response.data;
+					console.log(response.data);
+				});
+		};
+		$scope.getFavoriteToDay();
+
+		$scope.getFavoriteToDayMotelRoom = function () {
+			let urlFavoriteMotelRoom = "http://localhost:8080/api/favorite-to-day-motel-room";
+			$http.get(urlFavoriteMotelRoom)
+				.then(function (response) {
+					$scope.favoriteToDayMotelRooms = response.data;
+					console.log(response.data);
+				});
+		};
+
+		$scope.getPostToDayMotelRoom = function () {
+			let urlPostMotelRoom = "http://localhost:8080/api/post-to-day-motel-room";
+			$http.get(urlPostMotelRoom)
+				.then(function (response) {
+					$scope.postToDayMotelRooms = response.data;
+					console.log(response.data);
+				});
+		};
+
+		$scope.getCountRenter = function () {
+			let urlCountRenter = "http://localhost:8080/api/count-renter";
+			$http.get(urlCountRenter)
+				.then(function (response) {
+					$scope.countRenters = response.data;
+					console.log(response.data);
+				});
+		};
+
+		$scope.getCountRenter();
+
+		$scope.getMotelRenter = function () {
+			let urlMotelRenter = "http://localhost:8080/api/motel-renter";
+			$http.get(urlMotelRenter)
+				.then(function (response) {
+					$scope.motelRenters = response.data;
+					console.log(response.data);
+				});
+		};
+
+		$scope.getMotels = function () {
+			let urlMotels = "http://localhost:8080/api/motels";
+			$http.get(urlMotels)
+				.then(function (response) {
+					$scope.motels = response.data;
+					console.log(response.data);
+				});
+		};
+		$scope.getMotels();
+
+		$scope.getMotelsRenter = function () {
+			let urlMotelsRenter = "http://localhost:8080/api/motels-renter";
+			$http.get(urlMotelsRenter)
+				.then(function (response) {
+					$scope.motelsRenters = response.data;
+					console.log(response.data);
+				});
+		};
+		$scope.getMotelsRenter();
+
+		$scope.getInvoiceStatus = function () {
+			let urlInvoiceStatus = "http://localhost:8080/api/invoice-status";
+			$http.get(urlInvoiceStatus)
+				.then(function (response) {
+					$scope.invoiceStatus = response.data;
+					console.log(response.data);
+				});
+		};
+		$scope.getInvoiceStatus();
+
+		$scope.getInvoiceStatusDetail = function () {
+			let urlInvoiceStatusDetail = "http://localhost:8080/api/invoice-status-detail";
+			$http.get(urlInvoiceStatusDetail)
+				.then(function (response) {
+					$scope.invoiceStatusDetails = response.data;
+					console.log(response.data);
+				});
+		};
+		$scope.formatCurrency = function(amount) {
+        return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    };
+	})
+</script>
+<!--Đăng xuất-->
+<script>
+	var logoutButton = document.getElementById('logoutButton');
+	logoutButton.onclick = function (e) {
+		Swal.fire({
+			title: "Xác Nhận!",
+			text: "Bạn có muốn đăng xuất!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Đăng xuất",
+			cancelButtonText: "Không"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					icon: "success",
+					title: "Thành công!",
+					text: "Đăng xuất thành công!",
+					showConfirmButton: false,
+					timer: 1500
+				}).then(() => {
+					window.location.href = '/auth/logoff';
+				});
+			}
+		});
+	}
+</script>

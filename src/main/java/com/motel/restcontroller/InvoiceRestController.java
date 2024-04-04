@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class InvoiceRestController {
-    
+
     @Autowired
     InvoiceService invoiceService;
 
@@ -38,17 +38,17 @@ public class InvoiceRestController {
     InvoiceStatusRepository invoiceStatusRepository;
 
     @GetMapping("/api/renter-list")
-    public ResponseEntity<List<Renter>> listRenter(){
+    public ResponseEntity<List<Renter>> listRenter() {
         return ResponseEntity.ok(renterRepository.findAll());
     }
 
     @GetMapping("/api/invoice-status-list")
-    public ResponseEntity<List<InvoiceStatus>> listInvoiceStatus(){
+    public ResponseEntity<List<InvoiceStatus>> listInvoiceStatus() {
         return ResponseEntity.ok(invoiceStatusRepository.findAll());
     }
 
     @GetMapping("/api/invoice-list/{invoiceId}")
-    public ResponseEntity<Optional<Invoice>> listInvoice(@PathVariable("invoiceId") Integer invoiceId){
+    public ResponseEntity<Optional<Invoice>> listInvoice(@PathVariable("invoiceId") Integer invoiceId) {
         return ResponseEntity.ok(invoiceService.getById(invoiceId));
     }
 
@@ -57,6 +57,4 @@ public class InvoiceRestController {
         return ResponseEntity.ok(invoiceService.addInvoice(invoiceModel));
     }
 
-
-    
 }

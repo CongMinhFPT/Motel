@@ -24,6 +24,7 @@ import org.hibernate.annotations.Nationalized;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -63,8 +64,8 @@ public class Motel {
     Date createDate = new Date();
     boolean status = true;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motel")
-    @JsonManagedReference
 	List<MotelRoom> motelRoom;
 
     @ManyToOne(cascade = CascadeType.ALL)

@@ -837,7 +837,7 @@
                         </li>
                         <li><a href="page-chat.html">Chỉ Số Điện & Chỉ Số Nước</a>
                         </li>
-                        <li><a href="page-chat.html">Bài Đăng</a>
+                        <li><a th:href="@{/admin/post}">Bài Đăng</a>
                         </li>
                     </ul>
                 </li>
@@ -846,9 +846,10 @@
                         <span class="nav-text">Tin Tức</span>
                     </a>
                     <ul aria-expanded="false">
-                        <li><a href="app-profile.html">Tin Tức</a></li>
-                        <li><a href="app-profile.html">Tag</a></li>
-                    <li><a href="page-chat.html">Dịch Vụ</a>
+
+                        <li><a th:href="@{/admin/blogs}">Tin Tức</a></li>
+                        <li><a th:href="@{/admin/tags}">Tag</a></li>
+                        <li><a href="page-chat.html">Dịch Vụ</a>
                         </li>
                         <li><a href="page-chat.html">Duyệt Bài Đăng</a>
                     </li>

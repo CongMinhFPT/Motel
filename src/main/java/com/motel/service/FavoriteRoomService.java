@@ -14,4 +14,6 @@ public interface FavoriteRoomService {
     void deleteRoom(Integer favoriteRoomId);
 
     List<MotelRoom> getPagedFavoriteRooms();
+
+    Page<FavoriteRoom> getAllFavoriteRoom(Pageable pageable);
 }

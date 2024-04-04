@@ -19,7 +19,6 @@
 	<title>Zenix - Crypto Admin Dashboard </title>
 	<!-- Favicon icon -->
 	<link rel="icon" type="image/png" sizes="16x16" href="/admin/images/favicon.png">
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 	<link rel="stylesheet" href="/admin/vendor/chartist/css/chartist.min.css">
 	<link href="/admin/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
 	<link href="/admin/vendor/owl-carousel/owl.carousel.css" rel="stylesheet">
@@ -31,6 +30,9 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 	<link rel="stylesheet" type="text/css"
 		href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
 </head>
 
@@ -59,6 +61,10 @@
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 		crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 	<!-- Chart piety plugin files -->
 	<script src="/admin/vendor/peity/jquery.peity.min.js"></script>
 
@@ -157,6 +163,7 @@
 
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="/js/renter.js"></script>
 	<script src="/js/invoice.js"></script>
 	<script src="/js/indexs.js"></script>
@@ -164,6 +171,8 @@
 	<div th:replace="~{/admin/invoice/scriptSweet}"></div>
 
 	<div th:replace="~{/admin/indexs/scriptSweet}"></div>
+	<div th:replace="~{/admin/home/scriptSweet}"></div>
+	<div th:replace="~{/admin/post/scriptSweet}"></div>
 </body>
 
 </html>

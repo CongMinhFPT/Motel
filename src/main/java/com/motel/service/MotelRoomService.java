@@ -25,5 +25,7 @@ public interface MotelRoomService {
     public String GetUpdateMotelRoom(Model model , int idmotelroom);
     public String PostUpdateMotelRoom (MotelRoom motelRoom,Model model,MultipartFile[] files , BindingResult bindingResult,RedirectAttributes attributes);
     public Boolean CheckRoomInMotel(int idroom  , int idmotel);
-    
+    MotelRoom getMotelRoomId(Integer id);
+
 }
+

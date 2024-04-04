@@ -346,4 +346,11 @@ public class MotelRoomImpl implements MotelRoomService {
         return false;
     }
 
+	@Override
+	public MotelRoom getMotelRoomId(Integer id) {
+		// TODO Auto-generated method stub
+		return motelRoomRepository.findById(id).get();
+	}
+
+
 }

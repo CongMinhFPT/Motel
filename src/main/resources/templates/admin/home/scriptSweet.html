@@ -245,6 +245,18 @@
 				});
 		};
 
+		$scope.getMotelRenter();
+
+		$scope.getMotelRenters = function () {
+			let urlMotelRenter = "http://localhost:8080/api/motel-renters";
+			$http.get(urlMotelRenter)
+				.then(function (response) {
+					$scope.motelssRenters = response.data;
+					console.log(response.data);
+				});
+		};
+
+		$scope.getMotelRenters();
 		$scope.getMotels = function () {
 			let urlMotels = "http://localhost:8080/api/motels";
 			$http.get(urlMotels)
@@ -283,9 +295,9 @@
 					console.log(response.data);
 				});
 		};
-		$scope.formatCurrency = function(amount) {
-        return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-    };
+		$scope.formatCurrency = function (amount) {
+			return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+		};
 	})
 </script>
 <!--Đăng xuất-->

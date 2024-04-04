@@ -126,6 +126,12 @@ public class StatisticRestController {
         return ResponseEntity.ok(moObject);
     }
 
+    @GetMapping("/api/motel-renters")
+    public ResponseEntity<Object> getMotelRoomRenters() {
+        Object moObject = motelRepository.statisticMotelsRenters();
+        return ResponseEntity.ok(moObject);
+    }
+
     @GetMapping("/api/invoice-status")
     public ResponseEntity<Object> getInvoiceStatus() {
         Object inObject = invoiceRepository.getInvoiceStatus();

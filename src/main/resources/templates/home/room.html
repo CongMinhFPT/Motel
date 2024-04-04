@@ -157,7 +157,10 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-10">
-                                                    <p class="card-text">{{motelRoom.posts[$index].title}}</p>
+                                                    <a ng-href="/room-details/{{ motelRoom.posts[$index].postId }}"
+                                                        class="text-decoration-none text-light">
+                                                        <p class="card-text">{{motelRoom.posts[$index].title}}</p>
+                                                    </a>
                                                 </div>
                                                 <div class="col-2"
                                                     ng-show="!motelRoom.favoriteRoom[$index].favoriteRoomId">

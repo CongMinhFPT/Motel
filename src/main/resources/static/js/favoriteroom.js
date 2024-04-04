@@ -66,7 +66,23 @@ app.controller('favoriteRoomCtrl', function ($scope, $http, $timeout, $rootScope
         var url = '/api/listFavoriteRoom';
         $http.get(url)
             .then(function (response) {
-                $scope.favoriteRooms = response.data; console.log(response.data);
+                $scope.favoriteRooms = response.data;
+                console.log(response.data);
+
+                $scope.currentPage = 1;
+                $scope.itemsPerPage = 5;
+
+                // Tính số trang
+                $scope.totalPages = function () {
+                    return Math.ceil($scope.favoriteRooms.length / $scope.itemsPerPage);
+                };
+
+                // Lấy danh sách phòng cho trang hiện tại
+                $scope.pageRange = function () {
+                    var start = ($scope.currentPage - 1) * $scope.itemsPerPage;
+                    var end = start + $scope.itemsPerPage;
+                    return $scope.favoriteRooms.slice(start, end);
+                };
             }).catch(error => {
                 console.log(error);
             })

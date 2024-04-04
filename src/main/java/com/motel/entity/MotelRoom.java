@@ -82,6 +82,7 @@ public class MotelRoom {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "motelId")
+    @JsonBackReference
     Motel motel;
 
     @ManyToOne(cascade = CascadeType.ALL)

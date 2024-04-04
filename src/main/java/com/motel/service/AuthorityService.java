@@ -29,48 +29,51 @@ public class AuthorityService implements UserDetailsService{
 	@Autowired
 	AccountsRepository accountsRepository;
 	
-//	@Autowired
-//	BCryptPasswordEncoder pe;
+	@Autowired
+	AccountService accountService;
+
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		try {
-			Account acc = accountsRepository.getByEmail(username);
-			System.out.println("Email>> " + acc);
-			String password = acc.getPassword();
-			int accountid = acc.getAccountId();
-			System.out.println("Pass>> " + password);
-			String[] roles = acc.getAuthorities().stream()
-							.map(au -> au.getRole().getId())
-							.collect(Collectors.toList()).toArray(new String[0]);
-			System.out.println("role>> "+ roles);
-			List<GrantedAuthority> authorities = new ArrayList<>(roles.length);
-			for (String role : roles) {
+		 Account acc = accountsRepository.getByEmail(username);
+		    if (acc != null) {
+		        String password = acc.getPassword();
+				int accountid = acc.getAccountId();
+		        String[] roles1 = acc.getAuthorities().stream()
+		                        .map(au -> au.getRole().getId())
+		                        .collect(Collectors.toList())
+		                        .toArray(new String[0]);
+			List<GrantedAuthority> roles = new ArrayList<>(roles1.length);
+			for (String role : roles1) {
 				Assert.isTrue(!role.startsWith("ROLE_"),
 						() -> role + " cannot start with ROLE_ (it is automatically added)");
-				authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+						roles.add(new SimpleGrantedAuthority("ROLE_" + role));
 			}
-			CustomUserDetails userDetails = new CustomUserDetails(username, password,authorities,accountid, 0);
+			CustomUserDetails userDetails = new CustomUserDetails(username, password,roles,accountid, 0);
 			return userDetails;
-		} catch (Exception e) {
-			System.out.println("Không tồn tại tài khoản này " + username);
-			System.out.println("Đã xảy ra lỗi khi tìm kiếm tài khoản: " + e.getMessage());
-			e.printStackTrace();
-			throw new UsernameNotFoundException(username + "not found!");
-		}
+		    } else {
+		        return null; // Trả về null nếu không tìm thấy tài khoản
+		    }
+
 	}
 
 	public void loginFromOAuth2(OAuth2AuthenticationToken oauth2) {
 		//đọc thông tin từ mạng xã hội 
 		String email = oauth2.getPrincipal().getAttribute("email");
-		String password = Long.toHexString(System.currentTimeMillis());
+		
 		//Tạo đối tượng UserDetails
-		UserDetails user = User.withUsername(email)
-							.password(password)
-							.roles("STAFF").build();
-		//tạo đối tượng authentication từ userDetail
-		Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-		//Thay đổi thông tin đăng nhập từ hệ thống
-		SecurityContextHolder.getContext().setAuthentication(auth);
+		 UserDetails userDetails = loadUserByUsername(email);
+		    if (userDetails == null) {
+		        // Nếu người dùng chưa tồn tại, tạo một người dùng mới với quyền "CUSTOMER"
+		        userDetails = User.withUsername(email)
+		                          .password(Long.toHexString(System.currentTimeMillis()))
+		                          .roles("CUSTOMER")
+		                          .build();
+		    }
+
+		    // Tạo đối tượng authentication từ UserDetails
+		    Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+		    // Thay đổi thông tin đăng nhập từ hệ thống
+		    SecurityContextHolder.getContext().setAuthentication(auth);
 	}
 }

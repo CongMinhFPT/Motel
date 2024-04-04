@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.motel.service.AuthorityService;
 
@@ -33,9 +34,10 @@ public class AuthorityConfig extends WebSecurityConfigurerAdapter{
 		http.csrf().disable().cors().disable();
 		
 		http.authorizeRequests()
-			.antMatchers("/admin").hasRole("MANAGER")
-			.antMatchers("/admin").hasAnyRole("MANAGER","STAFF")
-			.antMatchers("/information/**","/news/**","/news_details/**","/room-detail/**").authenticated()
+			.antMatchers("/authority").hasRole("SUPPER")
+			.antMatchers("/admin").hasAnyRole("MANAGER", "SUPPER", "CUSTOMER")
+			.antMatchers("/news/**").hasAnyRole("MANAGER", "SUPPER", "OWNER","CUSTOMER")
+			.antMatchers("/admin").authenticated()
 			.anyRequest().permitAll();
 		
 		http.exceptionHandling()
@@ -59,6 +61,8 @@ public class AuthorityConfig extends WebSecurityConfigurerAdapter{
 			.failureUrl("/signin?error=true")
 			.authorizationEndpoint()
 			.baseUri("/oauth2/authorization");
+		
+		 
 	}
 	
 }

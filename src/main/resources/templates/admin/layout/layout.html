@@ -26,6 +26,7 @@
 		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<link href="/admin/css/style.css" rel="stylesheet">
+
 	<link href="/admin/css/motelcss/Avatar.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 	<link rel="stylesheet" type="text/css"
@@ -33,6 +34,10 @@
 
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+
+	<script th:src="@{/vendor/angular/angular.js}"></script> 
+
 
 </head>
 
@@ -45,9 +50,11 @@
 		</div>
 	</div>
 	<div id="main-wrapper">
+
 		<nav th:replace="~{/admin/layout/header :: nav}"></nav>
 		<main th:replace="${view}"></main>
 		<div th:replace="~{/admin/layout/footer :: footer}"></div>
+
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.7.9/angular-locale_vi-vn.js"></script>
@@ -163,6 +170,12 @@
 
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<script src="/Authority/auth.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+	
+	
+
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="/js/renter.js"></script>
 	<script src="/js/invoice.js"></script>
@@ -173,6 +186,7 @@
 	<div th:replace="~{/admin/indexs/scriptSweet}"></div>
 	<div th:replace="~{/admin/home/scriptSweet}"></div>
 	<div th:replace="~{/admin/post/scriptSweet}"></div>
+
 </body>
 
 </html>

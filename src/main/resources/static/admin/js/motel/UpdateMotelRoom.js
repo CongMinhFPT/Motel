@@ -77,14 +77,15 @@ app.controller(
     $scope.PostBill = function () {
       console.log($scope.idmotelroom);
       if (!$scope.numberbill) {
-        $scope.error = "Vui lòng nhập giá tiền "+$scope.title;
+        console.log($scope.numberbill)
+        $scope.error = "Vui lòng nhập giá tiền "+$scope.title+" là số dương lớn hơn 0";
       } else if (
         typeof $scope.numberbill === "string" &&
         !$scope.numberbill.match(/^\d+$/)
       ) {
-        $scope.error = "Vui lòng nhập giá tiền điện là số dương lớn hơn 0";
+        $scope.error = "Vui lòng nhập giá tiền "+$scope.title+" là số dương lớn hơn 0";
       } else if (Number($scope.numberbill) <= 0) {
-        $scope.error = "Vui lòng nhập giá tiền điện là số dương lớn hơn 0";
+        $scope.error = "Vui lòng nhập giá tiền "+$scope.title+" là số dương lớn hơn 0";
       } else {
         $scope.error = "";
         let url =
@@ -105,6 +106,7 @@ app.controller(
                 showCancelButton: false,
                 confirmButtonText: "Có",
                 denyButtonText: "Không",
+                icon: "question"
               }).then((result) => {
                 if (result.isConfirmed) {
                   document.getElementById("butclose").click();

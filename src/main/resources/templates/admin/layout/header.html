@@ -794,7 +794,7 @@
             </nav>
             <div class="sub-header">
                 <div class="d-flex align-items-center flex-wrap mr-auto">
-                    <h5 class="dashboard_bar">Trang Chủ</h5>
+                   <a th:href="@{/index}"> <h5 class="dashboard_bar">Trang Chủ</h5></a>
                 </div>
             </div>
         </div>
@@ -802,29 +802,31 @@
 
     <div class="deznav">
         <div class="deznav-scroll">
-            <div class="main-profile">
+            <div class="main-profile" th:if="${motel != null}">
                 <div class="image-bx">
-                    <img src="images/Untitled-1.jpg" alt="">
+                    <img  th:src="@{'/files/ImgMotel/' + ${motel.image}}" alt="">
                     <a href="javascript:void(0);"><i class="fa fa-cog" aria-hidden="true"></i></a>
                 </div>
-                <h5 class="name"><span class="font-w400">Hello,</span> Marquez</h5>
+                <h5 class="name p- w-100  text-center  "><span class="font-w400 ">Hello: #</span>[[${motel.descriptions}]]</h5>
                 <p class="email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                        data-cfemail="95f8f4e7e4e0f0efefefefd5f8f4fcf9bbf6faf8">[email&#160;protected]</a></p>
+                    data-cfemail="95f8f4e7e4e0f0efefefefd5f8f4fcf9bbf6faf8">[email&#160;<span> [[${#request.remoteUser}]]</span>]</a></p>
             </div>
             <ul class="metismenu" id="menu">
-                <li><a class="" href="index.html" aria-expanded="false">
+                <li><a class="" th:href="@{/index}"   aria-expanded="false">
                         <i class="flaticon-144-layout"></i>
                         <span class="nav-text">Trang Chủ</span>
+                        <span  class="nav-text">  <li th:if="${motel == null}"><a th:href="@{/admin/manage-motel}"> Danh sách nhà Trọ</a></li></span>
                     </a>
                 </li>
                 <li class="nav-label">Quản Lý</li>
-                <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                <li  th:if="${motel != null}"><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                         <i class="flaticon-077-menu-1"></i>
                         <span class="nav-text">Nhà Trọ</span>
                     </a>
                     <ul aria-expanded="false">
-                        <li><a th:href="@{/admin/motel}">Nhà Trọ</a></li>
-                        <li><a href="post-details.html">Phòng Trọ</a></li>
+                        <li><a  th:href="@{/admin/show-motel}">Nhà Trọ</a></li>
+                        <li><a th:href="@{/admin/manage-motel}"> Danh sách nhà Trọ</a></li>
+                        <li><a th:href="@{/admin/manage-motelroom}"> Danh sách Phòng Trọ</a></li>
                         <li><a href="page-chat.html">Danh Mục Phòng Trọ</a>
                         </li>
                         <li><a href="page-chat.html">Người Thuê Trọ</a>
@@ -839,20 +841,21 @@
                         </li>
                     </ul>
                 </li>
-                <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                <li th:if="${#request.isUserInRole('ADMIN')}"><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                         <i class="flaticon-077-menu-1"></i>
                         <span class="nav-text">Tin Tức</span>
                     </a>
                     <ul aria-expanded="false">
+
                         <li><a th:href="@{/admin/blogs}">Tin Tức</a></li>
                         <li><a th:href="@{/admin/tags}">Tag</a></li>
                         <li><a href="page-chat.html">Dịch Vụ</a>
                         </li>
                         <li><a href="page-chat.html">Duyệt Bài Đăng</a>
-                        </li>
-                    </ul>
+                    </li>
+                </ul>
                 </li>
-                <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                <li  th:if="${#request.isUserInRole('ADMIN')}" ><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                         <i class="flaticon-077-menu-1"></i>
                         <span class="nav-text">Phân Quyền</span>
                     </a>
@@ -876,12 +879,14 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-label">Thống Kê</li>
-                <li><a class="" href="user-list-datatable.html" aria-expanded="false">
-                        <i class="flaticon-003-diamond"></i>
-                        <span class="nav-text">Bootstrap</span>
-                    </a>
-                </li>
+                <div  th:if="${#request.isUserInRole('ADMIN')}" >
+                    <li class="nav-label">Thống Kê</li>
+                    <li><a class="" href="user-list-datatable.html" aria-expanded="false">
+                            <i class="flaticon-003-diamond"></i>
+                            <span class="nav-text">Bootstrap</span>
+                        </a>
+                    </li>
+                </div> 
             </ul>
             <div class="copyright">
                 <p><strong>Zenix Crypto Admin Dashboard</strong> © 2021 All Rights Reserved</p>

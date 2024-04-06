@@ -64,4 +64,5 @@ public class AuthorityConfig extends WebSecurityConfigurerAdapter{
 		
 		 
 	}
+	
 }

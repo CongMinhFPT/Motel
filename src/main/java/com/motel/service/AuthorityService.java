@@ -1,8 +1,12 @@
 package com.motel.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,8 +17,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.motel.entity.Account;
+import com.motel.entity.CustomUserDetails;
 import com.motel.repository.AccountsRepository;
 
 @Service
@@ -32,11 +38,19 @@ public class AuthorityService implements UserDetailsService{
 		 Account acc = accountsRepository.getByEmail(username);
 		    if (acc != null) {
 		        String password = acc.getPassword();
-		        String[] roles = acc.getAuthorities().stream()
+				int accountid = acc.getAccountId();
+		        String[] roles1 = acc.getAuthorities().stream()
 		                        .map(au -> au.getRole().getId())
 		                        .collect(Collectors.toList())
 		                        .toArray(new String[0]);
-		        return User.withUsername(username).password(password).roles(roles).build();
+			List<GrantedAuthority> roles = new ArrayList<>(roles1.length);
+			for (String role : roles1) {
+				Assert.isTrue(!role.startsWith("ROLE_"),
+						() -> role + " cannot start with ROLE_ (it is automatically added)");
+						roles.add(new SimpleGrantedAuthority("ROLE_" + role));
+			}
+			CustomUserDetails userDetails = new CustomUserDetails(username, password,roles,accountid, 0);
+			return userDetails;
 		    } else {
 		        return null; // Trả về null nếu không tìm thấy tài khoản
 		    }

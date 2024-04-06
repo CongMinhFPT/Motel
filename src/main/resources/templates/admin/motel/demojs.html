@@ -1,0 +1,83 @@
+copy
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chọn ảnh</title>
+    <style>
+        .image-box {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .image-box img {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+
+        #selected-image {
+            width: 200px;
+            height: 200px;
+        }
+        img {
+    transition: all 0.5s ease; /* Thiết lập hiệu ứng transition chậm trong 0.5s */
+}
+
+.enlarged {
+    transform: scale(1.2); /* Làm cho ảnh lớn hơn 1.2 lần */
+    border: 2px solid #00ff00; /* Thêm border màu xanh */
+}
+    </style>
+</head>
+
+<body>
+
+    <input type="file" id="input" accept="image/*" multiple>
+    <div class="image-box" id="image-box"></div>
+    <img id="selected-image">
+    <button id="tang">next</button>
+    <button id="giam">back</button>
+       <form action="">
+        <select>
+            <option value="">a</option>
+            <option value="" selected>b</option>
+        </select>
+       </form>
+    <script>
+        const input = document.getElementById('input');
+        const imageBox = document.getElementById('image-box');
+        const selectedImage = document.getElementById('selected-image');
+        const tang = document.getElementById('tang');
+        const giam = document.getElementById('giam');
+        input.addEventListener('change', function () {
+            imageBox.innerHTML = '';
+            const files = Array.from(input.files).slice(0, 6);
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                selectedImage.src = event.target.result;
+            }
+            reader.readAsDataURL(files[0]);
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.addEventListener('click', function () {
+                        document.querySelectorAll('.image-box img').forEach(function (item) {
+        item.classList.remove('enlarged');
+    });
+    selectedImage.src = e.target.result;
+    img.classList.add('enlarged');
+                    });
+                    imageBox.appendChild(img);
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

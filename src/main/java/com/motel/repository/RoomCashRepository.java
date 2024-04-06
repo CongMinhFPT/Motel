@@ -1,11 +1,14 @@
 package com.motel.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+
 import com.motel.entity.MotelRoom;
 import com.motel.entity.RoomCash;
+
 
 public interface RoomCashRepository extends JpaRepository<RoomCash, Integer> {
 
@@ -14,4 +17,5 @@ public interface RoomCashRepository extends JpaRepository<RoomCash, Integer> {
     
     @Query(nativeQuery = true, value = "select * from room_cash where motel_room_id = :motel_room_id")
     RoomCash findByMotelRoomId(@Param("motel_room_id") Integer motelRoomId);
+
 }

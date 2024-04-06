@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="content-body">
+    <div class="container-fluid">
+      <div class="form-head   d-flex flex-wrap align-items-center">
+        <h2 class="font-w600 title  mr-auto "> Nhà trọ</h2>
+      </div>
+      <div class=" row " th:object="${motel}">
+        <div class="accordion" id="accordionPanelsStayOpenExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button h5" type="button" data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                aria-controls="panelsStayOpen-collapseOne">
+                Thông tin Nhà trọ,
+                <span th:if="*{status}==true"><span style="width: 10px; height: 10px; background-color: #31a24c; display: inline-block; border-radius: 50%;margin-left: 0.5rem;"
+                  ></span> Đang Hoạt động </span>
+                <span th:if="*{status}==false"><span style="width: 10px; height: 10px; background-color: #959a96; display: inline-block; border-radius: 50%;margin-left: 0.5rem;"
+                  ></span>  Không hoạt động</span> 
+              </button>
+            </h2>
+            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                <div class="">
+                  <div class="row  ">
+                    <div class="avatar-frame  p-0  ">
+                      <img alt="Avatar" th:src="@{'/files/ImgMotel/' + ${motel.image}}" id="previewImage"
+                        class="avatar-image">
+                    </div>
+                    <div class=" col-12 col-md-10   row">
+                      <div class=" row ">
+                        <p class="h5 col-12  col-md-4    ">Ngày tạo : [[*{#dates.format(createDate, 'dd/MM/yyyy')}]]</p>
+                        <p class="h5 col-12 col-md-4   ">Số phòng đang có : <span th:text="*{#lists.size(motelRoom)}"></span> <i class="bi bi-house-door"></i></p>
+                        <p class="h5 col-12  col-md-4    ">Số người ở hiện có :  <span th:text="${number}"></span>  <i class="bi bi-person"></i></p>
+                      </div>
+                      <p class="h4 col-12 col-md-3   ">Mô tả</p>
+                      <p class="alert alert-primary h4 col-12 " role="alert">[[*{descriptions}]]</p>
+                    </div>
+                  </div>
+                  <div class="col-12 mt-4 mb-3  ">
+                    <p class="alert alert-info h5" role="alert"><img style="width: 2rem;"
+                        src="/files/ImgMotel/iconDiaChi.png" alt="">
+                      [[*{province}]],[[*{district}]],[[*{ward}]],[[*{detailAddress}]] </p>
+                  </div>
+                </div>
+                <div class="d-flex  justify-content-between ">
+                  <a class="btn"  th:onclick="'javascript:conditionmotel(\'' + ${motel.status} + '\')'">
+                    <span  class="link-secondary  " th:if="*{status}==true">Tắt hoạt động</span>
+                    <span class="link-success" th:if="*{status}==false">Bật hoạt động</span> </a>
+                  <a class="p-3 btn btn-success  " href="/admin/update-motel">Sửa thông tin nhà trọ nhà trọ </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</style>
+</html>

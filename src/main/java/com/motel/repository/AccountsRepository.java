@@ -13,7 +13,6 @@ import com.motel.entity.FavoriteRoom;
 import com.motel.entity.MotelRoom;
 
 public interface AccountsRepository extends JpaRepository<Account, Integer>{
-
 	Account getByEmail(String email);
 
 	

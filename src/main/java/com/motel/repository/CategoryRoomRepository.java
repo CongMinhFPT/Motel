@@ -1,5 +1,6 @@
 package com.motel.repository;
 
+
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +18,5 @@ public interface CategoryRoomRepository extends JpaRepository<CategoryRoom, Inte
 
 	@Query("SELECT c FROM CategoryRoom c WHERE c.title LIKE %:keyword%")
 	List<CategoryRoom> findByTitle(@Param("keyword") String keyword);
+
 }

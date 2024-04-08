@@ -58,7 +58,7 @@ public class RegisterController {
 
 	@Autowired
 	AuthorityRepository authorityRepository;
-	
+
 	@Autowired
 	AccountService accountService;
 
@@ -75,10 +75,10 @@ public class RegisterController {
 	BCryptPasswordEncoder pe;
 
 	@Autowired
-    InvoiceRepository invoiceRepository;
+	InvoiceRepository invoiceRepository;
 
 	@Autowired
-    InvoiceStatusRepository invoiceStatusRepository;
+	InvoiceStatusRepository invoiceStatusRepository;
 
 	private static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
 
@@ -94,12 +94,12 @@ public class RegisterController {
 			if (account.getPhone().isBlank()) {
 				model.addAttribute("phone", "Vui lòng nhập số điện thoại!");
 			}
-			if(account.getCitizen().isBlank()) {
+			if (account.getCitizen().isBlank()) {
 				model.addAttribute("citizen", "Vui lòng nhập số căn cước công dân!");
 			}
 			if (account.getCreateDate() == null) {
 				model.addAttribute("date", "Vui lòng chọn ngày tháng năm sinh!");
-				
+
 			}
 			return "home/signup";
 		}
@@ -108,20 +108,21 @@ public class RegisterController {
 			model.addAttribute("phone", "Sai định dạng số điện thoại!");
 			return "home/signup";
 		}
-		
+
 		if (accountsRepository.getByEmail(account.getEmail()) != null) {
 			model.addAttribute("email", "Email này đã tồn tại!");
 			return "home/signup";
 		}
-		if(accountsRepository.getByPhone(account.getPhone()) != null ) {
+		if (accountsRepository.findByPhone(account.getPhone()) != null) {
+			System.out.println(account.getPhone());
 			model.addAttribute("phone", "Số điện thoại đã tồn tại. Vui lòng nhập số điện thoại khác!");
 			return "home/signup";
 		}
-		if(!account.getCitizen().matches("^\\d{9}|\\d{12}$")) {
+		if (!account.getCitizen().matches("^\\d{9}|\\d{12}$")) {
 			model.addAttribute("citizen", "Sai định dạng số căn cước công dân. Vui lòng nhập 9 hoặc 12 chữ số!");
 			return "home/signup";
 		}
-		if(accountsRepository.getByCitizen(account.getCitizen()) != null ) {
+		if (accountsRepository.getByCitizen(account.getCitizen()) != null) {
 			model.addAttribute("citizen", "Số căn cước công dân này đã tồn tại.!");
 			return "home/signup";
 		}
@@ -142,7 +143,7 @@ public class RegisterController {
 			model.addAttribute("date", "Bạn phải đủ 18 tuổi trở lên!");
 			return "home/signup";
 		}
-		
+
 		String passw = randompassword();
 		System.out.println("passw>> " + passw);
 		String passpe = pe.encode(passw);
@@ -212,43 +213,43 @@ public class RegisterController {
 
 	@RequestMapping("/oauth2/login/success")
 	public String success(OAuth2AuthenticationToken oauth2, Model model) {
-	    authorityService.loginFromOAuth2(oauth2);
-	    OAuth2User oauth2User = oauth2.getPrincipal();
-	    String email = oauth2User.getAttribute("email");
-	    System.out.println("Email>> " + email);
+		authorityService.loginFromOAuth2(oauth2);
+		OAuth2User oauth2User = oauth2.getPrincipal();
+		String email = oauth2User.getAttribute("email");
+		System.out.println("Email>> " + email);
 
-	    Account existingAccount = accountsRepository.getByEmail(email);
-	    if (existingAccount != null) {
-	        // Nếu tài khoản đã tồn tại, không cần tạo mới, sử dụng tài khoản hiện có để đăng nhập
-	        model.addAttribute("auth", "Đăng nhập thành công!");
-	        return "home/signin";
-	    }
+		Account existingAccount = accountsRepository.getByEmail(email);
+		if (existingAccount != null) {
+			// Nếu tài khoản đã tồn tại, không cần tạo mới, sử dụng tài khoản hiện có để
+			// đăng nhập
+			model.addAttribute("auth", "Đăng nhập thành công!");
+			return "home/signin";
+		}
 
-	    // Nếu tài khoản chưa tồn tại, tạo một tài khoản mới và lưu vào CSDL
-	    String generatedString = randompassword();
-	    System.out.println("pass>> " + generatedString);
-	    Account acc = new Account();
-	    acc.setEmail(email);
-	    acc.setFullname(email);
-	    acc.setPassword(pe.encode(generatedString));
-	    acc.setActive(true);
-	    accountsRepository.save(acc);
+		// Nếu tài khoản chưa tồn tại, tạo một tài khoản mới và lưu vào CSDL
+		String generatedString = randompassword();
+		System.out.println("pass>> " + generatedString);
+		Account acc = new Account();
+		acc.setEmail(email);
+		acc.setFullname(email);
+		acc.setPassword(pe.encode(generatedString));
+		acc.setActive(true);
+		accountsRepository.save(acc);
 
-	    // Tạo quyền cho tài khoản mới
-	    Role customerRole = roleRepository.findById("CUSTOMER").orElseGet(() -> {
-	        Role newRole = new Role();
-	        newRole.setId("CUSTOMER");
-	        return roleRepository.save(newRole);
-	    });
-	    Authority au = new Authority();
-	    au.setAccount(acc);
-	    au.setRole(customerRole);
-	    authorityRepository.save(au);
+		// Tạo quyền cho tài khoản mới
+		Role customerRole = roleRepository.findById("CUSTOMER").orElseGet(() -> {
+			Role newRole = new Role();
+			newRole.setId("CUSTOMER");
+			return roleRepository.save(newRole);
+		});
+		Authority au = new Authority();
+		au.setAccount(acc);
+		au.setRole(customerRole);
+		authorityRepository.save(au);
 
-	    model.addAttribute("auth", "Đăng nhập thành công!");
-	    return "home/signin";
+		model.addAttribute("auth", "Đăng nhập thành công!");
+		return "home/signin";
 	}
-
 
 	@GetMapping("/change")
 	public String Change(Model model, @ModelAttribute("changepass") ChangePassword changepass,
@@ -378,11 +379,11 @@ public class RegisterController {
 			model.addAttribute("phone", "Sai định dạng số điện thoại!");
 			return "home/information";
 		}
-		if(account.getCitizen().isBlank()) {
+		if (account.getCitizen().isBlank()) {
 			model.addAttribute("citizen", "Vui lòng nhập số căn cước công dân!");
 			return "home/information";
 		}
-		if(!account.getCitizen().matches("^\\d{9}|\\d{12}$")) {
+		if (!account.getCitizen().matches("^\\d{9}|\\d{12}$")) {
 			model.addAttribute("citizen", "Sai định dạng số căn cước công dân. Vui lòng nhập 9 hoặc 12 chữ số!");
 			return "home/information";
 		}
@@ -408,7 +409,7 @@ public class RegisterController {
 				return "home/information";
 			}
 		}
-		
+
 		String email = acccurrent.getEmail();
 		String pass = acccurrent.getPassword();
 		System.out.println("pass>> " + pass);
@@ -444,33 +445,33 @@ public class RegisterController {
 	}
 
 	@GetMapping("/payment/{email}")
-    public String payment(@PathVariable("email") String email, Model model) {
-        List<Invoice> invoices = invoiceRepository.findByAccountEmail(email);
-		if(invoices == null){
+	public String payment(@PathVariable("email") String email, Model model) {
+		List<Invoice> invoices = invoiceRepository.findByAccountEmail(email);
+		if (invoices == null) {
 			model.addAttribute("hideForm", true);
 		} else {
 			model.addAttribute("hideForm", false);
 			model.addAttribute("invoicess", invoices);
 		}
 		return "/home/payment_invoice";
-    }
+	}
 
 	@GetMapping("/payment_infor")
-    public String transaction(
-            @RequestParam(value = "vnp_OrderInfo") String orderInfo,
-            @RequestParam(value = "vnp_ResponseCode") String responseCode, Model model) {
-        String invoiceIdString = orderInfo.substring(orderInfo.length() - 2);
+	public String transaction(
+			@RequestParam(value = "vnp_OrderInfo") String orderInfo,
+			@RequestParam(value = "vnp_ResponseCode") String responseCode, Model model) {
+		String invoiceIdString = orderInfo.substring(orderInfo.length() - 2);
 
-        if (responseCode.equals("00")) {
-            Invoice invoice = invoiceRepository.findById(Integer.parseInt(invoiceIdString))
-                    .orElseThrow(() -> new IllegalArgumentException("Không tồn tại hợp đồng này của sinh viên"));
-            invoice.setInvoiceStatus(invoiceStatusRepository.findAll().get(0));
-            invoiceRepository.save(invoice);
+		if (responseCode.equals("00")) {
+			Invoice invoice = invoiceRepository.findById(Integer.parseInt(invoiceIdString))
+					.orElseThrow(() -> new IllegalArgumentException("Không tồn tại hợp đồng này của sinh viên"));
+			invoice.setInvoiceStatus(invoiceStatusRepository.findAll().get(0));
+			invoiceRepository.save(invoice);
 
 			model.addAttribute("paymentSuccess", true);
-        }
-        return "/home/payment_invoice";
-    }
+		}
+		return "/home/payment_invoice";
+	}
 
 	private String randompassword() {
 		int leftLimit = 97;

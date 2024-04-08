@@ -1,5 +1,6 @@
 <script th:inline="javascript">
 	var app = angular.module('indexApp', []);
+	var username = $("#accountIdStatistic").val();
 
 	app.controller('indexCtrl', function ($scope, $http) {
 		$scope.getAllRevenue = function () {
@@ -225,6 +226,8 @@
 				});
 		};
 
+		$scope.accountId = username;
+
 		$scope.getCountRenter = function () {
 			let urlCountRenter = "http://localhost:8080/api/count-renter";
 			$http.get(urlCountRenter)
@@ -236,8 +239,8 @@
 
 		$scope.getCountRenter();
 
-		$scope.getMotelRenter = function () {
-			let urlMotelRenter = "http://localhost:8080/api/motel-renter";
+		$scope.getMotelRenter = function (accountId) {
+			let urlMotelRenter = "http://localhost:8080/api/motel-renter?accountId=" + accountId;
 			$http.get(urlMotelRenter)
 				.then(function (response) {
 					$scope.motelRenters = response.data;
@@ -267,15 +270,34 @@
 		};
 		$scope.getMotels();
 
+		// $scope.getMotelsRenter = function () {
+		// 	let urlMotelsRenter = "http://localhost:8080/api/motels-renter";
+		// 	$http.get(urlMotelsRenter)
+		// 		.then(function (response) {
+		// 			$scope.motelsRenters = response.data;
+		// 			console.log(response.data);
+		// 		});
+		// };
+		// $scope.getMotelsRenter();
+
 		$scope.getMotelsRenter = function () {
 			let urlMotelsRenter = "http://localhost:8080/api/motels-renter";
 			$http.get(urlMotelsRenter)
 				.then(function (response) {
-					$scope.motelsRenters = response.data;
-					console.log(response.data);
+					let uniqueMotels = [];
+					let seenIds = [];
+					response.data.forEach(function (motelsRenter) {
+						if (!seenIds.includes(motelsRenter.motelId)) {
+							uniqueMotels.push(motelsRenter);
+							seenIds.push(motelsRenter.motelId);
+						}
+					});
+					$scope.motelsRenters = uniqueMotels;
+					console.log(uniqueMotels);
 				});
 		};
 		$scope.getMotelsRenter();
+
 
 		$scope.getInvoiceStatus = function () {
 			let urlInvoiceStatus = "http://localhost:8080/api/invoice-status";

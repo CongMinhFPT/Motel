@@ -18,5 +18,8 @@ public interface PostService {
 	List<Post> getListPostEnable();
 
 	void deletePost(Integer postId);
+
+	List<Post> getListPostNonActive();
 	
+	Post checkUpdate(Post post, Integer postId);
 }

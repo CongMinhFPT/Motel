@@ -88,5 +88,25 @@ public class PostServiceImpl implements PostService{
         }
 	}
 
+	@Override
+	public List<Post> getListPostNonActive() {
+		return postRepo.findPostByNonActive();
+	}
+
+	@Override
+	public Post checkUpdate(Post post, Integer postId) {
+		Post post2 = postRepo.findById(postId).orElse(null);
+
+		post.setPostId(post2.getPostId());
+		post.setAccount(post2.getAccount());
+		post.setCreateDate(post2.getCreateDate());
+
+		post.setMotelRoom(post2.getMotelRoom());
+		post.setStatus(post.isStatus());
+		post.setTitle(post2.getTitle());
+		postRepo.save(post);
+		return post;
+	}
+
 }
 

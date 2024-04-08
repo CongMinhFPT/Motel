@@ -70,16 +70,17 @@
 							<div class="product-details-images slider-navigation-1">
 								<div th:if="${roomDetails.motelRoom.video != null}" class="lg-image">
 									<!-- Nếu roomDetails.motelRoom.video không null, hiển thị iframe -->
-									<iframe style="width: 100%; height: 35rem;" th:src="${roomDetails.motelRoom.video}"
+									<label>[[${roomDetails.motelRoom.video}]]</label>
+									<iframe style="width: 100%; height: 35rem;" th:src="'https://www.youtube.com/embed/'+${roomDetails.motelRoom.video}"
 										title="YouTube video player" frameborder="0"
 										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 										allowfullscreen></iframe>
 								</div>
 								<div th:each="image : ${images}">
 									<div class="lg-image">
-										<a class="popup-img venobox vbox-item" th:href="@{|/uploads/${image.name}|}"
+										<a class="popup-img venobox vbox-item" th:href="@{|/files/ImgMotelRoom/${image.name}|}"
 											data-gall="myGallery">
-											<img th:src="@{|/uploads/${image.name}|}" alt="product image"
+											<img th:src="@{|/files/ImgMotelRoom/${image.name}|}" alt="product image"
 												style="height: 35rem;">
 										</a>
 									</div>
@@ -87,14 +88,14 @@
 							</div>
 							<div class="product-details-thumbs slider-thumbs-1 mt-20">
 								<div th:if="${roomDetails.motelRoom.video != null}" class="sm-image">
-									<iframe style="width: 100%; height: 10rem;" th:src="${roomDetails.motelRoom.video}"
+									<iframe style="width: 100%; height: 10rem;" th:src="'https://www.youtube.com/embed/'+${roomDetails.motelRoom.video}"
 										title="YouTube video player" frameborder="0"
 										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 										allowfullscreen></iframe>
 								</div>
 								<div th:each="image : ${images}">
 									<div class="sm-image">
-										<img th:src="@{|/uploads/${image.name}|}" alt="product image thumb"
+										<img th:src="@{|/files/ImgMotelRoom/${image.name}|}" alt="product image thumb"
 											style="height: 10rem;">
 									</div>
 								</div>

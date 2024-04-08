@@ -121,8 +121,8 @@ public class StatisticRestController {
     }
 
     @GetMapping("/api/motel-renter")
-    public ResponseEntity<Object> getMotelRoomRenter() {
-        Object moObject = motelRepository.statisticMotelsRenter();
+    public ResponseEntity<Object> getMotelRoomRenter(@RequestParam("accountId") Integer accountId) {
+        Object moObject = motelRepository.statisticMotelsRenter(accountId);
         return ResponseEntity.ok(moObject);
     }
 

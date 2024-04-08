@@ -39,8 +39,8 @@ public class RenterRoomRestController {
     }
 
     @GetMapping("/api/motelRoom")
-    public ResponseEntity<List<MotelRoom>> getAllMotelRoom() {
-        return ResponseEntity.ok(renterService.getAll());
+    public ResponseEntity<List<MotelRoom>> getAllMotelRoom(@RequestParam("accountId") Integer accountId) {
+        return ResponseEntity.ok(renterService.getMotelRoomByAccount(accountId));
     }
 
     @PostMapping("/api/addRenter")

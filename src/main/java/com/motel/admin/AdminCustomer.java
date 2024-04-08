@@ -86,6 +86,66 @@ public class AdminCustomer {
 		return "admin/customers/customerList";
 	}
 	
+	@GetMapping("/find")
+	public String find(Model model, @RequestParam("find") String find) {
+	    List<Account> findEmail = accountsRepository.findByEmail(find);
+	    Collections.sort(findEmail, (acc1, acc2) -> {
+		    // Lấy trạng thái của tài khoản
+		    boolean isActive1 = acc1.isActive();
+		    boolean isActive2 = acc2.isActive();
+		    
+		    // Xét trường hợp tài khoản 1 hoạt động và tài khoản 2 không hoạt động
+		    if (isActive1 && !isActive2) {
+		        return -1; // Tài khoản 1 được đưa lên đầu danh sách
+		    } else if (!isActive1 && isActive2) {
+		        return 1; // Tài khoản 2 được đưa lên đầu danh sách
+		    }
+		    
+		    return 0; // Giữ nguyên vị trí của các tài khoản khác
+		});
+	    if (!findEmail.isEmpty()) {
+	        model.addAttribute("customer", findEmail);
+	    } else {
+	        List<Account> findphone = accountsRepository.findByPhone1(find);
+	        Collections.sort(findphone, (acc1, acc2) -> {
+			    // Lấy trạng thái của tài khoản
+			    boolean isActive1 = acc1.isActive();
+			    boolean isActive2 = acc2.isActive();
+			    
+			    // Xét trường hợp tài khoản 1 hoạt động và tài khoản 2 không hoạt động
+			    if (isActive1 && !isActive2) {
+			        return -1; // Tài khoản 1 được đưa lên đầu danh sách
+			    } else if (!isActive1 && isActive2) {
+			        return 1; // Tài khoản 2 được đưa lên đầu danh sách
+			    }
+			    
+			    return 0; // Giữ nguyên vị trí của các tài khoản khác
+			});
+	        if (!findphone.isEmpty()) {
+	            model.addAttribute("customer", findphone);
+	        } else {
+	            List<Account> findCitizen = accountsRepository.findByCitizen(find);
+	            Collections.sort(findCitizen, (acc1, acc2) -> {
+				    // Lấy trạng thái của tài khoản
+				    boolean isActive1 = acc1.isActive();
+				    boolean isActive2 = acc2.isActive();
+				    
+				    // Xét trường hợp tài khoản 1 hoạt động và tài khoản 2 không hoạt động
+				    if (isActive1 && !isActive2) {
+				        return -1; // Tài khoản 1 được đưa lên đầu danh sách
+				    } else if (!isActive1 && isActive2) {
+				        return 1; // Tài khoản 2 được đưa lên đầu danh sách
+				    }
+				    
+				    return 0; // Giữ nguyên vị trí của các tài khoản khác
+				});
+	            model.addAttribute("customer", findCitizen);
+	        }
+	    }
+	    return "admin/customers/customerList"; 
+	}
+
+	
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable("id") Integer id,Model model) {
 		Account acc = accountService.findById(id).orElseThrow(() -> new IllegalArgumentException("Id không tồn tại: " + id));

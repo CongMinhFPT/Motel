@@ -21,7 +21,6 @@
 <body>
     <div th:replace="~{/layout/header.html}"></div>
 
-
     <main>
 
         <div class="container ">
@@ -39,12 +38,12 @@
 
                 <form th:action="@{/blog/page/1}" class="form-inline" id="searchForm">
 
-                    <div class="col-8 fl-right mt-1" style="margin-left: 55rem; ">
+                    <div class="col" style="margin-left: 55rem;">
                         <label class="p-2">Tìm kiếm chi tiết:</label>
-                         <input type="search" name="keyword"
-                            th:value="${keyword}" class="form-control" placeholder="Nhập từ khóa bạn cần tìm"
-                            aria-label="Search" aria-describedby="search-addon" style=" border: none;"/>
-                        <button type="submit" class="btn btn-secondary">
+                        <input type="search" name="keyword" th:value="${keyword}" class="form-control"
+                            placeholder="Nhập từ khóa bạn cần tìm" aria-label="Search"
+                            aria-describedby="search-addon" />
+                        <button type="submit " class="btn btn-secondary">
                             Tìm</i>
                         </button>
                         &nbsp;
@@ -52,6 +51,7 @@
                             Xóa</i>
                         </button>
                     </div>
+
 
 
 
@@ -116,8 +116,7 @@
 
                                     <!-- <div class="icon-text">
                                     <span class="icon"><img th:src="@{/img/icons8-author-24.png}"></span>
-                                    <span class="text">#[[${blog.tag.title}]]</span>
-                                </div>-->
+                                    <span class="text">#[[${blog.tag.title}]]</span>/-strong/-heart:>:o:-((:-h</div>-->
                                 </div>
                                 <h2 class="card-title">[[${blog.title}]]</h2>
                                 <div class="card-text" th:utext="${blog.ShortDes}">
@@ -136,6 +135,9 @@
                 </div>
             </th:block>
 
+
+
+
             <div th:replace="layout/paging :: pagination('tin tức từ')"></div>
 
 
@@ -149,7 +151,7 @@
 
 
     <div th:replace="~{/layout/footer}"></div>
- 
+
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

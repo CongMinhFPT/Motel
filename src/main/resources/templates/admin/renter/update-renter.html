@@ -18,7 +18,7 @@
 					<div class="card">
 						<div class="card-body">
 							<div class="basic-form">
-								<form th:action="@{/admin/updateRenter/{renterId}(renterId=${renter.renterId})}"
+								<form th:action="@{/admin/renter/update-renter/{renterId}(renterId=${renter.renterId})}"
 									th:object="${renter}" method="post">
 									<div class="form-row">
 										<div class="form-group col-md-6">
@@ -30,14 +30,15 @@
 										</div>
 										<div class="form-group col-md-6">
 											<label>Ngày Thuê</label>
-											<input type="date" class="form-control" th:value="${renter.renterDate}"
+											<label class="form-control"
+												th:text="${#dates.format(renter.renterDate, 'dd - MM - yyyy')}"
+												th:value="${renter.renterDate}"></label>
+											<input type="hidden" class="form-control" th:value="${renter.renterDate}"
 												th:field="*{renterDate}">
-											<i class="text-danger" th:text="${date}"></i>
 										</div>
 										<div class="form-group col-md-6">
 											<label for="inputState">Phòng Trọ</label>
 											<select id="inputState" class="form-control" th:field="*{motelRoom}">
-												<option value="">Chọn phòng trọ</option>
 												<option th:each="motelRoom : ${motelRooms}"
 													th:value="${motelRoom.motelRoomId}"
 													th:text="${motelRoom.descriptions}">

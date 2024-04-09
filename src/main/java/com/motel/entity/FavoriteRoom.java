@@ -15,6 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,6 +42,6 @@ public class FavoriteRoom {
 
     @ManyToOne
     @JoinColumn(name = "accountId")
-    @JsonBackReference
+
     Account account;
 }

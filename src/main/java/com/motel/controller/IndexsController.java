@@ -3,6 +3,7 @@ package com.motel.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,12 +11,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.motel.entity.Account;
 import com.motel.entity.Indexs;
 import com.motel.entity.MotelRoom;
 import com.motel.model.IndexsModel;
+import com.motel.repository.AccountsRepository;
 import com.motel.repository.IndexsRepository;
 import com.motel.repository.MotelRoomRepository;
 import com.motel.service.IndexsService;
+import com.motel.service.RenterService;
 
 @Controller
 public class IndexsController {
@@ -29,6 +33,12 @@ public class IndexsController {
     @Autowired
     IndexsService indexsService;
 
+    @Autowired
+	RenterService renterService;
+
+	@Autowired
+	AccountsRepository accountsRepository;
+
     @GetMapping("/admin/indexs")
     public String getFormIndexs(Model model) {
         List<Indexs> indexs = indexsRepository.findAllDESC();
@@ -37,16 +47,25 @@ public class IndexsController {
     }
 
     @GetMapping("/admin/indexs/add-indexs")
-    public String getFormAddIndexs(@ModelAttribute("indexs") IndexsModel indexsModel, Model model) {
-        List<MotelRoom> motelRooms = motelRoomRepository.findAll();
+    public String getFormAddIndexs(@ModelAttribute("indexs") IndexsModel indexsModel, Model model, Authentication authentication) {
+
+        String emailAccount = authentication.getName();
+        Account account = accountsRepository.getByEmail(emailAccount);
+        // model.addAttribute("accountId", account.getAccountId());
+
+		List<MotelRoom> motelRooms = renterService.getMotelRoomByAccount(account.getAccountId());
         model.addAttribute("motelRooms", motelRooms);
 
         return "/admin/indexs/add-indexs";
     }
 
     @PostMapping("/admin/indexs/add-indexs")
-    public String addIndexs(@ModelAttribute("indexs") IndexsModel indexsModel, Model model) {
-        List<MotelRoom> motelRooms = motelRoomRepository.findAll();
+    public String addIndexs(@ModelAttribute("indexs") IndexsModel indexsModel, Model model, Authentication authentication) {
+        String emailAccount = authentication.getName();
+        Account account = accountsRepository.getByEmail(emailAccount);
+        // model.addAttribute("accountId", account.getAccountId());
+
+		List<MotelRoom> motelRooms = renterService.getMotelRoomByAccount(account.getAccountId());
         model.addAttribute("motelRooms", motelRooms);
 
         try {

@@ -13,6 +13,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Nationalized;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,8 +34,8 @@ public class CategoryRoom {
     String title;
     @Nationalized
     String descriptions;
-    boolean status;
-
+    boolean status = true;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "categoryRoom")
+    @JsonIgnore 
 	List<MotelRoom> motelRoom;
 }

@@ -35,7 +35,6 @@ public class Indexs {
     Double waterIndex;
     @Temporal(TemporalType.TIMESTAMP)
     Date createDate = new Date();
-
     @ManyToOne
     @JoinColumn(name = "motelRoomId")
     @JsonBackReference

@@ -29,24 +29,30 @@ app.controller('favoriteRoomCtrl', function ($scope, $http, $timeout, $rootScope
     $scope.deleteFavoriteRoom = (favoriteRoomId) => {
         Swal.fire({
             icon: 'question',
-            title: 'Question!',
+            title: 'Xác Nhận!',
             text: 'Bạn muốn xóa khỏi danh sách yêu thích?',
             showCancelButton: true,
             confirmButtonText: 'Yes',
-            cancelButtonText: 'No'
+            cancelButtonText: 'No',
+            toast: true,
+            position: 'top-end'
         }).then((result) => {
             if (result.isConfirmed) {
                 const url = `${hostFavoriteRoom}/${favoriteRoomId}`;
                 $http.delete(url).then(resp => {
-                    Swal.fire('Deleted', 'Phòng đã được xóa khỏi danh sách yêu thích!', 'success').then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành Công!',
+                        toast: true,
+                        position: 'top-end',
+                        timer: 1000
+                    }).then(() => {
                         window.location.reload();
                     });
                 }).catch(error => {
                     console.log(error);
                     Swal.fire('Error', 'Đã có lỗi xảy ra khi xóa phòng!', 'error');
                 });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire('Cancelled', 'Bạn đã hủy!', 'error');
             }
         });
     }
@@ -60,11 +66,29 @@ app.controller('favoriteRoomCtrl', function ($scope, $http, $timeout, $rootScope
         var url = '/api/listFavoriteRoom';
         $http.get(url)
             .then(function (response) {
-                $scope.favoriteRooms = response.data; console.log(response.data);
+                $scope.favoriteRooms = response.data;
+                console.log(response.data);
+
+                $scope.currentPage = 1;
+                $scope.itemsPerPage = 5;
+
+                // Tính số trang
+                $scope.totalPages = function () {
+                    return Math.ceil($scope.favoriteRooms.length / $scope.itemsPerPage);
+                };
+
+                // Lấy danh sách phòng cho trang hiện tại
+                $scope.pageRange = function () {
+                    var start = ($scope.currentPage - 1) * $scope.itemsPerPage;
+                    var end = start + $scope.itemsPerPage;
+                    return $scope.favoriteRooms.slice(start, end);
+                };
             }).catch(error => {
                 console.log(error);
             })
     };
 
     $scope.getFavoriteRoom();
+
+
 })

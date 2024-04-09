@@ -13,12 +13,26 @@ import com.motel.entity.FavoriteRoom;
 import com.motel.entity.MotelRoom;
 
 public interface AccountsRepository extends JpaRepository<Account, Integer>{
-
 	Account getByEmail(String email);
 
-	@Query(nativeQuery = true, value = "SELECT * FROM accounts WHERE phone LIKE CONCAT('%', :phone, '%')")
+	
+	Account findByPhone(String phone);
+	
+	Account getByCitizen(String citizen);
+
+
+	@Query(nativeQuery = true, value = "select * from accounts a inner join authorities b on a.account_id = b.account_id where b.role_id = 'CUSTOMER' AND a.phone LIKE CONCAT('%', :phone, '%')")
     List<Account> getByPhone(@Param("phone") String phone);
 
 	@Query(nativeQuery = true, value = "select * from accounts a join renter b on a.account_id=b.account_id")
     List<Account> getRenterByRenters();
+	
+	@Query(nativeQuery = true, value = "SELECT * FROM accounts WHERE email LIKE CONCAT('%', :find, '%')")
+    List<Account> findByEmail(@Param("find") String find);
+	
+	@Query(nativeQuery = true, value = "SELECT * FROM accounts WHERE phone LIKE CONCAT('%', :find, '%')")
+    List<Account> findByPhone1(@Param("find") String find);
+
+	@Query(nativeQuery = true, value = "SELECT * FROM accounts WHERE citizen LIKE CONCAT('%', :find, '%')")
+    List<Account> findByCitizen(@Param("find") String find);
 }

@@ -8,6 +8,21 @@
 			toast: true,
 			position: 'top-end',
 			showConfirmButton: false,
+			timer: 1000
+		}).then(() => {
+			window.location.href = '/admin/renter';
+		})
+	}
+
+	var date = /*[[${date}]]*/ false;
+	if (date) {
+		Swal.fire({
+			title: "Thành công!",
+			text: "Chọn ngày tháng thuê phù hợp!",
+			icon: "error",
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
 			timer: 3000
 		})
 	}

@@ -1,0 +1,24 @@
+.avatar-frame {
+    width: 150px;
+    height: 150px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin: auto;
+}
+
+.avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+img {
+    transition: all 0.5s ease; /* Thiết lập hiệu ứng transition chậm trong 0.5s */
+}
+
+.enlarged {
+    transform: scale(1.2); /* Làm cho ảnh lớn hơn 1.2 lần */
+    border: 2px solid #51a6f5;
+    border-radius: 10px;
+}

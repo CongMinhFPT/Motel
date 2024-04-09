@@ -23,6 +23,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Nationalized;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,6 +55,7 @@ public class Blog {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tagId")
+
     private Tag tag;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -95,4 +99,5 @@ public class Blog {
                 ", status=" + status +
                 '}';
     }
+
 }

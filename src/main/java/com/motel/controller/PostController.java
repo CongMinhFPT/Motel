@@ -6,6 +6,7 @@ import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ import com.motel.repository.RoomCashRepository;
 import com.motel.repository.WaterCashRepository;
 import com.motel.repository.WifiCashRepository;
 import com.motel.service.GeocodingService;
+import com.motel.service.PostService;
 
 @Controller
 public class PostController {
@@ -57,6 +59,8 @@ public class PostController {
 	@Autowired
 	private GeocodingService geocodingService;
 	
+	@Autowired
+	private PostService postService;
 
 	@GetMapping("/room-details/{post_id}")
 	public String showRoomDetals(@PathVariable("post_id") Integer postId, Model model) {
@@ -176,7 +180,5 @@ public class PostController {
 		}
 		return null;
 	}
-
-
-
 }
+

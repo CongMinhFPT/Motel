@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,18 +43,21 @@ public class Renter {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date renterDate;
 
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "renter")
     @JsonManagedReference
     List<Invoice> invoice;
 
+
     @ManyToOne
     @JoinColumn(name = "motelRoomId")
     @JsonBackReference
+
     MotelRoom motelRoom;
 
     @ManyToOne
     @JoinColumn(name = "accountId")
-    @JsonBackReference
+    @JsonIgnore
     Account account;
 
 }

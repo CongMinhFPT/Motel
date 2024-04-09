@@ -41,8 +41,8 @@
 															<th>CHỌN</th>
 														</tr>
 													</thead>
-													<tbody ng-repeat="(index, result) in results track by $index">
-														<tr>
+													<tbody >
+														<tr ng-repeat="(index, result) in results track by $index">
 															<td>
 																<h6>{{index+1}}</h6>
 															</td>
@@ -107,14 +107,17 @@
 										</div>
 										<div class="form-group col-md-6">
 											<label>Phòng Trọ</label>
-											<select id="inputState" class="form-control" ng-model="motelRoomId">
+											<input type="hidden" th:value="${accountId}" id="accountIdRenter" aria-hidden="true">
+											<select id="inputState" class="form-control" ng-click="getAllMotelRoom(accountId)" ng-model="motelRoomId">
+												<option value="">Chọn nhà trọ</option>
 												<option ng-repeat="motelRoom in motelRooms"
 													ng-value="motelRoom.motelRoomId">{{motelRoom.descriptions}}</option>
 											</select>
 										</div>
-										<button ng-click="addRenter(accountId, renterDate, motelRoomId)"
-											class="btn btn-primary">Lưu Lại</button>
+										
 									</div>
+									<button ng-click="addRenter(accountId, renterDate, motelRoomId)"
+											class="btn btn-primary">Lưu Lại</button>
 								</form>
 							</div>
 						</div>

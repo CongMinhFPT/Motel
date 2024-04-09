@@ -9,7 +9,7 @@ import com.motel.model.RenterModel;
 
 public interface RenterService {
     List<Account> getByPhoneNumber(String phone);
-    List<MotelRoom> getAll();
+    List<MotelRoom> getMotelRoomByAccount(Integer accountId);
     Renter addRenter(RenterModel renterModel);
     Renter updateRenter(RenterModel renterModel, Integer renterId);
     List<Renter> getRenters();

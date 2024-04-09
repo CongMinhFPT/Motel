@@ -1,5 +1,7 @@
 var app = angular.module('renterApp', []);
 
+var username = $("#accountIdRenter").val();
+
 app.controller('renterCtrl', function ($scope, $http, $location) {
     $scope.results = [];
     $scope.motelRooms = [];
@@ -17,8 +19,11 @@ app.controller('renterCtrl', function ($scope, $http, $location) {
         $scope.accountId = id;
     };
 
-    $scope.getAllMotelRoom = function () {
-        let url = 'http://localhost:8080/api/motelRoom';
+
+    $scope.accountId = username;
+    
+    $scope.getAllMotelRoom = function (accountId) {
+        let url = '/api/motelRoom?accountId='+accountId;
         $http.get(url)
             .then(function (response) {
                 $scope.motelRooms = response.data;

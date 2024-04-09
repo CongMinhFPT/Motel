@@ -36,11 +36,6 @@ public class RenterImpl implements RenterService {
     }
 
     @Override
-    public List<MotelRoom> getAll() {
-        return motelRoomRepository.findAll();
-    }
-
-    @Override
     public Renter addRenter(RenterModel renterModel) {
 
         Integer motelRoomId = renterModel.getMotelRoomId();
@@ -109,5 +104,10 @@ public class RenterImpl implements RenterService {
         } else {
             renterRepository.deleteById(renterId);
         }
+    }
+
+    @Override
+    public List<MotelRoom> getMotelRoomByAccount(Integer accountId) {
+        return motelRoomRepository.findMotelRoomsByAccount(accountId);
     }
 }

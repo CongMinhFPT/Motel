@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<div class="content-body">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-header d-sm-flex d-block">
+					<div class="mr-auto mb-sm-0 mb-3">
+						<h4 class="card-title mb-2">Phản hồi</h4>
+						<!--<span>Lorem Ipsum sit amet</span>-->
+					</div>
+
+					<a th:href="@{/authority}" class="btn btn-info">+ Phân quyền người dùng</a>
+				</div>
+				<div class="card-body">
+					<form class="signin-form mx-1 mx-md-4" method="post"
+						th:action="@{/requestauth/{requestAuthorityId}(requestAuthorityId=${request.requestAuthorityId})}"
+						th:object="${request}">
+						<div class="row d-flex flex-row align-items-center mb-4">
+							<div class="col-12 form-outline flex-fill mb-3">
+								<label class="form-label fw-bold" for="form3Example3c">Nội dung phản hồi:</label>
+								<textarea class="form-control" id="exampleFormControlTextarea1"
+									th:field="*{respdescriptions}"
+									placeholder="Tui đã xem thông tin của bạn và đã duyệt thành công hoặc không thành công!"
+									rows="5"></textarea>
+								<i class="text-danger" th:text="${des}"></i>
+							</div>
+							<div class="col-12 form-outline flex-fill mb-0">
+								<label class="form-label">Xác Nhận:</label>
+								<select class="form-control show-tick "
+									th:field="*{requestAuthorityStatus.requestAuthorityStatusId}">
+									<option value="">-- Chọn phản hồi --</option>
+									<option th:each="st : ${status}" th:value="${st.requestAuthorityStatusId}"
+										th:text="${st.name}"></option>
+								</select>
+								<i class="text-danger" th:text="${sta}"></i>
+							</div>
+						</div>
+						<div class="">
+							<button class="btn btn-secondary rounded-3">Phản hồi</button>
+							<a class="btn btn-secondary rounded-3" th:href="@{/requestauth}">Danh sách yêu cầu</a>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+	<!--information-->
+	<script th:if="${not #strings.isEmpty(create)}" th:inline="javascript">
+		var changeMessage = /*[[${create}]]*/ '';
+		Swal.fire({
+			icon: "success",
+			title: "Thành công!",
+			text: changeMessage,
+			showConfirmButton: false,
+			timer: 1500
+		});
+	</script>
+	<script>
+		document.getElementById('uploadInput').addEventListener('change', function () {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				document.getElementById('imagePreview').src = e.target.result;
+			}
+			reader.readAsDataURL(this.files[0]);
+		});
+	</script>
+</body>
+
+</html>

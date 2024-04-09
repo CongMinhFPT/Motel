@@ -186,10 +186,14 @@
 											<i class='bx bxs-heart'></i>
 											&nbsp;
 											Yêu thích</button>
-										<button type="button" class="btn px-5 btn-contact mt-10">
+
+										<a th:href="@{|/chat/${#request.remoteUser}/${roomDetails.account.email}|}"
+											class="btn px-5 btn-contact mt-10">
 											<i class='bx bxs-message-dots'></i>
 											&nbsp;
-											Nhắn tin</button>
+											Nhắn tin
+										</a>
+
 									</div>
 								</div>
 							</div>
@@ -233,7 +237,7 @@
 												class='bx bx-search'></i></button>
 									</div>
 								</div>
-							</div>	
+							</div>
 							<div class="gg-map mt-5" id="gg-map">
 								<div class="loading" id="loadingOverplay">
 									<div class="pac-man"></div>
@@ -321,7 +325,7 @@
 	</div>
 	<div th:replace="~{/layout/footer.html}">
 	</div>
-	<script>
+	<script th:inline="javascript">
 		const loadingOverlays = document.getElementsByClassName('loading');
 
 		function showLoadingSpinner() {
@@ -336,8 +340,8 @@
 			}
 		}
 		hideLoadingSpinner();
-		const latitude = [[${latitude}]];
-		const longitude = [[${longitude}]];
+		const latitude = /*[[${latitude}]]*/'';
+		const longitude = /*[[${longitude}]]*/'';
 		const map = L.map('gg-map').setView([latitude, longitude], 17);
 		L.tileLayer(`https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}.png?key=TMaCmxPUt0XNH7bb7Wbt`, {
 			attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank"></a> <a href="https://www.openstreetmap.org/copyright" target="_blank"></a>'

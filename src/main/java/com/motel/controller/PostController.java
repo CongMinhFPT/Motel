@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.motel.entity.Account;
 import com.motel.entity.ElectricityCash;
 import com.motel.entity.Image;
 import com.motel.entity.MotelRoom;
@@ -18,7 +20,7 @@ import com.motel.entity.Post;
 import com.motel.entity.RoomCash;
 import com.motel.entity.WaterCash;
 import com.motel.entity.WifiCash;
-import com.motel.model.GeocodingResponse;
+import com.motel.repository.AccountsRepository;
 import com.motel.repository.ElectricityCashRepository;
 import com.motel.repository.ImageRepository;
 import com.motel.repository.MotelRoomRepository;
@@ -54,6 +56,7 @@ public class PostController {
 
 	@Autowired
 	private GeocodingService geocodingService;
+	
 
 	@GetMapping("/room-details/{post_id}")
 	public String showRoomDetals(@PathVariable("post_id") Integer postId, Model model) {
@@ -64,7 +67,7 @@ public class PostController {
 			model.addAttribute("roomWifi", roomWifi(postId));
 			model.addAttribute("roomWater", roomWater(postId));
 			model.addAttribute("roomElectricity", roomElectricity(postId));
-
+			
 			String address = post.getMotelRoom().getMotel().getDetailAddress() + ", "
 					+ post.getMotelRoom().getMotel().getWard() + ", " + post.getMotelRoom().getMotel().getDistrict()
 					+ ", " + post.getMotelRoom().getMotel().getProvince();
@@ -173,5 +176,7 @@ public class PostController {
 		}
 		return null;
 	}
+
+
 
 }

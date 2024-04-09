@@ -12,9 +12,9 @@
 /* ===== Colours ===== */
 :root {
     --body-color: #E4E9F7;
-    --nav-color: #545454;
+    --nav-color: #ffffff;
     --side-nav: #010718;
-    --text-color: #DCBF7D;
+    --text-color: #010718;
     --search-bar: #F2F2F2;
     --search-text: #010718;
 }
@@ -22,13 +22,14 @@
 body {
     height: 100vh;
     background-color: var(--body-color);
+
 }
 
 body.dark {
     --body-color: #18191A;
     --nav-color: #545454;
     --side-nav: #242526;
-    --text-color: #CCC;
+    --text-color: #18191A;
     --search-bar: #242526;
 }
 
@@ -39,6 +40,7 @@ nav {
     width: 100%;
     background-color: var(--nav-color);
     z-index: 100;
+    font-weight: bold;
 }
 
 body.dark nav {
@@ -59,6 +61,7 @@ nav .nav-bar {
 nav .nav-bar .sidebarOpen {
     color: var(--text-color);
     font-size: 25px;
+    font-weight: 900;
     padding: 5px;
     cursor: pointer;
     display: none;
@@ -67,7 +70,7 @@ nav .nav-bar .sidebarOpen {
 .taikhoan{
     
     color: var(--text-color);
-    background-color: #545454;
+    /* background-color: #545454; */
     border: none;
 }
 
@@ -92,6 +95,7 @@ nav .nav-bar .sidebarOpen {
     color: var(--text-color);
     text-decoration: none;
     padding: 10px;
+    font-weight: bold;
 }
 
 .nav-links li a::before {
@@ -106,6 +110,7 @@ nav .nav-bar .sidebarOpen {
     background-color: var(--text-color);
     opacity: 0;
     transition: all 0.3s ease;
+    
 }
 
 /* .nav-links li:hover a::before {
@@ -134,6 +139,7 @@ nav .nav-bar .sidebarOpen {
     font-size: 22px;
     cursor: pointer;
     transition: all 0.3s ease;
+    
 }
 
 .dark-light i.sun {
@@ -213,7 +219,7 @@ nav .nav-bar .sidebarOpen {
     border: none;
     border-radius: 4px;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: bold;
     color: var(--search-text);
     background-color: var(--search-bar);
 }

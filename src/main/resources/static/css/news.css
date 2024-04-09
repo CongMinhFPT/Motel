@@ -9,7 +9,7 @@
 }
 
 body{
-    background-color: #FFECBF;
+    background-color: #ffff;
     height: 100%;
     width: 100%;
    
@@ -96,7 +96,7 @@ h3{
     display: inline-block;
     width: calc(100% - 100px);
     margin-right:15px;
-    background-color: #FFC270;
+    background-color: #fff;
 }
 
 
@@ -115,7 +115,7 @@ h3{
     margin-left: 58rem; /* Điều chỉnh khoảng cách giữa label và select nếu cần thiết */
     border: none; /* Loại bỏ border */
     outline: none; /* Loại bỏ đường viền khi được focus (tuỳ chọn) */
-    background-color: #FFECBF ;
+    background-color: #fff ;
 }
 
 
@@ -130,7 +130,7 @@ h3{
   }
 
   .page-link {
-    background-color: #FFECBF; /* Đặt màu cho text của page link */
+    background-color: #000; /* Đặt màu cho text của page link */
     color: black;
   }
 

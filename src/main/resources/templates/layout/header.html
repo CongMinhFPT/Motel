@@ -40,8 +40,6 @@
                             <li><a class="dropdown-item" th:href="@{/requestList}">Danh sách yêu cầu</a></li>
                             <li><a class="dropdown-item" id="logoutButton">Đăng xuất</a></li>
                             <li><a class="dropdown-item" th:href="@{/admin/manage-motel}">Quản lý nhà trọ</a></li>
-                            <li><a class="dropdown-item" th:href="@{/admin}">Admin</a></li>
-
                             <li><a class="dropdown-item" th:href="@{/admin}" th:if="${#request.isUserInRole('MANAGER') or #request.isUserInRole('SUPPER')}">Admin</a></li>
 
                         </ul>

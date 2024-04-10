@@ -7,6 +7,7 @@ app.controller("myCtrlMotelRoom", function($scope, $http, $rootScope,$sce) {
  $scope.selectedCategory = ''; 
  $scope.ListroomStatus =[];
  $scope.selectedroomStatus='';
+ $scope.loading = true;
  $scope.GetListMotelRoom =function(key){
     let url =host+'/api/all/MotelRoom/'+key;
     $http.get(url).then(function (response){
@@ -28,6 +29,7 @@ app.controller("myCtrlMotelRoom", function($scope, $http, $rootScope,$sce) {
        console.log($scope.ListroomStatus)
        console.log($scope.ListCategoryRoom)
        console.table($scope.ListMotelRoom);
+       $scope.loading=false;
        }, function (error) {
            console.log(error)
        });

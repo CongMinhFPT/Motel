@@ -12,7 +12,12 @@
 
 <body ng-app="myAppMotelRoom" ng-controller="myCtrlMotelRoom"
 	th:attr="ng-init='GetListMotelRoom(\'' + ${motel.motelId} + '\')'">
-	<div class="content-body">
+	<div ng-show="loading" class="d-flex justify-content-center align-items-center vh-100">
+		<div class="spinner-border text-info" role="status">
+		  <span class="visually-hidden">Đang tải...</span>
+		</div>
+	  </div>
+	<div ng-show="!loading" class="content-body">
 		<div class="container-fluid">
 			<div class="form-head mb-sm-5 mb-3 d-flex flex-wrap align-items-center">
 				<h2 class="font-w600 title mb-2 mr-auto ">Danh sách phòng trọ</h2>
@@ -39,7 +44,7 @@
 					<div class="card mb-3 w-100 ">
 						<div class="row g-0">
 							<div class="col-md-5 p-3 ">
-								<div id="carouselExampleFade{{$index}}" class="carousel slide carousel-fade p-2 ">
+								<div id="carouselExampleFade{{$index}}" class="carousel carousel-dark slide carousel-fade p-2 ">
 									<div class="carousel-inner" style="height: 250px;">
 										<div ng-class="{'carousel-item active': $index === 0, 'carousel-item': $index !== 0}"
 											ng-repeat="item in item.nameimg">

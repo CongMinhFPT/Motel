@@ -52,7 +52,7 @@ public class UserController {
 
     @GetMapping("/users/messages/{nickname}")
     public ResponseEntity<List<User>> findUsersWithMessages(@PathVariable String nickname) {
-        return ResponseEntity.ok(userService.findUsersWithMessages(nickname));
+        return ResponseEntity.ok(userService.findAllUsersWithMessages(nickname));
     }
     
     @GetMapping("/allUser/{nickname}")

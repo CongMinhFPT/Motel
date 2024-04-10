@@ -42,20 +42,22 @@ public class UserService {
         return repository.findAllWithMessages(nickname);
     }
     
-    public List<User> findUsersWithMessages(String nickname) {
-        List<String> nicknames = repository.findAllByStatus(Status.ONLINE).stream()
-                .map(User::getNickName)
-                .collect(Collectors.toList());
-        nicknames.remove(nickname); 
-        return repository.findAllByNickNameIn(nicknames);
-    }
-    
 //    public List<User> findAllUsersWithMessages(String nickname) {
-//        List<String> allUserNicknames = repository.findAll().stream()
+//        List<String> nicknames = repository.findAllByStatus(Status.ONLINE).stream()
 //                .map(User::getNickName)
 //                .collect(Collectors.toList());
-//        allUserNicknames.remove(nickname);
-//        return repository.findAllByNickNameIn(allUserNicknames);
+//        nicknames.remove(nickname); 
+//        return repository.findAllByNickNameIn(nicknames);
 //    }
+    
+    public List<User> findAllUsersWithMessages(String nickname) {
+        List<String> allUserNicknames = repository.findAll().stream()
+                .map(User::getNickName)
+                .collect(Collectors.toList());
+        allUserNicknames.remove(nickname);
+        return repository.findAllByNickNameIn(allUserNicknames);
+    }
+    
+    
     
 }

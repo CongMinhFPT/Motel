@@ -25,11 +25,11 @@
     justify-content: space-between;
 }
 
-.users-list-container {
+/*.users-list-container {
     height: 100%;
     overflow-y: scroll;
 }
-
+*/
 .users-list h2 {
     font-size: 1.5rem;
     margin-bottom: 10px;

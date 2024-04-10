@@ -1,5 +1,5 @@
 body {
-    background-color: #FFECBF;
+    background-color: #fff;
 }
 
 .main-title {
@@ -122,4 +122,25 @@ body {
 
 .main-bottom-box p {
     text-align: center;
+}
+
+/* CSS cho hình ảnh trong carousel slide */
+.carousel-item img {
+    width: 50%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng của carousel */
+    height: auto; /* Đảm bảo tỷ lệ hình ảnh được duy trì */
+    object-fit: cover; /* Hiển thị hình ảnh mà không bị méo hoặc kéo dài */
+}
+
+/* Tùy chỉnh kích thước và căn chỉnh vị trí của các phần tử trong carousel slide */
+.carousel-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    /* Căn chỉnh vị trí của nút điều hướng trước và sau */
+    top: 50%;
+    transform: translateY(-50%);
 }

@@ -1,5 +1,5 @@
 body{
-    background-color: #FFECBF;
+    background-color: #fff;
     
 }
 .main-bottom {
@@ -33,10 +33,10 @@ body{
 }
 
 .signin p{
-    color:  #eec564;
+    color:  #000;
 }
 .signin-form button{
-    color:  #e7cc8d;
+    color:  #000;
     font-weight: bold;
 }
 .line{

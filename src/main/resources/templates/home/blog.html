@@ -21,7 +21,6 @@
 <body>
     <div th:replace="~{/layout/header.html}"></div>
 
-
     <main>
 
         <div class="container ">
@@ -39,12 +38,12 @@
 
                 <form th:action="@{/blog/page/1}" class="form-inline" id="searchForm">
 
-                    <div class="col-8 fl-right mt-1" style="margin-left: 55rem; ">
+                    <div class="col" style="margin-left: 55rem;">
                         <label class="p-2">Tìm kiếm chi tiết:</label>
                         <input type="search" name="keyword" th:value="${keyword}" class="form-control"
-                            placeholder="Nhập từ khóa bạn cần tìm" aria-label="Search" aria-describedby="search-addon"
-                            style=" border: none;" />
-                        <button type="submit" class="btn btn-secondary">
+                            placeholder="Nhập từ khóa bạn cần tìm" aria-label="Search"
+                            aria-describedby="search-addon" />
+                        <button type="submit " class="btn btn-secondary">
                             Tìm</i>
                         </button>
                         &nbsp;
@@ -52,6 +51,7 @@
                             Xóa</i>
                         </button>
                     </div>
+
 
 
 
@@ -109,11 +109,14 @@
                                         <span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}" alt=""> </span>
                                         <span class="text">[[${blog.CreateDateFormat}]]</span>
                                     </div>
+                                    <div class="icon-text">
+                                        <span class="icon"><img th:src="@{/img/icons8-author-24.png}"></span>
+                                        <span class="text">[[${blog.account.fullname}]]</span>
+                                    </div>
 
                                     <!-- <div class="icon-text">
                                     <span class="icon"><img th:src="@{/img/icons8-author-24.png}"></span>
-                                    <span class="text">#[[${blog.tag.title}]]</span>
-                                </div>-->
+                                    <span class="text">#[[${blog.tag.title}]]</span>/-strong/-heart:>:o:-((:-h</div>-->
                                 </div>
                                 <h2 class="card-title">[[${blog.title}]]</h2>
                                 <div class="card-text" th:utext="${blog.ShortDes}">
@@ -135,7 +138,7 @@
 
 
 
-            <div th:replace="home/paging :: pagination('tin tức từ')"></div>
+            <div th:replace="layout/paging :: pagination('tin tức từ')"></div>
 
 
 

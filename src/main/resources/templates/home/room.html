@@ -157,13 +157,13 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-10">
-                                                    <a ng-href="/room-details/{{ motelRoom.posts[$index].postId }}"
-                                                        class="text-decoration-none text-light">
-                                                        <p class="card-text">{{motelRoom.posts[$index].title}}</p>
+                                                    <a ng-href="/room-details/{{ motelRoom.posts[0].postId }}"
+                                                        class="text-decoration-none text-dark">
+                                                        <p class="card-text">{{motelRoom.posts[0].title}}</p>
                                                     </a>
                                                 </div>
                                                 <div class="col-2"
-                                                    ng-show="!motelRoom.favoriteRoom[$index].favoriteRoomId">
+                                                    ng-show="!motelRoom.favoriteRoom[0].favoriteRoomId">
                                                     <img class="favorite-icon" style="max-width: 75%; max-height: 75%;"
                                                         src="/img/icons8-heart-50.png" alt=""
                                                         ng-click="addFavoriteRoom(motelRoom.motelRoomId)"
@@ -172,7 +172,7 @@
                                                 </div>
                                             </div>
                                             <h4 class="card-title mt-1 price">
-                                                {{motelRoom.roomCash[$index].roomBill}} triệu/tháng</h4>
+                                                {{motelRoom.roomCash[0].roomBill}} triệu/tháng</h4>
                                             <div class="row pt-3 p-0">
                                                 <div class="col-4 card-text">
                                                     <img class="" style="max-height: 30% ; max-width: 30%;"
@@ -196,7 +196,7 @@
                                             <div class="card-person py-0 p-0">
                                                 <div class="row">
                                                     <div class="col-lg-6">
-                                                        <p class="createDate">{{motelRoom.posts[$index].createDate
+                                                        <p class="createDate">{{motelRoom.posts[0].createDate
                                                             |
                                                             date:'dd-MM-yyyy' }}</p>
                                                     </div>

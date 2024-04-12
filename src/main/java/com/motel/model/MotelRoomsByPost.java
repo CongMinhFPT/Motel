@@ -15,12 +15,12 @@ import lombok.Data;
 public class MotelRoomsByPost {
     MotelRoom motelRoom1;
     Motel motel;
-
     public MotelRoomsByPost(MotelRoom motelRoom) {
-        List<MotelRoom> motelRooms = new ArrayList<>();
+        Motel motel2 =new Motel();
+        List<MotelRoom>list =new ArrayList<>();
         this.motelRoom1 = motelRoom;
-        this.motelRoom1.setMotel(null);
         this.motel = motelRoom.getMotel();
-        // System.out.println(motelRoom.getMotel().getDescriptions());
+        this.motelRoom1.setMotel(motel2);
+        this.motel.setMotelRoom(list);
     }
 }

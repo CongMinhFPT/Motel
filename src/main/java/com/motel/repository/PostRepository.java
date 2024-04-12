@@ -18,4 +18,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	@Query(nativeQuery = true, value = "SELECT p.title, COUNT(*) AS NumberOfPosts, p.create_date FROM posts p INNER JOIN motel_room m ON p.motel_room_id = m.motel_room_id WHERE p.create_date = GETDATE() AND p.status = 1 GROUP BY p.title, p.create_date")
 	List<Object> findPostToDayMotelRoom();
+
+	@Query(nativeQuery = true, value = "SELECT * FROM posts WHERE status = 0")
+	List<Post> findPostByNonActive();
 }

@@ -242,12 +242,12 @@ public class ManageMotelService implements ManageMotelImpl {
             CustomUserDetails customUserDetails = CheckLogin().get();
             if (CheckAccountSetIdMotel(customUserDetails)) {
                 SetModelMotel(model);
-                int number=0;
-                List<MotelRoom>list = motelR.getById(customUserDetails.getMotelid()).getMotelRoom();
+                int number = 0;
+                List<MotelRoom> list = motelR.getById(customUserDetails.getMotelid()).getMotelRoom();
                 if (!list.isEmpty()) {
-                  for (MotelRoom list2 : list) {
-                    number+=list2.getRenter().size();
-                  }
+                    for (MotelRoom list2 : list) {
+                        number += list2.getRenter().size();
+                    }
                 }
                 model.addAttribute("number", number);
                 return "admin/motel/home-motel";
@@ -284,7 +284,7 @@ public class ManageMotelService implements ManageMotelImpl {
             if (CheckAccountSetIdMotel(customUserDetails)) {
                 if (bindingResult.hasErrors()) {
                     SetModelMotel(model);
-                    return "admin/motel/add-motel";
+                    return "admin/motel/update-motel";
                 }
                 if (files != null && files.length > 0 && !files[0].isEmpty()) {
                     Motel motel2 = motelR.getById(customUserDetails.getMotelid());
@@ -298,7 +298,7 @@ public class ManageMotelService implements ManageMotelImpl {
                     int idmotel = motel2.getMotelId();
                     Account account = motel2.getAccount();
                     Date day = motel2.getCreateDate();
-                    Boolean stasus =motel2.isStatus();
+                    Boolean stasus = motel2.isStatus();
                     motel2 = motel;
                     motel2.setMotelId(idmotel);
                     motel2.setImage(nameimg);
@@ -314,7 +314,7 @@ public class ManageMotelService implements ManageMotelImpl {
                     int idmotel = motel2.getMotelId();
                     Account account = motel2.getAccount();
                     Date day = motel2.getCreateDate();
-                    Boolean stasus =motel2.isStatus();
+                    Boolean stasus = motel2.isStatus();
                     motel2 = motel;
                     motel2.setMotelId(idmotel);
                     motel2.setImage(nameimg);
@@ -338,16 +338,16 @@ public class ManageMotelService implements ManageMotelImpl {
         if (CheckLogin().isPresent()) {
             CustomUserDetails customUserDetails = CheckLogin().get();
             if (CheckAccountSetIdMotel(customUserDetails)) {
-               Motel motel = motelR.getById(customUserDetails.getMotelid());
-               if (motel.isStatus()) {
-                motel.setStatus(false);
+                Motel motel = motelR.getById(customUserDetails.getMotelid());
+                if (motel.isStatus()) {
+                    motel.setStatus(false);
+                    motelR.save(motel);
+                    return "redirect:/admin/show-motel";
+                }
+                motel.setStatus(true);
                 motelR.save(motel);
                 return "redirect:/admin/show-motel";
-               }
-               motel.setStatus(true);
-               motelR.save(motel);
-             return  "redirect:/admin/show-motel";
-            }else{
+            } else {
                 return "redirect:/admin/manage-motel";
             }
         }

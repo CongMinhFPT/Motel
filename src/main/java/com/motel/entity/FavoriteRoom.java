@@ -37,7 +37,7 @@ public class FavoriteRoom {
 
     @ManyToOne
     @JoinColumn(name = "motelRoomId")
-
+    @JsonBackReference
     MotelRoom motelRoom;
 
     @ManyToOne

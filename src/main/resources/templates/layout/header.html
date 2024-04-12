@@ -2,11 +2,11 @@
     <nav>
         <div class="nav-bar">
             <i class='bx bx-menu sidebarOpen'></i>
-            <span class="logo navLogo"><a href="#"><img th:src="@{/img/logo.png}" alt="" class="w-25"></a></span>
+            <span class="logo navLogo"><a href="#"><img th:src="@{/img/F.E.png}" alt="" class="w-25"></a></span>
 
             <div class="menu">
                 <div class="logo-toggle">
-                    <span class="logo"><a href="#"><img th:src="@{/img/logo.png}" alt="" class="w-25"></a></span>
+                    <span class="logo"><a href="#"><img th:src="@{/img/F.E.png}" alt="" class="w-25"></a></span>
                     <i class='bx bx-x siderbarClose'></i>
                 </div>
 
@@ -33,6 +33,7 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" th:if="${#request.remoteUser}">
 
                             <li><a class="dropdown-item" th:href="@{|/information/${#request.remoteUser}|}">Thông tin</a></li>
+                            <li><a class="dropdown-item" th:href="@{|/chat/${#request.remoteUser}/${null}|}">chat</a></li>
                             <li><a class="dropdown-item" th:href="@{|/payment/${#request.remoteUser}|}">Thông tin hóa đơn</a></li>
                             <li><a class="dropdown-item" th:href="@{/favorite}">Trang yêu thích</a></li>
                             <li><a class="dropdown-item" th:href="@{/change}">Thay đổi mật khẩu</a></li>
@@ -40,6 +41,9 @@
                             <li><a class="dropdown-item" th:href="@{/requestList}">Danh sách yêu cầu</a></li>
                             <li><a class="dropdown-item" id="logoutButton">Đăng xuất</a></li>
                             <li><a class="dropdown-item" th:href="@{/admin/manage-motel}">Quản lý nhà trọ</a></li>
+
+                            <li><a class="dropdown-item" th:if="${#request.isUserInRole('OWNER')}" th:href="@{/admin/manage-motel}">Quản lý nhà trọ</a></li>
+
                             <li><a class="dropdown-item" th:href="@{/admin}" th:if="${#request.isUserInRole('MANAGER') or #request.isUserInRole('SUPPER')}">Admin</a></li>
 
                         </ul>
@@ -65,6 +69,16 @@
                     </div>
                 </div>
             </div>
+
+
+
+
+            
         </div>
+       
+
+        
+
     </nav>
+
 </header>

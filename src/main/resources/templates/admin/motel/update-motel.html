@@ -33,7 +33,7 @@
 									<option th:if="*{province!=null}" id="city1" th:value="*{province}"
 										th:attr="data-id=*{provinceID}" th:text="*{province}" selected></option>
 									<option value="" data-id="" selected> -- Chọn tỉnh thành --</option>
-									<input class="d-none " type="text" id="cityIdInput" th:field="*{provinceID}">
+									<input class="d-none" type="text" id="cityIdInput" th:field="*{provinceID}">
 								</select>
 								<label th:errors="*{province}" id="provinces-error"
 									style="color: red; padding: 0.5rem; display: block;" for=""></label>
@@ -44,7 +44,7 @@
 									<option th:if="*{district!=null}" id="district1" th:value="*{district}"
 										th:attr="data-id=*{districtID}" th:text="*{district}" selected></option>
 									<option id="huyen" value="" data-id="" selected>-- Chọn quận huyện --</option>
-									<input class="d-none " type="text" id="districtIdnput" th:field="*{districtID}">
+									<input class="d-none" type="text" id="districtIdnput" th:field="*{districtID}">
 								</select>
 								<label th:errors="*{district}" id="districts-error"
 									style="color: red; padding: 0.5rem; display: block;" for=""></label>
@@ -70,13 +70,14 @@
 							</div>
 							<div class="col-6  text-center " id="imageContainer">
 								<div class="avatar-frame mb-3 mt-2   ">
-									<img alt="Avatar" th:src="@{'/files/ImgMotel/' + *{image}}"  id="previewImage"
+									<img alt="Avatar" th:src="@{'/files/ImgMotel/' + *{image}}" id="previewImage"
 										class="avatar-image">
 								</div>
 								<label for="imageInput" class="btn btn-primary mt-3">
 									<i for="imageInput" class="fas fa-upload"></i> Chọn ảnh mới
-									<input type="file" class="form-control d-none " id="imageInput" name="files" accept="image/*">
-								  </label>
+									<input type="file" class="form-control d-none " id="imageInput" name="files"
+										accept="image/*">
+								</label>
 							</div>
 						</div>
 						<div class="m-3 ">

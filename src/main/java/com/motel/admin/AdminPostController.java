@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.motel.entity.Account;
 import com.motel.entity.MotelRoom;
 import com.motel.entity.Post;
+import com.motel.repository.AccountsRepository;
 import com.motel.repository.PostRepository;
 import com.motel.service.MotelRoomService;
 import com.motel.service.PostService;
+import com.motel.service.RenterService;
 
 @Controller
 public class AdminPostController {
@@ -31,6 +34,12 @@ public class AdminPostController {
 
 	@Autowired
 	PostRepository postRepository;
+
+	@Autowired
+	RenterService renterService;
+
+	@Autowired
+	AccountsRepository accountsRepository;
 
 	@GetMapping("/admin/posts")
 	public String allPost(Model model) {
@@ -48,11 +57,15 @@ public class AdminPostController {
 	}
 
 	@GetMapping("/admin/add-post")
-	public String newBlog(Model model) {
+	public String newBlog(Model model, Authentication authentication) {
 		Post post = new Post();
 		model.addAttribute("post", post);
 
-		List<MotelRoom> listMotelRooms = motelRoomService.getAll();
+		String emailAccount = authentication.getName();
+        Account account = accountsRepository.getByEmail(emailAccount);
+        // model.addAttribute("accountId", account.getAccountId());
+
+		List<MotelRoom> listMotelRooms = renterService.getMotelRoomByAccount(account.getAccountId());
 		model.addAttribute("listMotelRooms", listMotelRooms);
 
 		return "admin/post/add-post";

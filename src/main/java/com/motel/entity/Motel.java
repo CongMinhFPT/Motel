@@ -64,9 +64,9 @@ public class Motel {
     Date createDate = new Date();
     boolean status = true;
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motel")
-	List<MotelRoom> motelRoom;
+    @JsonManagedReference
+    List<MotelRoom> motelRoom;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "accountId")
@@ -76,17 +76,17 @@ public class Motel {
     Account account;
 
     @Override
-public String toString() {
-    return "Motel{" +
-            "motelId=" + motelId +
-            ", descriptions='" + descriptions + '\'' +
-            ", province='" + province + '\'' +
-            ", district='" + district + '\'' +
-            ", ward='" + ward + '\'' +
-            ", detailAddress='" + detailAddress + '\'' +
-            ", image='" + image + '\'' +
-            ", createDate=" + createDate +
-            ", status=" + status +
-            '}';
-}
+    public String toString() {
+        return "Motel{" +
+                "motelId=" + motelId +
+                ", descriptions='" + descriptions + '\'' +
+                ", province='" + province + '\'' +
+                ", district='" + district + '\'' +
+                ", ward='" + ward + '\'' +
+                ", detailAddress='" + detailAddress + '\'' +
+                ", image='" + image + '\'' +
+                ", createDate=" + createDate +
+                ", status=" + status +
+                '}';
+    }
 }

@@ -70,16 +70,17 @@
 							<div class="product-details-images slider-navigation-1">
 								<div th:if="${roomDetails.motelRoom.video != null}" class="lg-image">
 									<!-- Nếu roomDetails.motelRoom.video không null, hiển thị iframe -->
-									<iframe style="width: 100%; height: 35rem;" th:src="${roomDetails.motelRoom.video}"
+									<label>[[${roomDetails.motelRoom.video}]]</label>
+									<iframe style="width: 100%; height: 35rem;" th:src="'https://www.youtube.com/embed/'+${roomDetails.motelRoom.video}"
 										title="YouTube video player" frameborder="0"
 										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 										allowfullscreen></iframe>
 								</div>
 								<div th:each="image : ${images}">
 									<div class="lg-image">
-										<a class="popup-img venobox vbox-item" th:href="@{|/uploads/${image.name}|}"
+										<a class="popup-img venobox vbox-item" th:href="@{|/files/ImgMotelRoom/${image.name}|}"
 											data-gall="myGallery">
-											<img th:src="@{|/uploads/${image.name}|}" alt="product image"
+											<img th:src="@{|/files/ImgMotelRoom/${image.name}|}" alt="product image"
 												style="height: 35rem;">
 										</a>
 									</div>
@@ -87,14 +88,14 @@
 							</div>
 							<div class="product-details-thumbs slider-thumbs-1 mt-20">
 								<div th:if="${roomDetails.motelRoom.video != null}" class="sm-image">
-									<iframe style="width: 100%; height: 10rem;" th:src="${roomDetails.motelRoom.video}"
+									<iframe style="width: 100%; height: 10rem;" th:src="'https://www.youtube.com/embed/'+${roomDetails.motelRoom.video}"
 										title="YouTube video player" frameborder="0"
 										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 										allowfullscreen></iframe>
 								</div>
 								<div th:each="image : ${images}">
 									<div class="sm-image">
-										<img th:src="@{|/uploads/${image.name}|}" alt="product image thumb"
+										<img th:src="@{|/files/ImgMotelRoom/${image.name}|}" alt="product image thumb"
 											style="height: 10rem;">
 									</div>
 								</div>
@@ -186,10 +187,13 @@
 											<i class='bx bxs-heart'></i>
 											&nbsp;
 											Yêu thích</button>
-										<button type="button" class="btn px-5 btn-contact mt-10">
+										<a th:href="@{|/chat/${#request.remoteUser}/${roomDetails.account.email}|}"
+											class="btn px-5 btn-contact mt-10">
 											<i class='bx bxs-message-dots'></i>
 											&nbsp;
-											Nhắn tin</button>
+											Nhắn tin
+										</a>
+
 									</div>
 								</div>
 							</div>
@@ -233,7 +237,7 @@
 												class='bx bx-search'></i></button>
 									</div>
 								</div>
-							</div>	
+							</div>
 							<div class="gg-map mt-5" id="gg-map">
 								<div class="loading" id="loadingOverplay">
 									<div class="pac-man"></div>
@@ -321,7 +325,7 @@
 	</div>
 	<div th:replace="~{/layout/footer.html}">
 	</div>
-	<script>
+	<script th:inline="javascript">
 		const loadingOverlays = document.getElementsByClassName('loading');
 
 		function showLoadingSpinner() {
@@ -336,8 +340,8 @@
 			}
 		}
 		hideLoadingSpinner();
-		const latitude = [[${latitude}]];
-		const longitude = [[${longitude}]];
+		const latitude = /*[[${latitude}]]*/'';
+		const longitude = /*[[${longitude}]]*/'';
 		const map = L.map('gg-map').setView([latitude, longitude], 17);
 		L.tileLayer(`https://api.maptiler.com/maps/streets-v2/256/{z}/{x}/{y}.png?key=TMaCmxPUt0XNH7bb7Wbt`, {
 			attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank"></a> <a href="https://www.openstreetmap.org/copyright" target="_blank"></a>'

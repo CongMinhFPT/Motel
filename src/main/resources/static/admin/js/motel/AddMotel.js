@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
         cityOpdistrict.remove();
       }
     });
-  }, 1000);
+  }, 500);
 });
 
 const imageInput = document.getElementById("imageInput");
@@ -114,12 +114,12 @@ imageInput.addEventListener("change", function () {
   }
 });
 function setCustomMessage(inputElem, message) {
-  inputElem.oninvalid = function(event) {
-      event.target.setCustomValidity(message);
+  inputElem.oninvalid = function (event) {
+    event.target.setCustomValidity(message);
   }
-  inputElem.oninput = function(event) {
-      event.target.setCustomValidity('');
-      
+  inputElem.oninput = function (event) {
+    event.target.setCustomValidity('');
+
   }
 }
 const mota = document.getElementById('descriptions');

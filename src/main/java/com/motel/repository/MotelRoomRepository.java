@@ -31,4 +31,7 @@ public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM motel_room a INNER JOIN posts b ON a.motel_room_id = b.motel_room_id INNER JOIN category_room c ON a.category_room_id = c.category_room_id INNER JOIN motels d ON a.motel_id = d.motel_id")
     List<MotelRoom> findMotelRoomsByPost();
+
+    @Query(nativeQuery = true, value = "select * from motel_room a inner join motels b on a.motel_id = b.motel_id where b.account_id = :accountId")
+    List<MotelRoom> findMotelRoomsByAccount(@Param("accountId") Integer accountId);
 }

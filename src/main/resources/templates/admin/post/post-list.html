@@ -37,9 +37,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="post : ${listPosts}">
+								<tr th:each="post, index : ${listPosts}">
 									<td>
-										<h6>[[${post.postId}]]</h6>
+										<h6>[[${index.count}]]</h6>
 									</td>
 									<td>[[${post.title}]]</td>
 									<td>[[${post.CreateDateFormat}]]</td>

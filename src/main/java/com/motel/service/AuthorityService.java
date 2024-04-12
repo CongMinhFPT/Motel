@@ -70,7 +70,7 @@ public class AuthorityService implements UserDetailsService{
 		                          .roles("CUSTOMER")
 		                          .build();
 		    }
-
+            
 		    // Tạo đối tượng authentication từ UserDetails
 		    Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
 		    // Thay đổi thông tin đăng nhập từ hệ thống

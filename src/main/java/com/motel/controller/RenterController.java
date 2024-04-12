@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.motel.entity.Account;
 import com.motel.entity.MotelRoom;
 import com.motel.entity.Renter;
+import com.motel.repository.AccountsRepository;
 import com.motel.repository.RenterRepository;
 import com.motel.service.RenterService;
 
@@ -25,8 +28,14 @@ public class RenterController {
     @Autowired
     RenterRepository renterRepository;
 
+    @Autowired
+    AccountsRepository accountsRepository;
+
     @GetMapping("/admin/renter/add-renter")
-    public String getAddRenter(Model model) {
+    public String getAddRenter(Model model, Authentication authentication) {
+        String emailAccount = authentication.getName();
+        Account account = accountsRepository.getByEmail(emailAccount);
+        model.addAttribute("accountId", account.getAccountId());
         // List<MotelRoom> motelRooms = renterService.getAll();
         // model.addAttribute("motelRooms", motelRooms);
         return "/admin/renter/add-renter";
@@ -43,7 +52,7 @@ public class RenterController {
     public String getRenter(@PathVariable("renterId") Integer renterId, Model model) {
         Renter renter = renterService.getRenter(renterId);
         model.addAttribute("renter", renter);
-        List<MotelRoom> motelRooms = renterService.getAll();
+        List<MotelRoom> motelRooms = renterService.getMotelRoomByAccount(renter.getAccount().getAccountId());
         model.addAttribute("motelRooms", motelRooms);
         return "/admin/renter/update-renter";
     }
@@ -51,10 +60,10 @@ public class RenterController {
     @PostMapping("/admin/renter/update-renter/{renterId}")
     public String getUpdate(@PathVariable("renterId") Integer renterId, Model model,
             @ModelAttribute("renter") Renter renter) {
-        List<MotelRoom> motelRooms = renterService.getAll();
+        List<MotelRoom> motelRooms = renterService.getMotelRoomByAccount(renter.getAccount().getAccountId());
         model.addAttribute("motelRooms", motelRooms);
         Renter renterCurrent = renterService.getRenter(renterId);
-        
+
         renterRepository.save(renter);
         model.addAttribute("successUpdate", true);
         return "/admin/renter/update-renter";

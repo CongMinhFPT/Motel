@@ -70,8 +70,11 @@ public class InvoiceImpl implements InvoiceService {
     public Invoice addInvoice(InvoiceModel invoiceModel) {
         Invoice invoice = new Invoice();
         StringBuilder errorMessage = new StringBuilder();
-
-        Integer renterId = invoiceModel.getRenterId();
+        MotelRoom motelRoomByModel = motelRoomRepository.findById(invoiceModel.getMotelRoomId())
+                .orElseThrow(() -> new IllegalArgumentException("Không tồn tại phòng !"));
+        List<Renter> renters = motelRoomByModel.getRenter();
+        Renter renterMotelRoom = renters.get(0);
+        Integer renterId = renterMotelRoom.getRenterId();
         if (renterId != null) {
             Renter renter = renterRepository.findById(renterId)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid renter Id: " + renterId));
@@ -128,7 +131,7 @@ public class InvoiceImpl implements InvoiceService {
 
                         List<Invoice> currentMonthInvoices = invoiceRepository.findAll()
                                 .stream()
-                                .filter(inv -> inv.getRenter().getRenterId().equals(invoiceModel.getRenterId()))
+                                .filter(inv -> inv.getRenter().getRenterId().equals(renter.getRenterId()))
                                 .filter(inv -> {
                                     Calendar invoiceCalendar = Calendar.getInstance();
                                     invoiceCalendar.setTime(inv.getCreateDate());
@@ -171,7 +174,7 @@ public class InvoiceImpl implements InvoiceService {
 
                         List<Invoice> currentMonthInvoices = invoiceRepository.findAll()
                                 .stream()
-                                .filter(inv -> inv.getRenter().getRenterId().equals(invoiceModel.getRenterId()))
+                                .filter(inv -> inv.getRenter().getRenterId().equals(renter.getRenterId()))
                                 .filter(inv -> {
                                     Calendar invoiceCalendar = Calendar.getInstance();
                                     invoiceCalendar.setTime(inv.getCreateDate());

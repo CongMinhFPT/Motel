@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InvoiceModel {
-    Integer renterId;
+    Integer motelRoomId;
     Integer invoiceStatusId;
 }

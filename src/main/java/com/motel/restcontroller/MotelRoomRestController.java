@@ -1,5 +1,6 @@
 package com.motel.restcontroller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.motel.entity.MotelRoom;
+import com.motel.model.MotelRoomsByPost;
 import com.motel.repository.MotelRoomRepository;
 import com.motel.service.MotelRoomService;
 
@@ -24,8 +26,13 @@ public class MotelRoomRestController {
     MotelRoomRepository motelRoomRepository;
 
     @GetMapping("/api/listMotelRoom")
-    public ResponseEntity<List<MotelRoom>> listMotelRoom() {
-        return ResponseEntity.ok(motelRoomRepository.findMotelRoomsByPost());
+    public ResponseEntity<List<MotelRoomsByPost>> listMotelRoom() {
+        List<MotelRoomsByPost> byPosts = new ArrayList<>();
+        motelRoomRepository.findMotelRoomsByPost().forEach(a -> {
+            MotelRoomsByPost byPostw = new MotelRoomsByPost(a);
+            byPosts.add(byPostw);
+        });
+        return ResponseEntity.ok(byPosts);
     }
 
     @GetMapping("/api/motelRoom/{motelRoomId}")

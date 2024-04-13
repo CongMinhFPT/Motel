@@ -1,5 +1,6 @@
 package com.motel.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,35 +16,78 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.motel.entity.CategoryRoom;
+import com.motel.entity.CustomUserDetails;
+import com.motel.entity.Motel;
+import com.motel.entity.MotelRoom;
 import com.motel.repository.CategoryRoomRepository;
+import com.motel.repository.MotelRepository;
 import com.motel.service.CategoryService;
+import com.motel.service.impl.ManageMotelImpl;
 
 @Controller
 public class CategoryController {
 	@Autowired
 	CategoryRoomRepository categoryrep;
+
 	@Autowired
 	CategoryService categoryService;
 
+	@Autowired
+	ManageMotelImpl manageMotelImpl;
+
+	@Autowired
+	MotelRepository motelRepository;
+
 	@GetMapping("/admin/category")
 	public String categorylist(@ModelAttribute("category") CategoryRoom category, Model model) {
-		List<CategoryRoom> category1 = categoryService.findActive();
-		model.addAttribute("category", category1);
-		return "admin/category/category-list";
+
+		if (manageMotelImpl.CheckLogin().isPresent()) {
+			CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+			if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+				Motel motel = motelRepository.getById(customUserDetails.getMotelid());
+
+				List<MotelRoom> motelRooms = motel.getMotelRoom();
+				List<CategoryRoom> categoryRooms = new ArrayList<>();
+
+				for (MotelRoom motelRoom : motelRooms) {
+					CategoryRoom categoryRoom = motelRoom.getCategoryRoom();
+					boolean exists = false;
+					for (CategoryRoom existingCategoryRoom : categoryRooms) {
+						if (existingCategoryRoom.getCategoryRoomId() == categoryRoom.getCategoryRoomId()) {
+							exists = true;
+							break;
+						}
+					}
+					if (!exists) {
+						categoryRooms.add(categoryRoom);
+					}
+				}
+				
+				model.addAttribute("category", categoryRooms);
+				return "admin/category/category-list";
+			} else {
+				return "redirect:/admin/manage-motel";
+			}
+		} else {
+			return "home/signin";
+		}
+
 	}
 
 	@GetMapping("/admin/categoryform")
 	public String categoryform(@ModelAttribute("category") CategoryRoom category, Model model) {
-//		model.addAttribute("method", new Method());
+		// model.addAttribute("method", new Method());
 		return "admin/category/add-category";
 	}
 
-//	@PostMapping("/admin/category/search")
-//	public String searchCategory(@RequestParam("keyword") String keyword, Model model) {
-//		List<CategoryRoom> searchResult = categoryrep.findByTitle("%" + keyword + "%");
-//		model.addAttribute("categoryList", searchResult);
-//		return "admin/category/category-list";
-//	}
+	// @PostMapping("/admin/category/search")
+	// public String searchCategory(@RequestParam("keyword") String keyword, Model
+	// model) {
+	// List<CategoryRoom> searchResult = categoryrep.findByTitle("%" + keyword +
+	// "%");
+	// model.addAttribute("categoryList", searchResult);
+	// return "admin/category/category-list";
+	// }
 
 	@PostMapping("/admin/addcategory")
 	public String addCategory(@Valid @ModelAttribute("category") CategoryRoom category, BindingResult result,

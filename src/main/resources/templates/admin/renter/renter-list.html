@@ -86,6 +86,7 @@
 									<th>SỐ ĐIỆN THOẠI</th>
 									<th>GIỚI TÍNH</th>
 									<th>PHÒNG TRỌ</th>
+									<th>NGÀY THUÊ</th>
 									<th>CHỌN</th>
 								</tr>
 							</thead>
@@ -101,6 +102,9 @@
 										'Nam':'Nữ'}">
 									</td>
 									<td th:text="${renter.motelRoom.descriptions}">
+									</td>
+									<td th:text="${#dates.format(renter.renterDate, 'dd - MM - yyyy')}">
+
 									</td>
 									<td>
 										<div class="d-flex action-button">

@@ -27,11 +27,12 @@ public class MotelRoomRestController {
 
     @GetMapping("/api/listMotelRoom")
     public ResponseEntity<List<MotelRoomsByPost>> listMotelRoom() {
-       List<MotelRoomsByPost> byPosts = new ArrayList<>();
-       motelRoomRepository.findMotelRoomsByPost().forEach(a ->{
-        MotelRoomsByPost byPostw = new MotelRoomsByPost(a);
-        byPosts.add(byPostw);
-       });
+
+        List<MotelRoomsByPost> byPosts = new ArrayList<>();
+        motelRoomRepository.findMotelRoomsByPost().forEach(a -> {
+            MotelRoomsByPost byPostw = new MotelRoomsByPost(a);
+            byPosts.add(byPostw);
+        });
         return ResponseEntity.ok(byPosts);
     }
 

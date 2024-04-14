@@ -16,10 +16,11 @@ public class MotelRoomsByPost {
     MotelRoom motelRoom1;
     Motel motel;
     public MotelRoomsByPost(MotelRoom motelRoom) {
-        Motel motel2 =new Motel();
-        List<MotelRoom>list =new ArrayList<>();
+        Motel motel2 = new Motel();
+        List<MotelRoom> list = new ArrayList<>();
         this.motelRoom1 = motelRoom;
         this.motel = motelRoom.getMotel();
+        // System.out.println(motelRoom.getMotel().getDescriptions());
         this.motelRoom1.setMotel(motel2);
         this.motel.setMotelRoom(list);
     }

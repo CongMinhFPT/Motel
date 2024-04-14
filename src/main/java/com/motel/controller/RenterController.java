@@ -2,6 +2,7 @@ package com.motel.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +48,7 @@ public class RenterController {
     public String getAddRenter(Model model, Authentication authentication) {
         String emailAccount = authentication.getName();
         Account account = accountsRepository.getByEmail(emailAccount);
-        model.addAttribute("accountId", account.getAccountId());
+        model.addAttribute("accountIdRenter", account.getAccountId());
         // List<MotelRoom> motelRooms = renterService.getAll();
         // model.addAttribute("motelRooms", motelRooms);
         return "/admin/renter/add-renter";
@@ -69,6 +70,8 @@ public class RenterController {
                     }
                 }
 
+                renters.sort(Comparator.comparing(Renter::getRenterDate).reversed());
+
                 model.addAttribute("renters", renters);
                 return "/admin/renter/renter-list";
             } else {
@@ -81,10 +84,16 @@ public class RenterController {
     }
 
     @GetMapping("/admin/renter/update-renter/{renterId}")
-    public String getRenter(@PathVariable("renterId") Integer renterId, Model model) {
+    public String getRenter(@PathVariable("renterId") Integer renterId, Model model, Authentication authentication) {
         Renter renter = renterService.getRenter(renterId);
         model.addAttribute("renter", renter);
-        List<MotelRoom> motelRooms = renterService.getMotelRoomByAccount(renter.getAccount().getAccountId());
+
+        String emailAccount = authentication.getName();
+        Account account = accountsRepository.getByEmail(emailAccount);
+
+        List<MotelRoom> motelRooms = renterService.getMotelRoomByAccount(account.getAccountId());
+
+        System.out.println(motelRooms);
         model.addAttribute("motelRooms", motelRooms);
         return "/admin/renter/update-renter";
     }

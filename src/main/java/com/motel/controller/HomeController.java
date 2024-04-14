@@ -1,10 +1,16 @@
 package com.motel.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.motel.entity.Blog;
 import com.motel.entity.CustomUserDetails;
+import com.motel.entity.Tag;
+import com.motel.service.BlogService;
 import com.motel.service.impl.ManageMotelImpl;
 
 
@@ -12,8 +18,14 @@ import com.motel.service.impl.ManageMotelImpl;
 public class HomeController {
     @Autowired
     ManageMotelImpl impl;
+    
+	@Autowired private BlogService blogService;
+
+    
     @GetMapping("/index")
-    public String getMethodName() {
+    public String getMethodName(Model model) {
+    	List<Blog> listBlogs = blogService.getList3BlogFirst();
+		model.addAttribute("listBlogs", listBlogs);
         return "home/index";
     }
     @GetMapping("/news")

@@ -40,6 +40,13 @@ public class BlogServiceImpl implements BlogService {
 		// TODO Auto-generated method stub
 		return (List<Blog>) blogRepo.findAll();
 	}
+	
+	@Override
+	public List<Blog> getList3BlogFirst() {
+		// TODO Auto-generated method stub
+		PageRequest pageable = PageRequest.of(0, 3);
+		return (List<Blog>) blogRepo.list3BlogFirst(pageable);
+	}
 
 	@Override
 	public void deleteBlog(Integer blogId) throws BlogNotFoundException {

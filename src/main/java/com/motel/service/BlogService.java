@@ -15,8 +15,6 @@ public interface BlogService {
 
      List<Blog> getListBlog();
 
-    //List<Blog> getListNewest(int limit);
-
     
     void deleteBlog(Integer blogId) throws BlogNotFoundException;
 
@@ -29,6 +27,8 @@ public interface BlogService {
 	Page<Blog> listByPage(int pageNum, Integer tagId);
 
 	List<Blog> findBlogSimilar(Integer tagId);
+
+	List<Blog> getList3BlogFirst();
 
 
 }

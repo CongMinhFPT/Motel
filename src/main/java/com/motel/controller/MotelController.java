@@ -1,6 +1,5 @@
 package com.motel.controller;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,7 @@ public class MotelController {
 	RoomService roomService;
 	@Autowired
 	private MotelRepository motelRepository;
-	
+
 	@Autowired
 	private MotelRepository motelrep;
 	@Autowired
@@ -40,23 +39,25 @@ public class MotelController {
 	@Autowired
 	private CategoryRoomRepository categoryrep;
 
-	@Autowired AccountsRepository accountsRepository;
+	@Autowired
+	AccountsRepository accountsRepository;
 
 	@GetMapping("/room")
 	public String showRoomDetails(Model model, Pageable pageable, Authentication authentication) {
-	    Page<MotelRoom> roomPage = roomService.getAllRoomDTOs(pageable);
-	    model.addAttribute("rooms", roomPage.getContent());
-	    model.addAttribute("page", roomPage);
-		if(authentication == null){
+		Page<MotelRoom> roomPage = roomService.getAllRoomDTOs(pageable);
+		model.addAttribute("rooms", roomPage.getContent());
+		System.out.println(roomPage);
+		model.addAttribute("page", roomPage);
+		if (authentication == null) {
 			String emailAccount = "null";
 			model.addAttribute("accountId", emailAccount);
-		}else{
+		} else {
 			String emailAccount = authentication.getName();
 			Account account = accountsRepository.getByEmail(emailAccount);
 			model.addAttribute("accountId", account.getAccountId());
 		}
-		
-	    return "home/room";
+
+		return "home/room";
 	}
-	
+
 }

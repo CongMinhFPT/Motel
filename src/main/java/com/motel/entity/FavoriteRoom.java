@@ -42,6 +42,5 @@ public class FavoriteRoom {
 
     @ManyToOne
     @JoinColumn(name = "accountId")
-
     Account account;
 }

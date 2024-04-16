@@ -55,7 +55,7 @@ public class MotelRoom {
   boolean status = true;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-  @JsonManagedReference
+  @JsonIgnore
   List<Post> posts;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
@@ -63,7 +63,6 @@ public class MotelRoom {
   List<Image> image;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-
   @JsonManagedReference
   List<FavoriteRoom> favoriteRoom;
 
@@ -93,7 +92,6 @@ public class MotelRoom {
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "motelId")
-  @JsonBackReference
   Motel motel;
 
   @ManyToOne(cascade = CascadeType.ALL)

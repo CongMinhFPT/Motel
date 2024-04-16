@@ -16,8 +16,14 @@ let fullname = null;
 let avatar = null;
 let selectedUserId = null;
 
+function cleanNickname(nickname) {
+    return nickname.replace(/[^a-zA-Z0-9]/g, '_');
+}
+
+
+
 function connect(event) {
-	nickname = document.querySelector('#nickname').value.trim();
+	nickname = cleanNickname(document.querySelector('#nickname').value.trim());
 	fullname = document.querySelector('#fullname').value.trim();
 	avatar = document.querySelector('#avatar').value.trim();
 
@@ -75,7 +81,6 @@ async function findAndDisplayConnectedUsers() {
 	const chatuser = document.querySelector('#chatuser').value.trim();
 
 	connectedUsers1.forEach(user1 => {
-		console.log(user1.nickName)
 		if (user1.nickName == chatuser) {
 			appendUserElement(user1, connectedUsersList);
 			const separator = document.createElement('li');

@@ -33,19 +33,12 @@ public class BlogServiceImpl implements BlogService {
 	private BlogRepository blogRepo;
 	@Autowired
 	private AccountsRepository acRepo;
-	public static final int BLOG_PER_PAGE = 4;
+	public static final int BLOG_PER_PAGE = 5;
 
 	@Override
 	public List<Blog> getListBlog() {
 		// TODO Auto-generated method stub
 		return (List<Blog>) blogRepo.findAll();
-	}
-	
-	@Override
-	public List<Blog> getList3BlogFirst() {
-		// TODO Auto-generated method stub
-		PageRequest pageable = PageRequest.of(0, 3);
-		return (List<Blog>) blogRepo.list3BlogFirst(pageable);
 	}
 
 	@Override
@@ -59,17 +52,17 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
-	public Blog save(Blog blog, String email) {
+	public Blog save(Blog blog,String email) {
 		if (blog.getBlogId() == null) {
 			blog.setCreateDate(new Date());
 		} else {
 			Blog blogInDB = blogRepo.findById(blog.getBlogId()).get();
 			blog.setCreateDate(blogInDB.getCreateDate());
 		}
-		// Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		// String email = auth.getName();
 		Account account = acRepo.getByEmail(email);
-		System.out.println(email+" :");
+
 		blog.setAccount(account);
 
 		return blogRepo.save(blog);
@@ -122,6 +115,14 @@ public class BlogServiceImpl implements BlogService {
 		return blogRepo.listSimilar(tagId);
 	}
 
+	
+
+	@Override
+	public List<Blog> getList3BlogFirst() {
+		// TODO Auto-generated method stub
+		PageRequest pageable = PageRequest.of(0, 3);
+		return blogRepo.list3BlogFirst(pageable);
+	}
+
 
 }
-

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.motel.entity.Account;
@@ -33,6 +34,14 @@ public class PostServiceImpl implements PostService{
 		// TODO Auto-generated method stub
 		return (List<Post>) postRepo.findAll();
 	}
+	
+	@Override
+	public List<Post> getList3PostFirst() {
+		// TODO Auto-generated method stub
+		PageRequest pageable = PageRequest.of(0, 3);
+		return (List<Post>) postRepo.find3PostFirst(pageable);
+	}
+
 
 	@Override
 	public Post save(Post post, String email) {

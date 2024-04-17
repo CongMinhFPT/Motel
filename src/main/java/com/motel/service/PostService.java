@@ -8,6 +8,8 @@ public interface PostService {
 
 	
 	List<Post> getListPost();
+
+	List<Post> getList3PostFirst();
 	
 	Post save(Post post, String email);
 

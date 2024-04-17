@@ -48,6 +48,8 @@ public class MotelRoom {
     @NotNull (message = "Vui lòng nhập chiều rộng của phòng")
     @Min(value = 1 ,message = "Vui lòng nhập chiều rộng của phòng là số dương") 
     Double width;
+    @Min(value = 0 ) 
+    Double price;
     String video;
     @Nationalized
       @NotEmpty (message ="Vui lòng nhập mô tả")
@@ -115,5 +117,9 @@ public class MotelRoom {
                 ", descriptions='" + descriptions + '\'' +
                 ", status=" + status +
                 '}';
+    }
+
+    public Double getAcreage(){
+      return width*length;
     }
 }

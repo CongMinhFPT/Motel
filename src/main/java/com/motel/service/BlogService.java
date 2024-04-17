@@ -11,7 +11,7 @@ import com.motel.exception.BlogNotFoundException;
 
 public interface BlogService {
 	
-	public static final int BLOG_PER_PAGE = 5;
+	public static final int BLOG_PER_PAGE = 4;
 
      List<Blog> getListBlog();
 

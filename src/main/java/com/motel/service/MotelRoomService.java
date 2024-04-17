@@ -15,6 +15,7 @@ import com.motel.entity.MotelRoom;
 public interface MotelRoomService {
     List<MotelRoom> getAll();
 
+
     Optional<MotelRoom> getById(Integer motelRoomId);
     public Boolean CheckMotelRoomInMotel(int idmotel , int idmotelroom);
     public String GetAddMotelRoom ( Model model);

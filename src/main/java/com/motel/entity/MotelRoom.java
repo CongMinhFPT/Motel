@@ -35,6 +35,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "MotelRoom")
 public class MotelRoom {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Integer motelRoomId;
@@ -53,6 +54,7 @@ public class MotelRoom {
   @NotEmpty(message = "Vui lòng nhập mô tả")
   String descriptions;
   boolean status = true;
+
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
   @JsonIgnore
@@ -102,17 +104,21 @@ public class MotelRoom {
   @JoinColumn(name = "roomStatusId")
   RoomStatus roomStatus;
 
-  @Override
-  public String toString() {
-    return "MotelRoom{" +
-        "motelRoomId=" + motelRoomId +
-        ", createDate=" + createDate +
-        ", length=" + length +
-        ", width=" + width +
-        ", video='" + video + '\'' +
-        ", descriptions='" + descriptions + '\'' +
-        ", status=" + status +
-        ", status=" + motel +
-        '}';
-  }
+    @Override
+    public String toString() {
+        return "MotelRoom{" +
+                "motelRoomId=" + motelRoomId +
+                ", createDate=" + createDate +
+                ", length=" + length +
+                ", width=" + width +
+                ", video='" + video + '\'' +
+                ", descriptions='" + descriptions + '\'' +
+                ", status=" + status +
+                '}';
+    }
+
+    public Double getAcreage(){
+      return width*length;
+    }
+
 }

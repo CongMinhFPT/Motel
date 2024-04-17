@@ -41,4 +41,7 @@ public interface BlogRepository extends SearchRepository<Blog, Integer> {
 
 	@Query("SELECT b FROM Blog b WHERE b.tag.tagId = ?1 ")
 	public List<Blog> listSimilar(Integer tagId);
+	
+	@Query("SELECT  b FROM Blog b ORDER BY b.createDate DESC")
+	public List<Blog> list3BlogFirst(Pageable pageable);
 }

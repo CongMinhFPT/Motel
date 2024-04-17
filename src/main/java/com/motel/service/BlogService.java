@@ -11,11 +11,9 @@ import com.motel.exception.BlogNotFoundException;
 
 public interface BlogService {
 	
-	public static final int BLOG_PER_PAGE = 5;
+	public static final int BLOG_PER_PAGE = 4;
 
      List<Blog> getListBlog();
-
-    //List<Blog> getListNewest(int limit);
 
     
     void deleteBlog(Integer blogId) throws BlogNotFoundException;
@@ -29,6 +27,8 @@ public interface BlogService {
 	Page<Blog> listByPage(int pageNum, Integer tagId);
 
 	List<Blog> findBlogSimilar(Integer tagId);
+
+	List<Blog> getList3BlogFirst();
 
 
 }

@@ -29,6 +29,8 @@ public interface BlogService {
 	List<Blog> findBlogSimilar(Integer tagId);
 
 	List<Blog> getList3BlogFirst();
+	
+	List<String> getListImage();
 
 
 }

@@ -20,15 +20,15 @@ public interface BlogRepository extends SearchRepository<Blog, Integer> {
 	@Query("SELECT b FROM Blog b WHERE b.tag.tagId = ?1 ")
 	public Page<Blog> findAllInBlog(Integer tagId, Pageable pageable);
 
-	@Query("SELECT b FROM Blog b WHERE b.title LIKE %?1%")
+	@Query("SELECT b FROM Blog b WHERE b.status = true AND  b.title LIKE %?1%")
 	public Page<Blog> findAll(String keyword, Pageable pageable);
 
-	@Query("SELECT b FROM Blog b WHERE (b.tag.tagId = ?1) AND"
+	@Query("SELECT b FROM Blog b WHERE (b.status = true AND b.tag.tagId = ?1) AND"
 			+ "(b.title LIKE %?2% OR "
 			+ "b.createDate LIKE %?2%)")
 	public Page<Blog> searchInTag(Integer tagId, String keyword, Pageable pageable);
 
-	@Query("SELECT b FROM Blog b WHERE b.tag.tagId = ?1 ")
+	@Query("SELECT b FROM Blog b WHERE b.status = true AND  b.tag.tagId = ?1 ")
 	public Page<Blog> findAllInTag(Integer tagId, Pageable pageable);
 
 	@Modifying
@@ -44,4 +44,10 @@ public interface BlogRepository extends SearchRepository<Blog, Integer> {
 	
 	@Query("SELECT  b FROM Blog b ORDER BY b.createDate DESC")
 	public List<Blog> list3BlogFirst(Pageable pageable);
+
+	@Query("SELECT  b.image FROM Blog b")
+	public List<String> getListImage();
+
+	@Query("SELECT b FROM Blog b WHERE b.status = true ")
+	public Page<Blog> findAllEnableTrue(Pageable pageable);
 }

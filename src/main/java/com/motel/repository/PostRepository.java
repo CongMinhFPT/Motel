@@ -27,7 +27,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	@Query(nativeQuery = true, value = "SELECT * FROM posts AS p WHERE EXISTS (SELECT 1  FROM favorite_room AS f WHERE f.motel_room_id = p.motel_room_id)")
 	List<Post> findPostByFavorite();
 
-	@Query(nativeQuery = true, value = "SELECT * FROM posts ORDER BY create_date DESC")
+	@Query("SELECT p FROM Post p ORDER BY createDate DESC")
 	List<Post> find3PostFirst(Pageable pageable);
 
 }

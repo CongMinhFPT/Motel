@@ -40,10 +40,10 @@ public class AdminBlogController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName();
 		
-		Date d = new Date();
+		List<String> listImg = blogService.getListImage();
 		
 		System.out.println("Name +==============     : " + name);
-		System.out.println("Date +==============     : " + d);
+		System.out.println("Date +==============     : " + listImg);
 		
 		return "admin/blog/blog-list";
 		
@@ -92,13 +92,19 @@ public class AdminBlogController {
 
 			@SuppressWarnings("null")
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			blog.setImage(fileName);
-
-			Blog savedBlog = blogService.save(blog, email);
-			String uploadDir = "upload/blog-files/" + savedBlog.getBlogId();
-
-			FileUploadUtil.cleanDir(uploadDir);
-			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+			
+			List<String> listImg = blogService.getListImage();
+			if(listImg.contains(fileName)) {
+				ra.addFlashAttribute("ErrorIMG", "Vui lòng chọn ảnh khác, ảnh này đã tồn tại");
+				return "redirect:/admin/add-blog";
+			}else {
+				blog.setImage(fileName);
+				Blog savedBlog = blogService.save(blog, email);
+				String uploadDir = "upload/blog-files/" + savedBlog.getBlogId();
+				
+				FileUploadUtil.cleanDir(uploadDir);
+				FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+			}
 
 		} else {
 			blogService.save(blog, email);

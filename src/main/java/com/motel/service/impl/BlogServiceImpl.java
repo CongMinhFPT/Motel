@@ -91,7 +91,7 @@ public class BlogServiceImpl implements BlogService {
 			if(tagId != null && tagId > 0) {
 				page = blogRepo.findAllInTag(tagId, pageable);
 			}else {
-				page = blogRepo.findAll(pageable);
+				page = blogRepo.findAllEnableTrue(pageable);
 			}
 		}
 		helper.updateModelAttributes(pageNum, page);
@@ -122,6 +122,12 @@ public class BlogServiceImpl implements BlogService {
 		// TODO Auto-generated method stub
 		PageRequest pageable = PageRequest.of(0, 3);
 		return blogRepo.list3BlogFirst(pageable);
+	}
+
+	@Override
+	public List<String> getListImage() {
+		// TODO Auto-generated method stub
+		return blogRepo.getListImage();
 	}
 
 

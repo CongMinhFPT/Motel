@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 import com.motel.entity.Account;
 import com.motel.entity.FavoriteRoom;
 import com.motel.entity.MotelRoom;
+import com.motel.entity.Post;
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.FavoriteRoomRepository;
 import com.motel.repository.MotelRoomRepository;
+import com.motel.repository.PostRepository;
 import com.motel.service.FavoriteRoomService;
 
 @Service
@@ -26,6 +28,9 @@ public class FavoriteRoomImpl implements FavoriteRoomService {
     AccountsRepository accountsRepository;
     @Autowired
     MotelRoomRepository motelRoomRepository;
+
+    @Autowired
+    PostRepository postRepository;
 
     @Override
     public FavoriteRoom addRoom(Integer accountId, Integer motelRoomId) {
@@ -47,17 +52,16 @@ public class FavoriteRoomImpl implements FavoriteRoomService {
     }
 
     @Override
-    public List<MotelRoom> getPagedFavoriteRooms() {
-        return motelRoomRepository.findMotelRoomByFavoriteRoom();
+    public List<Post> getPagedFavoriteRooms() {
+        return postRepository.findPostByFavorite();
     }
 
     @Override
     public Page<FavoriteRoom> getAllFavoriteRoom(Pageable pageable) {
         Pageable pageableWithSize5 = PageRequest.of(pageable.getPageNumber(), 5);
-        
-        
+
         Page<FavoriteRoom> motelsPage = favoriteRoomRepository.findAll(pageableWithSize5);
-       
+
         return motelsPage;
     }
 

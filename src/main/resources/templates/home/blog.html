@@ -138,7 +138,7 @@
 
 
 
-            <div th:replace="layout/paging :: pagination('tin tức từ')"></div>
+            <div th:replace="home/paging :: pagination('tin tức từ')"></div>
 
 
 
@@ -147,11 +147,13 @@
 
 
     </main>
+<hr>
+    <div th:replace="~{/layout/footer.html}"></div>
 
 
 
-    <div th:replace="~{/layout/footer}"></div>
 
+</body>
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -183,7 +185,5 @@
         }
 
     </script>
-
-</body>
 
 </html>

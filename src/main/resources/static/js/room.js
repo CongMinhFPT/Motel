@@ -46,15 +46,65 @@ app.controller('roomCtrl', function ($scope, $http) {
         })
     }
 
-    $scope.getMotelRoom = () => {
-        const url = `${hostMotelRoom}`;
-        $http.get(url).then(resp => {
-            console.log(resp.data);
-            $scope.motelRooms = resp.data;
-        }).catch(error => {
-            console.log(error);
-        })
-    }
-    $scope.getMotelRoom();
+    // $scope.getMotelRoom = () => {
+    //     const url = `${hostMotelRoom}`;
+    //     $http.get(url).then(resp => {
+    //         console.log(resp.data);
+    //         $scope.motelRooms = resp.data;
+    //     }).catch(error => {
+    //         console.log(error);
+    //     })
+    // }
+    // $scope.getMotelRoom();
+
+    $scope.currentPage = 0;
+    $scope.pageSize = 3;
+    $scope.motelRooms = [];
+    $scope.totalPages = 0;
+    $scope.totalPagesArray = [];
+
+    // Hàm để lấy danh sách các phòng từ API
+    $scope.getAllRooms = function () {
+        var url = '/api/rooms?page=' + $scope.currentPage;
+        $http.get(url).then(function (response) {
+            $scope.motelRooms = response.data.content;
+            $scope.totalPages = response.data.totalPages;
+            $scope.totalPagesArray = Array.from(Array($scope.totalPages).keys());
+            console.log(response.data);
+        }, function (error) {
+            console.error('Error fetching motelRooms:', error);
+        });
+    };
+
+    // Khởi chạy hàm lấy danh sách phòng
+    $scope.getAllRooms();
+
+    // Hàm để chuyển đến trang khác
+    $scope.setPage = function (page) {
+        $scope.currentPage = page;
+        $scope.getAllRooms();
+    };
+
+    // Hàm kiểm tra trang hiện tại có phải trang đầu tiên hay không
+    $scope.isFirstPage = function () {
+        return $scope.currentPage === 0;
+    };
+
+    // Hàm kiểm tra trang hiện tại có phải trang cuối cùng hay không
+    $scope.isLastPage = function () {
+        return $scope.currentPage === $scope.totalPages - 1;
+    };
+
+    // Hàm để chuyển đến trang đầu tiên
+    $scope.firstPage = function () {
+        $scope.currentPage = 0;
+        $scope.getAllRooms();
+    };
+
+    // Hàm để chuyển đến trang cuối cùng
+    $scope.lastPage = function () {
+        $scope.currentPage = $scope.totalPages - 1;
+        $scope.getAllRooms();
+    };
 
 })

@@ -80,6 +80,7 @@
 
 			</div>
 			<div class="col-xl-12 col-lg-12">
+				<div th:if="${ErrorIMG != null}" class="d-none" id="errorImg">[[${ErrorIMG}]]</div>
 				<div class="card">
 					<div class="card-body">
 						<div class="basic-form">
@@ -155,16 +156,14 @@
 	<script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
 	<!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/super-build/ckeditor.js"></script> -->
 
-	<script th:src="@{/admin/js/commom-form.js}"></script>
+	<script th:src="@{/admin/js/common-form.js}"></script>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+	<script th:src="@{/admin/js/common-list.js}"></script>
+	
+	
 	<script type="text/javascript">
-
-
-
-
-
 
 		ClassicEditor
 			.create(document.querySelector('#descriptions'))
@@ -174,18 +173,24 @@
 			})
 
 		$(document).ready(function () {
+			
 
-			$('#title, #exampleSelect2').on('input', function () {
-				validateAll();
+			$('#title').on('input', function () {
+				validatetitle();
+			});
+			$('#exampleSelect2').on('input', function () {
+				validatetag();
 			});
 
-			function validateAll() {
+			function validatetitle() {
 				var title = $('#title').val();
 				if (!title) {
 					$('#titleER').text('Không được bỏ trống!');
 				} else {
 					$('#titleER').text('');
 				}
+			}
+			function validatetag() {
 
 				var tag = $('#exampleSelect2').val();
 				if (tag == 0) {
@@ -196,7 +201,8 @@
 			}
 
 			$('form').submit(function (event) {
-				validateAll();
+				validatetitle();
+				validatetag();
 				var title = $('#title').val();
 				var tag = $('#exampleSelect2').val();
 				if (!title || tag == 0) {

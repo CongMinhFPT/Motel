@@ -18,74 +18,10 @@
 
     <!-- Boxicons.css -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <style>
-        .pagination-buttons button {
-            padding: 8px 12px;
-            margin: 0 4px;
-            border: 1px solid #ccc;
-            background-color: #f7f7f7;
-            color: #333;
-            cursor: pointer;
-        }
-
-        .pagination-buttons button:hover {
-            background-color: #ddd;
-        }
-
-        .pagination-info {
-            margin-top: 10px;
-        }
-
-        .next-button {
-            padding: 8px 16px;
-            background-color: #f7f7f7;
-            color: #333;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .next-button:hover {
-            background-color: #ddd;
-        }
-
-        .next-button i {
-            margin-left: 5px;
-            transition: transform 0.3s ease;
-        }
-
-        .next-button:hover i {
-            transform: translateX(2px);
-        }
-
-        .previous-button {
-            padding: 8px 16px;
-            background-color: #f7f7f7;
-            color: #333;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .previous-button:hover {
-            background-color: #ddd;
-        }
-
-        .previous-button i {
-            margin-right: 5px;
-            transition: transform 0.3s ease;
-        }
-
-        .previous-button:hover i {
-            transform: translateX(-2px);
-        }
-    </style>
 </head>
 
 <body ng-app="favoriteRoomApp" ng-controller="favoriteRoomCtrl">
     <div th:replace="~{/layout/header.html}"></div>
-
-
     <main>
 
         <div class="container" ng-controller="favoriteRoomCtrl">
@@ -113,61 +49,64 @@
             </div>
             <div class="p-5">
                 <div class="card mb-3" style="background-color: #fff; color: #000"
-                    ng-repeat="favoriteRoom in pageRange()">
+                    ng-repeat="favoriteRoom in favoriteRooms">
                     <div class="row g-0">
-                        <div class="col-md-4 p-2">
+                        <div class="col-lg-4 p-2">
                             <img class="img-fluid" style="height: 100%" th:src="@{/img/phong tro.jpg}" alt="" />
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-lg-8">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-10">
-                                        <p class="card-text">{{favoriteRoom.posts[$index].title}}</p>
+                                        <a ng-href="/room-details/{{ favoriteRoom.postId }}"
+                                            class="text-decoration-none text-dark">
+                                            <p class="card-text">{{favoriteRoom.title}}</p>
+                                        </a>
                                     </div>
                                     <div class="col-2">
                                         <img class="" style="max-width: 75%; max-height: 75%;"
                                             th:src="@{/img/icons8-heart-50-red.png}"
-                                            ng-click="deleteFavoriteRoom(favoriteRoom.favoriteRoom[0].favoriteRoomId)"
+                                            ng-click="deleteFavoriteRoom(favoriteRoom.motelRoom.favoriteRoom[0].favoriteRoomId)"
                                             id="img" alt="" />
                                     </div>
                                 </div>
                                 <h4 class="card-title mt-1">
-                                    {{favoriteRoom.roomCash[$index].roomBill}} triệu/tháng</h4>
+                                    {{favoriteRoom.motelRoom.roomCash[0].roomBill}} triệu/tháng</h4>
                                 <div class="row py-0 p-0">
                                     <div class="col-4 card-text">
                                         <img class="" style="max-height: 30% ; max-width: 30%;"
                                             th:src="@{/img/block.png}" alt="" />
-                                        Diện tích: {{favoriteRoom.length*favoriteRoom.width}}
+                                        Diện tích: {{favoriteRoom.motelRoom.length*favoriteRoom.motelRoom.width}}
                                     </div>
                                     <div class="col-4 card-text">
                                         <img class="" style="max-height: 30% ; max-width: 30%;"
                                             th:src="@{/img/double-bed.png}" alt="" />
-                                        {{ favoriteRoom.categoryRoom.title}}
+                                        {{ favoriteRoom.motelRoom.categoryRoom.title}}
                                     </div>
                                     <div class="col-4 card-text">
                                         <img class="" style="max-height: 30% ; max-width: 30%;"
                                             th:src="@{/img/wifi.png}" alt="" />
-                                        {{ favoriteRoom.wifiCash[0].wifiBill == 0 ?
-                                        0:favoriteRoom.wifiCash[0].wifiBill}} VND
+                                        {{ favoriteRoom.motelRoom.wifiCash[0].wifiBill == 0 ?
+                                        0:favoriteRoom.motelRoom.wifiCash[0].wifiBill}} VND
                                     </div>
                                 </div>
                                 <div class="card-person py-0 p-0">
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <h6 class="card-text mb-0 createDate">
-                                                {{favoriteRoom.posts[$index].createDate
+                                                {{favoriteRoom.createDate
                                                 |
                                                 date:'dd-MM-yyyy' }}</h6>
                                         </div>
                                         <div class="col-lg-6">
                                             <h6 class="card-text ward d-inline-block">
-                                                {{favoriteRoom.motel.ward}}
+                                                {{favoriteRoom.motelRoom.motel.ward}}
                                             </h6>,
                                             <h6 class="card-text district d-inline-block">
-                                                {{favoriteRoom.motel.district}}
+                                                {{favoriteRoom.motelRoom.motel.district}}
                                             </h6>,
                                             <h6 class="card-text city d-inline-block ml-2">
-                                                {{favoriteRoom.motel.province}}</h6>
+                                                {{favoriteRoom.motelRoom.motel.province}}</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -175,21 +114,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- Nút chuyển trang -->
-                <div class="pagination-buttons d-flex justify-content-center">
-                    <button ng-disabled="currentPage == 1" ng-click="currentPage = currentPage - 1"
-                        class="previous-button"><i class="fa-solid fa-angles-left"></i>Previous</button>
-                    <div class="pagination-info">
-                        <span>{{currentPage}} of {{totalPages()}}</span>
-                    </div>
-                    <button ng-disabled="currentPage >= totalPages()" ng-click="currentPage = currentPage + 1"
-                        class="next-button">Next <i class="fa-solid fa-angles-right"></i></button>
-                </div>
             </div>
         </div>
     </main>
-
-
 
     <div th:replace="~{/layout/footer}"></div>
 

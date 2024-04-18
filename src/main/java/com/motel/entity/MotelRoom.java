@@ -35,6 +35,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "MotelRoom")
 public class MotelRoom {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Integer motelRoomId;
@@ -54,8 +55,9 @@ public class MotelRoom {
   String descriptions;
   boolean status = true;
 
+
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-  @JsonManagedReference
+  @JsonIgnore
   List<Post> posts;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
@@ -63,7 +65,6 @@ public class MotelRoom {
   List<Image> image;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-
   @JsonManagedReference
   List<FavoriteRoom> favoriteRoom;
 
@@ -93,7 +94,6 @@ public class MotelRoom {
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "motelId")
-  @JsonBackReference
   Motel motel;
 
   @ManyToOne(cascade = CascadeType.ALL)
@@ -104,17 +104,21 @@ public class MotelRoom {
   @JoinColumn(name = "roomStatusId")
   RoomStatus roomStatus;
 
-  @Override
-  public String toString() {
-    return "MotelRoom{" +
-        "motelRoomId=" + motelRoomId +
-        ", createDate=" + createDate +
-        ", length=" + length +
-        ", width=" + width +
-        ", video='" + video + '\'' +
-        ", descriptions='" + descriptions + '\'' +
-        ", status=" + status +
-        ", status=" + motel +
-        '}';
-  }
+    @Override
+    public String toString() {
+        return "MotelRoom{" +
+                "motelRoomId=" + motelRoomId +
+                ", createDate=" + createDate +
+                ", length=" + length +
+                ", width=" + width +
+                ", video='" + video + '\'' +
+                ", descriptions='" + descriptions + '\'' +
+                ", status=" + status +
+                '}';
+    }
+
+    public Double getAcreage(){
+      return width*length;
+    }
+
 }

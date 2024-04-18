@@ -102,9 +102,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const imageInput = document.getElementById("imageInput");
 const previewImage = document.getElementById("previewImage");
-
+const imageInputerror =document.getElementById('imageInput-error');
+const submitmotel = document.getElementById('submitmotel');
+let inlu =previewImage.src;
 imageInput.addEventListener("change", function () {
   const file = this.files[0];
+  if(file===undefined){
+    previewImage.src =inlu;
+    submitmotel.disabled = false;
+      imageInputerror.innerText=''
+  }else{
+    if(file.size > 1048576) {
+      imageInputerror.innerText='Ảnh vượt quá 1MB'
+      submitmotel.disabled = true;
+    }else{
+      submitmotel.disabled = false;
+      imageInputerror.innerText=''
+    }
+  }
   if (file) {
     const reader = new FileReader();
     reader.onload = function (e) {

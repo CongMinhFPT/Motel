@@ -22,27 +22,27 @@
 						<div class="mb-3">
 							<label for="descriptions" class="form-label text-black">Mô tả</label>
 							<textarea th:field="*{descriptions}" class="form-control" id="descriptions"
-								name="descriptions" rows="3" required ></textarea>
-								
+								name="descriptions" rows="3" required></textarea>
+
 							<label th:errors="*{descriptions}" id="descriptions-error"
 								style="color: red; padding: 0.5rem; display: block;" for=""></label>
-								
+
 						</div>
 						<div class="mb-3 row">
 							<div class="col">
 								<label for="province" class="form-label text-black">Tỉnh</label>
-								<select class="form-control "  id="city" th:field="*{province}" required>
+								<select class="form-control " id="city" th:field="*{province}" required>
 									<option th:if="*{province!=null}" id="city1" th:value="*{province}"
 										th:attr="data-id=*{provinceID}" th:text="*{province}" selected></option>
 									<option value="" data-id="" selected> -- Chọn tỉnh thành --</option>
-									<input class="d-none " type="text" id="cityIdInput" th:field="*{provinceID}" >
+									<input class="d-none " type="text" id="cityIdInput" th:field="*{provinceID}">
 								</select>
 								<label th:errors="*{province}" id="provinces-error"
 									style="color: red; padding: 0.5rem; display: block;" for=""></label>
 							</div>
 							<div class="col">
 								<label for="district" class="form-label text-black">Huyện</label>
-								<select id="district"  class="form-control " th:field="*{district}" required>
+								<select id="district" class="form-control " th:field="*{district}" required>
 									<option th:if="*{district!=null}" id="district1" th:value="*{district}"
 										th:attr="data-id=*{districtID}" th:text="*{district}" selected></option>
 									<option id="huyen" value="" data-id="" selected>-- Chọn quận huyện --</option>
@@ -53,7 +53,7 @@
 							</div>
 							<div class="col">
 								<label for="ward" class="form-label text-black ">Phường</label>
-								<select id="ward"  class="form-control " th:field="*{ward}" required>
+								<select id="ward" class="form-control " th:field="*{ward}" required>
 									<option id="ward1" th:if="*{ward!=null}" th:value="*{ward}" th:text="*{ward}"
 										selected></option>
 									<option id="phuong" value="" selected>-- Chọn phường xã --</option>
@@ -72,17 +72,20 @@
 							</div>
 							<div class="col-6  text-center " id="imageContainer">
 								<div class="avatar-frame mb-3 mt-2   ">
-									<img alt="Avatar" src="/files/ImgMotel/img-defaul.png"   id="previewImage"
+									<img alt="Avatar" src="/files/ImgMotel/img-defaul.png" id="previewImage"
 										class="avatar-image">
-								</div> 
+								</div>
 								<label for="imageInput" class="btn btn-primary mt-3">
 									<i for="imageInput" class="fas fa-upload"></i> Chọn ảnh mới
-									<input type="file" class="form-control d-none " id="imageInput" name="files" accept="image/*">
-								  </label>
+									<input type="file" class="form-control d-none " id="imageInput" name="files"
+										accept="image/*">
+								</label>
+								<label id="imageInput-error" style="color: red; padding: 0.5rem; display: block;"
+									for=""></label>
 							</div>
 						</div>
 						<div class="m-3 ">
-							<button type="submit" class="btn btn-primary">Thêm</button>
+							<button type="submit" id="submitmotel" class="btn btn-primary">Thêm</button>
 						</div>
 					</form>
 				</div>

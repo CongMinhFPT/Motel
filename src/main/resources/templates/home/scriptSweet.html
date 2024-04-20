@@ -9,20 +9,35 @@
 <script th:src="@{/js/invoice.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
 <!--Quên mk-->
-<script th:if="${not #strings.isEmpty(message)}">
+<script th:if="${not #strings.isEmpty(message)}" th:inline="javascript">
+	var changeMessage = /*[[${message}]]*/ '';
 	Swal.fire({
 		title: "Thành công!",
-		text: "Vui lòng xem email để lấy lại mật khẩu!",
+		text: changeMessage,
 		icon: "success"
 	}).then(() => {
 		window.location.href = '/signin';
 	});
 </script>
-<script th:if="${not #strings.isEmpty(messagee)}">
+<script th:if="${not #strings.isEmpty(messagee)}" th:inline="javascript">
+	var changeMessage = /*[[${messagee}]]*/ '';
 	Swal.fire({
 		title: "Thất bại!",
-		text: "Email này không tồn tại!",
+		text: changeMessage,
 		icon: "error"
+	});
+</script>
+<script th:if="${not #strings.isEmpty(mes)}" th:inline="javascript">
+	var changeMessage = /*[[${mes}]]*/ '';
+	Swal.fire({
+		icon: "info",
+		title: "Xác nhận!",
+		text: changeMessage,
+		showConfirmButton: false,
+		timer: 1500
+	}).then(() => {
+		var email = /*[[${email1}]]*/ '';
+        window.location.href = '/confirmForm?email=' + email;
 	});
 </script>
 <!--Change-->
@@ -70,18 +85,6 @@
 <!--Đăng nhập-->
 <script th:if="${not #strings.isEmpty(auth)}" th:inline="javascript">
 	var changeMessage = /*[[${auth}]]*/ '';
-	Swal.fire({
-		icon: "success",
-		title: "Thành công!",
-		text: changeMessage,
-		showConfirmButton: false,
-		timer: 1500
-	}).then(() => {
-		window.location.href = '/index';
-	});
-</script>
-<script th:if="${not #strings.isEmpty(signin)}" th:inline="javascript">
-	var changeMessage = /*[[${signin}]]*/ '';
 	Swal.fire({
 		icon: "success",
 		title: "Thành công!",

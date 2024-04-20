@@ -4,11 +4,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.swing.text.Style;
 import javax.validation.Valid;
@@ -16,6 +20,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -82,6 +87,8 @@ public class RegisterController {
 
 	private static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
 
+	private static Map<String, String> confirmationCodes = new HashMap<>();
+	
 	@GetMapping("/signup")
 	public String Signup(@ModelAttribute("accounts") Account account) {
 		return "home/signup";
@@ -316,20 +323,18 @@ public class RegisterController {
 			model.addAttribute("email", "Vui lòng nhập email!");
 			return "home/forgot_password";
 		}
-		if (id != null) {
-			String generatedString = randompassword();
-			System.out.println("Random forgot:>> " + generatedString);
-
-			Account acc = accountsRepository.getByEmail(email);
-			acc.setPassword(pe.encode(generatedString));
-			accountsRepository.save(acc);
+		if (id != null) {	
+			String confirmationCode = generateConfirmationCode();
+			confirmationCodes.put(email, confirmationCode);
 			try {
-				sendEmail(email, generatedString);
-				model.addAttribute("message", "Vui lòng xem gmail để lấy lại mật khẩu!");
-				return "home/forgot_password";
+				sendEmailConfirm(email,  confirmationCode);
+				System.out.println("mã xác nhận:>>" +confirmationCode);
+				model.addAttribute("mes", "Vui lòng nhập mã xác nhận!");
+				model.addAttribute("email1",email);
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
+				model.addAttribute("messagee", "Đã có lỗi xảy ra khi gửi email xác nhận!");
 			}
 		} else {
 			model.addAttribute("messagee", "Email không tồn tại!");
@@ -337,7 +342,46 @@ public class RegisterController {
 		}
 		return "home/forgot_password";
 	}
+	
+	@GetMapping("/confirmForm")
+	public String show(Model model, @RequestParam("email") String email) {
+		Account acc = accountsRepository.getByEmail(email);
+		System.out.println(acc);
+		model.addAttribute("acc", acc);
+	    model.addAttribute("email", email);
+	    return "home/confirmgenerate";
+	}
 
+	@PostMapping("/confirm/{email}")
+	public String Confirm(Model model, @ModelAttribute("acc") Account account, @RequestParam("code") String code,@PathVariable("email") String email) {
+		System.out.println("mã xác nhận1:>>" +code);
+		if(code.isBlank()) {
+			model.addAttribute("code", "Vui lòng nhập mã xác nhận!");
+			return "home/confirmGenerate";
+		}
+	    if (confirmationCodes.containsKey(email) && confirmationCodes.get(email).equals(code)) {
+	        String generatedString = randompassword();
+	        System.out.println("Random forgot:>> " + generatedString);
+
+	        Account acc = accountsRepository.getByEmail(email);
+	        acc.setPassword(pe.encode(generatedString));
+	        accountsRepository.save(acc);
+	        try {
+	            sendEmail(email, generatedString);
+	            model.addAttribute("message", "Vui lòng xem email để lấy lại mật khẩu!");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            model.addAttribute("messagee", "Đã có lỗi gửi mật khẩu!");
+	        }
+	    } else {
+	        model.addAttribute("messagee", "Mã xác nhận không đúng!");
+	    }
+	    
+	    return "home/confirmGenerate";
+	}
+
+	
+	
 	@GetMapping("/information/{email}")
 	public String Information(@PathVariable("email") String email, Model model, Authentication authentication) {
 		Account accc = accountsRepository.getByEmail(email);
@@ -443,7 +487,29 @@ public class RegisterController {
 			}
 		});
 	}
+	private void sendEmailConfirm(String email, String confirm) {
+		// gửi email
+		mailerService.add(mimeMessage -> {
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+			try {
+				helper.setTo(email);
+				helper.setSubject("Nhà Trọ F.E Xin Chào!");
+				helper.setText(
+						"Chúng tôi cần xác nhận rằng đây là tài khoản của bạn: <br/>Đây là mã xác nhận của bạn: <span style='font-size: 18px; color: red'>"
+								+ confirm + "</span>.",
+						true);
 
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+		});
+	}
+	
+	private static String generateConfirmationCode() {
+		String confirmationCode = UUID.randomUUID().toString().substring(0, 6);
+		return confirmationCode;
+	}
+	
 	@GetMapping("/payment/{email}")
 	public String payment(@PathVariable("email") String email, Model model) {
 		List<Invoice> invoices = invoiceRepository.findByAccountEmail(email);

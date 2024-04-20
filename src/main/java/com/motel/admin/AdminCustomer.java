@@ -236,9 +236,9 @@ public class AdminCustomer {
 		accountsRepository.save(account);
 		
 		
-		Role staff = roleRepository.findById("STAFF").orElseGet(() -> {
+		Role staff = roleRepository.findById("CUSTOMER").orElseGet(() -> {
 			Role newRole = new Role();
-			newRole.setId("STAFF");
+			newRole.setId("CUSTOMER");
 			return roleRepository.save(newRole);
 		});
 		

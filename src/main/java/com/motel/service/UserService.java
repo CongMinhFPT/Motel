@@ -13,6 +13,7 @@ import com.motel.repository.UserRepository;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +59,15 @@ public class UserService {
         return repository.findAllByNickNameIn(allUserNicknames);
     }
     
-    
+    public List<User> findUsersWithMessages(String nickname) {
+        List<String> relatedUserIds = chatMessageRepository.findAll().stream()
+                .filter(chatMessage -> !(chatMessage.getSenderId().equals(nickname) && chatMessage.getRecipientId().equals(nickname)))
+                .map(chatMessage -> chatMessage.getSenderId().equals(nickname) ? chatMessage.getRecipientId() : chatMessage.getSenderId())
+                .distinct()
+                .collect(Collectors.toList());
+        System.out.println("relatedUserIds: "+ relatedUserIds);
+
+        return repository.findAllByNickNameIn(relatedUserIds);
+    }
     
 }

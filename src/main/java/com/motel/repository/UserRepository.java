@@ -13,6 +13,6 @@ public interface UserRepository  extends MongoRepository<User, String> {
     
     @Query("{'nickName': { $ne: ?0 }}")
     List<User> findAllWithMessages(String nickname);
-    
+    @Query("{'nickName': { $in: ?0 }}")
     List<User> findAllByNickNameIn(List<String> nicknames);
 }

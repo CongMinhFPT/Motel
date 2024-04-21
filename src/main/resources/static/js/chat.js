@@ -15,17 +15,22 @@ let nickname = null;
 let fullname = null;
 let avatar = null;
 let selectedUserId = null;
+let chatuser = null;
 
 function cleanNickname(nickname) {
     return nickname.replace(/[^a-zA-Z0-9]/g, '_');
 }
 
+function cleanChatuser(chatuser) {
+    return chatuser.replace(/[^a-zA-Z0-9]/g, '_');
+}
 
 
 function connect(event) {
 	nickname = cleanNickname(document.querySelector('#nickname').value.trim());
 	fullname = document.querySelector('#fullname').value.trim();
 	avatar = document.querySelector('#avatar').value.trim();
+	chatuser = cleanChatuser(document.querySelector('#chatuser').value.trim());
 
   if (!avatar) {
         avatar = 'user_icon.png';
@@ -78,7 +83,6 @@ async function findAndDisplayConnectedUsers() {
 	connectedUsers1 = connectedUsers1.filter(user1 => user1.nickName !== nickname);
 	const connectedUsersList = document.getElementById('connectedUsers');
 	connectedUsersList.innerHTML = '';
-	const chatuser = document.querySelector('#chatuser').value.trim();
 
 	connectedUsers1.forEach(user1 => {
 		if (user1.nickName == chatuser) {

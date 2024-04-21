@@ -113,25 +113,33 @@
 						<th:block th:each="post:${listPost}">
 							<div class="col-lg-4 col-12">
 								<div class="card" style="background-color: #fff; color: #000;">
-									<!--	<img class="card-img-top w-100" th:src="@{${post.motelRoom.image}}" alt="" />-->
+									<img class="card-img-top w-100"
+										th:src="@{'/files/ImgMotel/' + ${post.motelRoom.motel.image}}" alt="" />
 									<div class="card-body">
 										<p class="card-text">[[${post.title}]]</p>
-										<!-- <h4 class="card-title">[[${post..price}]]</h4>   lấy roomcash--> 
+
+										<div th:each="i:${post.motelRoom.roomCash}" class="d-flex">
+											<p class="card-text priceBill"
+												th:text="${#numbers.formatDecimal(i.roomBill,3,'POINT',0,'COMMA')}"></p>
+											<p class="d-flex align-items-start">VND</p>
+										</div>
 										<div class="row py-3">
-											<!-- <div class="col-lg-6 card-text"><i
-													class='bx bx-current-location pe-1'></i>Ninh 
-												Kiều, Cần Thơ</div>   lấy motels ra  -->
-											
+											<div class="col-lg-6 card-text"><i
+													class='bx bx-current-location pe-1'></i>[[${post.motelRoom.motel.adressMotel}]]
+											</div>
+
 											<div class="col-lg-6 card-text"><i class='bx bx-fullscreen pe-1'></i>Diện
 												tích:
-												<a>[[${post.motelRoom.acreage}]]</a>
+												<a>[[${post.motelRoom.acreage}]] m2</a>
 											</div>
 											<hr>
-											<div class="col-lg-6 card-text"><i
-													class='bx bx-user-plus pe-1'></i>[[${post.motelRoom.categoryRoom.title}]]
+											<div class="col-lg-6 card-text">
+
+												<i class='bx bx-user-plus pe-1'></i>Hiện có
+												[[${post.motelRoom.countRenter}]] người ở
 											</div>
-											<div class="col-lg-6 card-text"><i
-													class='bx bx-wifi pe-1'></i>[[${post.motelRoom.wifiCash}]]
+											<div class="col-lg-6 card-text"><i class='bx bx-wifi pe-1'></i>Giá wifi :
+												[[${post.motelRoom.wifiCashTotal}]]
 											</div>
 											<hr>
 										</div>
@@ -223,6 +231,8 @@
 			autoplayTimeout: 5000,
 			touch: false
 		})
+
+
 	</script>
 
 </body>

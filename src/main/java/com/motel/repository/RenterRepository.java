@@ -21,4 +21,7 @@ public interface RenterRepository extends JpaRepository<Renter, Integer> {
     @Query(nativeQuery = true, value = "select Count(*) AS total from renter")
     List<Object> statisticCountRenter();
 
+    @Query("SELECT COUNT(r) FROM Renter r WHERE r.motelRoom = 1")
+	long countByMotelRoom(MotelRoom motelRoom);
+
 }

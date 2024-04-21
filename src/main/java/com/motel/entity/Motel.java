@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -84,5 +85,11 @@ public class Motel {
                 ", createDate=" + createDate +
                 ", status=" + status +
                 '}';
+    }
+    
+    @Transient
+    public String getAdressMotel() {
+		return province + ", " + district + ", " + ward + ", " + detailAddress;
+    	
     }
 }

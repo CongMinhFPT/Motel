@@ -40,15 +40,15 @@
         .pagination .page-link {
             color: black;
             /* Màu chữ của số trang */
-            border-color: #FFECBF;
+
             /* Màu khung của số trang */
-            background-color: #FFECBF;
+
         }
 
         .pagination .page-item.active .page-link {
-            background-color: #FFECBF;
+
             /* Màu nền của số trang hiện tại */
-            border-color: #FFECBF;
+
             /* Màu khung của số trang hiện tại */
         }
     </style>
@@ -60,7 +60,14 @@
     <main ng-controller="roomCtrl">
         <div class="container" style="margin-top: 10rem">
             <div class="area m-1">
-                <h3>Cho Thuê Phòng Trọ, Thuê Nhà Trọ Giá Rẻ, MỚI NHẤT</h3>
+                <div class="row" style="margin-top: 10rem; margin-bottom: 10px;">
+                    <div class="col-12" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/index}">Trang chủ</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Bài đăng phòng trọ</li>
+                        </ol>
+                    </div>
+                </div>
                 <div class="row mt-5" style="border-bottom: 3px solid black">
                     <div class="col-lg-3">
                         <div class="custom-select-wrapper mb-0">
@@ -149,7 +156,7 @@
                             <div class="card mb-3 room-card" style="background-color: #fff; color: #000"
                                 ng-repeat="motelRoom in motelRooms">
                                 <div class="row g-0">
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 p-2">
                                         <img class="img-fluid" style="height: 100%" th:src="@{/img/phong tro.jpg}"
                                             alt="" />
                                     </div>
@@ -157,59 +164,60 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-10">
-                                                    <a ng-href="/room-details/{{ motelRoom.posts[$index].postId }}"
-                                                        class="text-decoration-none text-light">
-                                                        <p class="card-text">{{motelRoom.posts[$index].title}}</p>
+                                                    <a ng-href="/room-details/{{ motelRoom.postId }}"
+                                                        class="text-decoration-none text-dark">
+                                                        <p class="card-text">{{motelRoom.title}}</p>
                                                     </a>
                                                 </div>
                                                 <div class="col-2"
-                                                    ng-show="!motelRoom.favoriteRoom[$index].favoriteRoomId">
+                                                    ng-show="!motelRoom.motelRoom.favoriteRoom[0].favoriteRoomId">
                                                     <img class="favorite-icon" style="max-width: 75%; max-height: 75%;"
                                                         src="/img/icons8-heart-50.png" alt=""
-                                                        ng-click="addFavoriteRoom(motelRoom.motelRoomId)"
-                                                        id="img{{motelRoom.motelRoomId}}" />
+                                                        ng-click="addFavoriteRoom(motelRoom.motelRoom.motelRoomId)"
+                                                        id="img{{motelRoom.motelRoom.motelRoomId}}" />
                                                     <input type="hidden" th:value="${accountId}" id="accountIdFavorite">
                                                 </div>
                                             </div>
                                             <h4 class="card-title mt-1 price">
-                                                {{motelRoom.roomCash[$index].roomBill}} triệu/tháng</h4>
+                                                {{motelRoom.motelRoom.roomCash[0].roomBill}} triệu/tháng</h4>
                                             <div class="row pt-3 p-0">
                                                 <div class="col-4 card-text">
                                                     <img class="" style="max-height: 30% ; max-width: 30%;"
                                                         th:src="@{/img/block.png}" alt="" />
-                                                    <span class="area">Diện tích: {{ motelRoom.length * motelRoom.width
+                                                    <span class="area">Diện tích: {{ motelRoom.motelRoom.length *
+                                                        motelRoom.motelRoom.width
                                                         }} m²</span>
 
                                                 </div>
                                                 <div class="col-4 card-text">
                                                     <img class="" style="max-height: 30% ; max-width: 30%;"
                                                         th:src="@{/img/double-bed.png}" alt="" />
-                                                    {{ motelRoom.categoryRoom.title}}
+                                                    {{ motelRoom.motelRoom.categoryRoom.title}}
                                                 </div>
                                                 <div class="col-4 card-text">
                                                     <img class="" style="max-height: 30% ; max-width: 30%;"
                                                         th:src="@{/img/wifi.png}" alt="" />
-                                                    {{ motelRoom.wifiCash[0].wifiBill == 0 ?
-                                                    0:motelRoom.wifiCash[0].wifiBill}} VND
+                                                    {{ motelRoom.motelRoom.wifiCash[0].wifiBill == 0 ?
+                                                    0:motelRoom.motelRoom.wifiCash[0].wifiBill}} VND
                                                 </div>
                                             </div>
                                             <div class="card-person py-0 p-0">
                                                 <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <p class="createDate">{{motelRoom.posts[$index].createDate
+                                                    <div class="col-lg-3">
+                                                        <p class="createDate">{{motelRoom.createDate
                                                             |
                                                             date:'dd-MM-yyyy' }}</p>
                                                     </div>
                                                     <!-- Hiển thị quận/huyện và tỉnh/thành phố -->
-                                                    <div class="col-lg-6 card-text">
+                                                    <div class="col-lg-9 card-text">
                                                         <h6 class="card-text ward d-inline-block">
-                                                            {{motelRoom.motel.ward}}
+                                                            {{motelRoom.motelRoom.motel.ward}},
                                                         </h6>
                                                         <h6 class="card-text district d-inline-block">
-                                                            {{motelRoom.motel.district}}
+                                                            {{motelRoom.motelRoom.motel.district}},
                                                         </h6>
                                                         <h6 class="card-text city d-inline-block ml-2">
-                                                            {{motelRoom.motel.province}}</h6>
+                                                            {{motelRoom.motelRoom.motel.province}}</h6>
                                                     </div>
 
                                                 </div>
@@ -225,28 +233,13 @@
             </div>
             <div class="col-lg-12 text-center">
                 <ul class="pagination justify-content-center">
-                    <li th:class="${page.first ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=0)}">&lt;&lt;</a>
-                    </li>
-                    <li th:class="${page.first ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link"
-                            th:href="@{${#httpServletRequest.requestURI}(page=${page.number - 1})}">&lt;</a>
-                    </li>
-                    <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
-                        th:class="${page.number == i ? 'page-item active' : 'page-item'}">
-                        <a class="page-link" th:href="@{${#httpServletRequest.requestURI}(page=${i})}"
-                            th:text="${i + 1}"></a>
-                    </li>
-                    <li th:class="${page.last ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link"
-                            th:href="@{${#httpServletRequest.requestURI}(page=${page.number + 1})}">&gt;</a>
-                    </li>
-                    <li th:class="${page.last ? 'page-item disabled' : 'page-item'}">
-                        <a class="page-link"
-                            th:href="@{${#httpServletRequest.requestURI}(page=${page.totalPages - 1})}">&gt;&gt;</a>
+                    <li class="page-item" ng-repeat="page in totalPagesArray"
+                        ng-class="{ 'active': page === currentPage }">
+                        <a class="page-link" href="#" ng-click="setPage(page)">{{ page + 1 }}</a>
                     </li>
                 </ul>
             </div>
+
         </div>
     </main>
 
@@ -261,12 +254,76 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/js/header.js}"></script>
     <script th:src="@{/js/room.js}"></script>
     <script th:src="@{/js/address.js}"></script>
+
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            // Xử lý khi nhấp vào một trang
+            $('.pagination .page-link').on('click', function (event) {
+                event.preventDefault();
+                var page = $(this).attr('href').split('page=')[1];
+                loadRoomsByPage(page);
+            });
+
+            function loadRoomsByPage(page) {
+                $.ajax({
+                    url: '/api/rooms', // URL của endpoint Spring Boot
+                    type: 'GET',
+                    data: {
+                        page: page
+                    },
+                    success: function (data) {
+                        // Cập nhật giao diện người dùng với dữ liệu mới
+                        updateUI(data);
+                        console.log(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('Error: ' + errorThrown);
+                    }
+                });
+            }
+
+            function updateUI(data) {
+                var content = $('.room-list'); // Thay đổi '.room-list' thành lớp hoặc id của phần tử chứa danh sách phòng của bạn
+                content.empty(); // Xóa nội dung cũ trước khi cập nhật
+
+                // Duyệt qua danh sách phòng và thêm mỗi phòng vào giao diện người dùng
+                data.content.forEach(function (room) {
+                    var roomHtml = '<div class="room">' +
+                        '<p>Room Number: ' + room.description + '</p>' +
+                        '</div>';
+                    content.append(roomHtml);
+                });
+
+                // Cập nhật phân trang
+                var pagination = $('.pagination');
+                pagination.empty(); // Xóa nội dung cũ trước khi cập nhật
+
+                // Thêm nút Previous
+                if (!data.first) {
+                    pagination.append('<li class="page-item"><a class="page-link" href="?page=' + (data.number - 1) + '">Previous</a></li>');
+                }
+
+                // Thêm các trang
+                for (var i = 0; i < data.totalPages; i++) {
+                    var pageLink = '<li class="page-item' + (data.number === i ? ' active' : '') + '"><a class="page-link" href="?page=' + i + '">' + (i + 1) + '</a></li>';
+                    pagination.append(pageLink);
+                }
+
+                // Thêm nút Next
+                if (!data.last) {
+                    pagination.append('<li class="page-item"><a class="page-link" href="?page=' + (data.number + 1) + '">Next</a></li>');
+                }
+            }
+
+        });
+
+    </script>
     <script th:inline="javascript">
         function filterByAddress() {
 

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.motel.entity.FavoriteRoom;
 import com.motel.entity.MotelRoom;
+import com.motel.entity.Post;
 import com.motel.repository.FavoriteRoomRepository;
 import com.motel.service.FavoriteRoomService;
 import com.motel.service.MotelRoomService;
@@ -45,16 +46,17 @@ public class FavoriteRoomRestController {
     }
 
     @GetMapping("/api/listFavoriteRoom")
-    public ResponseEntity<List<MotelRoom>> getPagedProducts() {
-        List<MotelRoom> favoriteRoomPage = favoriteRoomService.getPagedFavoriteRooms();
+    public ResponseEntity<List<Post>> getPagedProducts() {
+        List<Post> favoriteRoomPage = favoriteRoomService.getPagedFavoriteRooms();
         return ResponseEntity.ok(favoriteRoomPage);
     }
 
     // @GetMapping("/api/listFavoriteRoom")
-    // public Page<MotelRoom> listFavoriteRooms(@RequestParam(defaultValue = "0") int page,
-    //                                             @RequestParam(defaultValue = "5") int size) {
-    //     Pageable pageable = PageRequest.of(page, size);
-    //     return favoriteRoomService.getPagedFavoriteRooms(pageable);
+    // public Page<MotelRoom> listFavoriteRooms(@RequestParam(defaultValue = "0")
+    // int page,
+    // @RequestParam(defaultValue = "5") int size) {
+    // Pageable pageable = PageRequest.of(page, size);
+    // return favoriteRoomService.getPagedFavoriteRooms(pageable);
     // }
 
 }

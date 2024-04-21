@@ -20,7 +20,6 @@ import org.hibernate.annotations.Nationalized;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,7 +47,6 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "motelRoomId")
-    @JsonBackReference
     MotelRoom motelRoom;
 
     @Transient
@@ -67,7 +65,7 @@ public class Post {
                 "postId=" + postId +
                 ", status=" + status +
                 ", createDate=" + createDate +
-                ", title='" + title  +
+                ", title='" + title +
                 '}';
     }
 }

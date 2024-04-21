@@ -1,7 +1,10 @@
 package com.motel.controller;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,11 +16,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.motel.entity.Account;
+import com.motel.entity.CustomUserDetails;
+import com.motel.entity.Motel;
 import com.motel.entity.MotelRoom;
 import com.motel.entity.Renter;
 import com.motel.repository.AccountsRepository;
+import com.motel.repository.MotelRepository;
 import com.motel.repository.RenterRepository;
 import com.motel.service.RenterService;
+import com.motel.service.impl.ManageMotelImpl;
 
 @Controller
 public class RenterController {
@@ -31,11 +38,17 @@ public class RenterController {
     @Autowired
     AccountsRepository accountsRepository;
 
+    @Autowired
+    ManageMotelImpl manageMotelImpl;
+
+    @Autowired
+    MotelRepository motelRepository;
+
     @GetMapping("/admin/renter/add-renter")
     public String getAddRenter(Model model, Authentication authentication) {
         String emailAccount = authentication.getName();
         Account account = accountsRepository.getByEmail(emailAccount);
-        model.addAttribute("accountId", account.getAccountId());
+        model.addAttribute("accountIdRenter", account.getAccountId());
         // List<MotelRoom> motelRooms = renterService.getAll();
         // model.addAttribute("motelRooms", motelRooms);
         return "/admin/renter/add-renter";
@@ -43,16 +56,44 @@ public class RenterController {
 
     @GetMapping("/admin/renter")
     public String getListRenter(Model model) {
-        List<Renter> renters = renterService.getRenters();
-        model.addAttribute("renters", renters);
-        return "/admin/renter/renter-list";
+        if (manageMotelImpl.CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+            if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+                Motel motel = motelRepository.getById(customUserDetails.getMotelid());
+
+                List<MotelRoom> motelRooms = motel.getMotelRoom();
+                List<Renter> renters = new ArrayList<>();
+
+                for (MotelRoom motelRoom : motelRooms) {
+                    for (Renter renter : motelRoom.getRenter()) {
+                        renters.add(renter);
+                    }
+                }
+
+                renters.sort(Comparator.comparing(Renter::getRenterDate).reversed());
+
+                model.addAttribute("renters", renters);
+                return "/admin/renter/renter-list";
+            } else {
+                return "redirect:/admin/manage-motel";
+            }
+        } else {
+            return "home/signin";
+        }
+
     }
 
     @GetMapping("/admin/renter/update-renter/{renterId}")
-    public String getRenter(@PathVariable("renterId") Integer renterId, Model model) {
+    public String getRenter(@PathVariable("renterId") Integer renterId, Model model, Authentication authentication) {
         Renter renter = renterService.getRenter(renterId);
         model.addAttribute("renter", renter);
-        List<MotelRoom> motelRooms = renterService.getMotelRoomByAccount(renter.getAccount().getAccountId());
+
+        String emailAccount = authentication.getName();
+        Account account = accountsRepository.getByEmail(emailAccount);
+
+        List<MotelRoom> motelRooms = renterService.getMotelRoomByAccount(account.getAccountId());
+
+        System.out.println(motelRooms);
         model.addAttribute("motelRooms", motelRooms);
         return "/admin/renter/update-renter";
     }

@@ -1,5 +1,7 @@
 package com.motel.admin;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,13 +17,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.motel.entity.Account;
+import com.motel.entity.CustomUserDetails;
+import com.motel.entity.Motel;
 import com.motel.entity.MotelRoom;
 import com.motel.entity.Post;
 import com.motel.repository.AccountsRepository;
+import com.motel.repository.MotelRepository;
 import com.motel.repository.PostRepository;
 import com.motel.service.MotelRoomService;
 import com.motel.service.PostService;
 import com.motel.service.RenterService;
+import com.motel.service.impl.ManageMotelImpl;
 
 @Controller
 public class AdminPostController {
@@ -41,19 +47,39 @@ public class AdminPostController {
 	@Autowired
 	AccountsRepository accountsRepository;
 
+	@Autowired
+	ManageMotelImpl manageMotelImpl;
+
+	@Autowired
+	MotelRepository motelRepository;
+
 	@GetMapping("/admin/posts")
 	public String allPost(Model model) {
 
-		List<Post> listPosts = postService.getListPost();
+		if (manageMotelImpl.CheckLogin().isPresent()) {
+			CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+			if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+				Motel motel = motelRepository.getById(customUserDetails.getMotelid());
 
-		model.addAttribute("listPosts", listPosts);
+				List<MotelRoom> motelRooms = motel.getMotelRoom();
+				List<Post> posts = new ArrayList<>();
 
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String name = auth.getName();
-		System.out.println("Name +==============     : " + name);
+				for (MotelRoom motelRoom : motelRooms) {
+					for (Post post : motelRoom.getPosts()) {
+						posts.add(post);
+					}
+				}
 
-		return "admin/post/post-list";
+				posts.sort(Comparator.comparing(Post::getCreateDate).reversed());
 
+				model.addAttribute("listPosts", posts);
+				return "admin/post/post-list";
+			} else {
+				return "redirect:/admin/manage-motel";
+			}
+		} else {
+			return "home/signin";
+		}
 	}
 
 	@GetMapping("/admin/add-post")
@@ -62,8 +88,8 @@ public class AdminPostController {
 		model.addAttribute("post", post);
 
 		String emailAccount = authentication.getName();
-        Account account = accountsRepository.getByEmail(emailAccount);
-        // model.addAttribute("accountId", account.getAccountId());
+		Account account = accountsRepository.getByEmail(emailAccount);
+		// model.addAttribute("accountId", account.getAccountId());
 
 		List<MotelRoom> listMotelRooms = renterService.getMotelRoomByAccount(account.getAccountId());
 		model.addAttribute("listMotelRooms", listMotelRooms);
@@ -79,7 +105,7 @@ public class AdminPostController {
 		model.addAttribute("postsMotelRoomDescription", posts.getMotelRoom().getDescriptions());
 
 		List<MotelRoom> listMotelRooms = motelRoomService.getAll();
-		model.addAttribute("listMotelRooms", listMotelRooms);	
+		model.addAttribute("listMotelRooms", listMotelRooms);
 		return "admin/post/update-post";
 
 	}
@@ -110,9 +136,9 @@ public class AdminPostController {
 		System.out.println(posts.getMotelRoom().getDescriptions());
 
 		List<MotelRoom> listMotelRooms = motelRoomService.getAll();
-		model.addAttribute("listMotelRooms", listMotelRooms);	
+		model.addAttribute("listMotelRooms", listMotelRooms);
 		try {
-			
+
 			postService.update(post, postId);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -122,8 +148,8 @@ public class AdminPostController {
 	}
 
 	@GetMapping("/admin/deletePost/{postId}")
-    public String deletePost(@PathVariable("postId") Integer postId, Model model) {
-        postService.deletePost(postId);
-        return "redirect:/admin/posts";
-    }
+	public String deletePost(@PathVariable("postId") Integer postId, Model model) {
+		postService.deletePost(postId);
+		return "redirect:/admin/posts";
+	}
 }

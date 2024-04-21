@@ -48,7 +48,7 @@
 
 	<div th:fragment="pagination(entityName)" th:remove="tag">
 
-		<div class="text-center" th:if="${totalItems > 0}" style="margin-top: 1rem;">
+		<div class="text-center" th:if="${totalItems > 0}" style="margin-top: 1rem;color:white">
 			<span>Hiển thị [[${entityName}]] [[${startCount}]] đến [[${endCount}]] trên
 				[[${totalItems}]]</span>
 		</div>
@@ -58,19 +58,19 @@
 		<div class="col-12 d-flex justify-content-center" style="border: none;" th:if="${totalPages > 1}">
 			<ul class="pagination" style="border: none; margin-top: 1rem;">
 				<li th:class="${currentPage > 1 ? 'page-link' : 'page-link disabled'}">
-					<a th:replace="layout/paging :: page_link(1, 'Trang đầu')"></a>
+					<a th:replace="home/paging :: page_link(1, 'Trang đầu')"></a>
 				</li>
 				<li th:class="${currentPage > 1 ? 'page-link' : 'page-link disabled'}">
-					<a th:replace="layout/paging :: page_link(${currentPage - 1}, 'Lui')"></a>
+					<a th:replace="home/paging :: page_link(${currentPage - 1}, 'Lui')"></a>
 				</li>
 				<li th:class="${currentPage != i ? 'page-link' : 'page-link active'}"
 					th:each="i : ${#numbers.sequence(1, totalPages)}"><a
-						th:replace="layout/paging :: page_link(${i}, ${i})"></a></li>
+						th:replace="home/paging :: page_link(${i}, ${i})"></a></li>
 				<li th:class="${currentPage < totalPages ? 'page-link' : 'page-link disabled'}">
-					<a th:replace="layout/paging :: page_link(${currentPage + 1}, 'Tới')"></a>
+					<a th:replace="home/paging :: page_link(${currentPage + 1}, 'Tới')"></a>
 				</li>
 				<li th:class="${currentPage < totalPages ? 'page-link' : 'page-link disabled'}">
-					<a th:replace="layout/paging :: page_link(${totalPages}, 'Trang cuối')"></a>
+					<a th:replace="home/paging :: page_link(${totalPages}, 'Trang cuối')"></a>
 				</li>
 
 			</ul>

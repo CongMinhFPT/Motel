@@ -26,8 +26,8 @@
 						<div class="image-box row mt-5 " id="image-box"></div><br>
 						<label for="input" class="btn btn-primary mt-3">
 							<i for="input" class="fas fa-upload"></i> Chọn ảnh 
-							<input name="files" class="mt-3 d-none " type="file" id="input" accept="image/*" multiple><br>
-						  </label>
+							<input name="files"  class="mt-3 d-none " type="file" id="input" accept="image/*" multiple><br>
+						  </label><br>
 	
 						<label th:text="${Imgerror}" id="text-error-file" class="mt-2 " style="color: red;" for=""></label>
 					</div>
@@ -82,9 +82,12 @@
 				<div>
 					<label class="form-label mt-4 text-black  " for="">Link video</label>
 					<div class="row ">
-						<input th:field="*{video}" type="text" class="form-control col-11  " id="Idinput-linkyoutube">
+						<input th:field="*{video}" type="text" class="form-control col-11  " id="Idinput-linkyoutube" 
+						data-intro="<br><span>Bước 1 : Vào Video muốn lấy đường dẫn trong YouTube </span><br><img src='/files/imghuongdan/huongdan1.png' alt='hình hướng dẫn'><br><span> Bước 2 : Sao chép đường đẫn</span><br><img src='/files/imghuongdan/huongdan2.png' alt='hình hướng dẫn'><br><span> Bước 3 : Dán đường dẫn vào ô nhập</span><br><img src='/files/imghuongdan/huongdan3.1.png' alt='hình hướng dẫn'>" data-step="1">
 						<p class="col-1 mt-1  btn btn-primary" data-bs-toggle="modal"
-							data-bs-target="#exampleModal" id="Idbutton-linkyoutube">Xem thử</p>
+							data-bs-target="#exampleModal" id="Idbutton-linkyoutube">Xem thử</p><br>
+							
+							<label type="button" id="helpButton" >Xem hướng dẫn lấy link video YouTube </label>
 					</div>
 					<div>
 						<label th:errors="*{video}" id="video-error" style="color: red; padding: 0.5rem; display: block;"
@@ -93,7 +96,7 @@
 						for=""></label>
 					</div>
 				</div>
-				<button class="btn btn-primary m-3  " type="submit">Thêm</button>
+				<button class="btn btn-primary m-3  "  id="submitluu"  type="submit">Thêm</button>
 			</form>
 			<!-- Modal -->
 			<div class="modal fade " id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -115,6 +118,16 @@
 				</div>
 			</div>
 		</div>
+		<style>
+			.introjs-tooltip {
+			  max-width: 800px !important; /* Thay đổi giá trị này để điều chỉnh chiều rộng */
+			}
+			</style>
+		<script>
+			document.getElementById('helpButton').addEventListener('click', function() {
+			  introJs().start();
+			});
+			</script>
 </body>
 
 </html>

@@ -15,7 +15,7 @@
 	<link rel="stylesheet" th:href="@{/css/header.css}">
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
 	<link rel="stylesheet" th:href="@{/css/main.css}">
-<!--	<link rel="stylesheet" th:href="@{/js/script.js}">	-->
+	<!--	<link rel="stylesheet" th:href="@{/js/script.js}">	-->
 	<!-- ===== Boxicons CSS ===== -->
 	<link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 </head>
@@ -104,6 +104,7 @@
 											<p class="card-text priceBill"
 												th:text="${#numbers.formatDecimal(i.roomBill,3,'POINT',0,'COMMA')}"></p>
 											<p class="d-flex align-items-start">VND</p>
+
 										</div>
 										<div class="row py-3">
 											<div class="col-lg-6 card-text"><i
@@ -198,7 +199,7 @@
 	<hr>
 	<div th:replace="~{/layout/footer.html}"></div>
 	<div th:replace="~{/home/script}"></div>
-<!--	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<!--	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script> 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" ></script>
 	<script src="js/owl.carousel.min.js"></script>

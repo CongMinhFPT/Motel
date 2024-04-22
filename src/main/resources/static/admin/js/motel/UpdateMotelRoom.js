@@ -78,7 +78,7 @@ app.controller(
       console.log($scope.idmotelroom);
       if (!$scope.numberbill) {
         console.log($scope.numberbill)
-        $scope.error = "Vui lòng nhập giá tiền "+$scope.title+" là số dương lớn hơn 0";
+        $scope.error = "Vui lòng nhập giá tiền "+$scope.title;
       } else if (
         typeof $scope.numberbill === "string" &&
         !$scope.numberbill.match(/^\d+$/)

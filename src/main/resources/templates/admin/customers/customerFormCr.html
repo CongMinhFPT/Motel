@@ -55,6 +55,16 @@
 									</div>
 
 								</div>
+								<div class="d-flex flex-row align-items-center mb-4">
+
+									<div class="form-outline flex-fill mb-0">
+										<label class="form-label fw-bold" for="form3Example3c">Mật Khẩu</label>
+										<input type="password" id="form3Example3c" class="form-control rounded-3"
+											th:field="*{password}" placeholder="Nhập mật khẩu">
+										<i th:errors="*{password}" class="text-danger"></i>
+									</div>
+
+								</div>
 								<div class="form-group form-float mb-3">
 									<div class="form-line">
 										<label class="form-label fw-bold" for="form3Example4c">Số điện
@@ -105,7 +115,7 @@
 									<i class="text-danger" th:text="${date}"></i>
 									<i class="text-danger" th:errors="*{createDate}"></i>
 								</div>
-								<div class="d-grid gap-2">
+								<div>
 									<button class="btn btn-secondary rounded-3">Thêm mới</button>
 									<a th:href="@{/add}" class="btn btn-secondary rounded-3">Làm mới</a>
 								</div>

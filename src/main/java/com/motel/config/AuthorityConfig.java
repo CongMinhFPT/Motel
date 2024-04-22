@@ -34,8 +34,8 @@ public class AuthorityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable().cors().disable();
 
 		http.authorizeRequests()
-				.antMatchers("/authority").hasRole("SUPPER")
-				.antMatchers("/admin/**").hasAnyRole("MANAGER", "SUPPER")
+				.antMatchers("/authority","/requestauth","/editrequest/**","/requestauth/**","/customerList","/delete/**","/edit/**","/add/**").hasRole("SUPPER")
+				.antMatchers("/admin/**").hasAnyRole("MANAGER")
 				.antMatchers("/news/**", "/admin/show-motel").hasAnyRole("OWNER")
 				.antMatchers("/news8/**").hasAnyRole("MANAGER", "SUPPER", "OWNER", "CUSTOMER")
 				.antMatchers("/admin").authenticated()

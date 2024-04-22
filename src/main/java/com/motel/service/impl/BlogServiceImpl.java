@@ -33,7 +33,7 @@ public class BlogServiceImpl implements BlogService {
 	private BlogRepository blogRepo;
 	@Autowired
 	private AccountsRepository acRepo;
-	public static final int BLOG_PER_PAGE = 5;
+	public static final int BLOG_PER_PAGE = 4;
 
 	@Override
 	public List<Blog> getListBlog() {

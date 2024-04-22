@@ -37,9 +37,9 @@ public class PostServiceImpl implements PostService{
 	
 	@Override
 	public List<Post> getList3PostFirst() {
-		// TODO Auto-generated method stub
 		PageRequest pageable = PageRequest.of(0, 3);
 		return (List<Post>) postRepo.find3PostFirst(pageable);
+		/* return (List<Post>) postRepo.find3PostFirst(); */
 	}
 
 

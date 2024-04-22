@@ -16,7 +16,7 @@
     border-right: 1px solid #ccc;
     padding: 20px;
     box-sizing: border-box;
-    background-color: #3498db;
+    background-color: white;
     color: #fff;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -49,10 +49,13 @@
 }
 
 .user-item.active {
-    background-color: #cdebff;
-    color: #4f4f4f;
+    background-color: #007bff;
+    color: white;
     padding: 10px;
     border-radius: 5px;
+}
+.user-item.active span{
+    color: white;
 }
 
 .user-item img {
@@ -64,6 +67,7 @@
 
 .user-item span {
     font-weight: bold;
+    color: black;
 }
 
 .separator {
@@ -110,7 +114,7 @@
 }
 
 .sender {
-    background-color: #3498db;
+    background-color: #007bff;
     color: #fff;
     align-self: flex-end;
 }
@@ -137,7 +141,7 @@
 .message-input button {
     padding: 10px;
     border: none;
-    background-color: #3498db;
+    background-color: #007bff;
     color: #fff;
     border-radius: 5px;
     cursor: pointer;

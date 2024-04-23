@@ -49,6 +49,7 @@ public class RenterController {
         String emailAccount = authentication.getName();
         Account account = accountsRepository.getByEmail(emailAccount);
         model.addAttribute("accountIdRenter", account.getAccountId());
+        manageMotelImpl.CheckLoginAndSetMotelid(model);
         // List<MotelRoom> motelRooms = renterService.getAll();
         // model.addAttribute("motelRooms", motelRooms);
         return "/admin/renter/add-renter";
@@ -71,7 +72,7 @@ public class RenterController {
                 }
 
                 renters.sort(Comparator.comparing(Renter::getRenterDate).reversed());
-
+                manageMotelImpl.SetModelMotel(model);
                 model.addAttribute("renters", renters);
                 return "/admin/renter/renter-list";
             } else {

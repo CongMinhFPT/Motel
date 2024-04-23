@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -117,8 +118,33 @@ public class MotelRoom {
                 '}';
     }
 
-    public Double getAcreage(){
-      return width*length;
+    @Transient
+    public String getAcreage(){
+    	double result = width*length;
+    	double render = Math.round(result*10.0)/10.0;
+    	String fomated = String.format("%.1f", render);
+      return fomated;
+    }
+    
+    @Transient
+    public long countRenter() {
+      if (renter == null) {
+        return 0;
+      }
+      return renter.size();
+    }
+    @Transient
+    public String getWifiCashTotal() {
+    	double totalWifiBill = 0.0;
+        if (wifiCash != null) {
+          for (WifiCash cash : wifiCash) {
+            totalWifiBill += cash.getWifiBill();
+          }
+        }
+        if(totalWifiBill == 0.0 || waterCash == null) {
+        	return "Miễn phí";
+        }
+        return String.format("%.1f", totalWifiBill);
     }
 
 }

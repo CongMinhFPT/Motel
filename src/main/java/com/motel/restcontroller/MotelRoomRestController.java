@@ -48,6 +48,7 @@ public class MotelRoomRestController {
     // }
 
     @GetMapping("/api/listMotelRoom")
+
     public ResponseEntity<Page<MotelRoom>> listMotelRoom(
             @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 5);
@@ -60,6 +61,7 @@ public class MotelRoomRestController {
     @GetMapping("/api/rooms")
     public Page<Post> getAllRooms(@RequestParam(defaultValue = "0") int page) {
         return postRepository.findAll(PageRequest.of(page, 5));
+
     }
 
     @GetMapping("/api/motelRoom/{motelRoomId}")

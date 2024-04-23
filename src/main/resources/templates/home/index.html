@@ -18,6 +18,8 @@
 	<!--	<link rel="stylesheet" th:href="@{/js/script.js}">	-->
 	<!-- ===== Boxicons CSS ===== -->
 	<link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" th:href="@{/vendor/owlcarousel/assets/owl.carousel.min.css}">
+	<link rel="stylesheet" th:href="@{/vendor/owlcarousel/assets/owl.theme.default.min.css}">
 </head>
 
 
@@ -92,48 +94,53 @@
 				<span class="rent-motel-title">CHO THUÊ PHÒNG TRỌ MỚI NHẤT</span>
 				<div class="container mt-3">
 					<div class="row">
-						<th:block th:each="post:${listPost}">
-							<div class="col-lg-4 col-12">
-								<div class="card" style="background-color: #fff; color: #000;">
-									<img class="card-img-top w-100"
-										th:src="@{'/files/ImgMotel/' + ${post.motelRoom.motel.image}}" alt="" />
-									<div class="card-body">
-										<p class="card-text">[[${post.title}]]</p>
+						<div class="owl-carousel owl-theme pt-xl-3">
+							<div class="item fw-bold" th:each="post:${listPost}" th:object="${items}">
+								<div class="col-lg-12 col-12">
+									<div class="card" style="background-color: #fff; color: #000;">
+										<img class="card-img-top w-100"
+											th:src="@{'/files/ImgMotel/' + ${post.motelRoom.motel.image}}" alt="" />
+										<div class="card-body">
+											<p class="card-text">[[${post.title}]]</p>
 
-										<div th:each="i:${post.motelRoom.roomCash}" class="d-flex">
-											<p class="card-text priceBill"
-												th:text="${#numbers.formatDecimal(i.roomBill,3,'POINT',0,'COMMA')}"></p>
-											<p class="d-flex align-items-start">VND</p>
+											<div th:each="i:${post.motelRoom.roomCash}" class="d-flex">
+												<p class="card-text priceBill"
+													th:text="${#numbers.formatDecimal(i.roomBill,3,'POINT',0,'COMMA')}">
+												</p>
+												<p class="d-flex align-items-start">VND</p>
 
-										</div>
-										<div class="row py-3">
-											<div class="col-lg-6 card-text"><i
-													class='bx bx-current-location pe-1'></i>[[${post.motelRoom.motel.adressMotel}]]
 											</div>
+											<div class="row py-3">
+												<div class="col-lg-6 card-text"><i
+														class='bx bx-current-location pe-1'></i>[[${post.motelRoom.motel.adressMotel}]]
+												</div>
 
-											<div class="col-lg-6 card-text"><i class='bx bx-fullscreen pe-1'></i>Diện
-												tích:
-												<a>[[${post.motelRoom.acreage}]] m2</a>
-											</div>
-											<hr>
-											<div class="col-lg-6 card-text">
+												<div class="col-lg-6 card-text"><i
+														class='bx bx-fullscreen pe-1'></i>Diện
+													tích:
+													<a>[[${post.motelRoom.acreage}]] m2</a>
+												</div>
+												<hr>
+												<div class="col-lg-6 card-text">
 
-												<i class='bx bx-user-plus pe-1'></i>Hiện có
-												[[${post.motelRoom.countRenter}]] người ở
+													<i class='bx bx-user-plus pe-1'></i>
+													[[${post.motelRoom.categoryRoom.title}]]
+												</div>
+												<div class="col-lg-6 card-text"><i class='bx bx-wifi pe-1'></i>Giá wifi
+													:
+													[[${post.motelRoom.wifiCashTotal}]]
+												</div>
+												<hr>
 											</div>
-											<div class="col-lg-6 card-text"><i class='bx bx-wifi pe-1'></i>Giá wifi :
-												[[${post.motelRoom.wifiCashTotal}]]
+											<div class="card-person d-flex justify-content-between">
+												<p class="card-text">[[${post.account.fullname}]]</p>
+												<!--<p>></p>-->
 											</div>
-											<hr>
-										</div>
-										<div class="card-person d-flex justify-content-between">
-											<p class="card-text">[[${post.account.fullname}]]</p>
-											<!--<p>></p>-->
 										</div>
 									</div>
 								</div>
 							</div>
-						</th:block>
+						</div>
 					</div>
 				</div>
 			</div>

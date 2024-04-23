@@ -19,7 +19,7 @@ import com.motel.service.PostService;
 
 @Transactional
 @Service
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
 
 	@Autowired
 	private PostRepository postRepo;
@@ -28,20 +28,18 @@ public class PostServiceImpl implements PostService{
 
 	@Autowired
 	MotelRoomRepository motelRoomRepository;
-	
+
 	@Override
 	public List<Post> getListPost() {
 		// TODO Auto-generated method stub
-		return (List<Post>) postRepo.findAll();
-	}
-	
-	@Override
-	public List<Post> getList3PostFirst() {
-		PageRequest pageable = PageRequest.of(0, 3);
-		return (List<Post>) postRepo.find3PostFirst(pageable);
-		/* return (List<Post>) postRepo.find3PostFirst(); */
+		return postRepo.findAll();
 	}
 
+	@Override
+	public List<Post> getList3PostFirst() {
+		return postRepo.find3PostFirst();
+		/* return (List<Post>) postRepo.find3PostFirst(); */
+	}
 
 	@Override
 	public Post save(Post post, String email) {
@@ -53,10 +51,10 @@ public class PostServiceImpl implements PostService{
 			Post postInDB = postRepo.findById(post.getPostId()).get();
 			post.setCreateDate(postInDB.getCreateDate());
 		}
-		
+
 		Account account = acRepo.getByEmail(email);
 		post.setAccount(account);
-		
+
 		return postRepo.save(post);
 	}
 
@@ -91,10 +89,10 @@ public class PostServiceImpl implements PostService{
 	@Override
 	public void deletePost(Integer postId) {
 		if (postId == null) {
-            throw new IllegalStateException("Bài đăng không tồn tại!");
-        } else {
-            postRepo.deleteById(postId);
-        }
+			throw new IllegalStateException("Bài đăng không tồn tại!");
+		} else {
+			postRepo.deleteById(postId);
+		}
 	}
 
 	@Override
@@ -118,4 +116,3 @@ public class PostServiceImpl implements PostService{
 	}
 
 }
-

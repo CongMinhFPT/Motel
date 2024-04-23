@@ -15,4 +15,5 @@ public interface RenterService {
     List<Renter> getRenters();
     Renter getRenter(Integer renterId);
     void deleteRenter(Integer renterId);
+    long countByMotelRoom(MotelRoom motelRoom);
 }

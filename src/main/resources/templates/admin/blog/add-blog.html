@@ -112,9 +112,10 @@
 									<div class="form-group col-md-12 mt-3">
 										<div class="form-group col-md-2">
 											<label class="control-label">Hình ảnh</label>
+											<div id="imageError" class="text-danger"></div>
 											<div id="myfileupload">
-												<input type="hidden" th:field="*{image}" />
-												<input type="file" id="uploadfile" name="uploadfile"
+												<input type="hidden" th:field="*{image}" required />
+												<input type="file" id="uploadfile" name="uploadfile" required
 													th:required="${blog.imagePath == null}" onchange="readURL(this);" />
 												<p id="desIm" class="text-danger">
 											</div>
@@ -369,6 +370,39 @@
 		// });
 
 	</script>
+	
+	<script>
+		$(document).ready(function () {
+		    $('#uploadfile').on('change', function () {
+		        validateImage();
+		    });
+		
+		    function validateImage() {
+		        var fileInput = $('#uploadfile')[0];
+		        var filePath = fileInput.value;
+		        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+		        if (!allowedExtensions.exec(filePath)) {
+		            $('#imageError').text('Hãy chọn một hình ảnh có định dạng hợp lệ (.jpg, .jpeg, .png, .gif)');
+		            fileInput.value = '';
+					$('#imageError').text('Vui lòng chọn ảnh');
+		        } else {
+		            $('#imageError').text('');
+		        }
+		    }
+		
+		    $('form').submit(function (event) {
+		        validateImage();
+		        var filePath = $('#uploadfile')[0].value;
+		        if (!filePath) {
+		            $('#imageError').text('Vui lòng chọn một hình ảnh');
+		            event.preventDefault();
+		        }
+		    });
+		});
+
+		
+	</script>
+	
 </body>
 
 </html>

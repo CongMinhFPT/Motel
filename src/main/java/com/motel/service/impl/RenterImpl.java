@@ -110,4 +110,10 @@ public class RenterImpl implements RenterService {
     public List<MotelRoom> getMotelRoomByAccount(Integer accountId) {
         return motelRoomRepository.findMotelRoomsByAccount(accountId);
     }
+
+	@Override
+	public long countByMotelRoom(MotelRoom motelRoom) {
+		// TODO Auto-generated method stub
+		return renterRepository.countByMotelRoom(motelRoom);
+	}
 }

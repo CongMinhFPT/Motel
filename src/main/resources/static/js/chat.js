@@ -1,4 +1,3 @@
-
 'use strict';
 
 const usernamePage = document.querySelector('#username-page');
@@ -13,13 +12,29 @@ const logout = document.querySelector('#logout');
 let stompClient = null;
 let nickname = null;
 let fullname = null;
+let avatar = null;
 let selectedUserId = null;
+let chatuser = null;
+
+function cleanNickname(nickname) {
+	return nickname.replace(/[^a-zA-Z0-9]/g, '_');
+}
+
+function cleanChatuser(chatuser) {
+	return chatuser.replace(/[^a-zA-Z0-9]/g, '_');
+}
+
 
 function connect(event) {
-	nickname = document.querySelector('#nickname').value.trim();
+	nickname = cleanNickname(document.querySelector('#nickname').value.trim());
 	fullname = document.querySelector('#fullname').value.trim();
+	avatar = document.querySelector('#avatar').value.trim();
+	chatuser = cleanChatuser(document.querySelector('#chatuser').value.trim());
 
-	if (nickname && fullname) {
+	if (!avatar) {
+		avatar = 'user_icon.png';
+	}
+	if (nickname && fullname && avatar) {
 		usernamePage.classList.add('hidden');
 		chatPage.classList.remove('hidden');
 
@@ -37,14 +52,16 @@ function onConnected() {
 	stompClient.subscribe(`/user/${nickname}/queue/messages`, onMessageReceived);
 	stompClient.subscribe(`/user/public`, onMessageReceived);
 
+	if (!avatar) {
+		avatar = 'user_icon.png';
+	}
 	// register the connected user
 	stompClient.send("/app/user.addUser",
 		{},
-		JSON.stringify({ nickName: nickname, fullName: fullname, status: 'ONLINE' })
+		JSON.stringify({ nickName: nickname, fullName: fullname, avatar: avatar, status: 'ONLINE' })
 	);
 	document.querySelector('#connected-user-fullname').textContent = fullname;
 	findAndDisplayConnectedUsers().then();
-	fetchUsersWithMessages().then();
 }
 
 function autoClick(elementId) {
@@ -56,19 +73,18 @@ function autoClick(elementId) {
 
 
 async function findAndDisplayConnectedUsers() {
-	const connectedUsersResponse = await fetch('/users/messages/${nickname}');
+	const connectedUsersResponse = await fetch(`/users/messages/${nickname}`);
 	let connectedUsers = await connectedUsersResponse.json();
 	connectedUsers = connectedUsers.filter(user => user.nickName !== nickname);
 
-	const connectedUsersResponse1 = await fetch('/allUser/${nickname}');
+	const connectedUsersResponse1 = await fetch(`/allUser/${nickname}`);
 	let connectedUsers1 = await connectedUsersResponse1.json();
 	connectedUsers1 = connectedUsers1.filter(user1 => user1.nickName !== nickname);
 	const connectedUsersList = document.getElementById('connectedUsers');
 	connectedUsersList.innerHTML = '';
-	const chatuser = document.querySelector('#chatuser').value.trim();
-	
+
+
 	connectedUsers1.forEach(user1 => {
-		console.log(user1.nickName)
 		if (user1.nickName == chatuser) {
 			appendUserElement(user1, connectedUsersList);
 			const separator = document.createElement('li');
@@ -76,9 +92,18 @@ async function findAndDisplayConnectedUsers() {
 			connectedUsersList.appendChild(separator);
 			autoClick(user1.nickName);
 		} else {
+			if (chatuser == 'null') {
+				return;
+			}
+			Swal.fire({
+				icon: 'error',
+				title: 'Người dùng chưa sử dụng chat',
+				text: 'Người dùng ' + chatuser + ' hiện chưa sử dụng chat.',
+			});
 			return;
 		}
 	});
+	connectedUsers = connectedUsers.filter(user => user.nickName !== chatuser);
 	connectedUsers.forEach(user => {
 		appendUserElement(user, connectedUsersList);
 		if (connectedUsers.indexOf(user) < connectedUsers.length - 1) {
@@ -89,13 +114,12 @@ async function findAndDisplayConnectedUsers() {
 	});
 }
 function appendUserElement(user, connectedUsersList) {
-	const avatar = document.querySelector('#avatar').value.trim();
 	const listItem = document.createElement('li');
 	listItem.classList.add('user-item');
 	listItem.id = user.nickName;
 
 	const userImage = document.createElement('img');
-	 userImage.src = '/img/' + avatar;
+	userImage.src = user.avatar ? '/img/' + user.avatar : '/img/user_icon.png';
 
 	const usernameSpan = document.createElement('span');
 	usernameSpan.textContent = user.fullName;
@@ -201,6 +225,14 @@ async function onMessageReceived(payload) {
 		nbrMsg.classList.remove('hidden');
 		nbrMsg.textContent = '';
 	}
+}
+
+function onLogout() {
+	stompClient.send("/app/user.disconnectUser",
+		{},
+		JSON.stringify({ nickName: nickname, fullName: fullname, status: 'OFFLINE' })
+	);
+	window.location.reload();
 }
 
 usernameForm.addEventListener('submit', connect, true); // step 1

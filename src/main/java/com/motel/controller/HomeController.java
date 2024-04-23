@@ -15,6 +15,7 @@ import com.motel.entity.Tag;
 import com.motel.service.BlogService;
 import com.motel.service.MotelRoomService;
 import com.motel.service.PostService;
+import com.motel.service.RenterService;
 import com.motel.service.impl.ManageMotelImpl;
 
 
@@ -25,12 +26,14 @@ public class HomeController {
     
 	@Autowired private BlogService blogService;
     @Autowired private PostService postService;
+    @Autowired private RenterService renterService;
     
     @GetMapping("/index")
     public String getMethodName(Model model) {
     	List<Blog> listBlogs = blogService.getList3BlogFirst();
 		model.addAttribute("listBlogs", listBlogs);
         List<Post> listPost = postService.getList3PostFirst();
+        
 		model.addAttribute("listPost", listPost);
         return "home/index";
     }

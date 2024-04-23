@@ -19,7 +19,7 @@ body{
     /* margin: 2rem auto; */
 
 }
-h3{
+h2,h3{
     font-weight: bold;
 }
 .card-title{
@@ -47,18 +47,21 @@ h3{
     align-items: center;
 }
 .button{
-    padding: 0.7rem 1.2rem 0rem 1rem;
+    padding: 0.7rem 1rem 0.5rem 0.7rem;
     display: inline-block;
     background-color: var(--primary);
-    border-radius: 0.5rem;
+    border-radius: 0.4rem;
     color: var(--off-white);
     text-decoration: solid ;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; 
+
    
 
 }
 .share-button{
     width: 3rem;
-    height: 3rem;
+    height: 5rem;
     border: 0.1rem solid var(--primary);
     border-radius: 50%;
     background-color: transparent;
@@ -130,7 +133,7 @@ h3{
   }
 
   .page-link {
-    background-color: #000; /* Đặt màu cho text của page link */
+    background-color: #fff; /* Đặt màu cho text của page link */
     color: black;
   }
 

@@ -38,7 +38,7 @@
 
                 <form th:action="@{/blog/page/1}" class="form-inline" id="searchForm">
 
-                    <div class="col" style="margin-left: 55rem;">
+                    <div class="col" style="margin-left: 60rem; margin-bottom: 2rem;">
                         <label class="p-2">Tìm kiếm chi tiết:</label>
                         <input type="search" name="keyword" th:value="${keyword}" class="form-control"
                             placeholder="Nhập từ khóa bạn cần tìm" aria-label="Search"
@@ -85,7 +85,7 @@
 										</button>
 									</div>  -->
 
-                        <select class="select" style="width: 100px;height: auto;" name="sortDir" id="sortDirTime">
+                        <select class="select" style="width: 100px; margin-left: 55rem;" name="sortDir" id="sortDirTime">
                             <option selected>Sắp Xếp</option>
                             <option th:value="desc" th:selected="(${sortDir} == 'desc')">Mặc định</option>
                             <option th:value="desc" th:selected="(${sortDir} == 'desc')">Mới nhất</option>
@@ -122,8 +122,8 @@
                                 <div class="card-text" th:utext="${blog.ShortDes}">
 
                                 </div>
-                                <div class="share">
-                                    <a class="button" th:href="@{/blog_details/} + ${blog.blogId}">Chi tiết</a>
+                                <div class="share" >
+                                    <a class="button" th:href="@{/blog_details/} + ${blog.blogId}" style="margin-top: 8rem;">Chi tiết</a>
                                     <!-- <button class="share-button">
                                     <img th:src="@{/img/icons8-share-24.png}">
                                 </button> -->

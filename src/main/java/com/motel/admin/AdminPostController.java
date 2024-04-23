@@ -73,6 +73,7 @@ public class AdminPostController {
 				posts.sort(Comparator.comparing(Post::getCreateDate).reversed());
 
 				model.addAttribute("listPosts", posts);
+				manageMotelImpl.SetModelMotel(model);
 				return "admin/post/post-list";
 			} else {
 				return "redirect:/admin/manage-motel";

@@ -53,10 +53,10 @@
                 <div class="row">
                     <th:block th:each="blog : ${blogSimilar}">
                         <div class="col-6 col-md-4">
-                            <div class="card" style="background-color: whitesmoke; color: black;">
+                            <div class="card" style="background-color: whitesmoke; color: black; height: 600px;">
                                 <div class="card-img-top w-100">
                                     <a th:href="@{/blog_details/} + ${blog.blogId}">
-                                        <img th:src="@{${blog.imagePath}}" class="img-fluid rounded-1 h-100" alt="">
+                                        <img th:src="@{${blog.imagePath}}" class="img-fluid rounded-1" alt="" style="height: 300px;">
                                     </a>
                                 </div>
                                 <div class="card-body">

@@ -70,6 +70,7 @@ public class IndexsController {
                 indexs.sort(Comparator.comparing(Indexs::getCreateDate).reversed());
 
                 model.addAttribute("indexs", indexs);
+                manageMotelImpl.SetModelMotel(model);
                 return "/admin/indexs/indexs-list";
             } else {
                 return "redirect:/admin/manage-motel";

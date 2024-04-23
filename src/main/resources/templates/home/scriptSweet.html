@@ -8,6 +8,36 @@
 <script th:src="@{/js/header.js}"></script>
 <script th:src="@{/js/invoice.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+<script th:inline="javascript">
+	var paymentSuccess = /*[[${paymentSuccess}]]*/ false;
+	if (paymentSuccess) {
+		Swal.fire({
+			title: "Thành công!",
+			text: "Thanh toán hóa đơn thành công!",
+			icon: "success",
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000
+		})
+	}
+	$('.owl-carousel').owlCarousel({
+		loop: true,
+		margin: 10,
+		nav: true,
+		autoplay: true,
+		autoplayTimeout: 3000,
+		autoplayHoverPause: true,
+		responsive: {
+			0: {
+				items: 1
+			},
+			1000: {
+				items: 3
+			}
+		}
+	})
+</script>
 <!--Quên mk-->
 <script th:if="${not #strings.isEmpty(message)}" th:inline="javascript">
 	var changeMessage = /*[[${message}]]*/ '';

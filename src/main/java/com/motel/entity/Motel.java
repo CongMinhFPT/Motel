@@ -67,6 +67,10 @@ public class Motel {
   @JsonIgnore
   List<MotelRoom> motelRoom;
 
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motel")
+  @JsonIgnore
+  List<Post> posts;
+
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "accountId")
   @JsonBackReference

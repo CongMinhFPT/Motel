@@ -12,7 +12,8 @@ import com.motel.entity.Post;
 import com.motel.entity.RoomCash;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
-	List<Post> findByMotelRoom_Motel_DistrictAndMotelRoom_Motel_Province(String district, String province);
+	// List<Post> findByMotelRoom_Motel_DistrictAndMotelRoom_Motel_Province(String
+	// district, String province);
 
 	@Query(nativeQuery = true, value = "SELECT COUNT(*) AS NumberOfPosts FROM posts WHERE create_date = GETDATE() AND status = 1")
 	Object findPostToDay();

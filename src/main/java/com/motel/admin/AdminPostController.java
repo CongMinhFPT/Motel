@@ -64,11 +64,11 @@ public class AdminPostController {
 				List<MotelRoom> motelRooms = motel.getMotelRoom();
 				List<Post> posts = new ArrayList<>();
 
-				for (MotelRoom motelRoom : motelRooms) {
-					for (Post post : motelRoom.getPosts()) {
-						posts.add(post);
-					}
-				}
+				// for (MotelRoom motelRoom : motelRooms) {
+				// for (Post post : motelRoom.getPosts()) {
+				// posts.add(post);
+				// }
+				// }
 
 				posts.sort(Comparator.comparing(Post::getCreateDate).reversed());
 
@@ -102,8 +102,10 @@ public class AdminPostController {
 	public String detailMotelRoom(@PathVariable("id") Integer id, Model model, @ModelAttribute("post") Post post) {
 		Post posts = postRepository.getById(id);
 		model.addAttribute("posts", posts);
-		model.addAttribute("postsMotelRoomId", posts.getMotelRoom().getMotelRoomId());
-		model.addAttribute("postsMotelRoomDescription", posts.getMotelRoom().getDescriptions());
+		// model.addAttribute("postsMotelRoomId",
+		// posts.getMotelRoom().getMotelRoomId());
+		// model.addAttribute("postsMotelRoomDescription",
+		// posts.getMotelRoom().getDescriptions());
 
 		List<MotelRoom> listMotelRooms = motelRoomService.getAll();
 		model.addAttribute("listMotelRooms", listMotelRooms);
@@ -132,9 +134,11 @@ public class AdminPostController {
 	public String saveBlog(@PathVariable("id") Integer postId, @ModelAttribute("post") Post post, Model model) {
 		Post posts = postRepository.getById(postId);
 		model.addAttribute("posts", posts);
-		model.addAttribute("postsMotelRoomId", posts.getMotelRoom().getMotelRoomId());
-		model.addAttribute("postsMotelRoomDescription", posts.getMotelRoom().getDescriptions());
-		System.out.println(posts.getMotelRoom().getDescriptions());
+		// model.addAttribute("postsMotelRoomId",
+		// posts.getMotelRoom().getMotelRoomId());
+		// model.addAttribute("postsMotelRoomDescription",
+		// posts.getMotelRoom().getDescriptions());
+		// System.out.println(posts.getMotelRoom().getDescriptions());
 
 		List<MotelRoom> listMotelRooms = motelRoomService.getAll();
 		model.addAttribute("listMotelRooms", listMotelRooms);

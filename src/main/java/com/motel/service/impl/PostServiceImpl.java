@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostService {
 		}
 
 		Account account = acRepo.getByEmail(email);
-		post.setAccount(account);
+		// post.setAccount(account);
 
 		return postRepo.save(post);
 	}
@@ -75,11 +75,12 @@ public class PostServiceImpl implements PostService {
 		Post post2 = postRepo.findById(postId).orElse(null);
 
 		post.setPostId(post2.getPostId());
-		post.setAccount(post2.getAccount());
+		// post.setAccount(post2.getAccount());
 		post.setCreateDate(post2.getCreateDate());
-		MotelRoom motelRoom = motelRoomRepository.findById(post.getMotelRoom().getMotelRoomId()).orElse(null);
+		// MotelRoom motelRoom =
+		// motelRoomRepository.findById(post.getMotelRoom().getMotelRoomId()).orElse(null);
 
-		post.setMotelRoom(motelRoom);
+		// post.setMotelRoom(motelRoom);
 		post.setStatus(post2.isStatus());
 		post.setTitle(post.getTitle());
 		postRepo.save(post);
@@ -105,10 +106,10 @@ public class PostServiceImpl implements PostService {
 		Post post2 = postRepo.findById(postId).orElse(null);
 
 		post.setPostId(post2.getPostId());
-		post.setAccount(post2.getAccount());
+		// post.setAccount(post2.getAccount());
 		post.setCreateDate(post2.getCreateDate());
 
-		post.setMotelRoom(post2.getMotelRoom());
+		// post.setMotelRoom(post2.getMotelRoom());
 		post.setStatus(post.isStatus());
 		post.setTitle(post2.getTitle());
 		postRepo.save(post);

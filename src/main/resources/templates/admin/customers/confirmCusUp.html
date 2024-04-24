@@ -57,14 +57,7 @@
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
 	<!--Đăng ký-->
-	<script th:if="${not #strings.isEmpty(create)}" th:inline="javascript">
-		var changeMessage = /*[[${create}]]*/ '';
-		Swal.fire({
-			icon: "success",
-			title: "Thành công!",
-			text: changeMessage
-		});
-	</script>
+	
 	<script>
 		document.getElementById('uploadInput').addEventListener('change', function () {
 			var reader = new FileReader();

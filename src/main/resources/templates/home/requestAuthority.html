@@ -26,36 +26,66 @@
 					<div class="card text-black" style="border-radius: 25px;">
 						<div class="card-body p-md-5">
 							<div class="row justify-content-center">
-
-								<div class="signin col-md-10 col-lg-6 col-xl-6  order-2 order-lg-2">
-
-									<p class="text-center h3 fw-bold mb-5 mx-1 mx-md-4 mt-4">Yêu cầu cấp quyền</p>
-									<p class="text-center text-center">Xin chào, <b th:text="${id}"></b>!</p>
-									<p style="font-size: larger;" class="text-danger text-center">[[${message}]]</p>
-									<form class="signin-form mx-1 mx-md-4" method="post" th:action="@{/request/save}" th:object="${request}">
-										<div class="d-flex flex-row align-items-center mb-4">
-											<div class="form-outline flex-fill mb-0">
-												<label class="form-label fw-bold" for="form3Example3c">Mô tả chi
-													tiết:</label>
-												<textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Tui muốn cập nhật lại quyền (chủ trọ,...). Với thông tin nhà trọ!"
-													rows="5" th:field="*{descriptions}"></textarea>
-												<i class="text-danger" th:errors="*{descriptions}"></i>
+								<form class="signin-form mx-1 mx-md-4" th:action="@{/request/save}"
+									th:object="${request}" enctype="multipart/form-data" method="post">
+									<div class="row justify-content-center signin ">
+										<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-2">Thông Tin</p>
+										<div class="col-lg-6">
+											<p class="text-center">Xin chào, <b th:text="${id}"></b>!</p>
+											<div class="form-group form-float">
+												<div class="form-line">
+													<img th:src="@{|/files/CustomerImg/${request.avatar}|}"
+														id="imagePreview" class="img-fluid rounded-3 mb-3" alt=""
+														style="height: 200px;">
+													<input type="file" id="uploadInput" class="form-control rounded-3"
+														name="image" placeholder="Chọn tệp" accept="image/*">
+												</div>
+												<i class="text-danger" th:text="${photo_message}"></i>
 											</div>
-
 										</div>
-										<div class="">
-											<button class="btn btn-secondary rounded-3">Gửi yêu cầu</button>
-											<a class="btn btn-secondary rounded-3" th:href="@{/requestList}">Danh sách yêu cầu</a>
-										</div>
-										
-									</form>
+										<div class="signin col-lg-6">
+											<div class="form-group form-float mb-3">
+												<div class="form-line">
+													<label class="form-label fw-bold" for="form3Example2c">Mã số
+														thuế</label>
+													<input type="text" id="form3Example2c"
+														class="form-control rounded-3" th:field="*{tax_code}"
+														placeholder="Nhập mã số thuế">
+												</div>
+												<i class="text-danger" th:errors="*{tax_code}"></i>
+												<i class="text-danger" th:text="${tax}"></i>
+											</div>
+											<div class="d-flex flex-row align-items-center mb-4">
+												<div class="form-outline flex-fill mb-0">
+													<label class="form-label fw-bold" for="form3Example3c">Mô tả chi
+														tiết:</label>
+													<textarea class="form-control" id="exampleFormControlTextarea1"
+														placeholder="Tui muốn cập nhật lại quyền (chủ trọ,...). Với thông tin nhà trọ!"
+														rows="5" th:field="*{descriptions}"></textarea>
+													<i class="text-danger" th:errors="*{descriptions}"></i>
+												</div>
 
-								</div>
-								<div class="col-md-10 col-lg-6 col-xl-6 order-1 order-lg-1 d-flex align-items-center">
+											</div>
+											<div class="d-grid gap-2">
+												<button class="btn btn-secondary rounded-3 text-white">Gửi yêu
+													cầu</button>
+												<a class="btn btn-secondary rounded-3" th:href="@{/requestList}">Danh
+													sách
+													yêu cầu</a>
+											</div>
+										</div>
+									</div>
+								</form>
+
+
+
+
+
+								<!--<div class="col-md-10 col-lg-6 col-xl-6 order-1 order-lg-1 d-flex align-items-center">
 
 									<img th:src="@{/img/motel1.jpg}" class="img-fluid h-100 rounded-3" alt="">
 
-								</div>
+								</div>-->
 
 							</div>
 						</div>
@@ -79,6 +109,28 @@
 		</div>
 
 	</main>
+	<script>
+		function openModal(src) {
+			// Tạo một modal element
+			var modal = document.createElement('div');
+			modal.classList.add('modal');
+
+			// Tạo một hình ảnh element trong modal
+			var modalImg = document.createElement('img');
+			modalImg.src = src;
+
+			// Đóng modal khi click ra ngoài
+			modal.onclick = function () {
+				modal.remove();
+			};
+
+			// Thêm hình ảnh vào modal
+			modal.appendChild(modalImg);
+
+			// Thêm modal vào body
+			document.body.appendChild(modal);
+		}
+	</script>
 
 	<div th:replace="~{/layout/footer}"></div>
 

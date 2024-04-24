@@ -48,6 +48,7 @@ import com.motel.repository.RoleRepository;
 import com.motel.service.AccountService;
 import com.motel.service.AuthorityService;
 import com.motel.service.MailerService;
+import com.motel.service.impl.ManageMotelImpl;
 
 @MultipartConfig
 @Controller
@@ -82,6 +83,9 @@ public class RegisterController {
 
 	@Autowired
 	InvoiceStatusRepository invoiceStatusRepository;
+	
+	@Autowired 
+	ManageMotelImpl filemanage;
 
 	private static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
 
@@ -421,14 +425,17 @@ public class RegisterController {
 		String acc = authentication.getName();
 		model.addAttribute("acc", acc);
 		if (photo != null && !photo.isEmpty()) {
-			try {
-				String fileName = photo.getOriginalFilename();
-				Path fileNameAnPath = Paths.get(UPLOAD_DIRECTORY, fileName);
-				Files.write(fileNameAnPath, photo.getBytes());
-				account.setAvatar(fileName);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			MultipartFile[] files = new MultipartFile[]{photo};
+			String nameImage = filemanage.ImgSave("CustomerImg", files);
+			account.setAvatar(nameImage);
+//			try {
+//				String fileName = photo.getOriginalFilename();
+//				Path fileNameAnPath = Paths.get(UPLOAD_DIRECTORY, fileName);
+//				Files.write(fileNameAnPath, photo.getBytes());
+//				account.setAvatar(fileName);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
 		} else {
 			String photoname = acccurrent.getAvatar();
 			account.setAvatar(photoname);

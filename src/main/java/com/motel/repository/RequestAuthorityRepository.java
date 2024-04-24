@@ -25,6 +25,8 @@ public interface RequestAuthorityRepository extends JpaRepository<RequestAuthori
 	
 	 boolean existsByRequestAuthorityStatusRequestAuthorityStatusIdAndAccountAccountId(Integer requestAuthorityStatusId, Integer accountId);
 	 
-	 @Query(nativeQuery = true, value = "select * from request_authority where request_authority_status_id = 1 AND account_id = 1")
-	 List<RequestAuthority> findByRequestAuthorityId(Integer requestAuthorityId);
+	 @Query(nativeQuery = true, value = "select * from request_authority where request_authority_status_id = 1 AND account_id = :accountId")
+	 List<RequestAuthority> findByRequestAuthorityId(@Param("accountId") Integer requestAuthorityId);
+	 
+
 }

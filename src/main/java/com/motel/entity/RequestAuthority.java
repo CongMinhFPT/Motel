@@ -45,6 +45,11 @@ public class RequestAuthority {
     @Nationalized
     String respdescriptions;
     
+    String avatar;
+    
+    @NotBlank(message = "Vui lòng nhập mã số thuế!")
+    String tax_code;
+    
     @Temporal(TemporalType.DATE)
 	@Column(name = "Createdate")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

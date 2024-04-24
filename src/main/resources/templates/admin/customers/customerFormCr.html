@@ -26,7 +26,7 @@
 							<div class="col-lg-6">
 								<div class="form-group form-float">
 									<div class="form-line">
-										<img th:src="@{|/uploads/${accounts.avatar}|}" id="imagePreview"
+										<img th:src="@{|/files/CustomerImg/${accounts.avatar}|}" id="imagePreview"
 											class="img-fluid rounded-3 mb-3" alt="" style="height: 200px;">
 										<input type="file" id="uploadInput" class="form-control rounded-3" name="image"
 											placeholder="Chọn tệp" accept="image/*">
@@ -115,7 +115,7 @@
 									<i class="text-danger" th:text="${date}"></i>
 									<i class="text-danger" th:errors="*{createDate}"></i>
 								</div>
-								<div>
+								<div class="d-grid gap-2">
 									<button class="btn btn-secondary rounded-3">Thêm mới</button>
 									<a th:href="@{/add}" class="btn btn-secondary rounded-3">Làm mới</a>
 								</div>

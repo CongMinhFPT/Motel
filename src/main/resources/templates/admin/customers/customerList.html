@@ -14,9 +14,9 @@
 					<div class="mr-auto mb-sm-0 mb-3">
 						<h4 class="card-title mb-2">Danh sách người dùng</h4>
 					</div>
-					<form class="input-group search-area" th:action="@{/find}" method="get" >
-						<input  type="search" class="form-control bg-info light" name="find" placeholder="Tìm người dùng..."
-							aria-describedby="basic-addon2">
+					<form class="input-group search-area" th:action="@{/find}" method="get">
+						<input type="search" class="form-control bg-info light" name="find"
+							placeholder="Tìm người dùng..." aria-describedby="basic-addon2">
 						<div class="input-group-append">
 							<button class="btn btn-info light mr-3" type="submit" style="border: none;">
 								<i class="flaticon-381-search-2"></i>
@@ -50,8 +50,8 @@
 									</td>
 									<td>
 										<div class="media style-1">
-											<img th:src="@{/uploads/{img}(img=${cus.avatar})}" class="img-fluid mr-2"
-												alt="">
+											<img th:src="@{/files/CustomerImg/{img}(img=${cus.avatar})}"
+												class="img-fluid mr-2" alt="" onclick="openCustomModal(this.src)">
 											<div class="media-body">
 												<h6 th:text="${cus.fullname}"></h6>
 												<h6 th:text="${cus.createDate}"></h6>
@@ -95,7 +95,7 @@
 														stroke-linejoin="round"></path>
 												</svg>
 											</a>
-											<a th:onclick="'return confirmDelete(' + ${cus.accountId} + ');'"
+											<a th:onclick="'return deleteCofirm(' + ${cus.accountId} + ');'"
 												class="ml-2 btn btn-xs px-2 light btn-danger "
 												th:unless="${#request.remoteUser eq cus.email}">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
@@ -112,7 +112,7 @@
 										</div>
 										<div class="d-flex action-button" th:unless="${cus.active}">
 											<a th:href="@{/edit/{id}(id=${cus.accountId})}"
-												class="btn btn-info btn-xs light px-2 disabled">
+												class="btn btn-info btn-xs light px-2 d-none">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
 													<path
@@ -121,8 +121,8 @@
 														stroke-linejoin="round"></path>
 												</svg>
 											</a>
-											<a th:onclick="'return confirmDelete(' + ${cus.accountId} + ');'"
-												class="ml-2 btn btn-xs px-2 light btn-danger disabled"
+											<a th:onclick="'return deleteCofirm(' + ${cus.accountId} + ');'"
+												class="ml-2 btn btn-xs px-2 light btn-danger d-none"
 												th:unless="${#request.remoteUser eq cus.email}">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
@@ -146,33 +146,30 @@
 			</div>
 		</div>
 	</div>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
 	<script>
-		function confirmDelete(id) {
-			Swal.fire({
-				title: "Xác Nhận!",
-				text: "Bạn có muốn xóa không!",
-				icon: "warning",
-				showCancelButton: true,
-				confirmButtonColor: "#3085d6",
-				cancelButtonColor: "#d33",
-				confirmButtonText: "Xóa",
-				cancelButtonText: "Không"
-			}).then((result) => {
-				if (result.isConfirmed) {
-					Swal.fire({
-						icon: "success",
-						title: "Thành công!",
-						text: "Xóa thành công!",
-						showConfirmButton: false,
-						timer: 1500
-					}).then(() => {
-						window.location.href = '/delete/' + id;
-					});
-				}
-			});
+		function openCustomModal(src) {
+			// Tạo một custom-modal element
+			var modal = document.createElement('div');
+			modal.classList.add('custom-modal');
+
+			// Tạo một hình ảnh element trong custom-modal
+			var modalImg = document.createElement('img');
+			modalImg.src = src;
+
+			// Đóng custom-modal khi click ra ngoài
+			modal.onclick = function () {
+				modal.remove();
+			};
+
+			// Thêm hình ảnh vào custom-modal
+			modal.appendChild(modalImg);
+
+			// Thêm custom-modal vào body
+			document.body.appendChild(modal);
 		}
+
 	</script>
+
 </body>
 
 </html>

@@ -23,11 +23,11 @@ public class MotelRoomsByPost {
         List<MotelRoom> list = new ArrayList<>();
         this.motelRoom1 = motelRoom;
         this.motel = motelRoom.getMotel();
-        this.post = motelRoom.getPosts().get(0);
+        // this.post = motelRoom.getPosts().get(0);
 
         // System.out.println(motelRoom.getMotel().getDescriptions());
         this.motelRoom1.setMotel(motel2);
         this.motel.setMotelRoom(list);
-        this.post.setMotelRoom(null);
+        // this.post.setMotelRoom(null);
     }
 }

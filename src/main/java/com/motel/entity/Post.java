@@ -41,13 +41,8 @@ public class Post {
     String title;
 
     @ManyToOne
-    @JoinColumn(name = "accountId")
-    @JsonBackReference
-    Account account;
-
-    @ManyToOne
-    @JoinColumn(name = "motelRoomId")
-    MotelRoom motelRoom;
+    @JoinColumn(name = "motelId")
+    Motel motel;
 
     @Transient
     public String getCreateDateFormat() {

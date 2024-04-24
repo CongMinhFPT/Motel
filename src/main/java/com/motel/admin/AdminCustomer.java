@@ -5,9 +5,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.servlet.annotation.MultipartConfig;
@@ -61,6 +64,12 @@ public class AdminCustomer {
 	RequestAuthorityRepository requestAuthorityRepository;
 	
 	private static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
+	
+	private static Map<String, Account> codeMap = new HashMap<>();
+	
+	private static String generateCode() {
+		return UUID.randomUUID().toString().substring(0,6);
+	}
 	
 	@GetMapping("/customerList")
 	public String showList(Model model) {
@@ -187,7 +196,7 @@ public class AdminCustomer {
 			model.addAttribute("email", "Email này đã tồn tại!");
 			return "admin/customers/customerFormCr";
 		}
-		if(accountsRepository.getByPhone(account.getPhone()) != null ) {
+		if(accountsRepository.findByPhone(account.getPhone()) != null ) {
 			model.addAttribute("phone", "Số điện thoại đã tồn tại. Vui lòng nhập số điện thoại khác!");
 			return "admin/customers/customerFormCr";
 		}
@@ -230,41 +239,65 @@ public class AdminCustomer {
 			return "admin/customers/customerFormCr";
 		}
 		
-		String pass = randompassword();
-		String passpe = pe.encode(pass);
-		account.setPassword(passpe);
-		accountsRepository.save(account);
-		
-		
-		Role staff = roleRepository.findById("STAFF").orElseGet(() -> {
-			Role newRole = new Role();
-			newRole.setId("STAFF");
-			return roleRepository.save(newRole);
-		});
-		
-		Authority au = new Authority();
-		au.setAccount(account);
-		au.setRole(staff);
-		authorityRepository.save(au);
-		
-		mailerService.add(memeMessage -> {
-			MimeMessageHelper helper = new MimeMessageHelper(memeMessage);
-			try {
-				helper.setTo(account.getEmail());
-				helper.setSubject("Nhà Trọ F.E Xin Chào!");
-				helper.setText(
-						"Nhà trọ F.E luôn là lựa chọn tốt nhất. Hân hạnh được phục vụ quí khách! <br/>Đây là mật khẩu đăng nhập của bạn: <span style='font-size: 18px; color: red'>"
-								+ pass + "</span>.",
-						true);
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
-		});
-
-		model.addAttribute("create", "Đăng ký thành công, vui lòng kiểm tra email để lấy mật khẩu!");
-
+		String confirm = generateCode();
+		codeMap.put(confirm, account);
+		try {
+			sendConfirm(account.getEmail(), confirm);
+			model.addAttribute("signupinfo", "Vui lòng xem email để lấy mã xác nhận!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("signuperr", "Lỗi gửi mã xác nhận!");
+		}
 		return "admin/customers/customerFormCr";
 	}
+	
+	@GetMapping("/confirmCus")
+	public String show() {
+		return "admin/customers/confirmCus";
+	}
+	
+	@PostMapping("/add/saveCus")
+	public String saveCus(@ModelAttribute("accounts") Account account, @RequestParam("code")String code, Model model) {
+		if(code.isBlank()) {
+			model.addAttribute("code", "Vui lòng nhập mã xác nhận!");
+			return "admin/customers/confirmCus";
+		}
+		if(codeMap.containsKey(code)) {
+			Account confirmCus = codeMap.get(code);
+			String passpe = pe.encode(confirmCus.getPassword());
+			confirmCus.setPassword(passpe);
+			accountsRepository.save(confirmCus);
+			
+			
+			Role staff = roleRepository.findById("CUSTOMER").orElseGet(() -> {
+				Role newRole = new Role();
+				newRole.setId("CUSTOMER");
+				return roleRepository.save(newRole);
+			});
+			
+			Authority au = new Authority();
+			au.setAccount(confirmCus);
+			au.setRole(staff);
+			authorityRepository.save(au);
+			mailerService.add(memeMessage -> {
+	            MimeMessageHelper helper = new MimeMessageHelper(memeMessage);
+	            try {
+	                helper.setTo(confirmCus.getEmail());
+	                helper.setSubject("Nhà Trọ F.E Xin Chào!");
+	                helper.setText("Nhà trọ F.E luôn là lựa chọn tốt nhất. Hân hạnh được phục vụ quí khách! ");
+	            } catch (MessagingException e) {
+	                e.printStackTrace();
+	            }
+	        });
+			codeMap.remove(code);
+			model.addAttribute("signup", "Thêm người dùng thành công!.");
+		}else {
+	        // Hiển thị thông báo lỗi nếu mã xác nhận không hợp lệ
+	        model.addAttribute("signuperr", "Mã xác nhận không hợp lệ.");
+	    }
+		return "admin/customers/confirmCus";
+	}
+	
 	@GetMapping("/edit/{id}")
 	public String form(Model model, @PathVariable("id") Integer id) {
 		Account cus = accountService.getById(id);
@@ -337,21 +370,56 @@ public class AdminCustomer {
 		account.setEmail(email);
 		account.setPassword(pass);
 		
-		accountsRepository.save(account);
-		model.addAttribute("update", "Cập nhật thành công!");
+		String confirm = generateCode();
+		codeMap.put(confirm, account);
+		try {
+			sendConfirm(account.getEmail(), confirm);
+			model.addAttribute("updateinfo", "Vui lòng xem email để lấy mã xác nhận!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("updateerr", "Lỗi gửi mã xác nhận!");
+		}
 		return "admin/customers/customerForm";
 	}
-	private String randompassword() {
-		int leftLimit = 97;
-		int rightLimit = 122;
-		int len = 8;
-		Random random = new Random();
-		StringBuilder buffer = new StringBuilder(len);
-		for (int i = 0; i < len; i++) {
-			int randomLimitedInt = leftLimit + (int) (random.nextFloat() * (rightLimit - leftLimit + 1));
-			buffer.append((char) randomLimitedInt);
+	
+	@GetMapping("/confirmCusUp")
+	public String showUp() {
+		return "admin/customers/confirmCusUp";
+	}
+	
+	@PostMapping("/confirmCusUpSave")
+	public String saveCusUp(@ModelAttribute("accounts") Account account, @RequestParam("code")String code, Model model) {
+		if(code.isBlank()) {
+			model.addAttribute("code", "Vui lòng nhập mã xác nhận!");
+			return "admin/customers/confirmCusUp";
 		}
-		String generatedString = buffer.toString();
-		return generatedString;
+		if(codeMap.containsKey(code)) {
+			Account confirmCus = codeMap.get(code);
+			accountsRepository.save(confirmCus);
+			codeMap.remove(code);
+			model.addAttribute("update", "Cập nhật thành công!.");
+		}else {
+	        // Hiển thị thông báo lỗi nếu mã xác nhận không hợp lệ
+	        model.addAttribute("updateerr", "Mã xác nhận không hợp lệ.");
+	    }
+		return "admin/customers/confirmCusUp";
+	}
+	
+	private void sendConfirm(String email, String confirm) {
+		// gửi email
+		mailerService.add(mimeMessage -> {
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+			try {
+				helper.setTo(email);
+				helper.setSubject("Nhà Trọ F.E Xin Chào!");
+				helper.setText(
+						"Chúng tôi cần xác nhận đây là tài khoản của bạn: <br/>Đây là mã xác nhận của bạn: <span style='font-size: 18px; color: red'>"
+								+ confirm + "</span>.",
+						true);
+
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 }

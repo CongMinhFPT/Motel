@@ -350,3 +350,67 @@
 		});
 	}
 </script>
+<!--Thêm người dùng-->
+<script th:if="${not #strings.isEmpty(signup)}" th:inline="javascript">
+	var changeMessage = /*[[${signup}]]*/ '';
+	Swal.fire({
+		title: "Thành công!",
+		text: changeMessage,
+		icon: "success"
+	}).then(() => {
+		window.location.href = '/customerList';
+	});
+</script>
+<script th:if="${not #strings.isEmpty(signuperr)}" th:inline="javascript">
+	var changeMessage = /*[[${signuperr}]]*/ '';
+	Swal.fire({
+		title: "Thất bại!",
+		text: changeMessage,
+		icon: "error"
+	});
+</script>
+<script th:if="${not #strings.isEmpty(signupinfo)}" th:inline="javascript">
+	var changeMessage = /*[[${signupinfo}]]*/ '';
+	Swal.fire({
+		icon: "info",
+		title: "Xác nhận!",
+		text: changeMessage,
+		showConfirmButton: false,
+		timer: 1500
+	}).then(() => {
+		var email = /*[[${email1}]]*/ '';
+        window.location.href = '/confirmCus';
+	});
+</script>
+<!--update người dùng-->
+<script th:if="${not #strings.isEmpty(update)}" th:inline="javascript">
+	var changeMessage = /*[[${update}]]*/ '';
+	Swal.fire({
+		title: "Thành công!",
+		text: changeMessage,
+		icon: "success"
+	}).then(() => {
+		window.location.href = '/customerList';
+	});
+</script>
+<script th:if="${not #strings.isEmpty(updateerr)}" th:inline="javascript">
+	var changeMessage = /*[[${updateerr}]]*/ '';
+	Swal.fire({
+		title: "Thất bại!",
+		text: changeMessage,
+		icon: "error"
+	});
+</script>
+<script th:if="${not #strings.isEmpty(updateinfo)}" th:inline="javascript">
+	var changeMessage = /*[[${updateinfo}]]*/ '';
+	Swal.fire({
+		icon: "info",
+		title: "Xác nhận!",
+		text: changeMessage,
+		showConfirmButton: false,
+		timer: 1500
+	}).then(() => {
+		var email = /*[[${email1}]]*/ '';
+        window.location.href = '/confirmCusUp';
+	});
+</script>

@@ -19,7 +19,7 @@ import com.motel.service.PostService;
 
 @Transactional
 @Service
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
 
 	@Autowired
 	private PostRepository postRepo;
@@ -28,20 +28,18 @@ public class PostServiceImpl implements PostService{
 
 	@Autowired
 	MotelRoomRepository motelRoomRepository;
-	
+
 	@Override
 	public List<Post> getListPost() {
 		// TODO Auto-generated method stub
-		return (List<Post>) postRepo.findAll();
-	}
-	
-	@Override
-	public List<Post> getList3PostFirst() {
-		PageRequest pageable = PageRequest.of(0, 3);
-		return (List<Post>) postRepo.find3PostFirst(pageable);
-		/* return (List<Post>) postRepo.find3PostFirst(); */
+		return postRepo.findAll();
 	}
 
+	@Override
+	public List<Post> getList3PostFirst() {
+		return postRepo.find3PostFirst();
+		/* return (List<Post>) postRepo.find3PostFirst(); */
+	}
 
 	@Override
 	public Post save(Post post, String email) {
@@ -53,10 +51,10 @@ public class PostServiceImpl implements PostService{
 			Post postInDB = postRepo.findById(post.getPostId()).get();
 			post.setCreateDate(postInDB.getCreateDate());
 		}
-		
+
 		Account account = acRepo.getByEmail(email);
-		post.setAccount(account);
-		
+		// post.setAccount(account);
+
 		return postRepo.save(post);
 	}
 
@@ -77,11 +75,12 @@ public class PostServiceImpl implements PostService{
 		Post post2 = postRepo.findById(postId).orElse(null);
 
 		post.setPostId(post2.getPostId());
-		post.setAccount(post2.getAccount());
+		// post.setAccount(post2.getAccount());
 		post.setCreateDate(post2.getCreateDate());
-		MotelRoom motelRoom = motelRoomRepository.findById(post.getMotelRoom().getMotelRoomId()).orElse(null);
+		// MotelRoom motelRoom =
+		// motelRoomRepository.findById(post.getMotelRoom().getMotelRoomId()).orElse(null);
 
-		post.setMotelRoom(motelRoom);
+		// post.setMotelRoom(motelRoom);
 		post.setStatus(post2.isStatus());
 		post.setTitle(post.getTitle());
 		postRepo.save(post);
@@ -91,10 +90,10 @@ public class PostServiceImpl implements PostService{
 	@Override
 	public void deletePost(Integer postId) {
 		if (postId == null) {
-            throw new IllegalStateException("Bài đăng không tồn tại!");
-        } else {
-            postRepo.deleteById(postId);
-        }
+			throw new IllegalStateException("Bài đăng không tồn tại!");
+		} else {
+			postRepo.deleteById(postId);
+		}
 	}
 
 	@Override
@@ -107,10 +106,10 @@ public class PostServiceImpl implements PostService{
 		Post post2 = postRepo.findById(postId).orElse(null);
 
 		post.setPostId(post2.getPostId());
-		post.setAccount(post2.getAccount());
+		// post.setAccount(post2.getAccount());
 		post.setCreateDate(post2.getCreateDate());
 
-		post.setMotelRoom(post2.getMotelRoom());
+		// post.setMotelRoom(post2.getMotelRoom());
 		post.setStatus(post.isStatus());
 		post.setTitle(post2.getTitle());
 		postRepo.save(post);
@@ -118,4 +117,3 @@ public class PostServiceImpl implements PostService{
 	}
 
 }
-

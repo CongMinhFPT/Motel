@@ -56,11 +56,6 @@ public class MotelRoom {
   String descriptions;
   boolean status = true;
 
-
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-  @JsonIgnore
-  List<Post> posts;
-
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
   @JsonManagedReference
   List<Image> image;
@@ -105,46 +100,47 @@ public class MotelRoom {
   @JoinColumn(name = "roomStatusId")
   RoomStatus roomStatus;
 
-    @Override
-    public String toString() {
-        return "MotelRoom{" +
-                "motelRoomId=" + motelRoomId +
-                ", createDate=" + createDate +
-                ", length=" + length +
-                ", width=" + width +
-                ", video='" + video + '\'' +
-                ", descriptions='" + descriptions + '\'' +
-                ", status=" + status +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "MotelRoom{" +
+        "motelRoomId=" + motelRoomId +
+        ", createDate=" + createDate +
+        ", length=" + length +
+        ", width=" + width +
+        ", video='" + video + '\'' +
+        ", descriptions='" + descriptions + '\'' +
+        ", status=" + status +
+        '}';
+  }
 
-    @Transient
-    public String getAcreage(){
-    	double result = width*length;
-    	double render = Math.round(result*10.0)/10.0;
-    	String fomated = String.format("%.1f", render);
-      return fomated;
+  @Transient
+  public String getAcreage() {
+    double result = width * length;
+    double render = Math.round(result * 10.0) / 10.0;
+    String fomated = String.format("%.1f", render);
+    return fomated;
+  }
+
+  @Transient
+  public long countRenter() {
+    if (renter == null) {
+      return 0;
     }
-    
-    @Transient
-    public long countRenter() {
-      if (renter == null) {
-        return 0;
+    return renter.size();
+  }
+
+  @Transient
+  public String getWifiCashTotal() {
+    double totalWifiBill = 0.0;
+    if (wifiCash != null) {
+      for (WifiCash cash : wifiCash) {
+        totalWifiBill += cash.getWifiBill();
       }
-      return renter.size();
     }
-    @Transient
-    public String getWifiCashTotal() {
-    	double totalWifiBill = 0.0;
-        if (wifiCash != null) {
-          for (WifiCash cash : wifiCash) {
-            totalWifiBill += cash.getWifiBill();
-          }
-        }
-        if(totalWifiBill == 0.0 || waterCash == null) {
-        	return "Miễn phí";
-        }
-        return String.format("%.1f", totalWifiBill);
+    if (totalWifiBill == 0.0 || waterCash == null) {
+      return "Miễn phí";
     }
+    return String.format("%.1f", totalWifiBill);
+  }
 
 }

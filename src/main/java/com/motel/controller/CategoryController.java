@@ -48,7 +48,7 @@ public class CategoryController {
 			CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
 			if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
 				Motel motel = motelRepository.getById(customUserDetails.getMotelid());
-                
+
 				List<MotelRoom> motelRooms = motel.getMotelRoom();
 				List<CategoryRoom> categoryRooms = new ArrayList<>();
 
@@ -65,7 +65,7 @@ public class CategoryController {
 						categoryRooms.add(categoryRoom);
 					}
 				}
-				
+
 				model.addAttribute("category", categoryRooms);
 				impl.SetModelMotel(model);
 				return "admin/category/category-list";
@@ -100,7 +100,7 @@ public class CategoryController {
 		if (result.hasErrors()) {
 			return "admin/category/add-category";
 		}
-		if (categoryrep.getBytitle(category.getTitle()) != null) {
+		if (categoryrep.getByQuantity(category.getQuantity()) != null) {
 			model.addAttribute("messagerror", "Tên tiêu đề đã tồn tại ! vui lòng sử dụng tên khác");
 			return "admin/category/add-category";
 		}
@@ -115,9 +115,9 @@ public class CategoryController {
 		if (result.hasErrors()) {
 			return "admin/category/up-category";
 		}
-		if (categoryrep.getBytitle(category.getTitle()) != null) {
+		if (categoryrep.getByQuantity(category.getQuantity()) != null) {
 			model.addAttribute("messagerror", "Tên tiêu đề đã tồn tại ! vui lòng sử dụng tên khác");
-			return "admin/category/up-category";
+			return "admin/category/add-category";
 		}
 		categoryService.create(category);
 		model.addAttribute("messagess", "Create Success!");

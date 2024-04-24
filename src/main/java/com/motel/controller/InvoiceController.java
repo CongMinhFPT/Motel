@@ -99,7 +99,7 @@ public class InvoiceController {
                 }
 
                 invoices.sort(Comparator.comparing(Invoice::getCreateDate).reversed());
-
+                manageMotelImpl.SetModelMotel(model);
                 model.addAttribute("invoices", invoices);
                 return "/admin/invoice/invoice-list";
             } else {

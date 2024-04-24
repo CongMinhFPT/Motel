@@ -30,14 +30,14 @@ public class MotelRoomNew {
     String video;
     String descriptions;
     boolean status;
-    List<String> Nameimg =new ArrayList<>();
+    List<String> Nameimg = new ArrayList<>();
     int Numberphotos;
     Double electricityBill;
     Double waterBill;
     Double wifiBill;
     Double roomBill;
     Integer People;
-    String title;
+    Integer quantity;
     String name;
     Date Checkoutdate;
 
@@ -47,26 +47,24 @@ public class MotelRoomNew {
             Double wifiBill,
             Double roomBill,
             Integer People,
-            String title,
+            Integer quantity,
             String name) {
         this.motelRoomId = motelRoom.getMotelRoomId();
-        this.createDate =motelRoom.getCreateDate();
-        this.length =motelRoom.getLength();
-        this.width =motelRoom.getWidth();
-        this.video=motelRoom.getVideo();
-        this.descriptions =motelRoom.getDescriptions();
-        this.status =motelRoom.isStatus();
-        this.Nameimg =Nameimg;
-        this.Numberphotos=Nameimg.size();
-        this.electricityBill=electricityBill;
-        this.waterBill=waterBill;
-        this.wifiBill=wifiBill;
-        this.roomBill =roomBill;
-        this.People=People;
-        this.title =title;
-        this.name=name;
-        this.Checkoutdate=motelRoom.getCheckoutdate();
+        this.createDate = motelRoom.getCreateDate();
+        this.length = motelRoom.getLength();
+        this.width = motelRoom.getWidth();
+        this.video = motelRoom.getVideo();
+        this.descriptions = motelRoom.getDescriptions();
+        this.status = motelRoom.isStatus();
+        this.Nameimg = Nameimg;
+        this.Numberphotos = Nameimg.size();
+        this.electricityBill = electricityBill;
+        this.waterBill = waterBill;
+        this.wifiBill = wifiBill;
+        this.roomBill = roomBill;
+        this.People = People;
+        this.quantity = quantity;
+        this.name = name;
+        this.Checkoutdate = motelRoom.getCheckoutdate();
+    }
 }
-}
-
-

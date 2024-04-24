@@ -42,33 +42,34 @@ public class RoomService {
         return motelsPage;
     }
 
-    private roomDTO convertToDTO(Motel motel) {
-        roomDTO dto = new roomDTO();
-        dto.setImage(motel.getImage());
-        dto.setAddress(motel.getDetailAddress());
+    // private roomDTO convertToDTO(Motel motel) {
+    // roomDTO dto = new roomDTO();
+    // dto.setImage(motel.getImage());
+    // dto.setAddress(motel.getDetailAddress());
 
-        MotelRoom room = motel.getMotelRoom().isEmpty() ? null : motel.getMotelRoom().get(0);
-        dto.setArea(room.getLength() * room.getWidth());
-        if (room.getCategoryRoom() != null) {
-            dto.setTitle(room.getCategoryRoom().getTitle());
-        }
-        if (motel.getAccount() != null) {
-            dto.setFullname(motel.getAccount().getFullname());
-        }
-        dto.setCreateDate(motel.getCreateDate());
-        dto.setCity(motel.getProvince());
-        dto.setDistrict(motel.getDistrict());
-        dto.setWard(motel.getWard());
+    // MotelRoom room = motel.getMotelRoom().isEmpty() ? null :
+    // motel.getMotelRoom().get(0);
+    // dto.setArea(room.getLength() * room.getWidth());
+    // if (room.getCategoryRoom() != null) {
+    // dto.setTitle(room.getCategoryRoom().getTitle());
+    // }
+    // if (motel.getAccount() != null) {
+    // dto.setFullname(motel.getAccount().getFullname());
+    // }
+    // dto.setCreateDate(motel.getCreateDate());
+    // dto.setCity(motel.getProvince());
+    // dto.setDistrict(motel.getDistrict());
+    // dto.setWard(motel.getWard());
 
-        // Lấy roomCash từ danh sách roomCash của room
-        List<RoomCash> roomCashList = room.getRoomCash();
-        if (!roomCashList.isEmpty()) {
-            // Lấy roomBill từ phần tử đầu tiên trong danh sách roomCash
-            dto.setPrice(roomCashList.get(0).getRoomBill());
-        }
+    // // Lấy roomCash từ danh sách roomCash của room
+    // List<RoomCash> roomCashList = room.getRoomCash();
+    // if (!roomCashList.isEmpty()) {
+    // // Lấy roomBill từ phần tử đầu tiên trong danh sách roomCash
+    // dto.setPrice(roomCashList.get(0).getRoomBill());
+    // }
 
-        return dto;
-    }
+    // return dto;
+    // }
 
     public List<CategoryRoom> findAllCategory() {
         return categoryRepository.findAll();

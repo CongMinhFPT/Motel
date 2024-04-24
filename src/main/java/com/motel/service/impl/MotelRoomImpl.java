@@ -46,14 +46,13 @@ public class MotelRoomImpl implements MotelRoomService {
     FileManager fileManager;
     @Autowired
     ImageRepository imageRepository;
-    @Autowired 
+    @Autowired
     RoomStatusRepository roomStatusRepository;
 
     @Override
     public List<MotelRoom> getAll() {
         return motelRoomRepository.findAll();
     }
-
 
     @Override
     public Optional<MotelRoom> getById(Integer motelRoomId) {
@@ -118,9 +117,16 @@ public class MotelRoomImpl implements MotelRoomService {
                     } else {
                         if (files != null && files.length > 0 && !files[0].isEmpty()) {
                             if (motelRoom.getVideo() != null) {
-                                String[] parts = motelRoom.getVideo().split("be/");
-                                String chuoi = parts[parts.length - 1];
-                                motelRoom.setVideo(chuoi);
+                                String[] splitByBe = motelRoom.getVideo().split(".be/");
+                                if (splitByBe.length > 1) {
+                                    String[] splitByQuestionMark = splitByBe[1].split("\\?");
+                                    if (splitByQuestionMark.length > 0) {
+                                        String videoId = splitByQuestionMark[0];
+                                        motelRoom.setVideo(videoId);
+                                    }
+                                }else{
+                                    motelRoom.setVideo(motelRoom.getVideo());
+                                }
                             }
                             RoomStatus roomStatus = roomStatusRepository.getById(1);
                             motelRoom.setRoomStatus(roomStatus);
@@ -235,7 +241,7 @@ public class MotelRoomImpl implements MotelRoomService {
             CustomUserDetails condition = impl.CheckLogin().get();
             if (impl.CheckAccountSetIdMotel(condition)) {
                 if (CheckRoomInMotel(motelRoom.getMotelRoomId(), condition.getMotelid())) {
-                    MotelRoom motelRoom2 =motelRoomRepository.getById(motelRoom.getMotelRoomId());
+                    MotelRoom motelRoom2 = motelRoomRepository.getById(motelRoom.getMotelRoomId());
                     impl.SetModelMotel(model);
                     if (bindingResult.hasErrors()) {
                         ListCategoryRoom(model);
@@ -254,36 +260,47 @@ public class MotelRoomImpl implements MotelRoomService {
                                 motelRoom2.setLength(motelRoom.getLength());
                                 motelRoom2.setWidth(motelRoom.getWidth());
                                 if (motelRoom.getVideo() != null) {
-                                    String[] parts = motelRoom.getVideo().split("be/");
-                                    String chuoi = parts[parts.length - 1];
-                                    motelRoom2.setVideo(chuoi);
+                                    String[] splitByBe = motelRoom.getVideo().split(".be/");
+                                    if (splitByBe.length > 1) {
+                                        String[] splitByQuestionMark = splitByBe[1].split("\\?");
+                                        if (splitByQuestionMark.length > 0) {
+                                            String videoId = splitByQuestionMark[0];
+                                            motelRoom2.setVideo(videoId);
+                                        }
+                                    }else{
+                                        motelRoom2.setVideo(motelRoom.getVideo());
+                                    }
                                 }
-                              if (motelRoom2.getCategoryRoom().getCategoryRoomId()!=motelRoom.getCategoryRoom().getCategoryRoomId()) {
-                                CategoryRoom categoryRoom = categoryRoomRepository
-                                .getById(motelRoom.getCategoryRoom().getCategoryRoomId());
-                                motelRoom2.setCategoryRoom(categoryRoom);
-                              }
-                                  motelRoomRepository.save(motelRoom2);
+                                if (motelRoom2.getCategoryRoom().getCategoryRoomId() != motelRoom.getCategoryRoom()
+                                        .getCategoryRoomId()) {
+                                    CategoryRoom categoryRoom = categoryRoomRepository
+                                            .getById(motelRoom.getCategoryRoom().getCategoryRoomId());
+                                    motelRoom2.setCategoryRoom(categoryRoom);
+                                    motelRoom2.setStatus(motelRoom.isStatus());
+                                }
+                                motelRoomRepository.save(motelRoom2);
                                 if (CheckImgAddMotelRoom(files)) {
-                                    MotelRoom motelRoom3 =motelRoomRepository.getById(motelRoom.getMotelRoomId());
+                                    MotelRoom motelRoom3 = motelRoomRepository.getById(motelRoom.getMotelRoomId());
                                     motelRoom3.getImage().forEach(a -> {
                                         fileManager.delete("ImgMotelRoom", a.getName());
                                     });
                                     List<Image> images = motelRoom3.getImage();
                                     for (Image image : images) {
-                                      image.setMotelRoom(null);
-                                      imageRepository.save(image);
+                                        image.setMotelRoom(null);
+                                        imageRepository.save(image);
                                     }
                                     imageRepository.deleteAllByMotelRoomIsNull();
                                     List<String> listname = fileManager.save("ImgMotelRoom", files);
-                                     listname.forEach(a -> {
+                                    listname.forEach(a -> {
                                         Image image = new Image();
                                         image.setMotelRoom(motelRoom3);
                                         image.setName(a);
                                         imageRepository.save(image);
                                     });
-                                    attributes.addFlashAttribute("successMessageAddRoom", "Cập nhật phòng trọ thành công");
-                                    return "redirect:/admin/update-motelroom/"+motelRoom.getMotelRoomId();
+
+                                    attributes.addFlashAttribute("successMessageAddRoom",
+                                            "Cập nhật phòng trọ thành công");
+                                    return "redirect:/admin/update-motelroom/" + motelRoom.getMotelRoomId();
                                 } else {
                                     MotelRoom motelRoom3 = motelRoomRepository.getById(motelRoom.getMotelRoomId());
                                     motelRoom3.getImage().forEach(a -> {
@@ -303,26 +320,36 @@ public class MotelRoomImpl implements MotelRoomService {
                                         image.setName(a);
                                         imageRepository.save(image);
                                     });
-                                    attributes.addFlashAttribute("successMessageAddRoom", "Cập nhật phòng trọ thành công");
-                                    return "redirect:/admin/update-motelroom/"+motelRoom.getMotelRoomId();
+                                    attributes.addFlashAttribute("successMessageAddRoom",
+                                            "Cập nhật phòng trọ thành công");
+                                    return "redirect:/admin/update-motelroom/" + motelRoom.getMotelRoomId();
                                 }
                             } else {
                                 motelRoom2.setDescriptions(motelRoom.getDescriptions());
                                 motelRoom2.setLength(motelRoom.getLength());
                                 motelRoom2.setWidth(motelRoom.getWidth());
+                                motelRoom2.setStatus(motelRoom.isStatus());
                                 if (motelRoom.getVideo() != null) {
-                                    String[] parts = motelRoom.getVideo().split("be/");
-                                    String chuoi = parts[parts.length - 1];
-                                    motelRoom2.setVideo(chuoi);
+                                    String[] splitByBe = motelRoom.getVideo().split(".be/");
+                                    if (splitByBe.length > 1) {
+                                        String[] splitByQuestionMark = splitByBe[1].split("\\?");
+                                        if (splitByQuestionMark.length > 0) {
+                                            String videoId = splitByQuestionMark[0];
+                                            motelRoom2.setVideo(videoId);
+                                        }
+                                    }else{
+                                        motelRoom2.setVideo(motelRoom.getVideo());
+                                    }
                                 }
-                              if (motelRoom2.getCategoryRoom().getCategoryRoomId()!=motelRoom.getCategoryRoom().getCategoryRoomId()) {
-                                CategoryRoom categoryRoom = categoryRoomRepository
-                                .getById(motelRoom.getCategoryRoom().getCategoryRoomId());
-                                motelRoom2.setCategoryRoom(categoryRoom);
-                              }
+                                if (motelRoom2.getCategoryRoom().getCategoryRoomId() != motelRoom.getCategoryRoom()
+                                        .getCategoryRoomId()) {
+                                    CategoryRoom categoryRoom = categoryRoomRepository
+                                            .getById(motelRoom.getCategoryRoom().getCategoryRoomId());
+                                    motelRoom2.setCategoryRoom(categoryRoom);
+                                }
                                 motelRoomRepository.save(motelRoom2);
                                 attributes.addFlashAttribute("successMessageAddRoom", "Cập nhật phòng trọ thành công");
-                                return "redirect:/admin/update-motelroom/"+motelRoom.getMotelRoomId();
+                                return "redirect:/admin/update-motelroom/" + motelRoom.getMotelRoomId();
                             }
                         }
                     }
@@ -348,11 +375,10 @@ public class MotelRoomImpl implements MotelRoomService {
         return false;
     }
 
-	@Override
-	public MotelRoom getMotelRoomId(Integer id) {
-		// TODO Auto-generated method stub
-		return motelRoomRepository.findById(id).get();
-	}
-
+    @Override
+    public MotelRoom getMotelRoomId(Integer id) {
+        // TODO Auto-generated method stub
+        return motelRoomRepository.findById(id).get();
+    }
 
 }

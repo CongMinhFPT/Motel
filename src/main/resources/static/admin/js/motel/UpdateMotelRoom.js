@@ -2,6 +2,7 @@ var app = angular.module("myAppUpdateMotelRoom", ["ngMessages"]);
 app.controller(
   "myCtrlUpdateMotelRoom",
   function ($scope, $http, $rootScope, $sce) {
+    let numbertienmin = 1000;
     $scope.host = "http://localhost:8080";
     $scope.Checkbill = {};
     $scope.title = "";
@@ -41,52 +42,47 @@ app.controller(
       $scope.numberbill = "";
       $scope.error = "";
       if (key == "dien") {
-        $scope.title = "Điện";
+        $scope.title = "Điện đ / kWh";
       }
       if (key == "nuoc") {
-        $scope.title = "Nước";
+        $scope.title = "Nước đ / m³";
       }
       if (key == "wifi") {
-        $scope.title = "Wifi";
+        $scope.title = "Wifi đ / tháng";
       }
       if (key == "giaphong") {
-        $scope.title = "Giá phòng";
+        $scope.title = "Giá phòng đ / tháng";
       }
     };
     $scope.Updatabil = function (key) {
       $scope.addorupdata = "Cập nhật";
-      $scope.namebill = key;
+      $scope.namebill = key;  
       $scope.error = "";
       if (key == "dien") {
-        $scope.title = "Điện";
+        $scope.title = "Điện đ / kWh";
         $scope.numberbill = $scope.Checkbill.ElectricityCash[0].electricityBill;
       }
       if (key == "nuoc") {
-        $scope.title = "Nước";
+        $scope.title = "Nước đ / m³";
         $scope.numberbill = $scope.Checkbill.WaterCash[0].waterBill;
       }
       if (key == "wifi") {
-        $scope.title = "Wifi";
+        $scope.title = "Wifi đ / tháng";
         $scope.numberbill = $scope.Checkbill.WifiCash[0].wifiBill;
       }
       if (key == "giaphong") {
-        $scope.title = "Giá phòng";
+        $scope.title = "Giá phòng đ / tháng";
         $scope.numberbill = $scope.Checkbill.RoomCash[0].roomBill;
       }
     };
     $scope.PostBill = function () {
       console.log($scope.idmotelroom);
-      if (!$scope.numberbill) {
-        console.log($scope.numberbill)
+      if ($scope.numberbill==="") {
         $scope.error = "Vui lòng nhập giá tiền "+$scope.title;
-      } else if (
-        typeof $scope.numberbill === "string" &&
-        !$scope.numberbill.match(/^\d+$/)
-      ) {
-        $scope.error = "Vui lòng nhập giá tiền "+$scope.title+" là số dương lớn hơn 0";
-      } else if (Number($scope.numberbill) <= 0) {
-        $scope.error = "Vui lòng nhập giá tiền "+$scope.title+" là số dương lớn hơn 0";
-      } else {
+      } else if($scope.numberbill<numbertienmin && $scope.numberbill !=0){
+        $scope.error = "Vui lòng nhập giá tiền "+$scope.title +' lớn hơn 1.000 đồng';
+      }
+       else {
         $scope.error = "";
         let url =
           $scope.host +

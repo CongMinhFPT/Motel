@@ -32,7 +32,7 @@
 					</select>
 				</div>
 				<div class="col-6 ">
-					<Label>Trạng thái phòng</Label>
+					<Label>Tình trạng phòng</Label>
 					<select class="form-control mb-3 w-75" ng-model="selectedroomStatus" ng-change="filterItems()">
 						<option value="">Tất cả</option>
 						<option ng-repeat="item in ListroomStatus" value="{{item}}">{{item}}</option>
@@ -69,39 +69,54 @@
 									<div class="card-title d-flex  justify-content-between ">
 										<h5> <span class="badge text-bg-warning h5 ">Ngày tạo:{{ item.createDate |
 												date:'dd/MM/yyyy' }}</span>
-
 										</h5>
-											<span class="text-body-secondary fs-6 badge">Trạng thái: <span>{{item.name}}</span> 
+											<span class="h5  text-black ">Tình trạng phòng: <span>{{item.name}}</span> 
 											<span ng-show="item.checkoutdate!=null" class="badge text-bg-light ">Ngày trả: {{ item.checkoutdate |
 												date:'dd/MM/yyyy' }}</span>	
 										</span>								
 									</div>
-									<p class="card-text">{{item.descriptions}}</p>
+									<div class="d-flex  justify-content-end  ">
+										<p class="m-0 p-0   ">Trạng thái phòng: <span ng-show="item.status==true"><span style="width: 10px; height: 10px; background-color: #31a24c; display: inline-block; border-radius: 50%;margin-left: 0.5rem;"
+											></span> Đang hoạt động </span>
+										  <span ng-show="item.status==false"><span style="width: 10px; height: 10px; background-color: #959a96; display: inline-block; border-radius: 50%;margin-left: 0.5rem;"
+											></span>  Đã tắt hoạt động</span> </p>
+									</div>
+									<p class="text-black  h4">Tên phòng trọ: {{item.descriptions}}</p>
 									<div class="card-text row w-100 ">
 										<div class="col-6 row">
 											<span class="text-body-secondary col-12">Loại phòng: {{item.title}}</span>
-											<span class="text-body-secondary col-6">Rộng: {{item.width}} cm</span>
-											<span class="text-body-secondary col-6 ">Dài: {{item.length}} cm</span>
+											<span class="text-body-secondary col-6">Rộng: {{item.width}} M</span>
+											<span class="text-body-secondary col-6 ">Dài: {{item.length}} M</span>
 											<span class="text-body-secondary  col-6"> Số ảnh:
 												{{item.numberphotos}}</span>
 											<span class="text-body-secondary  col-6">Số người: {{item.people}}</span>
 										</div>
 										<div class="col-6 row">
 											<span class="text-body-secondary col-12 m-1 ">Giá điện:
-												{{item.electricityBill
-												!==null ?(item.electricityBill|number) +' '+ 'VND'+' '+'/ KWh' : 'Chưa
-												có' }}</span>
-											<span class="text-body-secondary col-12 m-1">Giá nước: {{item.waterBill
-												!==null ?
-												(item.waterBill|number) +' '+ 'VND'+' '+'/ m³' : 'Chưa có' }}</span>
-											<span class="text-body-secondary col-12 m-1">Giá wifi: {{item.wifiBill
-												!==null ?
-												(item.wifiBill|number) +' '+ 'VND'+' '+'/ Tháng' : 'Chưa có' }}</span>
-											<span class="text-body-secondary col-12 m-1">Giá phòng: {{item.roomBill
-												!==null ?
-												(item.roomBill|number) +' '+ 'VND'+' '+'/ Tháng' : 'Chưa có' }}</span>
+											<span ng-show="item.electricityBill===null"> Chưa có</span>
+											<span ng-show="item.electricityBill!==null">
+												{{item.electricityBill==0 ? 'Miễn Phí' : (item.electricityBill|number) +' '+ 'đ'+' '+'/ KWh'}} 
+											</span>
+											</span>
+											<span class="text-body-secondary col-12 m-1">Giá nước:
+											<span ng-show="item.waterBill===null"> Chưa có</span>
+											<span ng-show="item.waterBill!==null">
+												{{item.waterBill==0 ? 'Miễn Phí' : (item.waterBill|number) +' '+ 'đ'+' '+'/ m³'}} 
+											</span>
+											</span>
+											<span class="text-body-secondary col-12 m-1">Giá wifi: 
+												<span ng-show="item.wifiBill===null"> Chưa có</span>
+												<span ng-show="item.wifiBill!==null">
+													{{item.wifiBill==0 ? 'Miễn Phí' : (item.wifiBill|number) +' '+ 'đ'+' '+'/ Tháng'}} 
+												</span>
+											</span>
+											<span class="text-body-secondary col-12 m-1">Giá phòng: 
+												<span ng-show="item.roomBill===null"> Chưa có</span>
+												<span ng-show="item.roomBill!==null">
+													{{item.roomBill==0 ? 'Miễn Phí' : (item.roomBill|number) +' '+ 'đ'+' '+'/ Tháng'}} 
+												</span>
+											</span>
 										</div>
-
 									</div>
 									<div class="d-flex  justify-content-between mt-2  ">
 										<a class="btn btn-danger "

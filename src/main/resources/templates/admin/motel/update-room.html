@@ -41,7 +41,7 @@
 					</div>
 					<div class="col-md-6">
 						<div>
-							<label class="form-label text-black  " for="">Mô tả</label>
+							<label class="form-label text-black  " for="">Tên phòng trọ</label>
 							<textarea id="descriptionsroom" th:field="*{descriptions}" class="form-control " name=""
 								cols="30" rows="10"></textarea>
 							<div>
@@ -92,7 +92,15 @@
 									for=""></label>
 							</div>
 						</div>
-					
+						<div>
+							<label class="form-label mt-1 text-black mt-3   " for="">Trạng thái</label><br>
+							<input type="radio" class="btn-check" name="options-base" id="option5" th:field="*{status}" value="true"
+							th:checked="*{status}" autocomplete="off">
+							<label class="btn btn-outline-success " for="option5">Đang hoạt động</label>
+							<input type="radio" class="btn-check ms-4   " name="options-base" id="option6" autocomplete="off" th:field="*{status}" value="false"
+							th:checked="*{!status}">
+							<label class="btn btn-outline-success ms-4 " for="option6">Tắt hoạt động</label>
+						</div>
 					</div>
 				</div>
 				<div>
@@ -113,7 +121,7 @@
 			<div th:attr="ng-init='getallbill(\'' + ${motel.motelId} + '\', \'' + ${motelroom.motelRoomId} + '\')'">
 				<h2 class="mt-3">Trạng thái và tiền trọ</h2>
 				<p><b>Lưu ý :</b> những điều chỉnh ở bên dưới không cần bấm lưu </p>
-				<h4>Trạng thái</h4>
+				<!-- <h4>Trạng thái</h4>
 				<div class="mt-2 mb-4 row ">
 					<div class="col-9">
 						<select class="form-control " ng-change="checkandupdateroomstatus()"
@@ -126,7 +134,7 @@
 						<button type="button" ng-show="checkesttus!=null" class="btn btn-primary"
 							data-bs-toggle="modal" data-bs-target="#staticBackdropf">Sửa Ngày</button>
 					</div>
-				</div>
+				</div> -->
 				<h4 class="mb-2 ">Tiền trọ</h4>
 				<div class="row " th:attr="ng-init='getallroomstatus(\'' + ${motelroom.motelRoomId} + '\')'">
 					<div class="col-3 " ng-show="Checkbill!==''">
@@ -135,7 +143,8 @@
 								Checkbill.ElectricityCash[0].createDate | date:'dd/MM/yyyy' }}</div>
 							<div class="card-body">
 								<h5 class="card-title">Giá điện</h5>
-								<p>{{(Checkbill.ElectricityCash[0].electricityBill|number) }} VND /KWh </p>
+								<p ng-show="Checkbill.ElectricityCash[0].electricityBill!=0">{{(Checkbill.ElectricityCash[0].electricityBill|number) }} đ /KWh </p>
+								<p ng-show="Checkbill.ElectricityCash[0].electricityBill==0">Miễn phí</p>
 								<button ng-click="Updatabil('dien')" data-bs-toggle="modal"
 									data-bs-target="#staticBackdrop" class="btn btn-primary">Cập nhật</button>
 							</div>
@@ -154,7 +163,8 @@
 								| date:'dd/MM/yyyy' }}</div>
 							<div class="card-body">
 								<h5 class="card-title">Giá nước</h5>
-								<p>{{ (Checkbill.WaterCash[0].waterBill|number) }} VND / m³</p>
+								<p ng-show="Checkbill.WaterCash[0].waterBill!=0">{{ (Checkbill.WaterCash[0].waterBill|number) }} đ / m³</p>
+								<p ng-show="Checkbill.WaterCash[0].waterBill==0">Miễn phí</p>
 								<button ng-click="Updatabil('nuoc')" data-bs-toggle="modal"
 									data-bs-target="#staticBackdrop" class="btn btn-primary">Cập nhật</button>
 							</div>
@@ -173,7 +183,8 @@
 								date:'dd/MM/yyyy' }}</div>
 							<div class="card-body">
 								<h5 class="card-title">Giá wifi</h5>
-								<p>{{ ( Checkbill.WifiCash[0].wifiBill|number)}} VND / Tháng</p>
+								<p ng-show="Checkbill.WifiCash[0].wifiBill!=0">{{ ( Checkbill.WifiCash[0].wifiBill|number)}} đ / Tháng</p>
+								<p ng-show="Checkbill.WifiCash[0].wifiBill==0">Miễn phí</p>
 								<button ng-click="Updatabil('wifi')" data-bs-toggle="modal"
 									data-bs-target="#staticBackdrop" class="btn btn-primary">Cập nhật</button>
 							</div>
@@ -192,7 +203,8 @@
 								date:'dd/MM/yyyy' }}</div>
 							<div class="card-body">
 								<h5 class="card-title">Giá Phòng</h5>
-								<p>{{ (Checkbill.RoomCash[0].roomBill|number) }} VND / Tháng</p>
+								<p ng-show="Checkbill.RoomCash[0].roomBill!=0">{{ (Checkbill.RoomCash[0].roomBill|number) }} đ / Tháng</p>
+								<p ng-show="Checkbill.RoomCash[0].roomBill==0">Miễn phí</p>
 								<button ng-click="Updatabil('giaphong')" class="btn btn-primary" data-bs-toggle="modal"
 									data-bs-target="#staticBackdrop">Cập nhật</button>
 							</div>
@@ -238,8 +250,12 @@
 								aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
-							<label class="form-label  " for="">Mời nhập chỉ số {{title}}</label>
-							<input class="form-control mb-3  " type="number" ng-model="numberbill">
+							<label for="">Lưu ý : có hai cách nhập giá tiền <br>
+							<span> cách 1: nhập giá tiềnb bằng hoặc trên 1.000 đồng</span><br>
+							<span> cách 2: nhập giá tiền bằng 0 được xem là miễn phí</span>
+							</label>
+							<label class="form-label  " for="">Mời nhập giá tiền {{title}}</label>
+							<input class="form-control mb-3  " id="numberbill"    type="number" ng-model="numberbill">
 							<label for="form-label " style="color: red;">{{error}}</label>
 							<div class="d-flex  justify-content-end ">
 								<button ng-click="PostBill()" class="btn btn-primary ">{{addorupdata}}</button>

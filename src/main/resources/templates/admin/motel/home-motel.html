@@ -35,18 +35,18 @@
                         <p class="h5 col-12  col-md-6    ">Số người ở hiện có :  <span th:text="${number}"></span>  <i class="bi bi-person"></i></p>
                       </div>
                       <div class="col-12">
-                        <p class="h4   ">Mô tả</p>
-                      <p class="alert alert-primary h4 col-12 " role="alert">[[*{descriptions}]] <br> <img style="width: 2rem;"
+                        <p class="h4   ">Tên nhà trọ và địa chỉ </p>
+                      <p class="alert alert-primary h4 col-12 " role="alert">[[*{descriptions}]] <br><br> <img style="width: 2rem;"
                         src="/files/ImgMotel/iconDiaChi.png" alt="">
-                      [[*{province}]],[[*{district}]],[[*{ward}]],[[*{detailAddress}]]</p>
+                     [[*{detailAddress}]], [[*{ward}]], [[*{district}]], [[*{province}]]</p>
                       </div>
                     </div>
                   </div>
                 <div class="d-flex  justify-content-between mt-4">
                   <a class="btn"  th:onclick="'javascript:conditionmotel(\'' + ${motel.status} + '\')'">
-                    <span  class="link-secondary  " th:if="*{status}==true">Tắt hoạt động</span>
-                    <span class="link-success" th:if="*{status}==false">Bật hoạt động</span> </a>
-                  <a class="p-3 btn btn-success  " href="/admin/update-motel">Sửa thông tin nhà trọ nhà trọ </a>
+                    <span  class="link-secondary  underline " th:if="*{status}==true">Tắt hoạt động</span>
+                    <span class="link-success underline" th:if="*{status}==false">Bật hoạt động</span> </a>
+                  <a class="p-3 btn btn-success  " href="/admin/update-motel">Sửa thông tin nhà trọ </a>
                 </div>
               </div>
             </div>
@@ -55,6 +55,13 @@
       </div>
     </div>
   </div>
+  <style>
+    .underline {
+      text-decoration: underline;
+      text-decoration-color: #0d6efd;
+      text-decoration-thickness: 2px;
+    }
+  </style>
 </body>
 </style>
 </html>

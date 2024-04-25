@@ -22,7 +22,6 @@ public interface ChatMessageRepository extends MongoRepository<ChatMessage, Stri
     @Query("{'recipientId': ?0}")
     List<String> findDistinctSenderIdByRecipientId(String recipientId);
 
-    // Truy vấn lấy danh sách các recipientId duy nhất có trong các tin nhắn với senderId cụ thể
     @Query("{'senderId': ?0}")
     List<String> findDistinctRecipientIdBySenderId(String senderId);
 }

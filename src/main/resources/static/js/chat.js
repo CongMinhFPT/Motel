@@ -120,18 +120,33 @@ function appendUserElement(user, connectedUsersList) {
 
 	const userImage = document.createElement('img');
 	userImage.src = user.avatar ? '/img/' + user.avatar : '/img/user_icon.png';
+	
+	 const userInfoContainer = document.createElement('div');
+    userInfoContainer.classList.add('user-info');
 
 	const usernameSpan = document.createElement('span');
 	usernameSpan.textContent = user.fullName;
+	 usernameSpan.classList.add('username');
+	
+		const usernameStatus = document.createElement('span');
+	usernameStatus.textContent = user.status;
+	  usernameStatus.classList.add('status');
 
 	const receivedMsgs = document.createElement('span');
 	receivedMsgs.textContent = '0';
 	receivedMsgs.classList.add('nbr-msg', 'hidden');
 
-	listItem.appendChild(userImage);
-	listItem.appendChild(usernameSpan);
-	listItem.appendChild(receivedMsgs);
-
+	   listItem.appendChild(userImage);
+    userInfoContainer.appendChild(usernameSpan);
+    userInfoContainer.appendChild(usernameStatus);
+    listItem.appendChild(userInfoContainer);
+    listItem.appendChild(receivedMsgs);
+	
+  if (user.status === 'ONLINE') {
+        const statusDot = document.createElement('span');
+        statusDot.classList.add('status-dot', 'online');
+        usernameStatus.prepend(statusDot); 
+    }
 	listItem.addEventListener('click', userItemClick);
 
 	connectedUsersList.appendChild(listItem);
@@ -155,7 +170,36 @@ function userItemClick(event) {
 
 }
 
-function displayMessage(senderId, content) {
+function displaySelectedImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const fileName = file.name;
+        const selectedImageContainer = document.getElementById('selectedImageContainer');
+        selectedImageContainer.innerHTML = '';
+        const imagePath = '/chat/' + fileName; 
+        const newImage = document.createElement('img');
+        newImage.src = imagePath;
+        selectedImageContainer.appendChild(newImage);
+        selectedImageContainer.classList.remove('hidden');
+        
+        const closeButton = document.createElement('span');
+        closeButton.textContent = 'x';
+        closeButton.classList.add('close-button');
+        closeButton.addEventListener('click', function() {
+            clearSelectedImage();
+            document.getElementById('fileInput').value = ''; 
+        });
+        selectedImageContainer.appendChild(closeButton);
+        closeButton.addEventListener('mouseenter', function() {
+            selectedImageContainer.classList.add('show-cursor');
+        });
+        closeButton.addEventListener('mouseleave', function() {
+            selectedImageContainer.classList.remove('show-cursor');
+        });
+    }
+}
+
+function displayMessage(senderId, content, fileName) {
 	const messageContainer = document.createElement('div');
 	messageContainer.classList.add('message');
 	if (senderId === nickname) {
@@ -163,9 +207,35 @@ function displayMessage(senderId, content) {
 	} else {
 		messageContainer.classList.add('receiver');
 	}
-	const message = document.createElement('p');
-	message.textContent = content;
-	messageContainer.appendChild(message);
+
+	let message = null;
+
+	if (content) {
+		message = document.createElement('p');
+		message.textContent = content;
+		messageContainer.appendChild(message);
+	}
+
+	if (fileName != null && content == '') {
+		const imageContainer = document.createElement('div');
+		imageContainer.classList.add('image-container');
+		const image = document.createElement('img');
+		image.src = `/chat/${fileName}`;
+		imageContainer.appendChild(image);
+		messageContainer.appendChild(imageContainer);
+
+		if (message) {
+			messageContainer.removeChild(message);
+		}
+	} else if (fileName != null && content != '') {
+		const imageContainer = document.createElement('div');
+		imageContainer.classList.add('image-container');
+		const image = document.createElement('img');
+		image.src = `/chat/${fileName}`;
+		imageContainer.appendChild(image);
+		messageContainer.appendChild(imageContainer);
+	}
+
 	chatArea.appendChild(messageContainer);
 }
 
@@ -174,7 +244,7 @@ async function fetchAndDisplayUserChat() {
 	const userChat = await userChatResponse.json();
 	chatArea.innerHTML = '';
 	userChat.forEach(chat => {
-		displayMessage(chat.senderId, chat.content);
+		displayMessage(chat.senderId, chat.content, chat.fileName);
 	});
 	chatArea.scrollTop = chatArea.scrollHeight;
 }
@@ -185,31 +255,48 @@ function onError() {
 	connectingElement.style.color = 'red';
 }
 
+function clearSelectedImage() {
+    const selectedImageContainer = document.getElementById('selectedImageContainer');
+    selectedImageContainer.innerHTML = '';
+    selectedImageContainer.classList.add('hidden');
+}
 
 function sendMessage(event) {
-	const messageContent = messageInput.value.trim();
-	if (messageContent && stompClient) {
+	const messageContent = messageInput.value.trim();	
+	const file = document.getElementById('fileInput').files[0];
+	if ((messageContent || file) && stompClient) {
 		const chatMessage = {
 			senderId: nickname,
 			recipientId: selectedUserId,
 			content: messageInput.value.trim(),
 			timestamp: new Date()
 		};
-		stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
-		displayMessage(nickname, messageInput.value.trim());
-		messageInput.value = '';
+
+		if (file) {
+			chatMessage.fileName = file.name;
+			stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
+			displayMessage(nickname, messageInput.value.trim(), chatMessage.fileName);
+			messageInput.value = '';
+			document.getElementById('fileInput').value = '';
+			    clearSelectedImage(); 
+			
+		} else {
+			stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
+			displayMessage(nickname, messageInput.value.trim());
+			messageInput.value = '';
+		}
 	}
+clearSelectedImage();
 	chatArea.scrollTop = chatArea.scrollHeight;
 	event.preventDefault();
 }
-
 
 async function onMessageReceived(payload) {
 	await findAndDisplayConnectedUsers();
 	console.log('Message received', payload);
 	const message = JSON.parse(payload.body);
 	if (selectedUserId && selectedUserId === message.senderId) {
-		displayMessage(message.senderId, message.content);
+		displayMessage(message.senderId, message.content, message.fileName);
 		chatArea.scrollTop = chatArea.scrollHeight;
 	}
 

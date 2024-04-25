@@ -45,39 +45,48 @@
             <hr>
 
             <h5>Tin tức liên quan về [[${tagName}]]</h5>
-
             <!-- <div class="rent-motel" th:each="blog, start : ${blogSimilar}"
 				th:classappend="${start.index == 0} ? 'carousel-item active' : 'carousel-item'"
 				data-bs-interval="10000"> -->
-            <div class="container mt-4">
-                <div class="row">
-                    <th:block th:each="blog : ${blogSimilar}">
-                        <div class="col-6 col-md-4">
-                            <div class="card" style="background-color: whitesmoke; color: black; height: 600px;">
-                                <div class="card-img-top w-100">
-                                    <a th:href="@{/blog_details/} + ${blog.blogId}">
-                                        <img th:src="@{${blog.imagePath}}" class="img-fluid rounded-1" alt="" style="height: 300px;">
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    <h4 class="card-title"><a
-                                            th:href="@{/blog_details/} + ${blog.blogId}">[[${blog.title}]]</a></h4>
-                                    <p style="font-size: 15px; margin-top: 1rem;" th:utext="${blog.ShortDes}"></p>
-                                    <div class="row py-3">
-                                        <div class="col">
-                                            <div class="icon-text">
-                                                <span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}"
-                                                        alt=""></span>
-                                                <span class="text">[[${blog.CreateDateFormat}]]</span>
+
+                            <div class="container mt-4">
+                                <div class="row">
+                                    <th:block th:each="blog : ${blogSimilar}">
+                                        <div class="col-6 col-md-4">
+                                            <div class="card" style="background-color: whitesmoke; color: black; height: 600px;">
+                                                <div class="card-img-top w-100">
+                                                    <a th:href="@{/blog_details/} + ${blog.blogId}">
+                                                        <img th:src="@{${blog.imagePath}}" th:href="@{/blog_details/} + ${blog.blogId}" class="img-fluid rounded-1" alt="" style="height: 300px;">
+                                                    </a>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h4 class="card-title"><a
+                                                           >[[${blog.title}]]</a></h4>
+                                                    <p style="font-size: 15px; margin-top: 1rem;" th:utext="${blog.ShortDes}"></p>
+                                                    <div class="row py-3">
+                                                        <div class="col">
+                                                            <div class="icon-text">
+                                                                <span class="icon"> <img th:src="@{/img/icons8-calendar-24.png}"
+                                                                        alt=""></span>
+                                                                <span class="text">[[${blog.CreateDateFormat}]]</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </th:block>
                                 </div>
                             </div>
-                        </div>
-                    </th:block>
-                </div>
-            </div>
+
+        </div>
+        
+   
+
+
+
+
+
         </div>
 
 
@@ -95,6 +104,26 @@
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
     <script th:src="@{/js/header.js}"></script>
+    <script src="/vendor/js/owl.carousel.min.js"></script>
+    <script>
+        $('.owl-carousel').owlCarousel({
+            loop: true,
+            margin: 10,
+            nav: true,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                1000: {
+                    items: 3
+                }
+            }
+        })
+    </script>
+
 </body>
 
 </html>

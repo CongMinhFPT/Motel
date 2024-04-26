@@ -190,6 +190,13 @@ public class RenterController {
         return "/admin/renter/check-in-and-check-out-list";
     }
 
+    @GetMapping("/admin/change-room")
+    public String getListChangeRoom(Model model) {
+        manageMotelImpl.SetModelMotel(model);
+        model.addAttribute("renters", renterRepository.findAll());
+        return "/admin/renter/change-room-renter-list";
+    }
+
     @GetMapping("/admin/renter/change-room/{renterId}")
     public String getChangeRoom(@PathVariable("renterId") Integer renterId, Model model,
             @ModelAttribute("renter") RenterModel renterModel) {
@@ -227,6 +234,7 @@ public class RenterController {
         if (manageMotelImpl.CheckLogin().isPresent()) {
             CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
             if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+
                 Motel motel = motelRepository.getById(customUserDetails.getMotelid());
 
                 List<MotelRoom> motelRooms = motel.getMotelRoom();
@@ -241,7 +249,7 @@ public class RenterController {
 
                 renterService.changeRoom(renterModel, renterId);
                 model.addAttribute("successChange", true);
-                return "/admin/renter/change-room-renter";
+                return "redirect:/admin/renter";
             } else {
                 return "redirect:/admin/manage-motel";
             }

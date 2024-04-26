@@ -45,6 +45,10 @@ public class Renter {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date checkOutDate;
 
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date changeRoomDate;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "renter")
     @JsonManagedReference
     List<Invoice> invoice;

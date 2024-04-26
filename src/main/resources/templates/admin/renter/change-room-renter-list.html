@@ -13,7 +13,7 @@
 			<div class="card">
 				<div class="card-header d-sm-flex d-block">
 					<div class="mr-auto mb-sm-0 mb-3">
-						<h4 class="card-title mb-2">Danh Sách Trả Phòng</h4>
+						<h4 class="card-title mb-2">Danh Sách Đổi Phòng</h4>
 					</div>
 				</div>
 				<div class="card-body">
@@ -26,11 +26,11 @@
 									<th>SỐ ĐIỆN THOẠI</th>
 									<th>PHÒNG TRỌ</th>
 									<th>NGÀY THUÊ</th>
-									<th>NGÀY TRẢ</th>
+									<th>NGÀY ĐỔI</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="renter, stt : ${renters}" th:unless="${renter.checkOutDate == null}">
+								<tr th:each="renter, stt : ${renters}" th:unless="${renter.changeRoomDate == null}">
 									<td th:text="*{stt.index + 1}">
 									</td>
 									<td th:text="${renter.account.fullname}">
@@ -44,7 +44,7 @@
 
 									</td>
 									<td
-										th:text="${renter.checkOutDate != null ? #dates.format(renter.checkOutDate, 'dd - MM - yyyy') : ''}">
+										th:text="${renter.changeRoomDate != null ? #dates.format(renter.changeRoomDate, 'dd - MM - yyyy') : ''}">
 									</td>
 								</tr>
 							</tbody>

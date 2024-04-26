@@ -18,44 +18,45 @@
 					<div class="card">
 						<div class="card-body">
 							<div class="basic-form">
-								<form
-									th:action="@{/admin/renter/change-room/{renterId}(renterId=${renterUpdate.renterId})}"
-									th:object="${renter}" method="post">
-									<div class="form-row">
-										<div class="form-group col-md-6">
-											<label>Họ Tên</label>
-											<label class="form-control" th:text="${renterUpdate.account.fullname}"
-												th:value="${renterUpdate.account.accountId}"
-												th:field="*{accountId}"></label>
+								<th:block
+									th:with="renterId=${renterUpdate.renterId != null ? renterUpdate.renterId : ''}">
+									<form th:action="@{/admin/renter/change-room/{renterId}(renterId=${renterId})}"
+										th:object="${renter}" method="post">
+										<div class="form-row">
+											<div class="form-group col-md-6">
+												<label>Họ Tên</label>
+												<label class="form-control" th:text="${renterUpdate.account.fullname}"
+													th:value="${renterUpdate.account.accountId}"
+													th:field="*{accountId}"></label>
 
+											</div>
+											<div class="form-group col-md-6">
+												<label>Ngày Thuê</label>
+												<label class="form-control"
+													th:text="${#dates.format(renterUpdate.renterDate, 'dd - MM - yyyy')}"
+													th:value="${renterUpdate.renterDate}"></label>
+												<input type="hidden" class="form-control"
+													th:value="${renterUpdate.renterDate}" th:field="*{renterDate}">
+											</div>
+											<div class="form-group col-md-6">
+												<label for="inputState">Phòng Trọ</label>
+												<select id="inputState" class="form-control" th:field="*{motelRoomId}">
+													<option th:each="motelRoom : ${motelRooms}"
+														th:value="${motelRoom.motelRoomId}"
+														th:text="${motelRoom.descriptions}">
+													</option>
+												</select>
+											</div>
+											<div class="form-group col-md-6">
+												<label>Ngày Trả</label>
+												<label class="form-control"
+													th:text="${#dates.format(renterUpdate.checkOutDate, 'dd - MM - yyyy')}"
+													th:value="${renterUpdate.checkOutDate}"></label>
+											</div>
 										</div>
-										<div class="form-group col-md-6">
-											<label>Ngày Thuê</label>
-											<label class="form-control"
-												th:text="${#dates.format(renterUpdate.renterDate, 'dd - MM - yyyy')}"
-												th:value="${renterUpdate.renterDate}"></label>
-											<input type="hidden" class="form-control"
-												th:value="${renterUpdate.renterDate}" th:field="*{renterDate}">
-										</div>
-										<div class="form-group col-md-6">
-											<label for="inputState">Phòng Trọ</label>
-											<select id="inputState" class="form-control" th:field="*{motelRoomId}">
-												<option th:each="motelRoom : ${motelRooms}"
-													th:value="${motelRoom.motelRoomId}"
-													th:text="${motelRoom.descriptions}">
-												</option>
-											</select>
-										</div>
-										<div class="form-group col-md-6">
-											<label>Ngày Trả</label>
-											<label class="form-control"
-												th:text="${#dates.format(renterUpdate.checkOutDate, 'dd - MM - yyyy')}"
-												th:value="${renterUpdate.checkOutDate}"></label>
-										</div>
-									</div>
-									<button ng-click="addRenter(accountId, renterDate, motelRoomId)"
-										class="btn btn-primary">Lưu Lại</button>
-								</form>
+										<button class="btn btn-primary">Lưu Lại</button>
+									</form>
+								</th:block>
 							</div>
 						</div>
 					</div>

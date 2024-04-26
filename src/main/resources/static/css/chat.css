@@ -114,6 +114,7 @@
 	width: 10px;
 	border-radius: 50%;
 	height: 10px;
+	}
 .sender {
 	background-color: #007bff;
 	color: #fff;
@@ -254,7 +255,3 @@ a.logout {
     vertical-align: middle;
     margin-right: 10px;
 }
-
-
-
-

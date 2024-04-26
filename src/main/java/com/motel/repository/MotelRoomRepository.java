@@ -45,4 +45,11 @@ public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
 
     @Query(nativeQuery = true, value = "select * from motel_room order by createDate desc")
     List<MotelRoom> find3MotelRom(Pageable pageable);
+    
+    @Query("SELECT mr FROM MotelRoom mr WHERE mr.motel.motelId = :motelId AND mr.motelRoomId = :motelRoomId")
+    MotelRoom findMotelRoomByMotelIdAndMotelRoomId(@Param("motelId") Integer motelId, @Param("motelRoomId") Integer motelRoomId);
+    
+    @Query("SELECT mr FROM MotelRoom mr WHERE mr.motel.motelId = :motelId")
+    MotelRoom findMotelRoomByMotelId(@Param("motelId") Integer motelId);
+
 }

@@ -90,11 +90,11 @@ public class StatisticRestController {
         return ResponseEntity.ok(motelsRenter);
     }
 
-    @GetMapping("/api/post-to-day")
-    public ResponseEntity<Object> getPostToDay() {
-        Object post = postRepository.findPostToDay();
-        return ResponseEntity.ok(post);
-    }
+//    @GetMapping("/api/post-to-day")
+//    public ResponseEntity<Object> getPostToDay() {
+//        Object post = postRepository.findPostToDay();
+//        return ResponseEntity.ok(post);
+//    }
 
     @GetMapping("/api/favorite-to-day")
     public ResponseEntity<Object> getFavoriteToDay() {
@@ -108,11 +108,11 @@ public class StatisticRestController {
         return ResponseEntity.ok(faObject);
     }
 
-    @GetMapping("/api/post-to-day-motel-room")
-    public ResponseEntity<Object> getPostToDayMotelRoom() {
-        Object poObject = postRepository.findPostToDayMotelRoom();
-        return ResponseEntity.ok(poObject);
-    }
+//    @GetMapping("/api/post-to-day-motel-room")
+//    public ResponseEntity<Object> getPostToDayMotelRoom() {
+//        Object poObject = postRepository.findPostToDayMotelRoom();
+//        return ResponseEntity.ok(poObject);
+//    }
 
     @GetMapping("/api/count-renter")
     public ResponseEntity<Object> getCountRenter() {

@@ -44,18 +44,6 @@ public class MotelController {
 
 	@GetMapping("/room")
 	public String showRoomDetails(Model model, Pageable pageable, Authentication authentication) {
-		Page<MotelRoom> roomPage = roomService.getAllRoomDTOs(pageable);
-		model.addAttribute("rooms", roomPage.getContent());
-		System.out.println(roomPage);
-		model.addAttribute("page", roomPage);
-		if (authentication == null) {
-			String emailAccount = "null";
-			model.addAttribute("accountId", emailAccount);
-		} else {
-			String emailAccount = authentication.getName();
-			Account account = accountsRepository.getByEmail(emailAccount);
-			model.addAttribute("accountId", account.getAccountId());
-		}
 
 		return "home/room";
 	}

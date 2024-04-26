@@ -67,6 +67,7 @@ private GeocodingService geocodingService;
 @Autowired
 private PostService postService;
 
+int TAR_GET_COUNT = 3;
 
 @GetMapping("/post/motel/motelroom/{motelid}")
 public String motelroominmotel(@PathVariable("motelid") Integer motelid ,Model model){
@@ -77,16 +78,14 @@ public String motelroominmotel(@PathVariable("motelid") Integer motelid ,Model m
      List<Post> posts = postRepository.findPosts(city);
      int count = 0;
      for (int i = 0; i < posts.size(); i++) {
-        PostMotel motel2 = new PostMotel(posts.get(i));
-        postMotels.add(motel2);
-        //  if (!posts.get(i).getMotel().getMotelId().equals(motel.getMotelId())) {
-        //      PostMotel motel2 = new PostMotel(posts.get(i));
-        //      postMotels.add(motel2);
-        //      count++;
-        //      if (count == 3) {
-        //          break;
-        //      }
-        //  }
+         if (!posts.get(i).getMotel().getMotelId().equals(motel.getMotelId())) {
+             PostMotel motel2 = new PostMotel(posts.get(i));
+             postMotels.add(motel2);
+             count++;
+             if (count == TAR_GET_COUNT) {
+                 break;
+             }
+         }
      }
    if (postMotels.size()==0) {
     model.addAttribute("checkpostnull", false);

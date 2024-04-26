@@ -67,14 +67,4 @@ app.controller("myCtrlUpdateMotelRoom", function($scope, $http, $rootScope, $sce
        }
      );
 }
-$scope.calculateDaysSinceCreation = function(createDate) {
-  var today = new Date();
-  today.setHours(0,0,0,0);
-  
-  const postDate = new Date(createDate);
-  postDate.setHours(0,0,0,0);
-  
-  const timeDiff = Math.abs(today.getTime() - postDate.getTime());
-  return Math.floor(timeDiff / (1000 * 3600 * 24)); 
-}
 });

@@ -82,7 +82,7 @@
 								id="categoryRoom">
 								<option value="">chọn loại phòng</option>
 								<option th:if="${categoryRoomlist!=null}" th:each="item : ${categoryRoomlist} "
-									th:value="${item.categoryRoomId}">[[${item.title}]]</option>
+									th:value="${item.categoryRoomId}">[[${item.quantity}]] người, [[${item.descriptions}]]</option>
 							</select>
 							<div>
 								<label th:if="${categoryRoomerror!=null}" th:text="${categoryRoomerror}"

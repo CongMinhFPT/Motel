@@ -37,7 +37,7 @@ public class MotelRoomNew {
     Double wifiBill;
     Double roomBill;
     Integer People;
-    Integer quantity;
+    String title;
     String name;
     Date Checkoutdate;
 
@@ -47,7 +47,7 @@ public class MotelRoomNew {
             Double wifiBill,
             Double roomBill,
             Integer People,
-            Integer quantity,
+            String quantity,
             String name) {
         this.motelRoomId = motelRoom.getMotelRoomId();
         this.createDate = motelRoom.getCreateDate();
@@ -63,8 +63,8 @@ public class MotelRoomNew {
         this.wifiBill = wifiBill;
         this.roomBill = roomBill;
         this.People = People;
-        this.quantity = quantity;
+        this.title = quantity;
         this.name = name;
-        this.Checkoutdate = motelRoom.getCheckoutdate();
+
     }
 }

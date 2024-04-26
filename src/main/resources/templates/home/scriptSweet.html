@@ -7,7 +7,19 @@
 	crossorigin="anonymous"></script>
 <script th:src="@{/js/header.js}"></script>
 <script th:src="@{/js/invoice.js}"></script>
+<script th:src="@{/js/IndexPostMotel.js}"></script>
+<script th:src="@{/js/motelroominmotel.js}"></script>
+<script th:src="@{/js/roompostmotel.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+ <!-- thêm jQuery -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+ <!-- thêm CSS cho Owl Carousel -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+
+ <!-- thêm Javascript cho Owl Carousel -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
 <script th:inline="javascript">
 	var paymentSuccess = /*[[${paymentSuccess}]]*/ false;
 	if (paymentSuccess) {
@@ -22,7 +34,7 @@
 		})
 	}
 	$('.owl-carousel').owlCarousel({
-		loop: true,
+		loop: false,
 		margin: 10,
 		nav: true,
 		autoplay: true,

@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded",()=>{
 			showConfirmButton: false,
 			timer: 3000
 		})
+        setTimeout(function() {
+            window.location.href = '/index';
+        }, 1500);
         name.value='';
         phone.value='';
         content.value='';

@@ -1,67 +1,102 @@
-// package com.motel.controller;
+package com.motel.controller;
 
-// import java.util.ArrayList;
-// import java.util.List;
-// import java.util.stream.StreamSupport;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.security.core.Authentication;
-// import org.springframework.security.core.context.SecurityContextHolder;
-// import org.springframework.stereotype.Controller;
-// import org.springframework.ui.Model;
-// import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.ModelAttribute;
-// import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 
-// import com.motel.entity.Account;
-// import com.motel.entity.ElectricityCash;
-// import com.motel.entity.Image;
-// import com.motel.entity.MotelRoom;
-// import com.motel.entity.Post;
-// import com.motel.entity.RoomCash;
-// import com.motel.entity.WaterCash;
-// import com.motel.entity.WifiCash;
-// import com.motel.repository.AccountsRepository;
-// import com.motel.repository.ElectricityCashRepository;
-// import com.motel.repository.ImageRepository;
-// import com.motel.repository.MotelRoomRepository;
-// import com.motel.repository.PostRepository;
-// import com.motel.repository.RoomCashRepository;
-// import com.motel.repository.WaterCashRepository;
-// import com.motel.repository.WifiCashRepository;
-// import com.motel.service.GeocodingService;
-// import com.motel.service.PostService;
+import com.motel.entity.Account;
+import com.motel.entity.ElectricityCash;
+import com.motel.entity.Image;
+import com.motel.entity.Motel;
+import com.motel.entity.MotelRoom;
+import com.motel.entity.Post;
+import com.motel.entity.PostMotel;
+import com.motel.entity.RoomCash;
+import com.motel.entity.WaterCash;
+import com.motel.entity.WifiCash;
+import com.motel.repository.AccountsRepository;
+import com.motel.repository.ElectricityCashRepository;
+import com.motel.repository.ImageRepository;
+import com.motel.repository.MotelRepository;
+import com.motel.repository.MotelRoomRepository;
+import com.motel.repository.PostRepository;
+import com.motel.repository.RoomCashRepository;
+import com.motel.repository.WaterCashRepository;
+import com.motel.repository.WifiCashRepository;
+import com.motel.service.GeocodingService;
+import com.motel.service.PostService;
 
-// @Controller
-// public class PostController {
+@Controller
+public class PostController {
+@Autowired 
+MotelRepository motelRepository;
+@Autowired
+PostRepository postRepository;
 
-// @Autowired
-// PostRepository postRepository;
+@Autowired
+RoomCashRepository roomCashRepository;
 
-// @Autowired
-// RoomCashRepository roomCashRepository;
+@Autowired
+WifiCashRepository wifiCashRepository;
 
-// @Autowired
-// WifiCashRepository wifiCashRepository;
+@Autowired
+ElectricityCashRepository electricityCashRepository;
 
-// @Autowired
-// ElectricityCashRepository electricityCashRepository;
+@Autowired
+WaterCashRepository waterCashRepository;
 
-// @Autowired
-// WaterCashRepository waterCashRepository;
+@Autowired
+ImageRepository imageRepository;
 
-// @Autowired
-// ImageRepository imageRepository;
+@Autowired
+MotelRoomRepository motelRoomRepository;
 
-// @Autowired
-// MotelRoomRepository motelRoomRepository;
+@Autowired
+private GeocodingService geocodingService;
 
-// @Autowired
-// private GeocodingService geocodingService;
+@Autowired
+private PostService postService;
 
-// @Autowired
-// private PostService postService;
+int TAR_GET_COUNT = 3;
 
+@GetMapping("/post/motel/motelroom/{motelid}")
+public String motelroominmotel(@PathVariable("motelid") Integer motelid ,Model model){
+    Motel motel = motelRepository.getById(motelid);
+    Account account = motel.getAccount();
+    String city = motel.getProvince();
+    List<PostMotel>postMotels = new ArrayList<>();
+     List<Post> posts = postRepository.findPosts(city);
+     int count = 0;
+     for (int i = 0; i < posts.size(); i++) {
+         if (!posts.get(i).getMotel().getMotelId().equals(motel.getMotelId())) {
+             PostMotel motel2 = new PostMotel(posts.get(i));
+             postMotels.add(motel2);
+             count++;
+             if (count == TAR_GET_COUNT) {
+                 break;
+             }
+         }
+     }
+   if (postMotels.size()==0) {
+    model.addAttribute("checkpostnull", false);
+   }else{
+    model.addAttribute("checkpostnull", true);
+    model.addAttribute("listpost", postMotels);
+   }
+    model.addAttribute("motel", motel);
+    model.addAttribute("account", account);
+    return "/home/MotelRoomInMotel";
+}
 // @GetMapping("/room-details/{post_id}")
 // public String showRoomDetals(@PathVariable("post_id") Integer postId, Model
 // model) {
@@ -189,4 +224,4 @@
 // }
 // return null;
 // }
-// }
+}

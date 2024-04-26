@@ -1,28 +1,28 @@
 .chat-container {
-    display: flex;
-    width: 70vw;
-    height: 40vw;
-    margin: 20px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-top: 150px;
+	display: flex;
+	width: 98vw;
+	height: 40vw;
+	margin: 20px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	overflow: hidden;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	margin-top: 150px;
 }
 
 .users-list {
-    flex: 1;
-    border-right: 1px solid #ccc;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: white;
-    color: #fff;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+	flex: 0.5;
+	border-right: 1px solid #ccc;
+	padding: 20px;
+	box-sizing: border-box;
+	background-color: white;
+	color: #fff;
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 /*.users-list-container {
@@ -31,165 +31,230 @@
 }
 */
 .users-list h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
+	font-size: 1.5rem;
+	margin-bottom: 10px;
 }
 
 .users-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+	list-style: none;
+	padding: 0;
+	margin: 0;
 }
 
 .user-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-    cursor: pointer;
+	display: flex;
+	align-items: center;
+	margin-bottom: 8px;
+	cursor: pointer;
+	height: 80px;
 }
 
 .user-item.active {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
+	background-color: #efefef;
+	color: white;
+	padding: 10px;
+	border-radius: 5px;
 }
-.user-item.active span{
-    color: white;
+
+.user-item.active span {
+	color: #050505;
 }
 
 .user-item img {
-    width: 60px;
-    height: auto;
-    border-radius: 50%;
-    margin-right: 10px;
+	width: 60px;
+	height: auto;
+	border-radius: 50%;
+	margin-right: 10px;
 }
 
 .user-item span {
-    font-weight: bold;
-    color: black;
+	font-weight: bold;
+	color: black;
 }
 
 .separator {
-    height: 1px;
-    background-color: #ccc;
-    margin: 10px 0;
+	height: 1px;
+	background-color: #ccc;
+	margin: 10px 0;
 }
 
 .chat-area {
-    flex: 3;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    box-sizing: border-box;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
+	flex: 3;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	box-sizing: border-box;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
 }
 
 .message {
-    margin-bottom: 5px;
-    border-radius: 5px;
+	margin-bottom: 5px;
+	border-radius: 5px;
 }
 
 #chat-messages {
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
+	overflow-y: scroll;
 }
 
 .message p {
-    padding: 0 12px;
-    border-radius: 15px;
-    word-wrap: break-word;
+	padding: 0 12px;
+	border-radius: 15px;
+	word-wrap: break-word;
 }
 
 .user-item span.nbr-msg {
-    margin-left: 10px;
-    background-color: red;
-    color: white;
-    padding: 5px;
-    width: 10px;
-    border-radius: 50%;
-    height: 10px;
-}
 
+	margin-left: 10px;
+	background-color: #f8fa6f;
+	color: white;
+	padding: 5px;
+	width: 10px;
+	border-radius: 50%;
+	height: 10px;
 .sender {
-    background-color: #007bff;
-    color: #fff;
-    align-self: flex-end;
+	background-color: #007bff;
+	color: #fff;
+	align-self: flex-end;
 }
 
 .receiver {
-    background-color: #ecf0f1;
-    color: #333;
-    align-self: flex-start;
+	background-color: #ecf0f1;
+	color: #333;
+	align-self: flex-start;
 }
 
 .message-input {
-    margin-top: auto;
-    display: flex;
+	margin-top: auto;
+	display: flex;
 }
 
 .message-input input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
+	flex: 1;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin-right: 10px;
 }
 
 .message-input button {
-    padding: 10px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
+	padding: 10px;
+	border: none;
+	background-color: #007bff;
+	color: #fff;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.message-input label {
+	padding: 10px;
+	border: none;
+	background-color: #007bff;
+	color: #fff;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-right: 10px;
 }
 
 .user-form {
-    max-width: 400px;
-    padding: 40px;
-    box-sizing: border-box;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+	max-width: 400px;
+	padding: 40px;
+	box-sizing: border-box;
+	background-color: #fff;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
 }
 
 .user-form h2 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    text-align: center;
+	font-size: 1.5rem;
+	margin-bottom: 20px;
+	text-align: center;
 }
 
 .user-form label {
-    display: block;
-    margin-bottom: 8px;
+	display: block;
+	margin-bottom: 8px;
 }
 
 .user-form input {
-    width: 100%;
-    padding: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 20px;
+	width: 100%;
+	padding: 10px 0;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin-bottom: 20px;
 }
 
 .user-form button {
-    padding: 12px;
-    border: none;
-    background-color: #3498db;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
+	padding: 12px;
+	border: none;
+	background-color: #3498db;
+	color: #fff;
+	border-radius: 5px;
+	cursor: pointer;
+	width: 100%;
 }
 
 .hidden {
-    display: none;
+	display: none;
 }
 
 a.logout {
-    color: #fff;
-    text-decoration: none;
+	color: #fff;
+	text-decoration: none;
 }
+.selected-image-container {
+    display: flex;
+    margin-bottom: 8px; 
+}
+
+.selected-image-container img {
+    max-width: 100px; 
+    max-height: 100px; 
+    border-radius: 5px; 
+    margin-right: 8px; 
+}
+
+.selected-image-container.show-cursor .close-button {
+    cursor: pointer;
+}
+.user-item {
+    display: flex;
+    align-items: center;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.username, .status {
+    display: block;
+}
+.status {
+    font-size: smaller; 
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.online {
+    background-color: #4CAF50;
+}
+
+.status-text {
+    font-size: 12px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+
+
+

@@ -16,6 +16,7 @@ import org.springframework.data.repository.query.Param;
 import com.motel.entity.FavoriteRoom;
 import com.motel.entity.Indexs;
 import com.motel.entity.MotelRoom;
+import com.motel.entity.Post;
 
 public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
 
@@ -25,7 +26,6 @@ public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
     @Query(nativeQuery = true, value = "select * from motel_room a inner join renter b on a.motel_room_id = b.motel_room_id")
     List<MotelRoom> findMotelRooms();
 
-    List<MotelRoom> findByMotel_DistrictAndMotel_Province(String district, String province);
 
     @Modifying
     @Query(nativeQuery = true, value = "SELECT * FROM motel_room a LEFT JOIN indexs b ON a.motel_room_id = b.motel_room_id WHERE b.motel_room_id IS NULL")
@@ -45,4 +45,13 @@ public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
 
     @Query(nativeQuery = true, value = "select * from motel_room order by createDate desc")
     List<MotelRoom> find3MotelRom(Pageable pageable);
+    
+    @Query("SELECT mr FROM MotelRoom mr WHERE mr.motel.motelId = :motelId AND mr.motelRoomId = :motelRoomId")
+    MotelRoom findMotelRoomByMotelIdAndMotelRoomId(@Param("motelId") Integer motelId, @Param("motelRoomId") Integer motelRoomId);
+    
+    @Query("SELECT mr FROM MotelRoom mr WHERE mr.motel.motelId = :motelId")
+    MotelRoom findMotelRoomByMotelId(@Param("motelId") Integer motelId);
+    
+	 List<MotelRoom> findByMotel_DistrictAndMotel_Province(String
+	 district, String province);
 }

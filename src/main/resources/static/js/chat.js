@@ -92,14 +92,6 @@ async function findAndDisplayConnectedUsers() {
 			connectedUsersList.appendChild(separator);
 			autoClick(user1.nickName);
 		} else {
-/*			if (chatuser == 'null') {
-				return;
-			}
-			Swal.fire({
-				icon: 'error',
-				title: 'Người dùng chưa sử dụng chat',
-				text: 'Người dùng ' + chatuser + ' hiện chưa sử dụng chat.',
-			});*/
 			return;
 		}
 	});

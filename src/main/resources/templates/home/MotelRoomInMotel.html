@@ -94,7 +94,8 @@
 					</div>
 					<div  ng-show="items.length" style="width: 30%" class=" mt-4 col-12 col-md-3  p-2 me-4  "
 						ng-repeat="item in items.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage)">
-						<div class=" card  bg-white h-100   pt-3 p-2  position-relative  ">
+						<div class=" card  bg-white h-100   pt-3 p-2  position-relative  ">	
+								<a href="/room-details/motel-{{item.motelRoomId}}">		
 							<div id="carouselExample{{$index}}" class="carousel slide">
 								<div class="carousel-inner" style="height: 250px;">
 									<div ng-class="{'carousel-item active': $index === 0, 'carousel-item': $index !== 0}"
@@ -112,6 +113,7 @@
 									<span class="carousel-control-next-icon" aria-hidden="true"></span>
 									<span class="visually-hidden">Next</span>
 								</button>
+															</a>
 							</div>
 							<div class="card-body  ">
 								<h5 class="card-title text-success ">Tên phòng: {{item.descriptions}}</h5>

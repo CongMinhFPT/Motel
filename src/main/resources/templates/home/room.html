@@ -72,7 +72,7 @@
                     <div class="col-lg-3 mb-4">
                         <div class=" mb-0">
                             <label class="form-label " for="">Tìm theo tên</label><br>
-                            <input class="form-control " type="search">
+                            <input class="form-control " ng-model="sesearchnamemotel" type="search" ng-model-options="{ debounce: 700 }">
                         </div>
                     </div>
                     <div class="col-lg-6"></div>
@@ -119,17 +119,6 @@
                                 <select class="custom-select w-50" id="ward" name="ward" onchange="filterByAddress()">
                                     <option value="">Tất cả</option>
                                     <!-- Thêm các option từ dữ liệu của bạn -->
-                                </select>
-                            </div>
-                            <hr />
-                            <!-- Combobox 4 -->
-                            <div class="custom-select-wrapper mb-3">
-                                <h6 class="mb-0 w-50">Diện tích:</h6>
-                                <select class="custom-select w-50" id="categorySelect4" onchange="filterByArea()">
-                                    <option value="1">Tất cả</option>
-                                    <option value="2">Dưới 20m²</option>
-                                    <option value="3">Từ 20m² đến 50m²</option>
-                                    <option value="4">Trên 50m²</option>
                                 </select>
                             </div>
                             <hr />
@@ -244,9 +233,54 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- <script th:src="@{/js/header.js}"></script>
-    <script th:src="@{/js/room.js}"></script>
-    <script th:src="@{/js/address.js}"></script> -->
+    <script th:src="@{/js/room.js}"></script> -->
+    <script th:src="@{/js/address.js}"></script>
+    <script th:inline="javascript">
+        function filterByAddress() {
 
+            var selectedCityElement = document.getElementsByName("city")[0];
+            var selectedDistrictElement = document.getElementsByName("district")[0];
+            var selectedWardElement = document.getElementsByName("ward")[0];
+
+            var selectedCity = selectedCityElement.value !== "" ? selectedCityElement.options[selectedCityElement.selectedIndex].text : "";
+            var selectedDistrict = selectedDistrictElement.value !== "" ? selectedDistrictElement.options[selectedDistrictElement.selectedIndex].text : ""; var selectedWard = selectedWardElement.value !== "" ? selectedWardElement.options[selectedWardElement.selectedIndex].text : "";
+            console.log("json", selectedCity, selectedDistrict, selectedWard);
+
+            var cards = document.getElementsByClassName("room-card");
+
+            for (var i = 0; i < cards.length; i++) {
+                var card = cards[i];
+                var cityElement = card.querySelector(".city");
+                var districtElement = card.querySelector(".district");
+                var wardElement = card.querySelector(".ward");
+                console.log("card", card);
+
+                if (!cityElement || !districtElement || !wardElement) {
+                    console.log("Không thể lấy thông tin địa chỉ từ thẻ card.");
+                    continue; // Bỏ qua thẻ card không có đủ thông tin địa chỉ và chuyển sang thẻ card tiếp theo
+                }
+
+                var city = cityElement.innerText;
+                var district = districtElement.innerText;
+                var ward = wardElement.innerText;
+
+                console.log("Thông tin địa chỉ từ thẻ card:", city, district, ward);
+
+                if ((selectedCity === "" || city.includes(selectedCity)) &&
+                    (selectedDistrict === "" || district.includes(selectedDistrict)) &&
+                    (selectedWard === "" || ward.includes(selectedWard))) {
+                    card.style.display = ""; // Hiển thị thẻ card nếu nó khớp với điều kiện lọc
+                    console.log("so sanh thanh cong");
+                    console.log("du lie json", selectedCity, selectedDistrict, selectedWard);
+                } else {
+                    card.style.display = "none"; // Ẩn thẻ card nếu không khớp với điều kiện lọc
+                    console.log("so sanh that bai");
+                }
+            }
+        }
+        // Gọi hàm lọc ban đầu để hiển thị tất cả card
+        filterByAddress();
+    </script>
 </body>
 
 </html>

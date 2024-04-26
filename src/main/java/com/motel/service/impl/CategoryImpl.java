@@ -34,10 +34,10 @@ public class CategoryImpl implements CategoryService {
 
 	@Override
 	public void changeStatus(Integer id, boolean newStatus) {
-	    Optional<CategoryRoom> categoryOptional = categoryRepo.findById(id);
-	    categoryOptional.ifPresent(category -> {
-	        category.setStatus(newStatus);
-	        categoryRepo.save(category); 
-	    });
+		Optional<CategoryRoom> categoryOptional = categoryRepo.findById(id);
+		categoryOptional.ifPresent(category -> {
+			category.setStatus(newStatus);
+			categoryRepo.save(category);
+		});
 	}
 }

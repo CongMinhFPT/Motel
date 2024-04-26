@@ -30,18 +30,9 @@
 												</option>
 											</select>
 										</div>
-										<div class="form-group col-md-6">
-											<label for="inputState">Trạng Thái</label>
-											<select id="inputState" class="form-control" th:field="*{invoiceStatusId}">
-												<option value="">Chọn phòng trọ</option>
-												<option th:each="currentInvoiceStatus  : ${invoiceStatues}"
-													th:value="${currentInvoiceStatus.invoiceStatusId}"
-													th:text="${currentInvoiceStatus.title}">
-												</option>
-											</select>
-										</div>
-										<button class="btn btn-primary">Lưu Lại</button>
+
 									</div>
+									<button class="btn btn-primary">Lưu Lại</button>
 								</form>
 							</div>
 						</div>

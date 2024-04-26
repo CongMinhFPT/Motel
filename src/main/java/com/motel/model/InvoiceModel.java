@@ -9,5 +9,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InvoiceModel {
     Integer motelRoomId;
-    Integer invoiceStatusId;
 }

@@ -17,19 +17,19 @@ app.controller('renterCtrl', function ($scope, $http, $location) {
         $scope.accountId = id;
     };
 
-    $scope.getAllMotelRoom = function (accountIdRenter) {
-        let url = '/api/motelRoom?accountId='+accountIdRenter;
-        $http.get(url)
-            .then(function (response) {
-                $scope.motelRooms = response.data;
-                console.log(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-    }
+    // $scope.getAllMotelRoom = function (accountIdRenter) {
+    //     let url = '/api/motelRoom?accountId='+accountIdRenter;
+    //     $http.get(url)
+    //         .then(function (response) {
+    //             $scope.motelRooms = response.data;
+    //             console.log(response.data);
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         })
+    // }
 
-    $scope.getAllMotelRoom();
+    // $scope.getAllMotelRoom();
 
     $scope.addRenter = function (accountId, renterDate, motelRoomId) {
         let urlAdd = "http://localhost:8080/api/addRenter";
@@ -47,7 +47,7 @@ app.controller('renterCtrl', function ($scope, $http, $location) {
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
-                    timer: 3000
+                    timer: 1000
                 }).then(() => {
                     window.location.href = '/admin/renter/add-renter';
                 });

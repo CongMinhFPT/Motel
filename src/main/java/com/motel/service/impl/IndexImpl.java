@@ -189,4 +189,9 @@ public class IndexImpl implements IndexsService {
         // this.addIndexsOrigin();
     }
 
+    @Override
+    public void deleteIndexes(Integer indexesId) {
+        indexsRepository.deleteById(indexesId);
+    }
+
 }

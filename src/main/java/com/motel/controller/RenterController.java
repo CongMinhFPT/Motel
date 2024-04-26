@@ -3,10 +3,12 @@ package com.motel.controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators.Mod;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,7 @@ import com.motel.entity.CustomUserDetails;
 import com.motel.entity.Motel;
 import com.motel.entity.MotelRoom;
 import com.motel.entity.Renter;
+import com.motel.model.RenterModel;
 import com.motel.repository.AccountsRepository;
 import com.motel.repository.MotelRepository;
 import com.motel.repository.RenterRepository;
@@ -49,10 +52,32 @@ public class RenterController {
         String emailAccount = authentication.getName();
         Account account = accountsRepository.getByEmail(emailAccount);
         model.addAttribute("accountIdRenter", account.getAccountId());
-        manageMotelImpl.CheckLoginAndSetMotelid(model);
+
+        if (manageMotelImpl.CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+            if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+                Motel motel = motelRepository.getById(customUserDetails.getMotelid());
+
+                List<MotelRoom> motelRooms = motel.getMotelRoom();
+                List<MotelRoom> motelRoomsAdd = new ArrayList<>();
+
+                for (MotelRoom motelRoom : motelRooms) {
+                    motelRoomsAdd.add(motelRoom);
+                }
+
+                model.addAttribute("motelRoom", motelRoomsAdd);
+                manageMotelImpl.SetModelMotel(model);
+                return "/admin/renter/add-renter";
+
+            } else {
+                return "redirect:/admin/manage-motel";
+            }
+        } else {
+            return "home/signin";
+        }
         // List<MotelRoom> motelRooms = renterService.getAll();
         // model.addAttribute("motelRooms", motelRooms);
-        return "/admin/renter/add-renter";
+
     }
 
     @GetMapping("/admin/renter")
@@ -92,28 +117,137 @@ public class RenterController {
         String emailAccount = authentication.getName();
         Account account = accountsRepository.getByEmail(emailAccount);
 
-        List<MotelRoom> motelRooms = renterService.getMotelRoomByAccount(account.getAccountId());
+        if (manageMotelImpl.CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+            if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+                Motel motel = motelRepository.getById(customUserDetails.getMotelid());
 
-        System.out.println(motelRooms);
-        model.addAttribute("motelRooms", motelRooms);
-        return "/admin/renter/update-renter";
+                List<MotelRoom> motelRooms = motel.getMotelRoom();
+                List<MotelRoom> motelRoomsAdd = new ArrayList<>();
+
+                for (MotelRoom motelRoom : motelRooms) {
+                    motelRoomsAdd.add(motelRoom);
+                }
+
+                model.addAttribute("motelRooms", motelRoomsAdd);
+                manageMotelImpl.SetModelMotel(model);
+                return "/admin/renter/update-renter";
+
+            } else {
+                return "redirect:/admin/manage-motel";
+            }
+        } else {
+            return "home/signin";
+        }
+
     }
 
     @PostMapping("/admin/renter/update-renter/{renterId}")
     public String getUpdate(@PathVariable("renterId") Integer renterId, Model model,
             @ModelAttribute("renter") Renter renter) {
-        List<MotelRoom> motelRooms = renterService.getMotelRoomByAccount(renter.getAccount().getAccountId());
-        model.addAttribute("motelRooms", motelRooms);
-        Renter renterCurrent = renterService.getRenter(renterId);
+        if (manageMotelImpl.CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+            if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+                Motel motel = motelRepository.getById(customUserDetails.getMotelid());
 
-        renterRepository.save(renter);
-        model.addAttribute("successUpdate", true);
-        return "/admin/renter/update-renter";
+                List<MotelRoom> motelRooms = motel.getMotelRoom();
+                List<MotelRoom> motelRoomsAdd = new ArrayList<>();
+
+                for (MotelRoom motelRoom : motelRooms) {
+                    motelRoomsAdd.add(motelRoom);
+                }
+
+                model.addAttribute("motelRooms", motelRoomsAdd);
+                manageMotelImpl.SetModelMotel(model);
+
+                renterRepository.save(renter);
+                model.addAttribute("successUpdate", true);
+                return "/admin/renter/update-renter";
+            } else {
+                return "redirect:/admin/manage-motel";
+            }
+        } else {
+            return "home/signin";
+        }
     }
 
     @GetMapping("/admin/deleteRenter/{renterId}")
     public String deleteRenter(@PathVariable("renterId") Integer renterId, Model model) {
         renterService.deleteRenter(renterId);
         return "redirect:/admin/renter";
+    }
+
+    @GetMapping("/admin/renter/delete-renter/{motelRoomId}")
+    public String deleteRenterByMotelRoom(@PathVariable("motelRoomId") Integer motelRoomId, Model model) {
+        renterService.deleteRenterByMotelRoom(motelRoomId);
+        return "redirect:/admin/renter";
+    }
+
+    @GetMapping("/admin/check-in-and-check-out")
+    public String getListCheckInAndCheckOut(Model model) {
+        manageMotelImpl.SetModelMotel(model);
+        model.addAttribute("renters", renterRepository.findAll());
+        return "/admin/renter/check-in-and-check-out-list";
+    }
+
+    @GetMapping("/admin/renter/change-room/{renterId}")
+    public String getChangeRoom(@PathVariable("renterId") Integer renterId, Model model,
+            @ModelAttribute("renter") RenterModel renterModel) {
+        Renter renterUpdate = renterService.getRenter(renterId);
+        model.addAttribute("renterUpdate", renterUpdate);
+
+        if (manageMotelImpl.CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+            if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+                Motel motel = motelRepository.getById(customUserDetails.getMotelid());
+
+                List<MotelRoom> motelRooms = motel.getMotelRoom();
+                List<MotelRoom> motelRoomsAdd = new ArrayList<>();
+
+                for (MotelRoom motelRoom : motelRooms) {
+                    motelRoomsAdd.add(motelRoom);
+                }
+
+                model.addAttribute("motelRooms", motelRoomsAdd);
+                manageMotelImpl.SetModelMotel(model);
+
+                return "/admin/renter/change-room-renter";
+            } else {
+                return "redirect:/admin/manage-motel";
+            }
+        } else {
+            return "home/signin";
+        }
+
+    }
+
+    @PostMapping("/admin/renter/change-room/{renterId}")
+    public String getChangeRoomRenter(@PathVariable("renterId") Integer renterId, Model model,
+            @ModelAttribute("renter") RenterModel renterModel) {
+        if (manageMotelImpl.CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+            if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+                Motel motel = motelRepository.getById(customUserDetails.getMotelid());
+
+                List<MotelRoom> motelRooms = motel.getMotelRoom();
+                List<MotelRoom> motelRoomsAdd = new ArrayList<>();
+
+                for (MotelRoom motelRoom : motelRooms) {
+                    motelRoomsAdd.add(motelRoom);
+                }
+
+                model.addAttribute("motelRooms", motelRoomsAdd);
+                manageMotelImpl.SetModelMotel(model);
+
+                renterService.changeRoom(renterModel, renterId);
+                model.addAttribute("successChange", true);
+                return "/admin/renter/change-room-renter";
+            } else {
+                return "redirect:/admin/manage-motel";
+            }
+        } else {
+            return "home/signin";
+        }
+
     }
 }

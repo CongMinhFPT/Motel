@@ -126,9 +126,7 @@ public class InvoiceController {
                 }
 
                 model.addAttribute("renters", motelRoomsAdd);
-
-                List<InvoiceStatus> invoiceStatus = invoiceStatusRepository.findAll();
-                model.addAttribute("invoiceStatues", invoiceStatus);
+                manageMotelImpl.SetModelMotel(model);
                 return "/admin/invoice/add-invoice";
 
             } else {
@@ -156,8 +154,6 @@ public class InvoiceController {
 
                 model.addAttribute("renters", motelRoomsAdd);
 
-                List<InvoiceStatus> invoiceStatus = invoiceStatusRepository.findAll();
-                model.addAttribute("invoiceStatues", invoiceStatus);
                 try {
                     invoiceService.addInvoice(invoiceModel);
                     model.addAttribute("success", true);
@@ -180,17 +176,17 @@ public class InvoiceController {
     public String getFormUpdateInvoice(@PathVariable("invoiceId") Integer invoiceId, Model model,
             @ModelAttribute("invoice") Invoice invoice) {
         Invoice invoices = invoiceRepository.getById(invoiceId);
+        invoice.setInvoiceStatus(invoices.getInvoiceStatus());
         model.addAttribute("invoices", invoices);
-        model.addAttribute("invoiceStatusId", invoices.getInvoiceStatus().getInvoiceStatusId());
-
-        System.out.println(invoices.getTotalPrice() + " : " + invoices.getCreateDate());
+        // model.addAttribute("invoiceStatus",
+        // invoices.getInvoiceStatus().getInvoiceStatusId());
 
         List<Renter> renters = renterRepository.findAll();
         model.addAttribute("renters", renters);
 
         List<InvoiceStatus> invoiceStatuses = invoiceStatusRepository.findAll();
         model.addAttribute("invoiceStatuses", invoiceStatuses);
-
+        manageMotelImpl.SetModelMotel(model);
         return "/admin/invoice/update-invoice";
     }
 
@@ -206,7 +202,7 @@ public class InvoiceController {
 
         List<InvoiceStatus> invoiceStatuses = invoiceStatusRepository.findAll();
         model.addAttribute("invoiceStatuses", invoiceStatuses);
-
+        manageMotelImpl.SetModelMotel(model);
         try {
             invoiceService.updateInvoice(invoiceId, invoice);
             model.addAttribute("success", true);

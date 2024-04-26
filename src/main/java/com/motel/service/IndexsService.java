@@ -7,8 +7,14 @@ import com.motel.model.IndexsModel;
 
 public interface IndexsService {
     Indexs addIndexs(IndexsModel indexsModel);
+
     Indexs updateIndexs(Integer indexsId, Indexs indexs);
+
     void deleteIndexs(Integer indexsId);
+
+    void deleteIndexes(Integer indexesId);
+
     Indexs addIndexsOrigin();
+
     Optional<Indexs> getById(Integer indexsId);
 }

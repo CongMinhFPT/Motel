@@ -30,18 +30,18 @@
 							<thead>
 								<tr>
 									<th>STT</th>
-									<th>Tiêu đề</th>
+									<th>Số lượng người ở</th>
 									<th>Mô tả</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody id="categoryList">
 								<!-- Sử dụng Thymeleaf để lặp qua danh sách CategoryRoom -->
-								<tr th:each="category , index: ${category}">
+								<tr th:each="category , index: ${category}" th:if="${category.status == true}">
 									<!-- Hiển thị số thứ tự -->
 									<td th:text="${index.count}"></td>
 									<!-- Hiển thị tiêu đề -->
-									<td th:text="${category.title}"></td>
+									<td th:text="${category.quantity}"></td>
 									<!-- Hiển thị mô tả -->
 									<td th:text="${category.descriptions}"></td>
 									<td>

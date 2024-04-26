@@ -22,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,7 +32,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 @Table(name = "renter")
-// @ToString(exclude = { "invoice" })
 public class Renter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,16 +41,17 @@ public class Renter {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date renterDate;
 
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date checkOutDate;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "renter")
     @JsonManagedReference
     List<Invoice> invoice;
 
-
     @ManyToOne
     @JoinColumn(name = "motelRoomId")
     @JsonBackReference
-
     MotelRoom motelRoom;
 
     @ManyToOne

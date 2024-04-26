@@ -84,7 +84,6 @@ public class AdminMotelControllerApi {
         map.put("listStatus", listStatus);
         map.put("roomStatus", motelRoom.getRoomStatus());
         map.put("number", motelRoom.getRenter().size());
-        map.put("datestatus", motelRoom.getCheckoutdate());
         return ResponseEntity.ok(map);
     }
 
@@ -172,11 +171,9 @@ public class AdminMotelControllerApi {
         RoomStatus roomStatus = roomStatusRepository.getById(idstatus);
         if (entity.getRoomStatus() != roomStatus) {
             entity.setRoomStatus(roomStatus);
-            entity.setCheckoutdate(date);
             motelRoomRepository.save(entity);
             return ResponseEntity.ok().build();
         } else {
-            entity.setCheckoutdate(date);
             motelRoomRepository.save(entity);
             return ResponseEntity.ok().build();
         }
@@ -188,7 +185,6 @@ public class AdminMotelControllerApi {
         RoomStatus roomStatus = roomStatusRepository.getById(idstatus);
         if (motelRoom.getRenter().size() == 0) {
             motelRoom.setRoomStatus(roomStatus);
-            motelRoom.setCheckoutdate(null);
             motelRoomRepository.save(motelRoom);
             return ResponseEntity.ok().build();
         }
@@ -199,7 +195,6 @@ public class AdminMotelControllerApi {
     public ResponseEntity<Void> postUpdataroomstatus3(@PathVariable int idmotelroom, @PathVariable int idstatus) {
         MotelRoom motelRoom = motelRoomRepository.getById(idmotelroom);
         RoomStatus roomStatus = roomStatusRepository.getById(idstatus);
-        motelRoom.setCheckoutdate(null);
         motelRoom.setRoomStatus(roomStatus);
         motelRoomRepository.save(motelRoom);
         return ResponseEntity.ok().build();

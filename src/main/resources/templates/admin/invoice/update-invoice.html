@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
 
 <head>
 	<meta charset="UTF-8">
@@ -38,21 +38,18 @@
 											<input type="hidden" th:field="*{oldWaterIndex}"
 												ng-value="invoices.oldWaterIndex">
 											<label>Phòng Trọ</label>
-											<label for="inputState" class="form-control" th:field="*{renter}"
+											<label class="form-control" th:field="*{renter}"
 												th:value="${invoices.renter.renterId}"
 												th:text="${invoices.renter.motelRoom.descriptions}"></label>
 										</div>
 										<div class="form-group col-md-6">
-											<label for="inputState">Trạng Thái</label>
-											<select id="inputState" class="form-control" th:field="*{invoiceStatus}">
-												<!-- <option th:value="${invoices.invoiceStatus.invoiceStatusId}"
-													th:text="${invoices.invoiceStatus.title}"></option> -->
-												<option value="">Chọn Trạng Thái</option>
-												<option th:each="invoiceStatus : ${invoiceStatuses}"
-													th:value="${invoiceStatus.invoiceStatusId}"
-													th:text="${invoiceStatus.title}">
+											<label for="invoiceStatus">Trạng Thái</label>
+											<select th:field="*{invoiceStatus.invoiceStatusId}" class="form-control">
+												<option th:each="status : ${invoiceStatuses}"
+													th:value="${status.invoiceStatusId}" th:text="${status.title}">
 												</option>
 											</select>
+
 										</div>
 										<button class="btn btn-primary">Lưu Lại</button>
 									</div>

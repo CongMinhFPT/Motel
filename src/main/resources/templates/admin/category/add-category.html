@@ -21,17 +21,16 @@
 								<input type="hidden" th:field="*{categoryRoomId}" />
 								<div class="form-row">
 									<div class="form-group col-md-6">
-										<label>Tiêu đề</label>
-										<input type="text" class="form-control" th:field="*{title}"
-												placeholder="Nhập tiêu đề">
+										<label>Số Lượng Người Ở</label>
+										<input type="number" class="form-control" th:field="*{quantity}">
 										<!-- Hiển thị thông báo lỗi -->
-										<i class="text-danger" th:errors="*{title}"></i>
+										<i class="text-danger" th:errors="*{quantity}"></i>
 										<i class="text-danger">[[${messagerror}]]</i>
 									</div>
 									<div class="form-group col-md-6">
 										<label>Mô tả</label>
 										<input type="text" class="form-control" th:field="*{descriptions}"
-												placeholder="Nhập mô tả">
+											placeholder="Nhập mô tả">
 										<!-- Hiển thị thông báo lỗi -->
 										<i class="text-danger" th:errors="*{descriptions}"></i>
 										<i class="text-danger">[[${messagerror}]]</i>
@@ -56,10 +55,10 @@
 			type: 'success',
 			title: 'Thành công!',
 			text: successMessage,
-			confirmButtonText: 'OK',
 			toast: true,
 			position: 'top-end'
 		});
 	</script>
 </body>
+
 </html>

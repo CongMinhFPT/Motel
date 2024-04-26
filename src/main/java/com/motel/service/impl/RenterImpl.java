@@ -2,20 +2,27 @@ package com.motel.service.impl;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.motel.entity.Account;
+import com.motel.entity.Indexs;
 import com.motel.entity.MotelRoom;
 import com.motel.entity.Renter;
+import com.motel.entity.RoomStatus;
 import com.motel.model.RenterModel;
 import com.motel.repository.AccountsRepository;
+import com.motel.repository.IndexsRepository;
 import com.motel.repository.MotelRoomRepository;
 import com.motel.repository.RenterRepository;
+import com.motel.repository.RoomStatusRepository;
 import com.motel.service.RenterService;
 
 @Service
@@ -29,6 +36,12 @@ public class RenterImpl implements RenterService {
 
     @Autowired
     RenterRepository renterRepository;
+
+    @Autowired
+    RoomStatusRepository roomStatusRepository;
+
+    @Autowired
+    IndexsRepository indexsRepository;
 
     @Override
     public List<Account> getByPhoneNumber(String phone) {
@@ -67,12 +80,32 @@ public class RenterImpl implements RenterService {
             }
         }
 
+        List<RoomStatus> roomStatuses = roomStatusRepository.findAll();
+        motelRoom.setRoomStatus(roomStatuses.get(1));
+
+        List<Renter> renters = renterRepository.findAll();
+        if (motelRoom.getCategoryRoom().getQuantity() < renters.size() + 1) {
+            throw new IllegalStateException("Số người thuê đã vượt quá số lượng trong danh mục phòng!");
+        }
+
+        Indexs indexs = new Indexs();
+
+        if (motelRoomRepository.findMotelRooms().size() == 0) {
+            indexs.setCreateDate(new Date());
+            indexs.setElectricityIndex(0.0);
+            indexs.setWaterIndex(0.0);
+            indexs.setMotelRoom(motelRoom);
+            indexsRepository.save(indexs);
+        }
+
         Renter renter = new Renter();
         renter.setAccount(account);
         renter.setMotelRoom(motelRoom);
         renter.setRenterDate(renterModel.getRenterDate());
+        renter.setCheckOutDate(null);
 
         renterRepository.save(renter);
+
         return renter;
     }
 
@@ -99,10 +132,15 @@ public class RenterImpl implements RenterService {
 
     @Override
     public void deleteRenter(Integer renterId) {
-        if (renterId == null) {
-            throw new IllegalStateException("Nguời thuê không tồn tại!");
-        } else {
-            renterRepository.deleteById(renterId);
+        List<Renter> renters = renterRepository.findAll();
+        Renter renter = renterRepository.findById(renterId).get();
+        MotelRoom motelRoom = motelRoomRepository.findById(renter.getMotelRoom().getMotelRoomId()).orElse(null);
+        System.out.println(renter.getAccount().getPhone());
+        renter.setCheckOutDate(new Date());
+        renterRepository.save(renter);
+        if (motelRoomRepository.findMotelRoomsRenter(motelRoom.getMotelRoomId()).size() == 0) {
+            List<RoomStatus> roomStatuses = roomStatusRepository.findAll();
+            motelRoom.setRoomStatus(roomStatuses.get(0));
         }
     }
 
@@ -111,9 +149,77 @@ public class RenterImpl implements RenterService {
         return motelRoomRepository.findMotelRoomsByAccount(accountId);
     }
 
-	@Override
-	public long countByMotelRoom(MotelRoom motelRoom) {
-		// TODO Auto-generated method stub
-		return renterRepository.countByMotelRoom(motelRoom);
-	}
+    @Override
+    public long countByMotelRoom(MotelRoom motelRoom) {
+        // TODO Auto-generated method stub
+        return renterRepository.countByMotelRoom(motelRoom);
+    }
+
+    @Override
+    public void deleteRenterByMotelRoom(Integer motelRoomId) {
+        MotelRoom motelRoom = motelRoomRepository.findById(motelRoomId).orElse(null);
+
+        List<Renter> renters = renterRepository.findRenterByMotelRoom(motelRoomId);
+
+        for (Renter renter : renters) {
+            renter.setCheckOutDate(new Date());
+        }
+        renterRepository.saveAll(renters);
+
+        List<RoomStatus> roomStatuses = roomStatusRepository.findAll();
+        motelRoom.setRoomStatus(roomStatuses.get(0));
+        renterRepository.saveAll(renters);
+    }
+
+    @Override
+    public Renter changeRoom(RenterModel renterModel, Integer renterId) {
+
+        Renter renter1 = renterRepository.findById(renterId).get();
+        MotelRoom motelRoom1 = motelRoomRepository.findById(renter1.getMotelRoom().getMotelRoomId()).orElse(null);
+        System.out.println(renter1.getAccount().getPhone());
+
+        if (motelRoomRepository.findMotelRoomsRenter(motelRoom1.getMotelRoomId()).size() == 0) {
+            List<RoomStatus> roomStatuses = roomStatusRepository.findAll();
+            motelRoom1.setRoomStatus(roomStatuses.get(0));
+        }
+
+        Integer motelRoomId = renterModel.getMotelRoomId();
+
+        Account account = accountsRepository.findById(renter1.getAccount().getAccountId()).orElse(null);
+
+        MotelRoom motelRoom = motelRoomRepository.findById(renterModel.getMotelRoomId()).orElse(null);
+
+        if (motelRoomId == null) {
+            throw new IllegalStateException("Phòng trọ không được để trống.");
+        }
+
+        List<RoomStatus> roomStatuses = roomStatusRepository.findAll();
+        motelRoom.setRoomStatus(roomStatuses.get(1));
+
+        List<Renter> renters = renterRepository.findAll();
+        if (motelRoom.getCategoryRoom().getQuantity() < renters.size() + 1) {
+            throw new IllegalStateException("Số người thuê đã vượt quá số lượng trong danh mục phòng!");
+        }
+
+        Indexs indexs = new Indexs();
+
+        if (motelRoomRepository.findMotelRooms().size() == 0) {
+            indexs.setCreateDate(new Date());
+            indexs.setElectricityIndex(0.0);
+            indexs.setWaterIndex(0.0);
+            indexs.setMotelRoom(motelRoom);
+            indexsRepository.save(indexs);
+        }
+
+        Renter renter = new Renter();
+        renter.setAccount(account);
+        renter.setMotelRoom(motelRoom);
+        renter.setRenterDate(new Date());
+        renter.setCheckOutDate(null);
+
+        renterRepository.save(renter);
+
+        return renter;
+
+    }
 }

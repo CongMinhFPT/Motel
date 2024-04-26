@@ -14,6 +14,21 @@
 		})
 	}
 
+	var successChange = /*[[${successChange}]]*/ false;
+	if (successChange) {
+		Swal.fire({
+			title: "Thành công!",
+			text: "Dữ liệu đã được cập nhật thành công.",
+			icon: "success",
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 1000
+		}).then(() => {
+			window.location.href = '/admin/renter';
+		})
+	}
+
 	var date = /*[[${date}]]*/ false;
 	if (date) {
 		Swal.fire({
@@ -41,6 +56,26 @@
 		}).then((result) => {
 			if (result.isConfirmed) {
 				window.location.href = "/admin/deleteRenter/" + renterId;
+				setTimeout(() => {
+					window.location.href = "/admin/renter";
+				}, 1000)
+			}
+		});
+	}
+
+	function confirmAndDeleteRenter(motelRoomId) {
+		Swal.fire({
+			title: 'Bạn có chắc chắn muốn xóa?',
+			text: "Khi xóa thì tất cả các chỉ số liên quan đến phòng sẽ bị xóa!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#d33',
+			cancelButtonColor: '#3085d6',
+			confirmButtonText: 'Xóa',
+			cancelButtonText: 'Hủy'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = "/admin/renter/delete-renter/" + motelRoomId;
 				setTimeout(() => {
 					window.location.href = "/admin/renter";
 				}, 1000)

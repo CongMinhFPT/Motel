@@ -42,8 +42,6 @@ public class MotelRoom {
   Integer motelRoomId;
   @Temporal(TemporalType.DATE)
   Date createDate = new Date();
-  @Temporal(TemporalType.DATE)
-  Date Checkoutdate;
   @NotNull(message = "Vui lòng nhập chiều dài của phòng")
   @Min(value = 1, message = "Vui lòng nhập chiều dài của phòng là số dương")
   Double length;

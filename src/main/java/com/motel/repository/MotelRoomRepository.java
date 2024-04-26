@@ -25,6 +25,9 @@ public interface MotelRoomRepository extends JpaRepository<MotelRoom, Integer> {
     @Query(nativeQuery = true, value = "select * from motel_room a inner join renter b on a.motel_room_id = b.motel_room_id")
     List<MotelRoom> findMotelRooms();
 
+    @Query(nativeQuery = true, value = "select * from motel_room a inner join renter b on a.motel_room_id = b.motel_room_id where b.motel_room_id = :motel_room_id")
+    List<MotelRoom> findMotelRoomsRenter(@Param("motel_room_id") Integer motel_room_id);
+
     List<MotelRoom> findByMotel_DistrictAndMotel_Province(String district, String province);
 
     @Modifying

@@ -104,9 +104,10 @@ public class CategoryController {
 			model.addAttribute("messagerror", "Tên tiêu đề đã tồn tại ! vui lòng sử dụng tên khác");
 			return "admin/category/add-category";
 		}
+		impl.CheckLoginAndSetMotelid(model);
 		categoryService.create(category);
 		model.addAttribute("messageAdd", "Create Success!");
-		return "admin/category/add-category";
+		return "admin/category/category-list";
 	}
 
 	@PostMapping("/admin/upcategory")

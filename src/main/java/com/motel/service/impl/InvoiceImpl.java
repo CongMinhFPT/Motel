@@ -73,7 +73,11 @@ public class InvoiceImpl implements InvoiceService {
         MotelRoom motelRoomByModel = motelRoomRepository.findById(invoiceModel.getMotelRoomId())
                 .orElseThrow(() -> new IllegalArgumentException("Không tồn tại phòng !"));
         List<Renter> renters = motelRoomByModel.getRenter();
+        if (renters.size() == 0) {
+            throw new IllegalArgumentException("Phòng chưa được thuê!");
+        }
         Renter renterMotelRoom = renters.get(0);
+
         Integer renterId = renterMotelRoom.getRenterId();
         if (renterId != null) {
             Renter renter = renterRepository.findById(renterId)
@@ -222,19 +226,13 @@ public class InvoiceImpl implements InvoiceService {
                         "Chỉ số điện và nước chưa được tạo cho " + motelRoom.getDescriptions());
             }
 
-            Integer invoiceStatusId = invoiceModel.getInvoiceStatusId();
-            if (invoiceStatusId == null) {
-                throw new IllegalArgumentException("Không tìm thấy trạng thái!");
-            } else {
-                InvoiceStatus invoiceStatus = invoiceStatusRepository.findById(invoiceStatusId)
-                        .orElseThrow(() -> new IllegalArgumentException(
-                                "Invalid invoice status Id: " + invoiceModel.getInvoiceStatusId()));
-                invoice.setInvoiceStatus(invoiceStatus);
-                invoice.setRenter(renter);
-                invoiceRepository.save(invoice);
+            List<InvoiceStatus> invoiceStatuses = invoiceStatusRepository.findAll();
 
-                return invoice;
-            }
+            invoice.setInvoiceStatus(invoiceStatuses.get(1));
+            invoice.setRenter(renter);
+            invoiceRepository.save(invoice);
+
+            return invoice;
 
         } else {
             throw new IllegalArgumentException("Không tìm thấy danh sách thuê trọ!");
@@ -258,6 +256,11 @@ public class InvoiceImpl implements InvoiceService {
         InvoiceStatus invoiceStatus = invoiceStatusRepository.findById(invoice.getInvoiceStatus().getInvoiceStatusId())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Invalid invoice status Id: " + invoiceById.getInvoiceStatus().getInvoiceStatusId()));
+
+        if (invoiceStatus == null) {
+            throw new IllegalArgumentException("Chưa chọn trạng thái!");
+        }
+
         invoice.setInvoiceStatus(invoiceStatus);
         invoice.setRenter(invoiceById.getRenter());
         invoice.setNewElectricityIndex(invoiceById.getNewElectricityIndex());

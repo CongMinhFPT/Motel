@@ -39,7 +39,6 @@ public class MotelRoomNew {
     Integer People;
     Integer quantity;
     String name;
-    Date Checkoutdate;
 
     public MotelRoomNew(MotelRoom motelRoom, List<String> Nameimg,
             Double electricityBill,
@@ -65,6 +64,5 @@ public class MotelRoomNew {
         this.People = People;
         this.quantity = quantity;
         this.name = name;
-        this.Checkoutdate = motelRoom.getCheckoutdate();
     }
 }

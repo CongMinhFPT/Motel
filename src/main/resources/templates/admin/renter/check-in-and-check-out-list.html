@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body ng-app="renterApp" ng-controller="renterCtrl">
+	<div class="content-body">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-header d-sm-flex d-block">
+					<div class="mr-auto mb-sm-0 mb-3">
+						<h4 class="card-title mb-2">Danh Sách Trả Và Đổi Phòng</h4>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table style-1" id="ListDatatableView">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>HỌ TÊN</th>
+									<th>SỐ ĐIỆN THOẠI</th>
+									<th>PHÒNG TRỌ</th>
+									<th>NGÀY THUÊ</th>
+									<th>NGÀY TRẢ</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="renter, stt : ${renters}">
+									<td th:text="*{stt.index + 1}">
+									</td>
+									<td th:text="${renter.account.fullname}">
+									</td>
+									<td th:text="${renter.account.phone}">
+									</td>
+									</td>
+									<td th:text="${renter.motelRoom.descriptions}">
+									</td>
+									<td th:text="${#dates.format(renter.renterDate, 'dd - MM - yyyy')}">
+
+									</td>
+									<td
+										th:text="${renter.checkOutDate != null ? #dates.format(renter.checkOutDate, 'dd - MM - yyyy') : ''}">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

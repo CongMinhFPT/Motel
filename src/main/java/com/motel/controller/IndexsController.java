@@ -89,10 +89,28 @@ public class IndexsController {
         Account account = accountsRepository.getByEmail(emailAccount);
         // model.addAttribute("accountId", account.getAccountId());
 
-        List<MotelRoom> motelRooms = renterService.getMotelRoomByAccount(account.getAccountId());
-        model.addAttribute("motelRooms", motelRooms);
+        if (manageMotelImpl.CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+            if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+                Motel motel = motelRepository.getById(customUserDetails.getMotelid());
 
-        return "/admin/indexs/add-indexs";
+                List<MotelRoom> motelRooms = motel.getMotelRoom();
+                List<MotelRoom> motelRoomsAdd = new ArrayList<>();
+
+                for (MotelRoom motelRoom : motelRooms) {
+                    motelRoomsAdd.add(motelRoom);
+                }
+
+                model.addAttribute("motelRooms", motelRoomsAdd);
+                manageMotelImpl.SetModelMotel(model);
+                return "/admin/indexs/add-indexs";
+
+            } else {
+                return "redirect:/admin/manage-motel";
+            }
+        } else {
+            return "home/signin";
+        }
     }
 
     @PostMapping("/admin/indexs/add-indexs")
@@ -102,18 +120,35 @@ public class IndexsController {
         Account account = accountsRepository.getByEmail(emailAccount);
         // model.addAttribute("accountId", account.getAccountId());
 
-        List<MotelRoom> motelRooms = renterService.getMotelRoomByAccount(account.getAccountId());
-        model.addAttribute("motelRooms", motelRooms);
+        if (manageMotelImpl.CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+            if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+                Motel motel = motelRepository.getById(customUserDetails.getMotelid());
 
-        try {
-            indexsService.addIndexs(indexsModel);
-            model.addAttribute("success", true);
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
-            return "/admin/indexs/add-indexs";
+                List<MotelRoom> motelRooms = motel.getMotelRoom();
+                List<MotelRoom> motelRoomsAdd = new ArrayList<>();
+
+                for (MotelRoom motelRoom : motelRooms) {
+                    motelRoomsAdd.add(motelRoom);
+                }
+
+                model.addAttribute("motelRooms", motelRoomsAdd);
+                manageMotelImpl.SetModelMotel(model);
+                try {
+                    indexsService.addIndexs(indexsModel);
+                    model.addAttribute("success", true);
+                } catch (IllegalArgumentException e) {
+                    model.addAttribute("error", e.getMessage());
+                    return "/admin/indexs/add-indexs";
+                }
+                return "/admin/indexs/indexs-list";
+
+            } else {
+                return "redirect:/admin/manage-motel";
+            }
+        } else {
+            return "home/signin";
         }
-
-        return "redirect:/admin/indexs";
     }
 
     @GetMapping("/admin/indexs/update-indexs/{indexsId}")
@@ -121,6 +156,7 @@ public class IndexsController {
             @ModelAttribute("indexs") Indexs indexs, Model model) {
         Indexs indexsById = indexsRepository.getById(indexsId);
         model.addAttribute("indexes", indexsById);
+        manageMotelImpl.SetModelMotel(model);
         return "/admin/indexs/update-indexs";
     }
 
@@ -137,13 +173,20 @@ public class IndexsController {
             model.addAttribute("error", e.getMessage());
             return "/admin/indexs/update-indexs";
         }
+        manageMotelImpl.SetModelMotel(model);
 
-        return "redirect:/admin/indexs";
+        return "/admin/indexs/update-indexs";
     }
 
     @GetMapping("/admin/indexs/delete-indexs/{motelRoomId}")
     public String deleteRenter(@PathVariable("motelRoomId") Integer motelRoomId, Model model) {
         indexsService.deleteIndexs(motelRoomId);
+        return "redirect:/admin/indexs";
+    }
+
+    @GetMapping("/admin/indexs/delete-indexes/{indexesId}")
+    public String deleteIndexes(@PathVariable("indexesId") Integer indexesId, Model model) {
+        indexsService.deleteIndexes(indexesId);
         return "redirect:/admin/indexs";
     }
 }

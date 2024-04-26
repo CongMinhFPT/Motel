@@ -82,7 +82,7 @@
 								id="categoryRoom">
 								<option value="">chọn loại phòng</option>
 								<option th:if="${categoryRoomlist!=null}" th:each="item : ${categoryRoomlist} "
-									th:value="${item.categoryRoomId}">[[${item.title}]]</option>
+									th:value="${item.categoryRoomId}">[[${item.descriptions}]]</option>
 							</select>
 							<div>
 								<label th:if="${categoryRoomerror!=null}" th:text="${categoryRoomerror}"
@@ -92,7 +92,7 @@
 									for=""></label>
 							</div>
 						</div>
-					
+
 					</div>
 				</div>
 				<div>
@@ -116,15 +116,14 @@
 				<h4>Trạng thái</h4>
 				<div class="mt-2 mb-4 row ">
 					<div class="col-9">
-						<select class="form-control " ng-change="checkandupdateroomstatus()"
-							ng-model="selectedStatus">
-							<option ng-repeat="status in roomStatuses.listStatus"
-								value="{{status.roomStatusId}}">{{status.name}}</option>
+						<select class="form-control " ng-change="checkandupdateroomstatus()" ng-model="selectedStatus">
+							<option ng-repeat="status in roomStatuses.listStatus" value="{{status.roomStatusId}}">
+								{{status.name}}</option>
 						</select>
 					</div>
 					<div class="col-3">
-						<button type="button" ng-show="checkesttus!=null" class="btn btn-primary"
-							data-bs-toggle="modal" data-bs-target="#staticBackdropf">Sửa Ngày</button>
+						<button type="button" ng-show="checkesttus!=null" class="btn btn-primary" data-bs-toggle="modal"
+							data-bs-target="#staticBackdropf">Sửa Ngày</button>
 					</div>
 				</div>
 				<h4 class="mb-2 ">Tiền trọ</h4>

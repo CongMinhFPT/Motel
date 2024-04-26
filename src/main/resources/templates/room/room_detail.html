@@ -182,10 +182,10 @@
 											<i class='bx bx-phone'></i>
 											&nbsp;
 											[[${roomDetails.account.phone}]]</button>
-										<button type="button" class="btn px-5 btn-contact mt-10">
+<!--										<button type="button" class="btn px-5 btn-contact mt-10">
 											<i class='bx bxs-heart'></i>
 											&nbsp;
-											Yêu thích</button>
+											Yêu thích</button>-->
 										<a th:href="@{|/chat/${#request.remoteUser}/${roomDetails.account.email}|}"
 											class="btn px-5 btn-contact mt-10">
 											<i class='bx bxs-message-dots'></i>
@@ -266,7 +266,7 @@
 								<div class="single-product-wrap">
 									<div class="product-image">
 										<a th:href="@{'/room-details/' + ${room.postId}}">
-											<img th:src="@{|/uploads/${roomImage[iterStat.index]}|}"
+											<img th:src="@{|/files/ImgMotelRoom/${firstImageName}|}"
 												alt="Li's Product Image" style="height: 20rem;">
 										</a>
 									</div>

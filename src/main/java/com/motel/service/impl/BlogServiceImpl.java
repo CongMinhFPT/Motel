@@ -110,9 +110,9 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
-	public List<Blog> findBlogSimilar(Integer tagId) {
+	public List<Blog> findBlogSimilar(Integer tagId, Integer blogId) {
 	
-		return blogRepo.listSimilar(tagId);
+		return blogRepo.listSimilar(tagId, blogId);
 	}
 
 	

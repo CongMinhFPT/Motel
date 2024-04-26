@@ -38,24 +38,19 @@
 						<div>
 							<p class="alert alert-info" role="alert">
 								<img style="width: 1.5rem;" src="/files/ImgMotel/iconDiaChi.png" alt="">
-								[[${item.province}]] ,
-								[[${item.district}]],
-								[[${item.ward}]],
-								[[${item.detailAddress}]]
+						[[${item.detailAddress}]], [[${item.ward}]], [[${item.district}]], [[${item.province}]]
 							</p>
 						</div>
 					
 						<div style="top: 10px;" class="position-absolute " th:if="${motel!=null}">
 							<a th:if="${motel.motelId!=item.motelId}"
-								th:href="@{/admin/manage-motel/{id}(id=${item.motelId})}" class="btn btn-primary">Quản
-								lý</a>
+								th:href="@{/admin/manage-motel/{id}(id=${item.motelId})}" class="btn btn-primary">Chọn</a>
 							<a th:if="${motel.motelId==item.motelId}"
 								th:href="@{/admin/manage-motel/{id}(id=${item.motelId})}" class="btn btn-primary">Đã
 								chọn</a>
 						</div>
 						<div class="position-absolute top-0  " th:if="${motel==null}">
-							<a th:href="@{/admin/manage-motel/{id}(id=${item.motelId})}" class="btn btn-primary">Quản
-								lý</a>
+							<a th:href="@{/admin/manage-motel/{id}(id=${item.motelId})}" class="btn btn-primary">Chọn</a>
 						</div>
 					</div>
 				</div>

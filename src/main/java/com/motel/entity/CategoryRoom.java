@@ -16,7 +16,6 @@ import org.hibernate.annotations.Nationalized;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,12 +29,11 @@ public class CategoryRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer categoryRoomId;
-    @Nationalized
-    String title;
+    Integer quantity;
     @Nationalized
     String descriptions;
     boolean status = true;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "categoryRoom")
-    @JsonIgnore 
-	List<MotelRoom> motelRoom;
+    @JsonIgnore
+    List<MotelRoom> motelRoom;
 }

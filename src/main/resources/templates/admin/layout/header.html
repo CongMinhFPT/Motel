@@ -811,8 +811,8 @@
                         <img th:src="@{'/files/ImgMotel/' + ${motel.image}}" alt="">
                         <a href="javascript:void(0);"><i class="fa fa-cog" aria-hidden="true"></i></a>
                     </div>
-                    <h5 class="name p- w-100  text-center  "><span class="font-w400 ">Hello:
-                            #</span>[[${motel.descriptions}]]</h5>
+                    <h5 class="name p- w-100  text-center  "><span class="font-w400 ">
+                            </span>[[${motel.descriptions}]]</h5>
                     <p class="email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
                             data-cfemail="95f8f4e7e4e0f0efefefefd5f8f4fcf9bbf6faf8">[email&#160;<span>
                                 [[${#request.remoteUser}]]</span>]</a></p>
@@ -847,7 +847,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li th:if="${#request.isUserInRole('ADMIN')}"><a class="has-arrow ai-icon" href="javascript:void()"
+                    <li th:if="${#request.isUserInRole('MANAGER')}"><a class="has-arrow ai-icon" href="javascript:void()"
                             aria-expanded="false">
                             <i class="flaticon-077-menu-1"></i>
                             <span class="nav-text">Tin Tức</span>
@@ -855,12 +855,13 @@
                         <ul aria-expanded="false">
 
                             <li><a th:href="@{/admin/blogs}">Tin Tức</a></li>
-                            <li><a th:href="@{/admin/tags}">Tag</a></li>
+                            <li><a th:href="@{/admin/tags}">Danh mục tin tức</a></li>
                             <li><a th:href="@{/admin/check-posts}">Duyệt Bài Đăng</a>
+                            <li><a href="https://docs.google.com/spreadsheets/d/1dw6gG4yutxY6ZMSbtZ-nL8AMBTZRYaKxthRkuUGUMAc/edit?resourcekey#gid=975707906" target="_blank">Xem Phản Hồi</a>
                             </li>
                         </ul>
                     </li>
-                    <li th:if="${#request.isUserInRole('ADMIN')}"><a class="has-arrow ai-icon" href="javascript:void()"
+                    <li th:if="${#request.isUserInRole('SUPPER')}"><a class="has-arrow ai-icon" href="javascript:void()"
                             aria-expanded="false">
                             <i class="flaticon-077-menu-1"></i>
                             <span class="nav-text">Phân Quyền</span>

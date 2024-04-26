@@ -1,6 +1,9 @@
 package com.motel.entity;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -41,13 +44,8 @@ public class Post {
     String title;
 
     @ManyToOne
-    @JoinColumn(name = "accountId")
-    @JsonBackReference
-    Account account;
-
-    @ManyToOne
-    @JoinColumn(name = "motelRoomId")
-    MotelRoom motelRoom;
+    @JoinColumn(name = "motelId")
+    Motel motel;
 
     @Transient
     public String getCreateDateFormat() {
@@ -68,4 +66,5 @@ public class Post {
                 ", title='" + title +
                 '}';
     }
+   
 }

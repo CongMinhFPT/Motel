@@ -22,6 +22,7 @@ import com.motel.entity.MotelRoom;
 import com.motel.repository.CategoryRoomRepository;
 import com.motel.repository.MotelRepository;
 import com.motel.service.CategoryService;
+import com.motel.service.ManageMotelService;
 import com.motel.service.impl.ManageMotelImpl;
 
 @Controller
@@ -37,6 +38,8 @@ public class CategoryController {
 
 	@Autowired
 	MotelRepository motelRepository;
+	@Autowired
+	ManageMotelImpl impl;
 
 	@GetMapping("/admin/category")
 	public String categorylist(@ModelAttribute("category") CategoryRoom category, Model model) {
@@ -62,8 +65,9 @@ public class CategoryController {
 						categoryRooms.add(categoryRoom);
 					}
 				}
-				
+
 				model.addAttribute("category", categoryRooms);
+				impl.SetModelMotel(model);
 				return "admin/category/category-list";
 			} else {
 				return "redirect:/admin/manage-motel";
@@ -77,6 +81,7 @@ public class CategoryController {
 	@GetMapping("/admin/categoryform")
 	public String categoryform(@ModelAttribute("category") CategoryRoom category, Model model) {
 		// model.addAttribute("method", new Method());
+		impl.CheckLoginAndSetMotelid(model);
 		return "admin/category/add-category";
 	}
 
@@ -95,7 +100,7 @@ public class CategoryController {
 		if (result.hasErrors()) {
 			return "admin/category/add-category";
 		}
-		if (categoryrep.getBytitle(category.getTitle()) != null) {
+		if (categoryrep.getByQuantity(category.getQuantity()) != null) {
 			model.addAttribute("messagerror", "Tên tiêu đề đã tồn tại ! vui lòng sử dụng tên khác");
 			return "admin/category/add-category";
 		}
@@ -110,9 +115,9 @@ public class CategoryController {
 		if (result.hasErrors()) {
 			return "admin/category/up-category";
 		}
-		if (categoryrep.getBytitle(category.getTitle()) != null) {
+		if (categoryrep.getByQuantity(category.getQuantity()) != null) {
 			model.addAttribute("messagerror", "Tên tiêu đề đã tồn tại ! vui lòng sử dụng tên khác");
-			return "admin/category/up-category";
+			return "admin/category/add-category";
 		}
 		categoryService.create(category);
 		model.addAttribute("messagess", "Create Success!");

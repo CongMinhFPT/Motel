@@ -69,24 +69,24 @@ public class AdminMotelControllerApi {
                     a.getWifiCash().isEmpty() ? null : a.getWifiCash().get(0).getWifiBill(),
                     a.getRoomCash().isEmpty() ? null : a.getRoomCash().get(0).getRoomBill(),
                     a.getRenter().isEmpty() ? 0 : a.getRenter().size(),
-                    a.getCategoryRoom().getTitle(),
+                    a.getCategoryRoom().getQuantity()+" NGười, "+ a.getCategoryRoom().getDescriptions(),
                     a.getRoomStatus() != null ? a.getRoomStatus().getName() : null);
             motelRoomNews.add(motelRoomNew);
         });
         return ResponseEntity.ok(motelRoomNews);
     }
-       @GetMapping("/api/all/motel/getallroomstatus/{idmotel}")
-       public ResponseEntity<Map<String, Object>> GetAllRoomStatus(@PathVariable int idmotel) {
-           List<RoomStatus>listStatus = roomStatusRepository.findAll();
-           MotelRoom motelRoom = motelRoomRepository.getById(idmotel);
-           Map<String, Object> map = new HashMap<String, Object>();
-           map.put("listStatus", listStatus);
-           map.put("roomStatus", motelRoom.getRoomStatus());
-           map.put("number", motelRoom.getRenter().size());
-           map.put("datestatus",motelRoom.getCheckoutdate());
-           return ResponseEntity.ok(map);
-       }
-       
+
+    // @GetMapping("/api/all/motel/getallroomstatus/{idmotel}")
+    // public ResponseEntity<Map<String, Object>> GetAllRoomStatus(@PathVariable int idmotel) {
+    //     List<RoomStatus> listStatus = roomStatusRepository.findAll();
+    //     MotelRoom motelRoom = motelRoomRepository.getById(idmotel);
+    //     Map<String, Object> map = new HashMap<String, Object>();
+    //     map.put("listStatus", listStatus);
+    //     map.put("roomStatus", motelRoom.getRoomStatus());
+    //     map.put("number", motelRoom.getRenter().size());
+    //     return ResponseEntity.ok(map);
+    // }
+
     @GetMapping("/api/all/Motel/{idmotel}/BilliMotelRoom/{id}")
     public ResponseEntity<Map<String, Object>> GetAllBillMotelRoom(@PathVariable int idmotel, @PathVariable int id) {
         if (motelRoomService.CheckMotelRoomInMotel(idmotel, id)) {
@@ -108,97 +108,100 @@ public class AdminMotelControllerApi {
             MotelRoom motelRoom = motelRoomRepository.getById(idmotelroom);
             switch (namebill) {
                 case "dien":
-                    if (motelRoom.getElectricityCash().size()!=0) {
+                    if (motelRoom.getElectricityCash().size() != 0) {
                         ElectricityCash electricityCash = motelRoom.getElectricityCash().get(0);
                         electricityCash.setElectricityBill(data);
                         electricityCashRepository.save(electricityCash);
-                    }else{
-                        ElectricityCash electricityCash =new ElectricityCash();
+                    } else {
+                        ElectricityCash electricityCash = new ElectricityCash();
                         electricityCash.setElectricityBill(data);
                         electricityCash.setMotelRoom(motelRoom);
                         electricityCashRepository.save(electricityCash);
                     }
                     break;
                 case "nuoc":
-                if (motelRoom.getWaterCash().size()!=0) {
-                    WaterCash waterCash = motelRoom.getWaterCash().get(0);
-                    waterCash.setWaterBill(data);
-                    waterCashRepository.save(waterCash);
-                }else{
-                   WaterCash waterCash =new WaterCash();
-                   waterCash.setWaterBill(data);
-                   waterCash.setMotelRoom(motelRoom);
-                   waterCashRepository.save(waterCash);
-                }
+                    if (motelRoom.getWaterCash().size() != 0) {
+                        WaterCash waterCash = motelRoom.getWaterCash().get(0);
+                        waterCash.setWaterBill(data);
+                        waterCashRepository.save(waterCash);
+                    } else {
+                        WaterCash waterCash = new WaterCash();
+                        waterCash.setWaterBill(data);
+                        waterCash.setMotelRoom(motelRoom);
+                        waterCashRepository.save(waterCash);
+                    }
                     break;
                 case "wifi":
-                if (motelRoom.getWifiCash().size()!=0) {
-                    WifiCash wifiCash = motelRoom.getWifiCash().get(0);
-                    wifiCash.setWifiBill(data);
-                    wifiCashRepository.save(wifiCash);
-                }else{
-                   WifiCash wifiCash =new WifiCash();
-                   wifiCash.setWifiBill(data);
-                   wifiCash.setMotelRoom(motelRoom);
-                   wifiCashRepository.save(wifiCash);
-                }
+                    if (motelRoom.getWifiCash().size() != 0) {
+                        WifiCash wifiCash = motelRoom.getWifiCash().get(0);
+                        wifiCash.setWifiBill(data);
+                        wifiCashRepository.save(wifiCash);
+                    } else {
+                        WifiCash wifiCash = new WifiCash();
+                        wifiCash.setWifiBill(data);
+                        wifiCash.setMotelRoom(motelRoom);
+                        wifiCashRepository.save(wifiCash);
+                    }
                     break;
                 case "giaphong":
-                if (motelRoom.getRoomCash().size()!=0) {
-                    RoomCash roomCash = motelRoom.getRoomCash().get(0);
-                    roomCash.setRoomBill(data);
-                    roomCashRepository.save(roomCash);
-                }else{
-                  RoomCash roomCash =new RoomCash();
-                  roomCash.setRoomBill(data);
-                  roomCash.setMotelRoom(motelRoom);
-                  roomCashRepository.save(roomCash);
-                }
+                    if (motelRoom.getRoomCash().size() != 0) {
+                        RoomCash roomCash = motelRoom.getRoomCash().get(0);
+                        roomCash.setRoomBill(data);
+                        roomCashRepository.save(roomCash);
+                    } else {
+                        RoomCash roomCash = new RoomCash();
+                        roomCash.setRoomBill(data);
+                        roomCash.setMotelRoom(motelRoom);
+                        roomCashRepository.save(roomCash);
+                    }
                     break;
 
                 default:
-                return ResponseEntity.badRequest().build();
+                    return ResponseEntity.badRequest().build();
             }
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
     }
-    @PostMapping("api/motel/roomstatus/{idmotelroom}/{idstatus}")
-    public  ResponseEntity<Void> postUpdataroomstatus(@PathVariable int idmotelroom,@PathVariable int idstatus,@RequestBody Date date) {
-       MotelRoom entity = motelRoomRepository.getById(idmotelroom);
-       RoomStatus roomStatus = roomStatusRepository.getById(idstatus);
-       if (entity.getRoomStatus()!=roomStatus) {
-        entity.setRoomStatus(roomStatus);
-        entity.setCheckoutdate(date);
-        motelRoomRepository.save(entity);
-        return ResponseEntity.ok().build();
-       }else{
-        entity.setCheckoutdate(date);
-        motelRoomRepository.save(entity);
-        return ResponseEntity.ok().build();
-       }
-    }
-    @GetMapping("api/motel/roomstatus/{idmotelroom}/{idstatus}")
-    public ResponseEntity<Void> postUpdataroomstatus2(@PathVariable int idmotelroom,@PathVariable int idstatus) {
-        MotelRoom motelRoom = motelRoomRepository.getById(idmotelroom);
-        RoomStatus roomStatus = roomStatusRepository.getById(idstatus);
-        if (motelRoom.getRenter().size()==0) {
-            motelRoom.setRoomStatus(roomStatus);
-            motelRoom.setCheckoutdate(null);
-            motelRoomRepository.save(motelRoom);
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.badRequest().build();
-    }
-    @GetMapping("api/motel/roomstatus2/{idmotelroom}/{idstatus}")
-    public ResponseEntity<Void> postUpdataroomstatus3(@PathVariable int idmotelroom,@PathVariable int idstatus) {
-        MotelRoom motelRoom = motelRoomRepository.getById(idmotelroom);
-        RoomStatus roomStatus = roomStatusRepository.getById(idstatus);
-         motelRoom.setCheckoutdate(null);
-         motelRoom.setRoomStatus(roomStatus);
-         motelRoomRepository.save(motelRoom);
-        return ResponseEntity.ok().build();
-    }
-    
+
+    // @PostMapping("api/motel/roomstatus/{idmotelroom}/{idstatus}")
+    // public ResponseEntity<Void> postUpdataroomstatus(@PathVariable int idmotelroom, @PathVariable int idstatus,
+    //         @RequestBody Date date) {
+    //     MotelRoom entity = motelRoomRepository.getById(idmotelroom);
+    //     RoomStatus roomStatus = roomStatusRepository.getById(idstatus);
+    //     if (entity.getRoomStatus() != roomStatus) {
+    //         entity.setRoomStatus(roomStatus);
+    //         entity.setCheckoutdate(date);
+    //         motelRoomRepository.save(entity);
+    //         return ResponseEntity.ok().build();
+    //     } else {
+    //         entity.setCheckoutdate(date);
+    //         motelRoomRepository.save(entity);
+    //         return ResponseEntity.ok().build();
+    //     }
+    // }
+
+    // @GetMapping("api/motel/roomstatus/{idmotelroom}/{idstatus}")
+    // public ResponseEntity<Void> postUpdataroomstatus2(@PathVariable int idmotelroom, @PathVariable int idstatus) {
+    //     MotelRoom motelRoom = motelRoomRepository.getById(idmotelroom);
+    //     RoomStatus roomStatus = roomStatusRepository.getById(idstatus);
+    //     if (motelRoom.getRenter().size() == 0) {
+    //         motelRoom.setRoomStatus(roomStatus);
+    //         motelRoom.setCheckoutdate(null);
+    //         motelRoomRepository.save(motelRoom);
+    //         return ResponseEntity.ok().build();
+    //     }
+    //     return ResponseEntity.badRequest().build();
+    // }
+
+    // @GetMapping("api/motel/roomstatus2/{idmotelroom}/{idstatus}")
+    // public ResponseEntity<Void> postUpdataroomstatus3(@PathVariable int idmotelroom, @PathVariable int idstatus) {
+    //     MotelRoom motelRoom = motelRoomRepository.getById(idmotelroom);
+    //     RoomStatus roomStatus = roomStatusRepository.getById(idstatus);
+    //     motelRoom.setCheckoutdate(null);
+    //     motelRoom.setRoomStatus(roomStatus);
+    //     motelRoomRepository.save(motelRoom);
+    //     return ResponseEntity.ok().build();
+    // }
 
 }

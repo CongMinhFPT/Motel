@@ -54,32 +54,25 @@
     </style>
 </head>
 
-<body ng-app="roomApp">
+<body ng-app="myApproompostmotel" ng-controller="myCtrlroompostmotel" ng-init="GetPostMotelnew()">
     <div th:replace="~{/layout/header.html}"></div>
 
-    <main ng-controller="roomCtrl">
+    <main>
         <div class="container" style="margin-top: 10rem">
             <div class="area m-1">
                 <div class="row" style="margin-top: 10rem; margin-bottom: 10px;">
                     <div class="col-12" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a th:href="@{/index}">Trang chủ</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Bài đăng phòng trọ</li>
+                            <li class="breadcrumb-item active" aria-current="page">Bài đăng nhà trọ</li>
                         </ol>
                     </div>
                 </div>
                 <div class="row mt-5" style="border-bottom: 3px solid black">
-                    <div class="col-lg-3">
-                        <div class="custom-select-wrapper mb-0">
-                            <h6 class="mb-0 w-50">Danh mục:</h6>
-                            <select class="custom-select w-50" id="categorySelect" onchange="filterByCategory()">
-                                <option value="0">Tất cả</option>
-                                <th:block th:each="rooms : ${rooms}">
-                                    <option th:value="${rooms.categoryRoom.title}"
-                                        th:text="${rooms.categoryRoom.title }">
-                                    </option>
-                                </th:block>
-                            </select>
+                    <div class="col-lg-3 mb-4">
+                        <div class=" mb-0">
+                            <label class="form-label " for="">Tìm theo tên</label><br>
+                            <input class="form-control " type="search">
                         </div>
                     </div>
                     <div class="col-lg-6"></div>
@@ -140,111 +133,104 @@
                                 </select>
                             </div>
                             <hr />
-                            <!-- Combobox 5 -->
-                            <div class="custom-select-wrapper mb-3">
-                                <h6 class="mb-0 w-50">Mức giá:</h6>
-                                <select class="custom-select w-50" id="categorySelect5" onchange="filterByPrice()">
-                                    <option value="0">Tất cả</option>
-                                    <option value="1">Dưới 1 triệu</option>
-                                    <option value="2">Từ 1 triệu đến 2 triệu</option>
-                                    <option value="3">Trên 2 triệu</option>
-                                </select>
-                            </div>
                         </div>
-                        <div class="col-lg-9">
-                            <!-- Phòng 1 -->
-                            <div class="card mb-3 room-card" style="background-color: #fff; color: #000"
-                                ng-repeat="motelRoom in motelRooms">
-                                <div class="row g-0">
-                                    <div class="col-md-4 p-2">
-                                        <img class="img-fluid" style="height: 100%" th:src="@{/img/phong tro.jpg}"
-                                            alt="" />
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-10">
-                                                    <a ng-href="/room-details/{{ motelRoom.postId }}"
-                                                        class="text-decoration-none text-dark">
-                                                        <p class="card-text">{{motelRoom.title}}</p>
-                                                    </a>
-                                                </div>
-                                                <div class="col-2"
-                                                    ng-show="!motelRoom.motelRoom.favoriteRoom[0].favoriteRoomId">
-                                                    <img class="favorite-icon" style="max-width: 75%; max-height: 75%;"
-                                                        src="/img/icons8-heart-50.png" alt=""
-                                                        ng-click="addFavoriteRoom(motelRoom.motelRoom.motelRoomId)"
-                                                        id="img{{motelRoom.motelRoom.motelRoomId}}" />
-                                                    <input type="hidden" th:value="${accountId}" id="accountIdFavorite">
-                                                </div>
-                                            </div>
-                                            <h4 class="card-title mt-1 price">
-                                                {{motelRoom.motelRoom.roomCash[0].roomBill}} triệu/tháng</h4>
-                                            <div class="row pt-3 p-0">
-                                                <div class="col-4 card-text">
-                                                    <img class="" style="max-height: 30% ; max-width: 30%;"
-                                                        th:src="@{/img/block.png}" alt="" />
-                                                    <span class="area">Diện tích: {{ motelRoom.motelRoom.length *
-                                                        motelRoom.motelRoom.width
-                                                        }} m²</span>
-
-                                                </div>
-                                                <div class="col-4 card-text">
-                                                    <img class="" style="max-height: 30% ; max-width: 30%;"
-                                                        th:src="@{/img/double-bed.png}" alt="" />
-                                                    {{ motelRoom.motelRoom.categoryRoom.title}}
-                                                </div>
-                                                <div class="col-4 card-text">
-                                                    <img class="" style="max-height: 30% ; max-width: 30%;"
-                                                        th:src="@{/img/wifi.png}" alt="" />
-                                                    {{ motelRoom.motelRoom.wifiCash[0].wifiBill == 0 ?
-                                                    0:motelRoom.motelRoom.wifiCash[0].wifiBill}} VND
-                                                </div>
-                                            </div>
-                                            <div class="card-person py-0 p-0">
-                                                <div class="row">
-                                                    <div class="col-lg-3">
-                                                        <p class="createDate">{{motelRoom.createDate
-                                                            |
-                                                            date:'dd-MM-yyyy' }}</p>
+                        <div class="col-lg-9 ps-3 ">
+                            <div ng-show="true">
+                                <div style="min-height: 25rem;" class=" row ">
+                                    <div ng-show="items.length" 
+                                        class=" mt-4 col-12 col-md-5  p-2 me-4  "
+                                        ng-repeat="item in items.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage)">
+                                        <div class="">
+                                            <div class="card" style="background-color: #fff; color: #000;">
+                                                <a href="/post/motel/motelroom/{{item.motel.motelId}}">
+                                                    <img class="card-img-top w-100"
+                                                        src="/files/ImgMotel/{{item.motel.image}}" alt="" /></a>
+                                                <div class="card-body">
+                                                    <p class="card-text text-success ">{{item.posttitle}}</p>
+                                                    <label class="fw-lighter  " for="">Mô tả</label>
+                                                    <div style="background-color: #f4efef;"
+                                                        class="d-flex  p-2 rounded-2">
+                                                        <p class="d-flex align-items-start ">
+                                                        <div>
+                                                            <span class="fw-lighter  ">
+                                                                {{item.motel.descriptions}}
+                                                            </span>
+                                                            <br>
+                                                            <span class="fw-lighter  ">
+                                                                Người đại diện: {{item.account.fullname}},
+                                                                {{item.account.phone}}
+                                                                <br>
+                                                                Giới tính: {{item.account.gender==true ?'Nam':'Nữ'}}
+                                                            </span>
+                                                        </div>
+                                                        </p>
                                                     </div>
-                                                    <!-- Hiển thị quận/huyện và tỉnh/thành phố -->
-                                                    <div class="col-lg-9 card-text">
-                                                        <h6 class="card-text ward d-inline-block">
-                                                            {{motelRoom.motelRoom.motel.ward}},
-                                                        </h6>
-                                                        <h6 class="card-text district d-inline-block">
-                                                            {{motelRoom.motelRoom.motel.district}},
-                                                        </h6>
-                                                        <h6 class="card-text city d-inline-block ml-2">
-                                                            {{motelRoom.motelRoom.motel.province}}</h6>
-                                                    </div>
+                                                    <div class="row py-3">
+                                                        <div class="col-lg-12 card-text text-start"><i
+                                                                class='bx bx-current-location pe-1'></i>
+                                                            {{item.motel.detailAddress}}, {{item.motel.ward}},
+                                                            {{item.motel.district}},
+                                                            {{item.motel.province}}
+                                                        </div>
+                                                        <hr>
+                                                        <div class="col-lg-12 card-text"><i
+                                                                class='bx bx-fullscreen pe-1'></i>Tổng phòng hiện có:
+                                                            {{item.totalrooms}}
+                                                            <a>phòng</a>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="col-lg-12 card-text">
 
+                                                            <i class='bx bx-user-plus pe-1'></i> Phòng trống:
+                                                            {{item.availability}} phòng
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-lg-12 card-text d-flex  justify-content-end ">
+                                                        <span class="fw-lighter  ">
+                                                            <span ng-show="item.daysSinceCreation==0">Đăng hôm
+                                                                nay</span>
+                                                            <span ng-show="item.daysSinceCreation!=0">Đăng
+                                                                {{item.daysSinceCreation}} ngày trước</span>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+
+
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
+                            </div>
+
+                        </div>
+                        <div class="text-center mt-4" ng-if="pageCount() > 1">
+                            <button class="btn m-1"
+                                ng-class="{ 'btn-outline-secondary': currentPage != 1, 'btn-success': currentPage == 1 }"
+                                ng-disabled="currentPage == 1" ng-click="firstPage()">Đầu trang</button>
+                            <button class="btn m-1"
+                                ng-class="{ 'btn-outline-secondary': currentPage != 1, 'btn-success': currentPage == 1 }"
+                                ng-disabled="currentPage == 1" ng-click="prevPage()">Previous</button>
+                            <button class="btn m-1" ng-repeat="n in pages()"
+                                ng-class="{ 'btn-outline-secondary': currentPage != n, 'btn-success': currentPage == n }"
+                                ng-click="setPage(n)">{{n}}</button>
+                            <button class="btn m-1"
+                                ng-class="{ 'btn-outline-secondary': currentPage != pageCount(), 'btn-success': currentPage == pageCount() }"
+                                ng-disabled="currentPage == pageCount()" ng-click="nextPage()">Next</button>
+                            <button class="btn m-1"
+                                ng-class="{ 'btn-outline-secondary': currentPage != pageCount(), 'btn-success': currentPage == pageCount() }"
+                                ng-disabled="currentPage == pageCount()" ng-click="lastPage()">Cuối trang</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 text-center">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item" ng-repeat="page in totalPagesArray"
-                        ng-class="{ 'active': page === currentPage }">
-                        <a class="page-link" href="#" ng-click="setPage(page)">{{ page + 1 }}</a>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
     </main>
 
 
     <div th:replace="~{/layout/footer.html}"></div>
+    <div th:replace="~{/home/scriptSweet}"></div>
 
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -257,207 +243,10 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script th:src="@{/js/header.js}"></script>
+    <!-- <script th:src="@{/js/header.js}"></script>
     <script th:src="@{/js/room.js}"></script>
-    <script th:src="@{/js/address.js}"></script>
+    <script th:src="@{/js/address.js}"></script> -->
 
-    <script th:inline="javascript">
-        $(document).ready(function () {
-            // Xử lý khi nhấp vào một trang
-            $('.pagination .page-link').on('click', function (event) {
-                event.preventDefault();
-                var page = $(this).attr('href').split('page=')[1];
-                loadRoomsByPage(page);
-            });
-
-            function loadRoomsByPage(page) {
-                $.ajax({
-                    url: '/api/rooms', // URL của endpoint Spring Boot
-                    type: 'GET',
-                    data: {
-                        page: page
-                    },
-                    success: function (data) {
-                        // Cập nhật giao diện người dùng với dữ liệu mới
-                        updateUI(data);
-                        console.log(data);
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log('Error: ' + errorThrown);
-                    }
-                });
-            }
-
-            function updateUI(data) {
-                var content = $('.room-list'); // Thay đổi '.room-list' thành lớp hoặc id của phần tử chứa danh sách phòng của bạn
-                content.empty(); // Xóa nội dung cũ trước khi cập nhật
-
-                // Duyệt qua danh sách phòng và thêm mỗi phòng vào giao diện người dùng
-                data.content.forEach(function (room) {
-                    var roomHtml = '<div class="room">' +
-                        '<p>Room Number: ' + room.description + '</p>' +
-                        '</div>';
-                    content.append(roomHtml);
-                });
-
-                // Cập nhật phân trang
-                var pagination = $('.pagination');
-                pagination.empty(); // Xóa nội dung cũ trước khi cập nhật
-
-                // Thêm nút Previous
-                if (!data.first) {
-                    pagination.append('<li class="page-item"><a class="page-link" href="?page=' + (data.number - 1) + '">Previous</a></li>');
-                }
-
-                // Thêm các trang
-                for (var i = 0; i < data.totalPages; i++) {
-                    var pageLink = '<li class="page-item' + (data.number === i ? ' active' : '') + '"><a class="page-link" href="?page=' + i + '">' + (i + 1) + '</a></li>';
-                    pagination.append(pageLink);
-                }
-
-                // Thêm nút Next
-                if (!data.last) {
-                    pagination.append('<li class="page-item"><a class="page-link" href="?page=' + (data.number + 1) + '">Next</a></li>');
-                }
-            }
-
-        });
-
-    </script>
-    <script th:inline="javascript">
-        function filterByAddress() {
-
-            var selectedCityElement = document.getElementsByName("city")[0];
-            var selectedDistrictElement = document.getElementsByName("district")[0];
-            var selectedWardElement = document.getElementsByName("ward")[0];
-
-            var selectedCity = selectedCityElement.value !== "" ? selectedCityElement.options[selectedCityElement.selectedIndex].text : "";
-            var selectedDistrict = selectedDistrictElement.value !== "" ? selectedDistrictElement.options[selectedDistrictElement.selectedIndex].text : ""; var selectedWard = selectedWardElement.value !== "" ? selectedWardElement.options[selectedWardElement.selectedIndex].text : "";
-            console.log("json", selectedCity, selectedDistrict, selectedWard);
-
-            var cards = document.getElementsByClassName("room-card");
-
-            for (var i = 0; i < cards.length; i++) {
-                var card = cards[i];
-                var cityElement = card.querySelector(".city");
-                var districtElement = card.querySelector(".district");
-                var wardElement = card.querySelector(".ward");
-                console.log("card", card);
-
-                if (!cityElement || !districtElement || !wardElement) {
-                    console.log("Không thể lấy thông tin địa chỉ từ thẻ card.");
-                    continue; // Bỏ qua thẻ card không có đủ thông tin địa chỉ và chuyển sang thẻ card tiếp theo
-                }
-
-                var city = cityElement.innerText;
-                var district = districtElement.innerText;
-                var ward = wardElement.innerText;
-
-                console.log("Thông tin địa chỉ từ thẻ card:", city, district, ward);
-
-                if ((selectedCity === "" || city.includes(selectedCity)) &&
-                    (selectedDistrict === "" || district.includes(selectedDistrict)) &&
-                    (selectedWard === "" || ward.includes(selectedWard))) {
-                    card.style.display = ""; // Hiển thị thẻ card nếu nó khớp với điều kiện lọc
-                    console.log("so sanh thanh cong");
-                    console.log("du lie json", selectedCity, selectedDistrict, selectedWard);
-                } else {
-                    card.style.display = "none"; // Ẩn thẻ card nếu không khớp với điều kiện lọc
-                    console.log("so sanh that bai");
-                }
-            }
-        }
-        // Gọi hàm lọc ban đầu để hiển thị tất cả card
-        filterByAddress();
-    </script>
-
-    <script th:inline="javascript">
-        function filterByArea() {
-            var selectedAreaRange = document.getElementById("categorySelect4").value;
-            var cards = document.getElementsByClassName("room-card");
-
-            for (var i = 0; i < cards.length; i++) {
-                var areaText = cards[i].querySelector(".area").innerText;
-                var area = parseFloat(areaText.match(/\d+/)); // Tách số từ văn bản
-
-                if (selectedAreaRange === "1" || // Hiển thị tất cả
-                    (selectedAreaRange === "2" && area < 20) || // Diện tích dưới 20m2
-                    (selectedAreaRange === "3" && area >= 20 && area <= 50) || // Diện tích từ 20m2 đến 50m2
-                    (selectedAreaRange === "4" && area > 50)) { // Diện tích trên 50m2
-                    cards[i].style.display = "block";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
-        }
-    </script>
-
-    <script th:inline="javascript">
-        function filterByPrice() {
-            var selectedPriceRange = document.getElementById("categorySelect5").value;
-            var cards = document.getElementsByClassName("room-card");
-
-            for (var i = 0; i < cards.length; i++) {
-                var priceElement = cards[i].querySelector(".price").innerText;
-                var price = parseFloat(priceElement.replace(/\D/g, '')); // Loại bỏ ký tự không phải số và chuyển đổi sang dạng số
-
-                if (selectedPriceRange === "0" ||
-                    (selectedPriceRange === "1" && price < 1000000) ||
-                    (selectedPriceRange === "2" && price >= 1000000 && price <= 2000000) ||
-                    (selectedPriceRange === "3" && price > 2000000)) {
-                    cards[i].style.display = "block";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
-        }
-    </script>
-    <script th:inline="javascript">
-        function filterByCategory() {
-            var selectedCategory = document.getElementById("categorySelect").value;
-            var cards = document.getElementsByClassName("room-card");
-
-            for (var i = 0; i < cards.length; i++) {
-                var titleElement = cards[i].querySelector(".title").innerText;
-
-                if (selectedCategory === "0" || selectedCategory === titleElement) {
-                    cards[i].style.display = "block";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
-        }
-    </script>
-
-    <script th:inline="javascript">
-        function sortCards() {
-            var selectElement = document.getElementById("sortDirTime");
-            var selectedValue = selectElement.value;
-
-            // Lấy danh sách các card
-            var cards = document.querySelectorAll(".card.mb-3");
-
-            // Sắp xếp các card dựa trên giá trị được chọn
-            if (selectedValue === "desc") {
-                // Sắp xếp theo thứ tự giảm dần của ngày
-                cards.forEach(function (card) {
-                    var cardCreateDate = new Date(card.querySelector(".createDate").innerText);
-                    card.parentNode.prepend(card);
-                });
-            } else if (selectedValue === "asc") {
-                // Sắp xếp theo thứ tự tăng dần của ngày
-                var sortedCards = Array.from(cards).sort(function (a, b) {
-                    var dateA = new Date(a.querySelector(".createDate").innerText);
-                    var dateB = new Date(b.querySelector(".createDate").innerText);
-                    return dateA - dateB;
-                });
-                sortedCards.forEach(function (card) {
-                    card.parentNode.appendChild(card);
-                });
-            }
-        }
-
-    </script>
 </body>
 
 </html>

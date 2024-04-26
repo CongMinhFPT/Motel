@@ -353,4 +353,18 @@ public class ManageMotelService implements ManageMotelImpl {
         }
         return "home/signin";
     }
+
+    @Override
+    public String CheckLoginAndSetMotelid(Model model) {
+        if (CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = CheckLogin().get();
+            if (CheckAccountSetIdMotel(customUserDetails)) {
+                SetModelMotel(model);
+            }else{
+                return "redirect:/admin/manage-motel";
+            }
+           
+        }
+        return "home/signin";
+    }
 }

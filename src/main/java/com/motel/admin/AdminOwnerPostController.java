@@ -58,8 +58,10 @@ public class AdminOwnerPostController {
             Authentication authentication) {
         Post posts = postRepository.getById(id);
         model.addAttribute("posts", posts);
-        model.addAttribute("postsMotelRoomId", posts.getMotelRoom().getMotelRoomId());
-        model.addAttribute("postsMotelRoomDescription", posts.getMotelRoom().getDescriptions());
+        // model.addAttribute("postsMotelRoomId",
+        // posts.getMotelRoom().getMotelRoomId());
+        // model.addAttribute("postsMotelRoomDescription",
+        // posts.getMotelRoom().getDescriptions());
 
         String emailAccount = authentication.getName();
         Account account = accountsRepository.getByEmail(emailAccount);
@@ -76,9 +78,11 @@ public class AdminOwnerPostController {
             Authentication authentication) {
         Post posts = postRepository.getById(postId);
         model.addAttribute("posts", posts);
-        model.addAttribute("postsMotelRoomId", posts.getMotelRoom().getMotelRoomId());
-        model.addAttribute("postsMotelRoomDescription", posts.getMotelRoom().getDescriptions());
-        System.out.println(posts.getMotelRoom().getDescriptions());
+        // model.addAttribute("postsMotelRoomId",
+        // posts.getMotelRoom().getMotelRoomId());
+        // model.addAttribute("postsMotelRoomDescription",
+        // posts.getMotelRoom().getDescriptions());
+        // System.out.println(posts.getMotelRoom().getDescriptions());
 
         String emailAccount = authentication.getName();
         Account account = accountsRepository.getByEmail(emailAccount);

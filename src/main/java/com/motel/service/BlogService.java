@@ -26,7 +26,7 @@ public interface BlogService {
 
 	Page<Blog> listByPage(int pageNum, Integer tagId);
 
-	List<Blog> findBlogSimilar(Integer tagId);
+	List<Blog> findBlogSimilar(Integer tagId, Integer blogId);
 
 	List<Blog> getList3BlogFirst();
 	

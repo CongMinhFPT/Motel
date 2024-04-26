@@ -37,23 +37,21 @@
                 <h3>TIN TỨC NHÀ TRỌ MỚI NHẤT </h3>
 
                 <form th:action="@{/blog/page/1}" class="form-inline" id="searchForm">
-
-                    <div class="col" style="margin-left: 55rem;">
-                        <label class="p-2">Tìm kiếm chi tiết:</label>
+                    <label class="p-2" style="margin-left: 940px;">Tìm kiếm chi tiết:</label>
+                    <div class="col" style=" margin-bottom: 2rem; display: flex;
+                    align-items: center; margin-left: 950px;">
+                       
                         <input type="search" name="keyword" th:value="${keyword}" class="form-control"
-                            placeholder="Nhập từ khóa bạn cần tìm" aria-label="Search"
+                            placeholder="Nhập từ khóa bạn tìm" aria-label="Search"
                             aria-describedby="search-addon" />
-                        <button type="submit " class="btn btn-secondary">
-                            Tìm</i>
+                             <button type="submit " class="btn btn-light" style="margin-left: 6px;"><img th:src="@{/img/search-alt-2-regular-24.png}"></i>
                         </button>
+
                         &nbsp;
-                        <button type="button" class="btn btn-secondary" onclick="clearFilter()">
+                        <!-- <button type="button" class="btn btn-secondary" onclick="clearFilter()">
                             Xóa</i>
-                        </button>
+                        </button> -->
                     </div>
-
-
-
 
                     <input type="hidden" name="sortField" th:value="${sortField}"></input>
                     <div class="label">
@@ -85,7 +83,8 @@
 										</button>
 									</div>  -->
 
-                        <select class="select" style="width: 100px;height: auto;" name="sortDir" id="sortDirTime">
+                        <select class="select" style="width: 100px; margin-left: 55rem;" name="sortDir"
+                            id="sortDirTime">
                             <option selected>Sắp Xếp</option>
                             <option th:value="desc" th:selected="(${sortDir} == 'desc')">Mặc định</option>
                             <option th:value="desc" th:selected="(${sortDir} == 'desc')">Mới nhất</option>
@@ -123,7 +122,8 @@
 
                                 </div>
                                 <div class="share">
-                                    <a class="button" th:href="@{/blog_details/} + ${blog.blogId}">Chi tiết</a>
+                                    <a class="button" th:href="@{/blog_details/} + ${blog.blogId}"
+                                        style="margin-top: 8rem;">Chi tiết</a>
                                     <!-- <button class="share-button">
                                     <img th:src="@{/img/icons8-share-24.png}">
                                 </button> -->
@@ -147,43 +147,43 @@
 
 
     </main>
-<hr>
-    <div th:replace="~{/layout/footer.html}"></div>
+    <hr>
+    <div th:replace="~{/layout/footer}"></div>
 
 
 
 
 </body>
-    <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
+<!-- Bootstrap JavaScript Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
-    <script th:src="@{/js/header.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+    crossorigin="anonymous"></script>
+<script th:src="@{/js/header.js}"></script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script type="text/javascript">
-        moduleURL = "[[@{/blog}]]";
+<script type="text/javascript">
+    moduleURL = "[[@{/blog}]]";
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            $("#dropdownCategory").on("change", function () {
-                $("#searchForm").submit();
-            });
-
-            $("#sortDirTime").on("change", function () {
-                $("#searchForm").submit();
-            })
+        $("#dropdownCategory").on("change", function () {
+            $("#searchForm").submit();
         });
 
-        function clearFilter() {
-            window.location = moduleURL;
-        }
+        $("#sortDirTime").on("change", function () {
+            $("#searchForm").submit();
+        })
+    });
 
-    </script>
+    function clearFilter() {
+        window.location = moduleURL;
+    }
+
+</script>
 
 </html>

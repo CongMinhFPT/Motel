@@ -1,6 +1,7 @@
 var citis = document.getElementById("city");
 var districts = document.getElementById("district");
 var wards = document.getElementById("ward");
+let MAX_FILE_SIZE = 1048576;
 var Parameter = {
   url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
   method: "GET",
@@ -98,13 +99,29 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }, 500);
+  imageInput.setCustomValidity('');
 });
 
 const imageInput = document.getElementById("imageInput");
 const previewImage = document.getElementById("previewImage");
-
+const imageInputerror =document.getElementById('imageInput-error');
+const submitmotel = document.getElementById('submitmotel');
+let inlu =previewImage.src;
 imageInput.addEventListener("change", function () {
   const file = this.files[0];
+  if(file===undefined){
+    previewImage.src =inlu;
+    this.setCustomValidity('');
+    this.required = false;
+  }else{
+    if(file.size > MAX_FILE_SIZE) {
+      this.setCustomValidity('Ảnh đã vượt quá kích cỡ cho phép');
+      this.required = true;
+    }else{
+      this.setCustomValidity('');
+      this.required = false;
+    }
+  }
   if (file) {
     const reader = new FileReader();
     reader.onload = function (e) {

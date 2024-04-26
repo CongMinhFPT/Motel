@@ -5,7 +5,18 @@ const Seleclinkyoutubr = document.getElementById("idtext-youtube");
 const linkyoutube = document.getElementById("link-youtube");
 const linkclose = document.getElementById("exampleModal");
 const texterrorfile = document.getElementById("text-error-file");
+const submitluu = document.getElementById('submitluu');
 input.addEventListener("change", function () {
+  var filesechck = Array.from(input.files).slice(0, 6);
+  var filesechckc=false;
+  for (var i = 0; i < filesechck.length; i++) {
+  var indexerro = [];
+    var file = filesechck[i];
+    if(file.size > 1048576) {
+      filesechckc = true;
+      indexerro.push("vị trí "+(i+1));
+    }
+  }
   imageBox.innerHTML = "";
   const files = Array.from(input.files).slice(0, 6);
   const fileserror = Array.from(input.files);
@@ -13,6 +24,14 @@ input.addEventListener("change", function () {
     texterrorfile.innerText = "Thông báo chỉ nhận 6 ảnh đầu ";
   }else{
     texterrorfile.innerText ='';
+  }
+  if(filesechckc){
+    let Stringerror = indexerro.join('và');
+    texterrorfile.innerText ='Ảnh tại '+Stringerror+' đã quá kích cỡ cho phép';
+    submitluu.disabled = true;
+  }else{
+    submitluu.disabled = false;
+    texterrorfile.innerText = " ";
   }
   const reader = new FileReader();
   if (files[0] != null) {

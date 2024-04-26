@@ -1,6 +1,9 @@
 package com.motel.entity;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -63,4 +66,5 @@ public class Post {
                 ", title='" + title +
                 '}';
     }
+   
 }

@@ -54,6 +54,7 @@ public class UserService {
 		Set<String> relatedUserIds = new HashSet<>();
 
 		List<ChatMessage> chatMessages = chatMessageRepository.findAll();
+		System.out.println("====="+chatMessages);
 		for (ChatMessage chatMessage : chatMessages) {
 			if (chatMessage.getSenderId().equals(nickname) || chatMessage.getRecipientId().equals(nickname)) {
 				relatedUserIds.add(chatMessage.getSenderId().equals(nickname) ? chatMessage.getRecipientId()

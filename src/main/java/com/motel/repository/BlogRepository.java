@@ -39,8 +39,8 @@ public interface BlogRepository extends SearchRepository<Blog, Integer> {
 	@Query(value = "DELETE FROM blog WHERE tag_id = :tagId", nativeQuery = true)
 	void deleteByTagId(@Param("tagId") Integer tagId);
 
-	@Query("SELECT b FROM Blog b WHERE b.tag.tagId = ?1 ")
-	public List<Blog> listSimilar(Integer tagId);
+	@Query("SELECT b FROM Blog b WHERE b.tag.tagId = ?1 AND b.blogId != ?2")
+	public List<Blog> listSimilar(Integer tagId, Integer blogId);
 	
 	@Query("SELECT  b FROM Blog b ORDER BY b.createDate DESC")
 	public List<Blog> list3BlogFirst(Pageable pageable);

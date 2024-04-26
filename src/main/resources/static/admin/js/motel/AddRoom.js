@@ -7,13 +7,14 @@ const linkclose = document.getElementById("exampleModal");
 const texterrorfile = document.getElementById("text-error-file");
 const submitluu = document.getElementById('submitluu');
 input.addEventListener("change", function () {
-  var filesechck = input.files;
+  var filesechck = Array.from(input.files).slice(0, 6);
   var filesechckc=false;
   for (var i = 0; i < filesechck.length; i++) {
+  var indexerro = [];
     var file = filesechck[i];
     if(file.size > 1048576) {
       filesechckc = true;
-      break; 
+      indexerro.push("vị trí "+(i+1));
     }
   }
   imageBox.innerHTML = "";
@@ -25,7 +26,8 @@ input.addEventListener("change", function () {
     texterrorfile.innerText ='';
   }
   if(filesechckc){
-    texterrorfile.innerText = " Có ảnh vượt quá 1MB ";
+    let Stringerror = indexerro.join('và');
+    texterrorfile.innerText ='Ảnh tại '+Stringerror+' đã quá kích cỡ cho phép';
     submitluu.disabled = true;
   }else{
     submitluu.disabled = false;

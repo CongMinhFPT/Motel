@@ -115,7 +115,7 @@ imageInput.addEventListener("change", function () {
     this.required = false;
   }else{
     if(file.size > MAX_FILE_SIZE) {
-      this.setCustomValidity('Ảnh đã vượt quá 1MB');
+      this.setCustomValidity('Ảnh đã vượt quá kích cỡ cho phép');
       this.required = true;
     }else{
       this.setCustomValidity('');

@@ -1,6 +1,7 @@
 package com.motel.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,9 +13,12 @@ import com.motel.entity.Post;
 import com.motel.entity.RoomCash;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
-	// List<Post> findByMotelRoom_Motel_DistrictAndMotelRoom_Motel_Province(String
-	// district, String province);
-
+	 List<Post> findByMotel_DistrictAndMotel_Province(String
+	 district, String province);
+	 
+	 @Query("SELECT p FROM Post p JOIN p.motel m WHERE m.motelId = :motelId")
+	  Post findPostByMotelId(@Param("motelId") Integer motelId);
+	 
 	@Query(nativeQuery = true, value = "SELECT COUNT(*) AS NumberOfPosts FROM posts WHERE create_date = GETDATE() AND status = 1")
 	Object findPostToDay();
 
@@ -34,5 +38,11 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	@Query("SELECT p FROM Post p ORDER BY createDate DESC")
 	List<Post> find3PostFirst();
+
+	@Query(value = "SELECT * FROM Posts p JOIN motels m ON p.motel_id = m.motel_id WHERE m.status = 1 and p.status = 1 and m.province LIKE %?1% ORDER BY ABS(DATEDIFF(DAY, p.create_date, GETDATE())) ASC", nativeQuery = true)
+	List<Post> findPosts(String province);
+
+	@Query(value = "SELECT * FROM Posts p JOIN motels m ON p.motel_id = m.motel_id WHERE m.status = 1 and p.status = 1  ORDER BY ABS(DATEDIFF(DAY, p.create_date, GETDATE())) ASC", nativeQuery = true)
+	List<Post> findPostsnew();
 
 }

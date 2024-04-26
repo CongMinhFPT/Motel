@@ -32,8 +32,15 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public List<Post> getListPost() {
 		// TODO Auto-generated method stub
-		return postRepo.findAll();
+		return (List<Post>) postRepo.findAll();
 	}
+	
+	// @Override
+	// public List<Post> getList3PostFirst() {
+	// 	return (List<Post>) postRepo.find3PostFirst(PageRequest.of(0, 3));
+	// 	/* return (List<Post>) postRepo.find3PostFirst(); */
+
+	// }
 
 	@Override
 	public List<Post> getList3PostFirst() {

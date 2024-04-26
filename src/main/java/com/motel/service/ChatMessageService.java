@@ -20,6 +20,9 @@ public class ChatMessageService {
                 .getChatRoomId(chatMessage.getSenderId(), chatMessage.getRecipientId(), true)
                 .orElseThrow(); // You can create your own dedicated exception
         chatMessage.setChatId(chatId);
+        if (chatMessage.getFileName() != null) {
+            // Không cần lưu trữ tệp, chỉ cần lưu tên tệp vào đối tượng ChatMessage
+        }
         repository.save(chatMessage);
         return chatMessage;
     }

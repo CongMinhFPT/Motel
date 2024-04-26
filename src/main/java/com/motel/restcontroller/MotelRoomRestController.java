@@ -36,37 +36,6 @@ public class MotelRoomRestController {
     @Autowired
     PostRepository postRepository;
 
-    // @GetMapping("/api/listMotelRoom")
-    // public ResponseEntity<List<MotelRoomsByPost>> listMotelRoom() {
-    // List<MotelRoomsByPost> byPosts = new ArrayList<>();
-    // motelRoomRepository.findMotelRoomsByPost().forEach(a -> {
-    // MotelRoomsByPost byPostw = new MotelRoomsByPost(a);
-    // byPosts.add(byPostw);
-    // });
-
-    // return ResponseEntity.ok(byPosts);
-    // }
-
-    @GetMapping("/api/listMotelRoom")
-
-    public ResponseEntity<Page<MotelRoom>> listMotelRoom(
-            @RequestParam(defaultValue = "0") int page) {
-        Pageable pageable = PageRequest.of(page, 5);
-        Page<MotelRoom> motelRoomsPage = motelRoomRepository.findMotelRoomsByPost(pageable);
-        // Page<MotelRoomsByPost> motelRoomsByPostPage =
-        // motelRoomsPage.map(MotelRoomsByPost::new);
-        return ResponseEntity.ok(motelRoomsPage);
-    }
-
-    @GetMapping("/api/rooms")
-    public Page<Post> getAllRooms(@RequestParam(defaultValue = "0") int page) {
-        return postRepository.findAll(PageRequest.of(page, 5));
-
-    }
-
-    @GetMapping("/api/motelRoom/{motelRoomId}")
-    public ResponseEntity<Optional<MotelRoom>> listMotelRoom(@PathVariable("motelRoomId") Integer motelRoomId) {
-        return ResponseEntity.ok(motelRoomService.getById(motelRoomId));
-    }
+    
 
 }

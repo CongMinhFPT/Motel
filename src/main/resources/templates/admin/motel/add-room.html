@@ -35,7 +35,7 @@
 					</div>
 					<div class="col-md-6">
 						<div>
-							<label class="form-label text-black  " for="">Mô tả</label>
+							<label class="form-label text-black  " for="">Tên phòng trọ</label>
 							<textarea id="descriptionsroom" th:field="*{descriptions}" class="form-control " name=""
 								cols="30" rows="10"></textarea>
 							<div>
@@ -75,8 +75,8 @@
 								id="categoryRoom">
 								<option value="">chọn loại phòng</option>
 								<option th:if="${categoryRoomlist!=null}" th:each="item : ${categoryRoomlist} "
-									th:value="${item.categoryRoomId}">
-									[[${item.descriptions}]]</option>
+									th:value="${item.categoryRoomId}">[[${item.quantity}]] người,
+									[[${item.descriptions}]] </option>
 							</select>
 							<div>
 								<label th:if="${categoryRoomerror!=null}" th:text="${categoryRoomerror}"
@@ -97,7 +97,8 @@
 						<p class="col-1 mt-1  btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
 							id="Idbutton-linkyoutube">Xem thử</p><br>
 
-						<label type="button" id="helpButton">Xem hướng dẫn lấy link video YouTube </label>
+						<label class="underline" type="button" id="helpButton">Xem hướng dẫn lấy link video YouTube
+						</label>
 					</div>
 					<div>
 						<label th:errors="*{video}" id="video-error"
@@ -131,6 +132,12 @@
 			.introjs-tooltip {
 				max-width: 800px !important;
 				/* Thay đổi giá trị này để điều chỉnh chiều rộng */
+			}
+
+			.underline {
+				text-decoration: underline;
+				text-decoration-color: #0d6efd;
+				text-decoration-thickness: 2px;
 			}
 		</style>
 		<script>

@@ -58,7 +58,7 @@ public class BlogController {
 		model.addAttribute("blog", blog);
 		model.addAttribute("tagName", blog.getTag().getTitle());
 		
-		List<Blog> blogSimilar = blogService.findBlogSimilar(blog.getTag().getTagId());
+		List<Blog> blogSimilar = blogService.findBlogSimilar(blog.getTag().getTagId(), blogId);
 		model.addAttribute("blogSimilar", blogSimilar);
 		
 		return "home/blog_details";

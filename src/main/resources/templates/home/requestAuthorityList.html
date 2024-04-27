@@ -37,7 +37,8 @@
 						<thead>
 							<tr class="p-3">
 								<th class="p-3 text-center">STT</th>
-								<th class="p-3 text-center">EMAIL</th>
+								<th class="p-3 text-center">HÌNH</th>
+								<th class="p-3 text-center">SỐ THUẾ</th>
 								<th class="p-3 text-center">YÊU CẦU</th>
 								<th class="p-3 text-center">NGÀY GỬI</th>
 								<th class="p-3 text-center">NGÀY PHẢN HỒI</th>
@@ -51,17 +52,31 @@
 								<td class="p-3 text-center">
 									<h6 th:text="${stt.index + 1}"></h6>
 								</td>
-								<td class="p-3 text-center">
-									<h6 th:text="${re.account.email}"></h6>
+								<td>
+									<div class="media style-1">
+										<img th:src="@{/files/CustomerImg/{img}(img=${re.avatar})}"
+											class="img-fluid mr-2" alt="" style="height: 80px; width: 150px;" onclick="openCustomModal(this.src)">
+									</div>
 								</td>
 								<td class="p-3 text-center">
+									<h6 th:text="${re.tax_code}"></h6>
+								</td>
+
+								<td class="p-3 text-center" style="max-width: 300px; overflow-wrap: break-word;">
 									<h6 th:text="${re.descriptions}"></h6>
 								</td>
 								<td class="p-3 text-center">
-									<h6 th:text="${re.createDate}"></h6>
+									<h6 th:text="${#dates.format(re.createDate, 'yyyy-MM-dd')}"></h6>
+								</td>
+								<td class="p-3 text-center">
+									<h6 th:text="${re.responseDate}"></h6>
+								</td>
+								<td class="p-3 text-center" style="max-width: 300px; overflow-wrap: break-word;">
+									<h6 th:text="${re.respdescriptions}"></h6>
 								</td>
 
-								<div th:if="${re.responseDate == null && re.requestAuthorityStatus.requestAuthorityStatusId == 1}">
+								<!--<div
+									th:if="${re.responseDate == null && re.requestAuthorityStatus.requestAuthorityStatusId == 1}">
 									<td class="p-3 text-center" th:if="${re.responseDate} == null">
 										<h6>Đang chờ phản hồi</h6>
 									</td>
@@ -75,7 +90,8 @@
 										<h6 th:text="${re.respdescriptions}"></h6>
 									</td>
 								</div>
-								<div th:unless="${re.responseDate == null && re.requestAuthorityStatus.requestAuthorityStatusId == 1 || re.requestAuthorityStatus.requestAuthorityStatusId == 4 }">
+								<div
+									th:unless="${re.responseDate == null && re.requestAuthorityStatus.requestAuthorityStatusId == 1 || re.requestAuthorityStatus.requestAuthorityStatusId == 4 }">
 									<td class="p-3 text-center" th:if="${re.responseDate} == null">
 										<h6>Đang chờ phản hồi</h6>
 									</td>
@@ -89,7 +105,8 @@
 										<h6 th:text="${re.respdescriptions}"></h6>
 									</td>
 								</div>
-								<div th:if="${re.responseDate == null && re.requestAuthorityStatus.requestAuthorityStatusId == 4}">
+								<div
+									th:if="${re.responseDate == null && re.requestAuthorityStatus.requestAuthorityStatusId == 4}">
 									<td class="p-3 text-center" th:if="${re.responseDate} == null">
 										<h6>Hủy yêu cầu</h6>
 									</td>
@@ -102,7 +119,8 @@
 									<td class="p-3 text-center" th:unless="${re.respdescriptions} == null">
 										<h6 th:text="${re.respdescriptions}"></h6>
 									</td>
-								</div>
+								</div>-->
+
 								<td class="text-center">
 									<span th:if="${re.requestAuthorityStatus.requestAuthorityStatusId == 1}"
 										class="btn bg-info text-white" style="border: none; width: 8rem;">Đang xử
@@ -133,7 +151,7 @@
 											</svg>
 										</a>
 										<a th:if="${re.requestAuthorityStatus.requestAuthorityStatusId == 2 || re.requestAuthorityStatus.requestAuthorityStatusId == 3 || re.requestAuthorityStatus.requestAuthorityStatusId == 4}"
-											class="ml-2 btn btn-xs px-2 light btn-danger disabled">
+											class="ml-2 btn btn-xs px-2 light btn-danger d-none">
 											<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 												xmlns="http://www.w3.org/2000/svg">
 												<path d="M3 6H5H21" stroke="#fff" stroke-width="2"

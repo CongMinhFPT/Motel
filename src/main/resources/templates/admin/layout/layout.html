@@ -38,10 +38,8 @@
 
 
 	<script th:src="@{/vendor/angular/angular.js}"></script> 
-
-
+<link rel="stylesheet" th:href="@{/css/sigin.css}">
 </head>
-
 <body>
 	<div id="preloader">
 		<div class="sk-three-bounce">
@@ -98,6 +96,7 @@
 	<script src="/admin/js/motel/MotelRoom.js"></script>
 	<script src="/admin/js/motel/UpdateMotelRoom.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
 	<script th:inline="javascript">
 		var successMessage = /*[[${successMessage}]]*/ '';
 		if (successMessage) {
@@ -174,7 +173,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	<script src="/Authority/auth.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+	
 	
 	
 
@@ -182,13 +181,14 @@
 	<script src="/js/renter.js"></script>
 	<script src="/js/invoice.js"></script>
 	<script src="/js/indexs.js"></script>
+	<div th:replace="~{/admin/customers/scriptSweet}"></div>
 	<div th:replace="~{/admin/renter/scriptSweet}"></div>
 	<div th:replace="~{/admin/invoice/scriptSweet}"></div>
 
 	<div th:replace="~{/admin/indexs/scriptSweet}"></div>
 	<div th:replace="~{/admin/home/scriptSweet}"></div>
 	<div th:replace="~{/admin/post/scriptSweet}"></div>
-
+	
 </body>
 
 </html>

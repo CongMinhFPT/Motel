@@ -25,6 +25,8 @@
 							<thead>
 								<tr>
 									<th class="p-3 text-center">STT</th>
+									<th class="p-3 text-center">HÌNH</th>
+									<th class="p-3 text-center">SỐ THUẾ</th>
 									<th class="p-3 text-center">EMAIL</th>
 									<th class="p-3 text-center">NỘI DUNG YÊU CẦU</th>
 									<th class="p-3 text-center">NGÀY GỬI</th>
@@ -39,57 +41,76 @@
 									<td class="p-3 text-center">
 										<h6 th:text="${stt.index + 1}"></h6>
 									</td>
+									<td>
+										<div class="media style-1">
+											<img th:src="@{/files/CustomerImg/{img}(img=${re.avatar})}"
+												class="img-fluid mr-2" alt="" onclick="openCustomModal(this.src)">
+										</div>
+									</td>
+									<td class="p-3 text-center">
+										<h6 th:text="${re.tax_code}"></h6>
+									</td>
 									<td class="p-3 text-center">
 										<h6 th:text="${re.account.email}"></h6>
 									</td>
-									<td class="p-3 text-center">
+									<td class="p-3 text-center" style="max-width: 300px; overflow-wrap: break-word;">
 										<h6 th:text="${re.descriptions}"></h6>
 									</td>
+
 									<td class="p-3 text-center">
 										<h6 th:text="${re.createDate}"></h6>
 									</td>
-									<div th:if="${re.responseDate == null && re.requestAuthorityStatus.requestAuthorityStatusId == 1}">
-									<td class="p-3 text-center" th:if="${re.responseDate} == null">
-										<h6>Đang chờ phản hồi</h6>
-									</td>
-									<td class="p-3 text-center" th:if="${re.respdescriptions} == null">
-										<h6>Đang chờ phản hồi</h6>
-									</td>
-									<td class="p-3 text-center" th:unless="${re.responseDate} == null">
+									<td class="p-3 text-center">
 										<h6 th:text="${re.responseDate}"></h6>
 									</td>
-									<td class="p-3 text-center" th:unless="${re.respdescriptions} == null">
+									<td class="p-3 text-center" style="max-width: 300px; overflow-wrap: break-word;">
 										<h6 th:text="${re.respdescriptions}"></h6>
 									</td>
-								</div>
-								<div th:unless="${re.responseDate == null && re.requestAuthorityStatus.requestAuthorityStatusId == 1 || re.requestAuthorityStatus.requestAuthorityStatusId == 4 }">
-									<td class="p-3 text-center" th:if="${re.responseDate} == null" >
-										<h6 >Đang chờ phản hồi</h6>
-									</td>
-									<td class="p-3 text-center" th:if="${re.respdescriptions} == null">
-										<h6 >Đang chờ phản hồi</h6>
-									</td>
-									<td class="p-3 text-center" th:unless="${re.responseDate} == null">
-										<h6 th:text="${re.responseDate}"></h6>
-									</td>
-									<td class="p-3 text-center" th:unless="${re.respdescriptions} == null">
-										<h6 th:text="${re.respdescriptions}"></h6>
-									</td>
-								</div>
-								<div th:if="${re.responseDate == null && re.requestAuthorityStatus.requestAuthorityStatusId == 4}">
-									<td class="p-3 text-center" th:if="${re.responseDate} == null">
-										<h6>Hủy yêu cầu</h6>
-									</td>
-									<td class="p-3 text-center" th:if="${re.respdescriptions} == null">
-										<h6>Hủy yêu cầu</h6>
-									</td>
-									<td class="p-3 text-center" th:unless="${re.responseDate} == null">
-										<h6 th:text="${re.responseDate}"></h6>
-									</td>
-									<td class="p-3 text-center" th:unless="${re.respdescriptions} == null">
-										<h6 th:text="${re.respdescriptions}"></h6>
-									</td>
-								</div>
+									<!--<div
+										th:if="${re.responseDate == null && re.requestAuthorityStatus.requestAuthorityStatusId == 1}">
+										<td class="p-3 text-center" th:if="${re.responseDate} == null">
+											<h6>Đang chờ phản hồi</h6>
+										</td>
+										<td class="p-3 text-center" th:if="${re.respdescriptions} == null">
+											<h6>Đang chờ phản hồi</h6>
+										</td>
+										<td class="p-3 text-center" th:unless="${re.responseDate} == null">
+											<h6 th:text="${re.responseDate}"></h6>
+										</td>
+										<td class="p-3 text-center" th:unless="${re.respdescriptions} == null">
+											<h6 th:text="${re.respdescriptions}"></h6>
+										</td>
+									</div>
+									<div
+										th:unless="${re.responseDate == null && re.requestAuthorityStatus.requestAuthorityStatusId == 1 || re.requestAuthorityStatus.requestAuthorityStatusId == 4 }">
+										<td class="p-3 text-center" th:if="${re.responseDate} == null">
+											<h6>Đang chờ phản hồi</h6>
+										</td>
+										<td class="p-3 text-center" th:if="${re.respdescriptions} == null">
+											<h6>Đang chờ phản hồi</h6>
+										</td>
+										<td class="p-3 text-center" th:unless="${re.responseDate} == null">
+											<h6 th:text="${re.responseDate}"></h6>
+										</td>
+										<td class="p-3 text-center" th:unless="${re.respdescriptions} == null">
+											<h6 th:text="${re.respdescriptions}"></h6>
+										</td>
+									</div>
+									<div
+										th:if="${re.responseDate == null && re.requestAuthorityStatus.requestAuthorityStatusId == 4}">
+										<td class="p-3 text-center" th:if="${re.responseDate} == null">
+											<h6>Hủy yêu cầu</h6>
+										</td>
+										<td class="p-3 text-center" th:if="${re.respdescriptions} == null">
+											<h6>Hủy yêu cầu</h6>
+										</td>
+										<td class="p-3 text-center" th:unless="${re.responseDate} == null">
+											<h6 th:text="${re.responseDate}"></h6>
+										</td>
+										<td class="p-3 text-center" th:unless="${re.respdescriptions} == null">
+											<h6 th:text="${re.respdescriptions}"></h6>
+										</td>
+									</div>-->
 									<td class="text-center">
 										<span th:if="${re.requestAuthorityStatus.requestAuthorityStatusId == 1}"
 											class="btn bg-info text-white" style="border: none; width: 8rem;">Đang xử
@@ -154,6 +175,32 @@
 			});
 		}
 	</script>
+
+	<script>
+		function openCustomModal(src) {
+			// Tạo một custom-modal element
+			var modal = document.createElement('div');
+			modal.classList.add('custom-modal');
+
+			// Tạo một hình ảnh element trong custom-modal
+			var modalImg = document.createElement('img');
+			modalImg.src = src;
+
+			// Đóng custom-modal khi click ra ngoài
+			modal.onclick = function () {
+				modal.remove();
+			};
+
+			// Thêm hình ảnh vào custom-modal
+			modal.appendChild(modalImg);
+
+			// Thêm custom-modal vào body
+			document.body.appendChild(modal);
+		}
+
+	</script>
+
+
 </body>
 
 </html>

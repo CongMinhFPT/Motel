@@ -35,7 +35,7 @@
 										<p class="text-center">Xin chào, <b th:text="${acc}"></b>!</p>
 										<div class="form-group form-float">
 											<div class="form-line">
-												<img th:src="@{|/uploads/${account.avatar}|}" id="imagePreview"
+												<img th:src="@{|/files/CustomerImg/${account.avatar}|}" id="imagePreview"
 													class="img-fluid rounded-3 mb-3" alt="" style="height: 200px;">
 												<input type="file" id="uploadInput" class="form-control rounded-3"
 													name="image" placeholder="Chọn tệp" accept="image/*">

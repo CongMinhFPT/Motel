@@ -46,7 +46,7 @@ public class AuthorityConfig extends WebSecurityConfigurerAdapter {
 						"/admin/category","/admin/categoryform/**","/admin/addcategory","/admin/upcategory","/changeStatus/**").hasAnyRole("OWNER")
 				.antMatchers("/admin/**").hasAnyRole("MANAGER","SUPPER","OWNER")
 //				.antMatchers("/room","/change/**","/information/**","/payment/**","/payment_infor").hasAnyRole("MANAGER", "SUPPER", "OWNER", "CUSTOMER")
-				.antMatchers("/room","/change/**","/information/**","/payment/**","/payment_infor","/request","/deleteRe/**","/requestList").authenticated()
+				.antMatchers("/change/**","/information/**","/payment/**","/payment_infor","/request","/deleteRe/**","/requestList","/change/**").authenticated()
 				.anyRequest().permitAll();
 
 		http.exceptionHandling()

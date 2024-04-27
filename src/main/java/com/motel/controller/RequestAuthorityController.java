@@ -3,6 +3,7 @@ package com.motel.controller;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.motel.entity.Account;
 import com.motel.entity.RequestAuthority;
@@ -25,8 +27,9 @@ import com.motel.repository.AccountsRepository;
 import com.motel.repository.RequestAuthorityRepository;
 import com.motel.repository.RequestAuthorityStatusRepository;
 import com.motel.service.RequestAuthorityService;
+import com.motel.service.impl.ManageMotelImpl;
 
-
+@MultipartConfig
 @Controller
 public class RequestAuthorityController {
 	
@@ -41,6 +44,9 @@ public class RequestAuthorityController {
 
 	@Autowired
 	RequestAuthorityService requestAuthorityService;
+	
+	@Autowired
+	ManageMotelImpl fileManage;
 	
 	@GetMapping("/requestList")
 	public String showList(Model model, Authentication authentication) {
@@ -75,8 +81,7 @@ public class RequestAuthorityController {
 	}
 	
 	@PostMapping("/request/save")
-	public String submit(Model model,@Valid @ModelAttribute("request") RequestAuthority requestAuthority, BindingResult bindingResult, Authentication authentication) {
-		
+	public String submit(Model model,@Valid @ModelAttribute("request") RequestAuthority requestAuthority, BindingResult bindingResult, Authentication authentication, @RequestParam("image") MultipartFile photo) {
 		String id =authentication.getName();
 		Account acc = accountsRepository.getByEmail(id);
 		Integer requestAuthorityStatusId = 1;
@@ -84,10 +89,19 @@ public class RequestAuthorityController {
 			model.addAttribute("id", id);
 			return "home/requestAuthority";
 		}
+		if(photo != null && !photo.isEmpty()) {
+			MultipartFile[] files = new MultipartFile[]{photo};
+			String nameImage = fileManage.ImgSave("CustomerImg", files);
+			requestAuthority.setAvatar(nameImage);
+			
+		}else {
+			model.addAttribute("photo_message","Vui lòng chọn hình!");
+			return "home/requestAuthority";
+		}
 		 // Kiểm tra xem có bản ghi nào với requestAuthorityStatusId là 1 và email tương ứng hay không
         boolean existingRequest = requestAuthorityRepository.existsByRequestAuthorityStatusRequestAuthorityStatusIdAndAccountAccountId(requestAuthorityStatusId, acc.getAccountId());
         if (existingRequest) {
-            model.addAttribute("req", "Bạn đã gửi yêu cầu trước đó, nếu bạn muốn gửi lại yêu cầu mới chúng tôi sẽ hủy yêu cầu trước đó của bạn!");
+            model.addAttribute("req", "Bạn đã gửi yêu cầu trước đó, nên không thể gửi yêu cầu khác!");
             model.addAttribute("id", id);
             return "home/requestAuthority"; // Điều hướng đến trang hiển thị thông báo lỗi
         }
@@ -115,29 +129,31 @@ public class RequestAuthorityController {
 	}
 	
 	
-	public void deleteRequest(Integer id) {
-		RequestAuthority re = requestAuthorityRepository.getById(id);
-		RequestAuthorityStatus res = requestAuthorityStatusRepository.getById(4);
-		re.setRequestAuthorityStatus(res);
-		requestAuthorityRepository.save(re);
-	}
-
-	
-	@GetMapping("/request/update")
-	public String updateRequest(Model model,@ModelAttribute("request") RequestAuthority requestAuthority, Authentication authentication) {
-	    String id = authentication.getName();
-	    Account acc = accountsRepository.getByEmail(id);
-	    model.addAttribute("id", id);
-	    // Xóa yêu cầu cũ nếu có
-	    List<RequestAuthority> re = requestAuthorityRepository.findByRequestAuthorityId(acc.getAccountId());
-	    if (re != null) {
-	        for (RequestAuthority ra : re) {
-	            Integer requestId = ra.getRequestAuthorityId();
-	            System.out.println("Deleting request with ID: " + requestId);
-	            deleteRequest(requestId);
-	        }
-	    }
-	    return "home/requestAuthority";
-	}
+//	public void deleteRequest(Integer id) {
+//		RequestAuthority re = requestAuthorityRepository.getById(id);
+//		RequestAuthorityStatus res = requestAuthorityStatusRepository.getById(4);
+//		re.setRequestAuthorityStatus(res);
+//		requestAuthorityRepository.save(re);
+//	}
+//
+//	
+//	@GetMapping("/request/update")
+//	public String updateRequest(Model model,@ModelAttribute("request") RequestAuthority requestAuthority, Authentication authentication) {
+//	    String id = authentication.getName();
+//	    Account acc = accountsRepository.getByEmail(id);
+//	    model.addAttribute("id", id);
+//	    System.out.println("Deleting request with ID: " + id);
+//	    // Xóa yêu cầu cũ nếu có
+//	    List<RequestAuthority> re = requestAuthorityRepository.findByRequestAuthorityId(acc.getAccountId());
+//	    System.out.println("Deleting request with re: " + re);
+//	    if (re != null) {
+//	        for (RequestAuthority ra : re) {
+//	            Integer requestId = ra.getRequestAuthorityId();
+//	            System.out.println("Deleting request with reID: " + requestId);
+//	            deleteRequest(requestId);
+//	        }
+//	    }
+//	    return "home/requestAuthority";
+//	}
 
 }

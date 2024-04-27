@@ -15,9 +15,6 @@
 						<h4 class="card-title mb-2">Cập nhật thông tin</h4>
 						<!--<span>Lorem Ipsum sit amet</span>-->
 					</div>
-					<a href="javascript:void(0);" class="btn btn-info light mr-3"><i
-							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
-					<a th:href="@{/add}" class="btn btn-info">+ Thêm Khách Hàng</a>
 				</div>
 				<div class="card-body">
 					<form class="signin-form mx-1 mx-md-4"
@@ -60,8 +57,7 @@
 										<label class="form-label fw-bold" for="form3Example3c">Số căn cước công dân
 											:</label>
 										<input type="text" id="form3Example3c" class="form-control rounded-3"
-											th:field="*{citizen}"
-											placeholder="Nhập số căn cước công dân">
+											th:field="*{citizen}" placeholder="Nhập số căn cước công dân">
 										<i th:errors="*{citizen}" class="text-danger"></i>
 										<i th:text="${citizen}" class="text-danger"></i>
 									</div>

@@ -55,7 +55,8 @@
 								<td>
 									<div class="media style-1">
 										<img th:src="@{/files/CustomerImg/{img}(img=${re.avatar})}"
-											class="img-fluid mr-2" alt="" style="height: 80px; width: 150px;" onclick="openCustomModal(this.src)">
+											class="img-fluid mr-2" alt="" style="height: 80px; width: 150px;"
+											onclick="openCustomModal(this.src)">
 									</div>
 								</td>
 								<td class="p-3 text-center">
@@ -66,7 +67,7 @@
 									<h6 th:text="${re.descriptions}"></h6>
 								</td>
 								<td class="p-3 text-center">
-									<h6 th:text="${#dates.format(re.createDate, 'yyyy-MM-dd')}"></h6>
+									<h6 th:text="${#dates.format(re.createDate, 'dd-MM-yyyy')}"></h6>
 								</td>
 								<td class="p-3 text-center">
 									<h6 th:text="${re.responseDate}"></h6>

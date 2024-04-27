@@ -14,12 +14,12 @@
 	<meta name="description" content="Zenix - Crypto Admin Dashboard">
 	<meta property="og:title" content="Zenix - Crypto Admin Dashboard">
 	<meta property="og:description" content="Zenix - Crypto Admin Dashboard">
-	<meta property="og:image" content="https://zenix.dexignzone.com/xhtml/social-image.png">
+	<meta property="og:image" th:src="@{/img/F.E.png}">
 	<meta name="format-detection" content="telephone=no">
-	<title>Zenix - Crypto Admin Dashboard </title>
+	<title>Quản Lý Nhà Trọ </title>
 	<!-- Favicon icon -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.min.css" rel="stylesheet">
-	<link rel="icon" type="image/png" sizes="16x16" href="/admin/images/favicon.png">
+	<link rel="icon" type="image/png" sizes="16x16" th:href="@{/img/F.E.png}">
 	<link rel="stylesheet" href="/admin/vendor/chartist/css/chartist.min.css">
 	<link href="/admin/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
 	<link href="/admin/vendor/owl-carousel/owl.carousel.css" rel="stylesheet">
@@ -37,9 +37,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
 
-	<script th:src="@{/vendor/angular/angular.js}"></script> 
-<link rel="stylesheet" th:href="@{/css/sigin.css}">
+	<script th:src="@{/vendor/angular/angular.js}"></script>
+	<link rel="stylesheet" th:href="@{/css/sigin.css}">
 </head>
+
 <body>
 	<div id="preloader">
 		<div class="sk-three-bounce">
@@ -173,9 +174,9 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	<script src="/Authority/auth.js"></script>
-	
-	
-	
+
+
+
 
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="/js/renter.js"></script>
@@ -188,7 +189,7 @@
 	<div th:replace="~{/admin/indexs/scriptSweet}"></div>
 	<div th:replace="~{/admin/home/scriptSweet}"></div>
 	<div th:replace="~{/admin/post/scriptSweet}"></div>
-	
+
 </body>
 
 </html>

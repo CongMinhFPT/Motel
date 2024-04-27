@@ -70,6 +70,9 @@ public class AdminCustomer {
 	@Autowired
 	ManageMotelImpl fileManager;
 
+	@Autowired
+	ManageMotelImpl manageMotelImpl;
+
 	private static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
 
 	private static Map<String, Account> codeMap = new HashMap<>();
@@ -99,6 +102,7 @@ public class AdminCustomer {
 		model.addAttribute("customer", acc);
 		int count = requestAuthorityRepository.findRequestCount();
 		model.addAttribute("requestCount", count);
+		manageMotelImpl.SetModelMotel(model);
 		return "admin/customers/customerList";
 	}
 
@@ -157,7 +161,9 @@ public class AdminCustomer {
 				});
 				model.addAttribute("customer", findCitizen);
 			}
+
 		}
+		manageMotelImpl.SetModelMotel(model);
 		return "admin/customers/customerList";
 	}
 
@@ -171,7 +177,8 @@ public class AdminCustomer {
 	}
 
 	@GetMapping("/add")
-	public String create(@ModelAttribute("accounts") Account account) {
+	public String create(@ModelAttribute("accounts") Account account, Model model) {
+		manageMotelImpl.SetModelMotel(model);
 		return "admin/customers/customerFormCr";
 	}
 
@@ -217,17 +224,17 @@ public class AdminCustomer {
 			return "admin/customers/customerFormCr";
 		}
 		if (photo != null && !photo.isEmpty()) {
-			MultipartFile[] files = new MultipartFile[]{photo};
+			MultipartFile[] files = new MultipartFile[] { photo };
 			String nameImage = fileManager.ImgSave("CustomerImg", files);
 			account.setAvatar(nameImage);
-//			try {
-//				String fileName = photo.getOriginalFilename();
-//				Path fileNameAnPath = Paths.get(UPLOAD_DIRECTORY, fileName);
-//				Files.write(fileNameAnPath, photo.getBytes());
-//				account.setAvatar(fileName);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
+			// try {
+			// String fileName = photo.getOriginalFilename();
+			// Path fileNameAnPath = Paths.get(UPLOAD_DIRECTORY, fileName);
+			// Files.write(fileNameAnPath, photo.getBytes());
+			// account.setAvatar(fileName);
+			// } catch (Exception e) {
+			// e.printStackTrace();
+			// }
 
 		} else {
 			model.addAttribute("photo_message", "Vui lòng chọn ảnh!");
@@ -321,7 +328,7 @@ public class AdminCustomer {
 			@ModelAttribute("account") Account account, @RequestParam("image") MultipartFile photo) {
 		Account accountCrr = accountService.getById(accountId);
 		if (photo != null && !photo.isEmpty()) {
-			MultipartFile[] files = new MultipartFile[]{photo};
+			MultipartFile[] files = new MultipartFile[] { photo };
 			String nameImage = fileManager.ImgSave("CustomerImg", files);
 			account.setAvatar(nameImage);
 		} else {

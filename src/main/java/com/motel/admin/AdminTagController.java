@@ -12,37 +12,48 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.motel.entity.Tag;
 import com.motel.service.TagService;
+import com.motel.service.impl.ManageMotelImpl;
 
 @Controller
 public class AdminTagController {
 
-	@Autowired private TagService tagService;
+	@Autowired
+	private TagService tagService;
+
+	@Autowired
+	ManageMotelImpl manageMotelImpl;
+
 	@GetMapping("/admin/tags")
 	public String allTag(Model model) {
-		
+
 		List<Tag> listTags = tagService.getListTag();
 		model.addAttribute("listTags", listTags);
-		
+		manageMotelImpl.SetModelMotel(model);
 		return "admin/tag/tag-list";
-		
+
 	}
+
 	@GetMapping("/admin/add-tag")
 	public String newTag(Model model) {
 		Tag tag = new Tag();
 		model.addAttribute("tag", tag);
+		manageMotelImpl.SetModelMotel(model);
 		return "admin/tag/add-tag";
 	}
+
 	@GetMapping("/admin/edit-tag/{tagId}")
 	public String editTag(@PathVariable(name = "tagId") Integer tagId, Model model, RedirectAttributes ra) {
 		try {
 			Tag tag = tagService.getId(tagId);
 			model.addAttribute("tag", tag);
+			manageMotelImpl.SetModelMotel(model);
 			return "admin/tag/add-tag";
 		} catch (Exception e) {
 			// TODO: handle exception
 			return "/admin/tags";
 		}
 	}
+
 	@GetMapping("/admin/remove-tag/{tagId}")
 	public String removeTag(@PathVariable(name = "tagId") Integer tagId, RedirectAttributes ra) {
 		try {
@@ -53,6 +64,7 @@ public class AdminTagController {
 		}
 		return "redirect:/admin/tags";
 	}
+
 	@PostMapping("/admin/save-tag")
 	public String saveTag(Tag tag, RedirectAttributes ra) {
 
@@ -62,7 +74,7 @@ public class AdminTagController {
 		} catch (Exception e) {
 			ra.addFlashAttribute("message", e.getMessage());
 		}
-		
+
 		return "redirect:/admin/tags";
 	}
 }

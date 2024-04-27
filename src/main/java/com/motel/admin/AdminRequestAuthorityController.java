@@ -21,6 +21,7 @@ import com.motel.repository.AccountsRepository;
 import com.motel.repository.RequestAuthorityRepository;
 import com.motel.repository.RequestAuthorityStatusRepository;
 import com.motel.service.MailerService;
+import com.motel.service.impl.ManageMotelImpl;
 
 @Controller
 public class AdminRequestAuthorityController {
@@ -37,22 +38,24 @@ public class AdminRequestAuthorityController {
 	@Autowired
 	MailerService mailerService;
 
+	@Autowired
+	ManageMotelImpl manageMotelImpl;
 
-	
 	@GetMapping("/requestauth")
 	public String show(Model model) {
 		List<RequestAuthority> re = requestAuthorityRepository.findRequestadmin();
 		Collections.sort(re, (r1, r2) -> {
 			if (r1.getRequestAuthorityStatus().getRequestAuthorityStatusId() == 1) {
-                return -1; // r1 được đưa lên đầu danh sách
-            } else if (r2.getRequestAuthorityStatus().getRequestAuthorityStatusId() == 1) {
-                return 1; // r2 được đưa lên đầu danh sách
-            }
-            return 0; // Giữ nguyên vị trí của các yêu cầu khác
+				return -1; // r1 được đưa lên đầu danh sách
+			} else if (r2.getRequestAuthorityStatus().getRequestAuthorityStatusId() == 1) {
+				return 1; // r2 được đưa lên đầu danh sách
+			}
+			return 0; // Giữ nguyên vị trí của các yêu cầu khác
 		});
 		model.addAttribute("request", re);
 		int count = requestAuthorityRepository.findRequestCount();
-    	model.addAttribute("requestCount", count);
+		model.addAttribute("requestCount", count);
+		manageMotelImpl.SetModelMotel(model);
 		return "admin/authority/requestAuthority";
 	}
 
@@ -61,6 +64,7 @@ public class AdminRequestAuthorityController {
 		RequestAuthority req = requestAuthorityRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Username không tồn tại: " + id));
 		model.addAttribute("request", req);
+		manageMotelImpl.SetModelMotel(model);
 		return "admin/authority/requestAuthorityFrom";
 	}
 
@@ -103,7 +107,7 @@ public class AdminRequestAuthorityController {
 
 		// Lưu RequestAuthority đã cập nhật
 		requestAuthorityRepository.save(requestAuthority);
-		model.addAttribute("create","Phản hồi thành công!");
+		model.addAttribute("create", "Phản hồi thành công!");
 		return "admin/authority/requestAuthorityFrom";
 	}
 

@@ -72,7 +72,8 @@
                     <div class="col-lg-3 mb-4">
                         <div class=" mb-0">
                             <label class="form-label " for="">Tìm theo tên</label><br>
-                            <input class="form-control " ng-model="sesearchnamemotel" type="search" ng-model-options="{ debounce: 700 }">
+                            <input class="form-control " ng-model="sesearchnamemotel" type="search"
+                                ng-model-options="{ debounce: 700 }">
                         </div>
                     </div>
                     <div class="col-lg-6"></div>
@@ -126,15 +127,14 @@
                         <div class="col-lg-9 ps-3 ">
                             <div ng-show="true">
                                 <div style="min-height: 25rem;" class=" row ">
-                                    <div ng-show="items.length" 
-                                        class=" mt-4 col-12 col-md-5  p-2 me-4  "
+                                    <div ng-show="items.length" class=" mt-4 col-12 col-md-5  p-2 me-4  "
                                         ng-repeat="item in items.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage)">
-                                        <div class="">
-                                            <div class="card" style="background-color: #fff; color: #000;">
+                                        <div class="h-100">
+                                            <div class="card h-100" style="background-color: #fff; color: #000;">
                                                 <a href="/post/motel/motelroom/{{item.motel.motelId}}">
-                                                    <img class="card-img-top w-100"
+                                                    <img class="card-img-top w-100 h-100"
                                                         src="/files/ImgMotel/{{item.motel.image}}" alt="" /></a>
-                                                <div class="card-body">
+                                                <div class="card-body position-relative">
                                                     <p class="card-text text-success ">{{item.posttitle}}</p>
                                                     <label class="fw-lighter  " for="">Mô tả</label>
                                                     <div style="background-color: #f4efef;"
@@ -168,7 +168,7 @@
                                                             <a>phòng</a>
                                                         </div>
                                                         <hr>
-                                                        <div class="col-lg-12 card-text">
+                                                        <div class="col-lg-12 card-text py-2">
 
                                                             <i class='bx bx-user-plus pe-1'></i> Phòng trống:
                                                             {{item.availability}} phòng
@@ -176,7 +176,8 @@
                                                         </div>
 
                                                     </div>
-                                                    <div class="col-lg-12 card-text d-flex  justify-content-end ">
+                                                    <div style="right: 2rem; bottom: 8px;"
+                                                        class="col-lg-12 card-text d-flex  justify-content-end position-absolute ">
                                                         <span class="fw-lighter  ">
                                                             <span ng-show="item.daysSinceCreation==0">Đăng hôm
                                                                 nay</span>

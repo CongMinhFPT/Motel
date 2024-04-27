@@ -22,57 +22,66 @@ import com.motel.entity.Blog;
 import com.motel.entity.Tag;
 import com.motel.service.BlogService;
 import com.motel.service.TagService;
+import com.motel.service.impl.ManageMotelImpl;
 
 @Controller
 public class AdminBlogController {
 	@Autowired
 	private BlogService blogService;
-	@Autowired 
+	@Autowired
 	private TagService tagService;
-	
+
+	@Autowired
+	ManageMotelImpl manageMotelImpl;
+
 	@GetMapping("/admin/blogs")
 	public String allBlog(Model model) {
-		
+
 		List<Blog> listBlogs = blogService.getListBlog();
-		
+
 		model.addAttribute("listBlogs", listBlogs);
-		
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String name = auth.getName();
-		
+
 		List<String> listImg = blogService.getListImage();
-		
+
 		System.out.println("Name +==============     : " + name);
 		System.out.println("Date +==============     : " + listImg);
-		
+
+		manageMotelImpl.SetModelMotel(model);
+
 		return "admin/blog/blog-list";
-		
+
 	}
+
 	@GetMapping("/admin/add-blog")
 	public String newBlog(Model model) {
 		Blog blog = new Blog();
 		model.addAttribute("blog", blog);
-		
+
 		List<Tag> listTags = tagService.getListTag();
 		model.addAttribute("listTags", listTags);
-		
+		manageMotelImpl.SetModelMotel(model);
 		return "admin/blog/add-blog";
 	}
+
 	@GetMapping("/admin/edit-blog/{blogId}")
 	public String editBlog(@PathVariable(name = "blogId") Integer blogId, Model model) {
 		try {
 			Blog blog = blogService.getId(blogId);
 			List<Tag> listTags = tagService.getListTag();
-			
+
 			model.addAttribute("blog", blog);
 			model.addAttribute("listTags", listTags);
-			
+			manageMotelImpl.SetModelMotel(model);
 			return "admin/blog/add-blog";
 		} catch (Exception ex) {
 			// TODO: handle exception
 			return "redirect:/admin/blogs";
 		}
 	}
+
 	@GetMapping("/admin/remove-blog/{blogId}")
 	public String removeBlog(@PathVariable(name = "blogId") Integer blogId, RedirectAttributes ra) {
 		try {
@@ -85,23 +94,24 @@ public class AdminBlogController {
 	}
 
 	@PostMapping("/admin/save-blog/{email}")
-	public String saveBlog(Blog blog, @RequestParam("uploadfile") MultipartFile multipartFile, RedirectAttributes ra, @PathVariable("email") String email)
+	public String saveBlog(Blog blog, @RequestParam("uploadfile") MultipartFile multipartFile, RedirectAttributes ra,
+			@PathVariable("email") String email)
 			throws IOException {
 
 		if (!multipartFile.isEmpty()) {
 
 			@SuppressWarnings("null")
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			
+
 			List<String> listImg = blogService.getListImage();
-			if(listImg.contains(fileName)) {
+			if (listImg.contains(fileName)) {
 				ra.addFlashAttribute("ErrorIMG", "Vui lòng chọn ảnh khác, ảnh này đã tồn tại");
 				return "redirect:/admin/add-blog";
-			}else {
+			} else {
 				blog.setImage(fileName);
 				Blog savedBlog = blogService.save(blog, email);
 				String uploadDir = "upload/blog-files/" + savedBlog.getBlogId();
-				
+
 				FileUploadUtil.cleanDir(uploadDir);
 				FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 			}

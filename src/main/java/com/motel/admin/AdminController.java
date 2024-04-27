@@ -14,6 +14,7 @@ import com.motel.repository.RequestAuthorityRepository;
 import com.motel.entity.Account;
 import com.motel.entity.Renter;
 import com.motel.service.RenterService;
+import com.motel.service.impl.ManageMotelImpl;
 
 @Controller
 public class AdminController {
@@ -24,18 +25,22 @@ public class AdminController {
 	RequestAuthorityRepository requestAuthorityRepository;
 
 	@Autowired
-    RenterRepository renterRepository;
+	RenterRepository renterRepository;
 
-    @Autowired
-    AccountsRepository accountsRepository;
+	@Autowired
+	AccountsRepository accountsRepository;
+
+	@Autowired
+	ManageMotelImpl manageMotelImpl;
 
 	@GetMapping("/admin")
 	public String index(Model model, Authentication authentication) {
 		String emailAccount = authentication.getName();
-        Account account = accountsRepository.getByEmail(emailAccount);
-        model.addAttribute("accountIdStatistic", account.getAccountId());
+		Account account = accountsRepository.getByEmail(emailAccount);
+		model.addAttribute("accountIdStatistic", account.getAccountId());
 		int count = requestAuthorityRepository.findRequestCount();
 		model.addAttribute("requestCount", count);
+
 		return "admin/home/index";
 	}
 
@@ -43,6 +48,7 @@ public class AdminController {
 	public String authority(Model model) {
 		int count = requestAuthorityRepository.findRequestCount();
 		model.addAttribute("requestCount", count);
+		manageMotelImpl.SetModelMotel(model);
 		return "admin/authority/auth";
 	}
 }

@@ -9,16 +9,16 @@ import org.springframework.data.jpa.repository.Query;
 
 import org.springframework.data.repository.query.Param;
 
+import com.motel.entity.Motel;
 import com.motel.entity.Post;
 import com.motel.entity.RoomCash;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
-	 List<Post> findByMotel_DistrictAndMotel_Province(String
-	 district, String province);
-	 
-	 @Query("SELECT p FROM Post p JOIN p.motel m WHERE m.motelId = :motelId")
-	  Post findPostByMotelId(@Param("motelId") Integer motelId);
-	 
+	List<Post> findByMotel_DistrictAndMotel_Province(String district, String province);
+
+	@Query("SELECT p FROM Post p JOIN p.motel m WHERE m.motelId = :motelId")
+	Post findPostByMotelId(@Param("motelId") Integer motelId);
+
 	@Query(nativeQuery = true, value = "SELECT COUNT(*) AS NumberOfPosts FROM posts WHERE create_date = GETDATE() AND status = 1")
 	Object findPostToDay();
 
@@ -44,5 +44,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	@Query(value = "SELECT * FROM Posts p JOIN motels m ON p.motel_id = m.motel_id WHERE m.status = 1 and p.status = 1  ORDER BY ABS(DATEDIFF(DAY, p.create_date, GETDATE())) ASC", nativeQuery = true)
 	List<Post> findPostsnew();
+
+	@Query(value = "select * from posts a inner join motels b on a.motel_id = b.motel_id where a.motel_id IN (:listMotelId)", nativeQuery = true)
+	List<Post> findPostsByMotel(@Param("listMotelId") List<Integer> listMotelId);
 
 }

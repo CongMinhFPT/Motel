@@ -34,11 +34,11 @@ public class PostServiceImpl implements PostService {
 		// TODO Auto-generated method stub
 		return (List<Post>) postRepo.findAll();
 	}
-	
+
 	// @Override
 	// public List<Post> getList3PostFirst() {
-	// 	return (List<Post>) postRepo.find3PostFirst(PageRequest.of(0, 3));
-	// 	/* return (List<Post>) postRepo.find3PostFirst(); */
+	// return (List<Post>) postRepo.find3PostFirst(PageRequest.of(0, 3));
+	// /* return (List<Post>) postRepo.find3PostFirst(); */
 
 	// }
 
@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostService {
 		// TODO Auto-generated method stub
 		if (post.getPostId() == null) {
 			post.setCreateDate(new Date());
-			post.setStatus(false);
+			post.setStatus(true);
 		} else {
 			Post postInDB = postRepo.findById(post.getPostId()).get();
 			post.setCreateDate(postInDB.getCreateDate());

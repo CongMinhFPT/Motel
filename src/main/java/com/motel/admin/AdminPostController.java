@@ -60,9 +60,14 @@ public class AdminPostController {
 			CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
 			if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
 				Motel motel = motelRepository.getById(customUserDetails.getMotelid());
+				List<Integer> integers = new ArrayList<>();
+				Account account = accountsRepository.getById(customUserDetails.getAccountid());
+				List<Motel> motels = account.getMotel();
+				motels.forEach(a -> {
+					integers.add(a.getMotelId());
+				});
 
-				List<MotelRoom> motelRooms = motel.getMotelRoom();
-				List<Post> posts = new ArrayList<>();
+				List<Post> posts = postRepository.findPostsByMotel(integers);
 
 				// for (MotelRoom motelRoom : motelRooms) {
 				// for (Post post : motelRoom.getPosts()) {
@@ -85,17 +90,28 @@ public class AdminPostController {
 
 	@GetMapping("/admin/add-post")
 	public String newBlog(Model model, Authentication authentication) {
-		Post post = new Post();
-		model.addAttribute("post", post);
+		if (manageMotelImpl.CheckLogin().isPresent()) {
+			CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+			if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+				Account account = accountsRepository.getById(customUserDetails.getAccountid());
+				// for (MotelRoom motelRoom : motelRooms) {
+				// for (Post post : motelRoom.getPosts()) {
+				// posts.add(post);
+				// }
+				// }
+				Post post = new Post();
+				List<Motel> motels = motelRepository.findPostsByNotMotel(account.getAccountId());
+				model.addAttribute("motels", motels);
+				model.addAttribute("post", post);
+				manageMotelImpl.SetModelMotel(model);
+				return "admin/post/add-post";
+			} else {
+				return "redirect:/admin/manage-motel";
+			}
+		} else {
+			return "home/signin";
+		}
 
-		String emailAccount = authentication.getName();
-		Account account = accountsRepository.getByEmail(emailAccount);
-		// model.addAttribute("accountId", account.getAccountId());
-
-		List<MotelRoom> listMotelRooms = renterService.getMotelRoomByAccount(account.getAccountId());
-		model.addAttribute("listMotelRooms", listMotelRooms);
-
-		return "admin/post/add-post";
 	}
 
 	@GetMapping("/admin/update-post/{id}")

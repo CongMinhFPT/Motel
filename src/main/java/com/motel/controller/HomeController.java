@@ -30,6 +30,9 @@ public class HomeController {
     
     @GetMapping("/index")
     public String getMethodName(Model model) {
+        List<Blog> listBlogs = blogService.getList3BlogFirst();
+		model.addAttribute("listBlogs", listBlogs);
+
         return "home/index";
     }
     @GetMapping("/news")

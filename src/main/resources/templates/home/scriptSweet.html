@@ -1,25 +1,19 @@
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-	integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-	crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-	integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+
 <script th:src="@{/js/header.js}"></script>
 <script th:src="@{/js/invoice.js}"></script>
 <script th:src="@{/js/IndexPostMotel.js}"></script>
 <script th:src="@{/js/motelroominmotel.js}"></script>
 <script th:src="@{/js/roompostmotel.js}"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
- <!-- thêm jQuery -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
- <!-- thêm CSS cho Owl Carousel -->
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
-
- <!-- thêm Javascript cho Owl Carousel -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
 <script th:inline="javascript">
 	var paymentSuccess = /*[[${paymentSuccess}]]*/ false;
 	if (paymentSuccess) {
@@ -33,22 +27,6 @@
 			timer: 3000
 		})
 	}
-	$('.owl-carousel').owlCarousel({
-		loop: false,
-		margin: 10,
-		nav: true,
-		autoplay: true,
-		autoplayTimeout: 3000,
-		autoplayHoverPause: true,
-		responsive: {
-			0: {
-				items: 1
-			},
-			1000: {
-				items: 3
-			}
-		}
-	})
 </script>
 <!--Quên mk-->
 <script th:if="${not #strings.isEmpty(message)}" th:inline="javascript">

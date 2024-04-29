@@ -102,12 +102,14 @@ $scope.getData = function() {
     var isProvinceMatched = $scope.selectedProvinceName ? item.motel.province === $scope.selectedProvinceName : true;
     var isDistrictMatched = $scope.selectedDistrictName ? item.motel.district === $scope.selectedDistrictName : true;
     var isWardMatched = $scope.selectedWardName ? item.motel.ward === $scope.selectedWardName : true;
+    console.log(isProvinceMatched)
+    console.log(isDistrictMatched)
     return isNameMatched && isProvinceMatched && isDistrictMatched && isWardMatched;
   }
   $scope.filterItemsprovince = function () {
     let selectedCity = $scope.citis.find(x => x.Id === $scope.province);
-
-    // Đặt lại district, districts, ward, và wards khi province thay đổi
+    $scope.selectedDistrictName =''
+    $scope.selectedWardName ='';
     $scope.district = null;
     $scope.districts = [];
     $scope.ward = null;
@@ -121,24 +123,28 @@ $scope.getData = function() {
     }
     $scope.items = $scope.item.filter(filterItems);
     $scope.currentPage = 1; 
+    console.log(selectedCity)
 };
 
 $scope.filterItemsdistrict = function () {
-    let selectedDistrict = $scope.districts.find(x => x.Id === $scope.district);
-
-    // Đặt lại ward và wards khi district thay đổi
-    $scope.ward = null;
-    $scope.wards = [];
-
-    if(selectedDistrict) {
-        $scope.selectedDistrictName = selectedDistrict.Name;
-        $scope.wards = selectedDistrict.Wards;
-    } else {
+    if (!$scope.district || !$scope.districts || $scope.districts.length === 0) {         
         $scope.selectedDistrictName = '';
+    } else {
+        let selectedDistrict = $scope.districts.find(x => x.Id === $scope.district);
+        
+        if(selectedDistrict) {
+            $scope.ward = null;
+            $scope.wards = selectedDistrict.Wards;
+            $scope.selectedDistrictName = selectedDistrict.Name;
+            console.log(selectedDistrict)
+        } else {
+            
+        }
     }
     $scope.items = $scope.item.filter(filterItems);
-    $scope.currentPage = 1; 
-}
+    $scope.currentPage = 1;
+    
+}; 
 
 $scope.filterItemsWard = function () {
     let selectedWard = $scope.wards.find(x => x.Id === $scope.ward);

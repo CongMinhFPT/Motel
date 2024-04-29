@@ -9,16 +9,20 @@ const submitluu = document.getElementById('submitluu');
 input.addEventListener("change", function () {
   var filesechck = Array.from(input.files).slice(0, 6);
   var filesechckc=false;
-  for (var i = 0; i < filesechck.length; i++) {
   var indexerro = [];
+  var filess = [];
+  for (var i = 0; i < filesechck.length; i++) {
     var file = filesechck[i];
     if(file.size > 1048576) {
       filesechckc = true;
-      indexerro.push("vị trí "+(i+1));
+      indexerro.push(" vị trí "+(i+1)+" ");
+      filess.push(file);
+    }else{
+      filess.push(file);
     }
   }
   imageBox.innerHTML = "";
-  const files = Array.from(input.files).slice(0, 6);
+  const files = filess;
   const fileserror = Array.from(input.files);
   if (fileserror.length >= 7) {
     texterrorfile.innerText = "Thông báo chỉ nhận 6 ảnh đầu ";
@@ -42,23 +46,34 @@ input.addEventListener("change", function () {
   } else {
     selectedImage.src = "";
   }
-  files.forEach((file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function (e) {
+  async function displayImages(files, imageBox) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const dataUrl = await readAsDataURL(file); 
+  
       const img = document.createElement("img");
-      img.src = e.target.result;
+      img.src = dataUrl;
       img.classList.add("col-2");
       img.addEventListener("click", function () {
         document.querySelectorAll(".image-box img").forEach(function (item) {
           item.classList.remove("enlarged");
         });
-        selectedImage.src = e.target.result;
+        selectedImage.src = dataUrl;  
         img.classList.add("enlarged");
       });
       imageBox.appendChild(img);
-    };
+    }
+  }
+  
+  displayImages(files, imageBox);
+function readAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
+}
 });
 document.getElementById('Idbutton-linkyoutube').addEventListener('click', function () {
   var inputValue = document.getElementById('Idinput-linkyoutube').value;

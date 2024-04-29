@@ -96,7 +96,7 @@
 					<div ng-show="checkloading" class="row ps-5">
 					
 						<div class="owl-carousel   row p-4 " data-options="{items:3, nav:true}">
-							<div owl-carousel-item class=" col-11" ng-repeat="item in ListPostMotel | limitTo:15 track by $index">
+							<div owl-carousel-item class=" col-11" ng-repeat="item in ListPostMotel | limitTo:15">
 									<div class="card" style="background-color: #fff; color: #000;">
 										<a href="/post/motel/motelroom/{{item.motel.motelId}}">
 											<img class="card-img-top w-100" src="/files/ImgMotel/{{item.motel.image}}"

@@ -39,134 +39,134 @@ import com.motel.service.PostService;
 
 @Controller
 public class PostController {
-@Autowired 
-MotelRepository motelRepository;
-@Autowired
-PostRepository postRepository;
+	@Autowired
+	MotelRepository motelRepository;
+	@Autowired
+	PostRepository postRepository;
 
-@Autowired
-RoomCashRepository roomCashRepository;
+	@Autowired
+	RoomCashRepository roomCashRepository;
 
-@Autowired
-WifiCashRepository wifiCashRepository;
+	@Autowired
+	WifiCashRepository wifiCashRepository;
 
-@Autowired
-ElectricityCashRepository electricityCashRepository;
+	@Autowired
+	ElectricityCashRepository electricityCashRepository;
 
-@Autowired
-WaterCashRepository waterCashRepository;
+	@Autowired
+	WaterCashRepository waterCashRepository;
 
-@Autowired
-ImageRepository imageRepository;
+	@Autowired
+	ImageRepository imageRepository;
 
-@Autowired
-MotelRoomRepository motelRoomRepository;
+	@Autowired
+	MotelRoomRepository motelRoomRepository;
 
-@Autowired
-private GeocodingService geocodingService;
+	@Autowired
+	private GeocodingService geocodingService;
 
+	@GetMapping("/room-details/motel-{motel_room_id}")
+	public String showRoomDetals(@PathVariable("motel_room_id") Integer motel_room_id, Model model) {
+		// Post post = postRepository.findById(postId).orElse(null);
+		MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).orElse(null);
+		if (motelRoom != null) {
+			model.addAttribute("motelRoom", motelRoom);
+			model.addAttribute("roomCash", roomCash(motel_room_id));
+			model.addAttribute("roomWifi", roomWifi(motel_room_id));
+			model.addAttribute("roomWater", roomWater(motel_room_id));
+			model.addAttribute("roomElectricity", roomElectricity(motel_room_id));
 
-@GetMapping("/room-details/motel-{motel_room_id}")
-public String showRoomDetals(@PathVariable("motel_room_id") Integer motel_room_id, Model model) {
-	//Post post = postRepository.findById(postId).orElse(null);
-	MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).orElse(null);
-	if (motelRoom != null) {
-		model.addAttribute("motelRoom",motelRoom);
-		model.addAttribute("roomCash", roomCash(motel_room_id));
-		model.addAttribute("roomWifi", roomWifi(motel_room_id));
-		model.addAttribute("roomWater", roomWater(motel_room_id));
-		model.addAttribute("roomElectricity", roomElectricity(motel_room_id));
+			String address = motelRoom.getMotel().getDetailAddress() + ", "
+					+ motelRoom.getMotel().getWard() + ", " + motelRoom.getMotel().getDistrict()
+					+ ", " + motelRoom.getMotel().getProvince();
+			double[] coordinates = geocodingService.getCoordinates(address);
+			if (coordinates != null && coordinates.length == 2) {
+				double latitude = coordinates[0];
+				double longitude = coordinates[1];
+				model.addAttribute("latitude", latitude);
+				model.addAttribute("longitude", longitude);
 
-		String address = motelRoom.getMotel().getDetailAddress() + ", "
-				+ motelRoom.getMotel().getWard() + ", " + motelRoom.getMotel().getDistrict()
-				+ ", " + motelRoom.getMotel().getProvince();
-		double[] coordinates = geocodingService.getCoordinates(address);
-		if (coordinates != null && coordinates.length == 2) {
-			double latitude = coordinates[0];
-			double longitude = coordinates[1];
-			model.addAttribute("latitude", latitude);
-			model.addAttribute("longitude", longitude);
-
-		}
-		MotelRoom SameArea = motelRoomRepository.findMotelRoomByMotelIdAndMotelRoomId(motelRoom.getMotel().getMotelId(), motel_room_id);
-		Iterable<Image> images = imageRepository.findByMotelRoom_MotelRoomId(motelRoom.getMotelRoomId());
-		model.addAttribute("images", images);
-
-		Iterable<Post> sameDistrictAndProvincePosts = postRepository
-				.findByMotel_DistrictAndMotel_Province(
-						motelRoom.getMotel().getDistrict(), motelRoom.getMotel().getProvince());
-		Post postId = postRepository.findPostByMotelId(motelRoom.getMotel().getMotelId());
-		List<Post> filteredPosts = new ArrayList<>();
-		for (Post p : sameDistrictAndProvincePosts) {
-			if (!p.getPostId().equals(postId.getPostId())) {
-				filteredPosts.add(p);
 			}
-		}
-		model.addAttribute("sameDistrictAndProvincePosts", filteredPosts);
-		List<Double> roomBills = new ArrayList<>();
-		List<String> roomImage = new ArrayList<>();
-		for (Post sameDistrictAndProvincePost : filteredPosts) {
-			Motel motel = sameDistrictAndProvincePost.getMotel();
-			MotelRoom motel_room = motelRoomRepository.findMotelRoomByMotelId(motel.getMotelId());
-			RoomCash roomCash = roomCashRepository.findByMotelId(motel_room.getMotelRoomId());
-			Iterable<Image> images1 = imageRepository.findByMotelRoom_MotelRoomId(motel_room.getMotelRoomId());
-			if (roomCash != null && images1 != null) {
-				roomBills.add(roomCash.getRoomBill());
-				Image firstImage = StreamSupport.stream(images1.spliterator(), false).findFirst().orElse(null);
-				if (firstImage != null) {
-					roomImage.add(firstImage.getName());
+			MotelRoom SameArea = motelRoomRepository
+					.findMotelRoomByMotelIdAndMotelRoomId(motelRoom.getMotel().getMotelId(), motel_room_id);
+			Iterable<Image> images = imageRepository.findByMotelRoom_MotelRoomId(motelRoom.getMotelRoomId());
+			model.addAttribute("images", images);
+
+			Iterable<Post> sameDistrictAndProvincePosts = postRepository
+					.findByMotel_DistrictAndMotel_Province(
+							motelRoom.getMotel().getDistrict(), motelRoom.getMotel().getProvince());
+			Post postId = postRepository.findPostByMotelId(motelRoom.getMotel().getMotelId());
+			List<Post> filteredPosts = new ArrayList<>();
+			for (Post p : sameDistrictAndProvincePosts) {
+				if (!p.getPostId().equals(postId.getPostId())) {
+					filteredPosts.add(p);
 				}
 			}
+			model.addAttribute("sameDistrictAndProvincePosts", filteredPosts);
+			List<Double> roomBills = new ArrayList<>();
+			List<String> roomImage = new ArrayList<>();
+			for (Post sameDistrictAndProvincePost : filteredPosts) {
+				Motel motel = sameDistrictAndProvincePost.getMotel();
+				MotelRoom motel_room = motelRoomRepository.findMotelRoomByMotelId(motel.getMotelId());
+				RoomCash roomCash = roomCashRepository.findByMotelId(motel_room.getMotelRoomId());
+				Iterable<Image> images1 = imageRepository.findByMotelRoom_MotelRoomId(motel_room.getMotelRoomId());
+				if (roomCash != null && images1 != null) {
+					roomBills.add(roomCash.getRoomBill());
+					Image firstImage = StreamSupport.stream(images1.spliterator(), false).findFirst().orElse(null);
+					if (firstImage != null) {
+						roomImage.add(firstImage.getName());
+					}
+				}
+			}
+
+			model.addAttribute("roomBills", roomBills);
+			model.addAttribute("roomImage", roomImage);
+
+			return "room/room_detail";
+		} else {
+			return "error";
 		}
-
-		model.addAttribute("roomBills", roomBills);
-		model.addAttribute("roomImage", roomImage);
-
-		return "room/room_detail";
-	} else {
-		return "error";
 	}
-}
 
-@ModelAttribute("motelRoom")
-public MotelRoom motelRoom (@PathVariable("motel_room_id") Integer motel_room_id) {
-	MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).get();
-	return motelRoom;
-}
-
-@ModelAttribute("roomCash")
-public RoomCash roomCash(@PathVariable("motel_room_id") Integer motel_room_id) {
-	MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).orElse(null);
-	if (motelRoom != null) {
-		return roomCashRepository.findByMotelId(motelRoom.getMotelRoomId());
+	@ModelAttribute("motelRoom")
+	public MotelRoom motelRoom(@PathVariable("motel_room_id") Integer motel_room_id) {
+		MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).get();
+		return motelRoom;
 	}
-	return null;
-}
 
-@ModelAttribute("roomWifi")
-public WifiCash roomWifi(@PathVariable("motel_room_id") Integer motel_room_id) {
-	MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).orElse(null);
-	if (motelRoom != null) {
-		return wifiCashRepository.findByMotelIdOfWifiCash(motelRoom.getMotelRoomId());
+	@ModelAttribute("roomCash")
+	public RoomCash roomCash(@PathVariable("motel_room_id") Integer motel_room_id) {
+		MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).orElse(null);
+		if (motelRoom != null) {
+			return roomCashRepository.findByMotelId(motelRoom.getMotelRoomId());
+		}
+		return null;
 	}
-	return null;
-}
 
-@ModelAttribute("roomElectricity")
-public ElectricityCash roomElectricity(@PathVariable("motel_room_id") Integer motel_room_id) {
-	MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).orElse(null);
-	if (motelRoom != null) {
-		return electricityCashRepository.findByMotelIdOfElectricityCash(motelRoom.getMotelRoomId());
+	@ModelAttribute("roomWifi")
+	public WifiCash roomWifi(@PathVariable("motel_room_id") Integer motel_room_id) {
+		MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).orElse(null);
+		if (motelRoom != null) {
+			return wifiCashRepository.findByMotelIdOfWifiCash(motelRoom.getMotelRoomId());
+		}
+		return null;
 	}
-	return null;
-}
 
-@ModelAttribute("roomWater")
-public WaterCash roomWater(@PathVariable("motel_room_id") Integer motel_room_id) {
-	MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).orElse(null);
-	if (motelRoom != null) {
-		return waterCashRepository.findByMotelIdOfWaterCash(motelRoom.getMotelRoomId());
+	@ModelAttribute("roomElectricity")
+	public ElectricityCash roomElectricity(@PathVariable("motel_room_id") Integer motel_room_id) {
+		MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).orElse(null);
+		if (motelRoom != null) {
+			return electricityCashRepository.findByMotelIdOfElectricityCash(motelRoom.getMotelRoomId());
+		}
+		return null;
 	}
-	return null;
-}
+
+	@ModelAttribute("roomWater")
+	public WaterCash roomWater(@PathVariable("motel_room_id") Integer motel_room_id) {
+		MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).orElse(null);
+		if (motelRoom != null) {
+			return waterCashRepository.findByMotelIdOfWaterCash(motelRoom.getMotelRoomId());
+		}
+		return null;
+	}
 }

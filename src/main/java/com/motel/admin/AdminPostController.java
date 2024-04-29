@@ -117,15 +117,32 @@ public class AdminPostController {
 	@GetMapping("/admin/update-post/{id}")
 	public String detailMotelRoom(@PathVariable("id") Integer id, Model model, @ModelAttribute("post") Post post) {
 		Post posts = postRepository.getById(id);
+		post.setTitle(posts.getTitle());
 		model.addAttribute("posts", posts);
 		// model.addAttribute("postsMotelRoomId",
 		// posts.getMotelRoom().getMotelRoomId());
 		// model.addAttribute("postsMotelRoomDescription",
 		// posts.getMotelRoom().getDescriptions());
 
-		List<MotelRoom> listMotelRooms = motelRoomService.getAll();
-		model.addAttribute("listMotelRooms", listMotelRooms);
-		return "admin/post/update-post";
+		if (manageMotelImpl.CheckLogin().isPresent()) {
+			CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+			if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+				Account account = accountsRepository.getById(customUserDetails.getAccountid());
+				// for (MotelRoom motelRoom : motelRooms) {
+				// for (Post post : motelRoom.getPosts()) {
+				// posts.add(post);
+				// }
+				// }
+				List<Motel> motels = motelRepository.findPostsByNotMotel(account.getAccountId());
+				// model.addAttribute("motels", motels);
+				manageMotelImpl.SetModelMotel(model);
+				return "admin/post/update-post";
+			} else {
+				return "redirect:/admin/manage-motel";
+			}
+		} else {
+			return "home/signin";
+		}
 
 	}
 
@@ -149,6 +166,7 @@ public class AdminPostController {
 	@PostMapping("/admin/update-post/{id}")
 	public String saveBlog(@PathVariable("id") Integer postId, @ModelAttribute("post") Post post, Model model) {
 		Post posts = postRepository.getById(postId);
+
 		model.addAttribute("posts", posts);
 		// model.addAttribute("postsMotelRoomId",
 		// posts.getMotelRoom().getMotelRoomId());

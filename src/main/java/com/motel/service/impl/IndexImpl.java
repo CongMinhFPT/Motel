@@ -1,5 +1,6 @@
 package com.motel.service.impl;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -135,6 +136,11 @@ public class IndexImpl implements IndexsService {
                 .filter(inv -> inv.getMotelRoom().getMotelRoomId()
                         .equals(existingIndexs.getMotelRoom().getMotelRoomId()))
                 .filter(inv -> {
+                    Date currentDate = updatedIndexs.getCreateDate();
+                    Date indexDate = inv.getCreateDate();
+                    return indexDate.compareTo(currentDate) < 0;
+                })
+                .filter(inv -> {
                     Double electricityIndexCurrent = inv.getElectricityIndex();
                     Double waterIndexCurrent = inv.getWaterIndex();
                     return (electricityIndexCurrent == updatedIndexs.getElectricityIndex()
@@ -192,6 +198,11 @@ public class IndexImpl implements IndexsService {
     @Override
     public void deleteIndexes(Integer indexesId) {
         indexsRepository.deleteById(indexesId);
+    }
+
+    @Override
+    public List<Indexs> findIndexsByMotelRoom(Integer motelRoomId) {
+        return indexsRepository.getIndexsByMotelRoom(motelRoomId);
     }
 
 }

@@ -1,8 +1,12 @@
 package com.motel.controller;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -66,10 +70,42 @@ public class IndexsController {
                         indexs.add(indexes);
                     }
                 }
+                // Tạo một HashMap để lưu trữ chỉ số mới nhất của mỗi phòng trọ
+                Map<Integer, Indexs> newestIndexesMap = new HashMap<>();
 
-                indexs.sort(Comparator.comparing(Indexs::getCreateDate).reversed());
+                // Duyệt qua danh sách các chỉ số
+                for (Indexs index : indexs) {
+                    // Lấy ID của phòng trọ của chỉ số hiện tại
+                    Integer roomId = index.getMotelRoom().getMotelRoomId();
 
-                model.addAttribute("indexs", indexs);
+                    LocalDateTime currentIndexDate = index.getCreateDate().toInstant().atZone(ZoneId.systemDefault())
+                            .toLocalDateTime();
+
+                    // Kiểm tra xem chỉ số mới nhất của phòng trọ đã được lưu trong Map chưa
+                    if (!newestIndexesMap.containsKey(roomId)) {
+                        // Nếu chưa, thì lưu chỉ số này vào Map
+                        newestIndexesMap.put(roomId, index);
+                    } else {
+                        // Nếu đã có chỉ số mới nhất của phòng trọ, thì so sánh ngày tạo của chỉ số hiện
+                        // tại với chỉ số đã lưu
+                        Indexs existingIndex = newestIndexesMap.get(roomId);
+                        LocalDateTime existingIndexDate = existingIndex.getCreateDate().toInstant()
+                                .atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+                        if (currentIndexDate.isAfter(existingIndexDate)) {
+                            // Nếu chỉ số hiện tại mới hơn, thì thay thế chỉ số mới nhất của phòng trọ trong
+                            // Map
+                            newestIndexesMap.put(roomId, index);
+                        }
+                    }
+                }
+
+                // Sau khi duyệt qua tất cả các chỉ số và thu thập chỉ số mới nhất của mỗi
+                // phòng,
+                // bạn có thể lấy danh sách các chỉ số mới nhất từ Map
+                List<Indexs> newestIndexes = new ArrayList<>(newestIndexesMap.values());
+
+                model.addAttribute("indexs", newestIndexes);
                 manageMotelImpl.SetModelMotel(model);
                 return "/admin/indexs/indexs-list";
             } else {
@@ -141,7 +177,7 @@ public class IndexsController {
                     model.addAttribute("error", e.getMessage());
                     return "/admin/indexs/add-indexs";
                 }
-                return "/admin/indexs/indexs-list";
+                return "redirect:/admin/indexs";
 
             } else {
                 return "redirect:/admin/manage-motel";

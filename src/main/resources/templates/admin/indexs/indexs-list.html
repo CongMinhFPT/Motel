@@ -25,10 +25,10 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>NGÀY TẠO</th>
+									<th>PHÒNG TRỌ</th>
 									<th>CHỈ SỐ ĐIỆN</th>
 									<th>CHỈ SỐ NƯỚC</th>
-									<th>PHÒNG TRỌ</th>
+									<th>NGÀY TẠO</th>
 									<th>CHỌN</th>
 								</tr>
 							</thead>
@@ -36,7 +36,7 @@
 								<tr th:each="indexs, index : ${indexs}">
 									<td th:text="${index.count}">
 									</td>
-									<td th:text="${#dates.format(indexs.createDate, 'dd - MM - yyyy')}">
+									<td th:text="${indexs.motelRoom.descriptions}">
 									</td>
 									<td
 										th:text="${#numbers.formatDecimal(indexs.electricityIndex, 0, 'WHITESPACE', 0, 'POINT')}">
@@ -44,7 +44,7 @@
 									<td
 										th:text="${#numbers.formatDecimal(indexs.waterIndex, 0, 'WHITESPACE', 0, 'POINT')}">
 									</td>
-									<td th:text="${indexs.motelRoom.descriptions}">
+									<td th:text="${#dates.format(indexs.createDate, 'dd - MM - yyyy')}">
 									</td>
 									<td>
 
@@ -60,9 +60,13 @@
 												</svg>
 											</div>
 											<div class="dropdown-menu dropdown-menu-right">
+												<a class="dropdown-item" data-toggle="modal"
+													data-target="#exampleModalCenterIndex" type="button"
+													th:attr="ng-click=@{|getAllIndexs(${indexs.motelRoom.motelRoomId})|}">Xem
+													Chi Tiết</a>
 												<a class="dropdown-item"
 													th:href="@{|/admin/indexs/update-indexs/${indexs.indexId}|}"
-													th:attr="ng-click=@{|getAllIndexs(${indexs.indexId})|}">Chỉnh
+													th:attr="ng-click=@{|getAllIndexsByIndex(${indexs.indexId})|}">Chỉnh
 													Sửa</a>
 												<a class="dropdown-item"
 													th:attr="onclick='confirmAndDeleteIndex(\'' + ${indexs.motelRoom.motelRoomId} + '\')'">Xóa
@@ -78,6 +82,60 @@
 						</table>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="exampleModalCenterIndex">
+		<div class="modal-dialog  modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Chi tiết chỉ số điện & nước</h5>
+					<button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="modalBodyContent">
+					<p class="fw-bold">{{indexes[0].motelRoom.descriptions}}</p>
+					<select class="style-1 btn-primary default-select" ng-model="year"
+						ng-change="getIndexsByYearAndMotelRoom(year, indexes[0].motelRoom.motelRoomId)">
+						<option value="0">Chọn Năm</option>
+						<option ng-repeat="index in indexYear">{{index}}</option>
+					</select>
+					<div class="table-responsive">
+						<table class="table style-1">
+							<thead>
+								<tr>
+									<th>THÁNG</th>
+									<th>CHỈ SỐ ĐIỆN</th>
+									<th>CHỈ SỐ NƯỚC</th>
+									<th>CHỌN</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="indexYearMotelRooms in indexYearMotelRoom">
+									<td>
+										{{ indexYearMotelRooms.createDate | date:'MM' }}
+										<input type="hidden" ng-value="indexYearMotelRooms.createDate"
+											ng-model="createDate">
+										<input type="hidden" ng-value="indexYearMotelRooms.motelRoom.motelRoomId"
+											ng-model="motelRoom">
+									</td>
+									<td>
+										<input type="number" class="form-control"
+											ng-value="indexYearMotelRooms.electricityIndex">
+
+									</td>
+									<td>
+										<input type="number" class="form-control"
+											ng-value="indexYearMotelRooms.waterIndex">
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>

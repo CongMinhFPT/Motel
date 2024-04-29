@@ -71,11 +71,11 @@
 													th:href="@{|/admin/renter/update-renter/${renter.renterId}|}">Chỉnh
 													Sửa</a>
 												<a class="dropdown-item"
-													th:attr="onclick='confirmDelete(\'' + ${renter.renterId} + '\')'">Xóa
-													Người Thuê</a>
+													th:attr="onclick='confirmDelete(\'' + ${renter.renterId} + '\')'">Trả
+													Phòng Theo Người Thuê</a>
 												<a class="dropdown-item"
-													th:attr="onclick='confirmAndDeleteRenter(\'' + ${renter.motelRoom.motelRoomId} + '\')'">Xóa
-													Người Thuê Theo Phòng</a>
+													th:attr="onclick='confirmAndDeleteRenter(\'' + ${renter.motelRoom.motelRoomId} + '\')'">Trả
+													Phòng Theo Phòng</a>
 											</div>
 										</div>
 									</td>

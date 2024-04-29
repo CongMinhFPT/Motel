@@ -37,6 +37,5 @@ public class Indexs {
     Date createDate = new Date();
     @ManyToOne
     @JoinColumn(name = "motelRoomId")
-    @JsonBackReference
     MotelRoom motelRoom;
 }

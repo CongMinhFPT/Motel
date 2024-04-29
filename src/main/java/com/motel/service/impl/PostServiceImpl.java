@@ -10,9 +10,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.motel.entity.Account;
+import com.motel.entity.Motel;
 import com.motel.entity.MotelRoom;
 import com.motel.entity.Post;
 import com.motel.repository.AccountsRepository;
+import com.motel.repository.MotelRepository;
 import com.motel.repository.MotelRoomRepository;
 import com.motel.repository.PostRepository;
 import com.motel.service.PostService;
@@ -28,6 +30,9 @@ public class PostServiceImpl implements PostService {
 
 	@Autowired
 	MotelRoomRepository motelRoomRepository;
+
+	@Autowired
+	MotelRepository motelRepository;
 
 	@Override
 	public List<Post> getListPost() {
@@ -84,10 +89,9 @@ public class PostServiceImpl implements PostService {
 		post.setPostId(post2.getPostId());
 		// post.setAccount(post2.getAccount());
 		post.setCreateDate(post2.getCreateDate());
-		// MotelRoom motelRoom =
-		// motelRoomRepository.findById(post.getMotelRoom().getMotelRoomId()).orElse(null);
+		Motel motel = motelRepository.findById(post2.getMotel().getMotelId()).orElse(null);
 
-		// post.setMotelRoom(motelRoom);
+		post.setMotel(motel);
 		post.setStatus(post2.isStatus());
 		post.setTitle(post.getTitle());
 		postRepo.save(post);

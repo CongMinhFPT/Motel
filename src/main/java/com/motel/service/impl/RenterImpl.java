@@ -71,6 +71,11 @@ public class RenterImpl implements RenterService {
             throw new IllegalArgumentException("Ngày thuê phải từ ngày hôm nay trở đi.");
         }
 
+        List<Account> accountsByMotel = accountsRepository.findAccountsMotel(renterModel.getAccountId());
+        if (!accountsByMotel.isEmpty()) {
+            throw new IllegalStateException("Tài khoản đã thuê ở nhà trọ khác.");
+        }
+
         Renter existingRenter = renterRepository.findByAccount(account);
         if (existingRenter != null) {
             if (existingRenter.getMotelRoom().equals(motelRoom)) {

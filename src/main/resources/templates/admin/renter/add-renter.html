@@ -21,10 +21,9 @@
 								<form>
 									<div class="form-row">
 										<div class="form-group col-md-12">
-											<label>Số Điện Thoại</label>
+											<label>Số CCCD</label>
 											<input type="text" ng-model="keyword" ng-model-options="{ debounce: 300 }"
-												ng-change="search()" placeholder="Nhập số điện thoại..."
-												class="form-control">
+												ng-change="search()" placeholder="Nhập số CCCD..." class="form-control">
 										</div>
 									</div>
 									<div class="form-row">
@@ -35,7 +34,7 @@
 														<tr>
 															<th>#</th>
 															<th>HỌ TÊN</th>
-															<th>SỐ ĐIỆN THOẠI</th>
+															<th>SỐ CCCD</th>
 															<th>EMAIL</th>
 															<th>GIỚI TÍNH</th>
 															<th>CHỌN</th>
@@ -53,7 +52,7 @@
 															</td>
 															<td>
 																<div>
-																	<h6 class="text-primary">{{result.phone}}</h6>
+																	<h6 class="text-primary">{{result.citizen}}</h6>
 																</div>
 															</td>
 															<td>

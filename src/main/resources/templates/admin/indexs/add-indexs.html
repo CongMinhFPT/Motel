@@ -22,11 +22,12 @@
 									<div class="form-row">
 										<div class="form-group col-md-6">
 											<label>Chỉ Số Điện</label>
-											<input type="number" class="form-control" th:field="*{electricityIndex}">
+											<input type="number" class="form-control" min="0"
+												th:field="*{electricityIndex}">
 										</div>
 										<div class="form-group col-md-6">
 											<label>Chỉ Số Nước</label>
-											<input type="number" class="form-control" th:field="*{waterIndex}">
+											<input type="number" class="form-control" min="0" th:field="*{waterIndex}">
 										</div>
 										<div class="form-group col-md-6">
 											<label for="inputState">Phòng Trọ</label>

@@ -1,5 +1,6 @@
 package com.motel.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.motel.entity.Indexs;
@@ -17,4 +18,6 @@ public interface IndexsService {
     Indexs addIndexsOrigin();
 
     Optional<Indexs> getById(Integer indexsId);
+
+    List<Indexs> findIndexsByMotelRoom(Integer motelRoomId);
 }

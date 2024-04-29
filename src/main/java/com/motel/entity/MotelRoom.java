@@ -79,7 +79,7 @@ public class MotelRoom {
   List<RoomCash> roomCash;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "motelRoom")
-  @JsonManagedReference
+  @JsonIgnore
   List<Indexs> index;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "motelRoom")

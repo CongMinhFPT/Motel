@@ -36,7 +36,7 @@ public class AuthorityService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		 Account acc = accountsRepository.getByEmail(username);
-		    if (acc != null) {
+		    if (acc != null && acc.isActive()==true) {
 		        String password = acc.getPassword();
 				int accountid = acc.getAccountId();
 		        String[] roles1 = acc.getAuthorities().stream()

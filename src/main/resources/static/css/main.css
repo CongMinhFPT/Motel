@@ -1,146 +1,150 @@
 body {
-    background-color: #fff;
+	background-color: #fff;
 }
 
 .main-title {
-    color: #000;
-    text-align: center;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 33px;
-    font-style: normal;
-    font-weight: 800;
+	color: #000;
+	text-align: center;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 33px;
+	font-style: normal;
+	font-weight: 800;
 
 }
 
 .main-title-text {
-    color: #000;
-    text-align: center;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: 18px;
-    /* 120% */
-    text-transform: uppercase;
+	color: #000;
+	text-align: center;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 300;
+	line-height: 18px;
+	/* 120% */
+	text-transform: uppercase;
 }
 
-.area{
-    margin-top: 10rem;
+.area {
+	margin-top: 10rem;
 }
 
 .area-title {
-    margin-top: 3rem;
-    color: #000;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 800;
+	margin-top: 3rem;
+	color: #000;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 800;
 }
 
 .area p {
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.25rem;
+	text-align: center;
+	font-weight: 700;
+	font-size: 1.25rem;
 }
 
 .area img {
-    width: 344px;
-    height: 250px;
+	width: 344px;
+	height: 250px;
 }
 
-.rent-motel{
-    margin-top: 10rem;
+.rent-motel {
+	margin-top: 10rem;
 }
 
 .rent-motel-title {
-    margin-top: 3rem;
-    color: #000;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 800;
+	margin-top: 3rem;
+	color: #000;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 800;
 }
 
 .rent-motel p {
-    font-weight: 700;
+	font-weight: 700;
 }
 
 .rent-motel img {
-    width: 344px;
-    height: 250px;
+	width: 344px;
+	height: 250px;
 }
 
+
 .card-person img {
-    width: 44px;
-    height: 55px;
-    margin-top: 0.5rem;
+	width: 44px;
+	height: 55px;
+	margin-top: 0.5rem;
 }
 
 .card-person-text {
-    font-size: 0.75rem;
+	font-size: 0.75rem;
 }
 
-.news-motel{
-    margin-top: 10rem;
-    margin-bottom: 10rem;
+.news-motel {
+	margin-top: 10rem;
+
 }
 
 .news-motel-title {
-    margin-top: 3rem;
-    color: #000;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 800;
+	margin-top: 3rem;
+	color: #000;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: 800;
 }
 
 .main-bottom {
-    color: #000;
-    text-align: center;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 800;
-    margin-top: 5rem;
+	color: #000;
+	text-align: center;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 30px;
+	font-style: normal;
+	font-weight: 800;
+	margin-top: 5rem;
 }
 
 .main-bottom-text {
-    color: #000;
-    text-align: center;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: 18px;
-    /* 120% */
-    text-transform: uppercase;
+	color: #000;
+	text-align: center;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 300;
+	line-height: 18px;
+	/* 120% */
+	text-transform: uppercase;
 }
 
 .main-bottom-box img {
-    height: 300px;
+	height: 300px;
 }
 
 .main-bottom-box p {
-    text-align: center;
+	text-align: center;
 }
 
 /* CSS cho hình ảnh trong carousel slide */
 .carousel-item img {
-    width: 50%; /* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng của carousel */
-    height: auto; /* Đảm bảo tỷ lệ hình ảnh được duy trì */
-    object-fit: cover; /* Hiển thị hình ảnh mà không bị méo hoặc kéo dài */
+	width: 50%;
+	/* Đảm bảo hình ảnh chiếm toàn bộ chiều rộng của carousel */
+	height: auto;
+	/* Đảm bảo tỷ lệ hình ảnh được duy trì */
+	object-fit: cover;
+	/* Hiển thị hình ảnh mà không bị méo hoặc kéo dài */
 }
 
 /* Tùy chỉnh kích thước và căn chỉnh vị trí của các phần tử trong carousel slide */
 .carousel-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .carousel-control-prev,
 .carousel-control-next {
-    /* Căn chỉnh vị trí của nút điều hướng trước và sau */
-    top: 50%;
-    transform: translateY(-50%);
+	/* Căn chỉnh vị trí của nút điều hướng trước và sau */
+	top: 50%;
+	transform: translateY(-50%);
 }

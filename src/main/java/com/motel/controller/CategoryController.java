@@ -100,14 +100,11 @@ public class CategoryController {
 		if (result.hasErrors()) {
 			return "admin/category/add-category";
 		}
-		if (categoryrep.getByQuantity(category.getQuantity()) != null) {
-			model.addAttribute("messagerror", "Tên tiêu đề đã tồn tại ! vui lòng sử dụng tên khác");
-			return "admin/category/add-category";
-		}
+
 		impl.CheckLoginAndSetMotelid(model);
 		categoryService.create(category);
 		model.addAttribute("messageAdd", "Create Success!");
-		return "admin/category/category-list";
+		return "redirect:/admin/category";
 	}
 
 	@PostMapping("/admin/upcategory")
@@ -116,10 +113,7 @@ public class CategoryController {
 		if (result.hasErrors()) {
 			return "admin/category/up-category";
 		}
-		if (categoryrep.getByQuantity(category.getQuantity()) != null) {
-			model.addAttribute("messagerror", "Tên tiêu đề đã tồn tại ! vui lòng sử dụng tên khác");
-			return "admin/category/add-category";
-		}
+
 		categoryService.create(category);
 		model.addAttribute("messagess", "Create Success!");
 		return "admin/category/up-category";

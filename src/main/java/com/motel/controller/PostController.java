@@ -71,8 +71,6 @@ public class PostController {
 	@GetMapping("/room-details/motel-{motel_room_id}")
 	public String showRoomDetals(@PathVariable("motel_room_id") Integer motel_room_id, Model model,
 			Authentication authentication) {
-		// Post post = postRepository.findById(postId).orElse(null);
-
 		if (authentication == null) {
 			String emailAccount = null;
 			Account account = accountsRepository.getByEmail(emailAccount);
@@ -118,24 +116,6 @@ public class PostController {
 				}
 			}
 			model.addAttribute("sameDistrictAndProvincePosts", filteredPosts);
-			List<Double> roomBills = new ArrayList<>();
-			List<String> roomImage = new ArrayList<>();
-			for (Post sameDistrictAndProvincePost : filteredPosts) {
-				Motel motel = sameDistrictAndProvincePost.getMotel();
-				MotelRoom motel_room = motelRoomRepository.findMotelRoomByMotelId(motel.getMotelId());
-				RoomCash roomCash = roomCashRepository.findByMotelId(motel_room.getMotelRoomId());
-				Iterable<Image> images1 = imageRepository.findByMotelRoom_MotelRoomId(motel_room.getMotelRoomId());
-				if (roomCash != null && images1 != null) {
-					roomBills.add(roomCash.getRoomBill());
-					Image firstImage = StreamSupport.stream(images1.spliterator(), false).findFirst().orElse(null);
-					if (firstImage != null) {
-						roomImage.add(firstImage.getName());
-					}
-				}
-			}
-
-			model.addAttribute("roomBills", roomBills);
-			model.addAttribute("roomImage", roomImage);
 
 			return "room/room_detail";
 		} else {

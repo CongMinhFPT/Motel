@@ -46,6 +46,26 @@ app.controller('roomCtrl', function ($scope, $http) {
             })
         })
     }
+    $scope.getPosterValue = function() {
+    var posterValue = $("#poster").text();
+    return posterValue;
+}
+     $scope.checkLoginForChat = function () {
+        if (!username) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Thất Bại !',
+                text: 'Vui lòng đăng nhập!',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1000
+            });
+        } else {
+			    var currentPoster = $scope.getPosterValue();
+        window.location.href = "/texting/" + currentPoster;
+        }
+    };
 
     // $scope.getMotelRoom = () => {
     //     const url = `${hostMotelRoom}`;

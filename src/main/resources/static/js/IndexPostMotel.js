@@ -55,7 +55,12 @@ app.controller("myCtrlUpdateMotelRoom", function($scope, $http, $rootScope, $sce
           );
     }
     $scope.counter = function(event) {
-      var totalItems = $scope.ListPostMotel.length-2;
+      var totalItems = $scope.ListPostMotel.length;
+      if(totalItems<=3){
+        totalItems=1;
+      }else{
+        var totalItems = $scope.ListPostMotel.length-2;
+      }
       var currentPage = event.item.index + 1;
     
       $('#counter').text(currentPage + ' / ' + totalItems);

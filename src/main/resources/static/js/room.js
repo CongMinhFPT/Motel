@@ -26,14 +26,15 @@ app.controller('roomCtrl', function ($scope, $http) {
                 showConfirmButton: false,
                 timer: 1000
             })
-            const imgElement = document.getElementById('img' + motelRoomId);
+            // const imgElement = document.getElementById('img' + motelRoomId);
             // Kiểm tra và thay đổi hình ảnh
-            if (imgElement.src.includes('icons8-heart-50.png')) {
-                imgElement.src = '/img/icons8-heart-filled-50.png';
-            } else {
-                imgElement.src = '/img/icons8-heart-50.png';
-            }
+            // if (imgElement.src.includes('icons8-heart-50.png')) {
+            //     imgElement.src = '/img/icons8-heart-filled-50.png';
+            // } else {
+            //     imgElement.src = '/img/icons8-heart-50.png';
+            // }
         }).catch(error => {
+            console.log(error);
             Swal.fire({
                 icon: 'error',
                 title: 'Thất Bại !',

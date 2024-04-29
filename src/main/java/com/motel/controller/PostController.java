@@ -65,9 +65,24 @@ public class PostController {
 	@Autowired
 	private GeocodingService geocodingService;
 
+	@Autowired
+	AccountsRepository accountsRepository;
+
 	@GetMapping("/room-details/motel-{motel_room_id}")
-	public String showRoomDetals(@PathVariable("motel_room_id") Integer motel_room_id, Model model) {
+	public String showRoomDetals(@PathVariable("motel_room_id") Integer motel_room_id, Model model,
+			Authentication authentication) {
 		// Post post = postRepository.findById(postId).orElse(null);
+
+		if (authentication == null) {
+			String emailAccount = null;
+			Account account = accountsRepository.getByEmail(emailAccount);
+			model.addAttribute("accountIdFavorite", account == null ? null : account.getAccountId());
+		} else {
+			String emailAccount = authentication.getName();
+			Account account = accountsRepository.getByEmail(emailAccount);
+			model.addAttribute("accountIdFavorite", account.getAccountId());
+		}
+
 		MotelRoom motelRoom = motelRoomRepository.findById(motel_room_id).orElse(null);
 		if (motelRoom != null) {
 			model.addAttribute("motelRoom", motelRoom);

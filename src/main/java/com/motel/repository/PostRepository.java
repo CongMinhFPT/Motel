@@ -47,5 +47,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	@Query(value = "select * from posts a inner join motels b on a.motel_id = b.motel_id where a.motel_id IN (:listMotelId)", nativeQuery = true)
 	List<Post> findPostsByMotel(@Param("listMotelId") List<Integer> listMotelId);
+	
+	@Query(value = "SELECT p FROM Post p WHERE p.motel.motelId = :motelId")
+    List<Post> findPostsByMotelId(@Param("motelId") Integer motelId);
 
 }

@@ -55,33 +55,38 @@ public class RoomController {
 
 	@GetMapping("/post/motel/motelroom/{motelid}")
 	public String motelroominmotel(@PathVariable("motelid") Integer motelid ,Model model){
-	    Motel motel = motelRepository.getById(motelid);
-	    Account account = motel.getAccount();
-	    String city = motel.getProvince();
-	    List<PostMotel>postMotels = new ArrayList<>();
-	     List<Post> posts = postRepository.findPosts(city);
-		 System.out.println(posts.size());
-	     int count = 0;
-	     for (int i = 0; i < posts.size(); i++) {
-	         if (!posts.get(i).getMotel().getMotelId().equals(motel.getMotelId())) {
-	             PostMotel motel2 = new PostMotel(posts.get(i));
-	             postMotels.add(motel2);
-	             count++;
-	             if (count == TAR_GET_COUNT) {
-	                 break;
-	             }
-	         }
-	     }
-		 System.out.println(postMotels.size());
-	   if (postMotels.size()==0) {
-	    model.addAttribute("checkpostnull", false);
-	   }else{
-	    model.addAttribute("checkpostnull", true);
-	    model.addAttribute("listpost", postMotels);
-	   }
-	    model.addAttribute("motel", motel);
-	    model.addAttribute("account", account);
-	    return "/home/MotelRoomInMotel";
-	}
-    
+		List<Post> posts1 = postRepository.findPostsByMotelId(motelid);
+		if (posts1.size()==0) {
+			return "redirect:/room";
+		}else{
+			Motel motel = motelRepository.getById(motelid);
+			Account account = motel.getAccount();
+			String city = motel.getProvince();
+			List<PostMotel>postMotels = new ArrayList<>();
+			 List<Post> posts = postRepository.findPosts(city);
+			 System.out.println(posts.size());
+			 int count = 0;
+			 for (int i = 0; i < posts.size(); i++) {
+				 if (!posts.get(i).getMotel().getMotelId().equals(motel.getMotelId())) {
+					 PostMotel motel2 = new PostMotel(posts.get(i));
+					 postMotels.add(motel2);
+					 count++;
+					 if (count == TAR_GET_COUNT) {
+						 break;
+					 }
+				 }
+			 }
+			 System.out.println(postMotels.size());
+		   if (postMotels.size()==0) {
+			model.addAttribute("checkpostnull", false);
+		   }else{
+			model.addAttribute("checkpostnull", true);
+			model.addAttribute("listpost", postMotels);
+		   }
+			model.addAttribute("motel", motel);
+			model.addAttribute("account", account);
+			return "/home/MotelRoomInMotel";
+		}
+		}
 }
+    

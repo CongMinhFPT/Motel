@@ -42,11 +42,11 @@
 </head>
 
 <body ng-app="roomApp" ng-controller="roomCtrl">
-
+	<div th:replace="~{/layout/header.html}">
+	</div>
 	<!-- Begin Body Wrapper -->
 	<div class="container">
-		<div th:replace="~{/layout/header.html}">
-		</div>
+
 		<!-- Begin Header Area -->
 
 		<!-- Header Area End Here -->
@@ -167,147 +167,145 @@
 									</span>
 									<div class="row mt-20">
 										<div class="col-2">
-											<img th:src="@{|/uploads/${motelRoom.motel.account.avatar}|}" alt=""
-												class="rounded-circle img-user mt-2">
+											<img th:src="${motelRoom.motel.account.avatar != null ? '/uploads/' + motelRoom.motel.account.avatar : '/uploads/user_icon.png'}"
+												alt="" class="rounded-circle img-user mt-2" style="height: 2.7rem;">
+
 										</div>
-										<div class="col-9">
+										<div class="col-10">
 											<span>[[${motelRoom.motel.account.fullname}]]</span>
-											<p class="font-italic"> [[${motelRoom.motel.account.email}]]</p>
+											<p class="font-italic" id="poster"> [[${motelRoom.motel.account.email}]]</p>
 										</div>
-										<div class="col-1 my-auto">
-											<a href="#" class="float-end"><i class='bx bxs-chevron-right'></i>
+												</div>
+										<div class=" mt-30 mx-auto d-flex flex-column">
+											<button type="button" class="btn px-5 btn-contact">
+												<i class='bx bx-phone'></i>
+												&nbsp;
+												[[${motelRoom.motel.account.phone}]]</button>
+											<input type="hidden"
+												th:value="${accountIdFavorite == null ? null : accountIdFavorite}"
+												id="accountIdFavorite">
+
+											<a class="btn px-5 btn-contact mt-10"
+												th:attr="ng-click=@{|addFavoriteRoom(${motelRoom.motelRoomId})|}">
+												<i class='bx bxs-heart'></i>
+												&nbsp;
+												Yêu thích</a>
+
+											<a class="btn px-5 btn-contact mt-10" ng-click="checkLoginForChat()">
+												<i class='bx bxs-message-dots'></i>
+												&nbsp;
+												Nhắn tin
 											</a>
+
 										</div>
-									</div>
-									<div class=" mt-30 mx-auto d-flex flex-column">
-										<button type="button" class="btn px-5 btn-contact">
-											<i class='bx bx-phone'></i>
-											&nbsp;
-											[[${motelRoom.motel.account.phone}]]</button>
-										<input type="hidden"
-											th:value="${accountIdFavorite == null ? null : accountIdFavorite}"
-											id="accountIdFavorite">
-
-										<a class="btn px-5 btn-contact mt-10"
-											th:attr="ng-click=@{|addFavoriteRoom(${motelRoom.motelRoomId})|}">
-											<i class='bx bxs-heart'></i>
-											&nbsp;
-											Yêu thích</a>
-
-										<a th:href="@{|/chat/${#request.remoteUser}/${motelRoom.motel.account.email}|}"
-											class="btn px-5 btn-contact mt-10">
-											<i class='bx bxs-message-dots'></i>
-											&nbsp;
-											Nhắn tin
-										</a>
-
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+				<!-- content-wraper end -->
+				<!-- Begin Product Area -->
+				<div class="product-area pt-35">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="li-product-tab">
+								<ul class="nav li-product-menu">
+									<li><a class="active" data-toggle="tab" href="#description"><span>Vị
+												trí</span></a>
+									</li>
+								</ul>
+							</div>
+							<!-- Begin Li's Tab Menu Content Area -->
+						</div>
+					</div>
+					<div class="tab-content">
+						<div id="description" class="tab-pane active show" role="tabpanel">
+							<div class="product-description">
+								<div class="row">
+									<div class="col-6">
+										<span class="fw-bold">Vị trí nhà trọ</span>
+										<p>● [[${motelRoom.motel.detailAddress}]],
+											[[${motelRoom.motel.ward}]],
+											[[${motelRoom.motel.district}]],
+											[[${motelRoom.motel.province}]]</p>
+									</div>
+									<div class="col-6">
+										<span class="fw-bold">Tìm đến vị trí</span>
+										<div class="d-flex">
+											<input type="text" id="inp-location" class="form-control"
+												style=" background: none; outline: none; color: #DCBF7D;">
+											<button class="btn btn-warning ms-1 btn-location-search" type="submit"><i
+													class='bx bx-search'></i></button>
+										</div>
+									</div>
+								</div>
+								<div class="gg-map mt-5" id="gg-map">
+									<div class="loading" id="loadingOverplay">
+										<div class="pac-man"></div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<!-- content-wraper end -->
-			<!-- Begin Product Area -->
-			<div class="product-area pt-35">
+			<!-- Product Area End Here -->
+			<!-- Begin Li's Laptop Product Area -->
+
+			<section class="product-area li-laptop-product pt-100 pb-50 mb-200">
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="li-product-tab">
-							<ul class="nav li-product-menu">
-								<li><a class="active" data-toggle="tab" href="#description"><span>Vị trí</span></a>
-								</li>
-							</ul>
+						<div class="li-section-title">
+							<h2>
+								<span>NHÀ TRỌ CÙNG KHU VỰC:</span>
+							</h2>
 						</div>
-						<!-- Begin Li's Tab Menu Content Area -->
-					</div>
-				</div>
-				<div class="tab-content">
-					<div id="description" class="tab-pane active show" role="tabpanel">
-						<div class="product-description">
-							<div class="row">
-								<div class="col-6">
-									<span class="fw-bold">Vị trí nhà trọ</span>
-									<p>● [[${motelRoom.motel.detailAddress}]],
-										[[${motelRoom.motel.ward}]],
-										[[${motelRoom.motel.district}]],
-										[[${motelRoom.motel.province}]]</p>
-								</div>
-								<div class="col-6">
-									<span class="fw-bold">Tìm đến vị trí</span>
-									<div class="d-flex">
-										<input type="text" id="inp-location" class="form-control"
-											style=" background: none; outline: none; color: #DCBF7D;">
-										<button class="btn btn-warning ms-1 btn-location-search" type="submit"><i
-												class='bx bx-search'></i></button>
-									</div>
-								</div>
-							</div>
-							<div class="gg-map mt-5" id="gg-map">
-								<div class="loading" id="loadingOverplay">
-									<div class="pac-man"></div>
-								</div>
-							</div>
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Product Area End Here -->
-		<!-- Begin Li's Laptop Product Area -->
-
-		<section class="product-area li-laptop-product pt-100 pb-50 mb-200">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="li-section-title">
-						<h2>
-							<span>NHÀ TRỌ CÙNG KHU VỰC:</span>
-						</h2>
-					</div>
-					<div class="row">
-						<div class="product-active owl-carousel">
-							<div class="col-11" th:each="post, iterStat : ${sameDistrictAndProvincePosts}">
-								<div class="single-product-wrap">
-									<div class="product-image">
-										<a
-											th:href="@{'/room-details/' + ${post.postId} +'/phong-'+ ${post.motel.motelId}}">
-											<img th:src="@{|/files/ImgMotel/${post.motel.image}|}"
-												alt="Li's Product Image" style="height: 20rem;">
-										</a>
-									</div>
-									<div class="product_desc">
-										<div class="product_desc_info">
-											<h4><a class="product_name" href="single-product.html"
-													th:text="${post.motel.descriptions}"></a></h4>
-											<div class="price-box mt-30">
-												<span class="new-price"></span>
-											</div>
-											<div class="product-desc mt-20">
-												<p>
-													<span> <i class='bx bxs-location-plus'></i>
-														[[${post.motel.detailAddress}]],
-														[[${post.motel.ward}]],
-														[[${post.motel.district}]],
-														[[${post.motel.province}]]
-													</span>
-												</p>
-											</div>
-											<div class="d-flex flex-column">
-												<div class="row mt-10">
-													<div class="col-2">
-														<img th:src="@{|/files/ImgMotelRoom/${post.motel.account.avatar}|}"
-															alt="" class="rounded-circle img-user mt-2"
-															style="height: 2.5rem;">
-													</div>
-													<div class="col-8">
-														<span>[[${post.motel.account.fullname}]]</span>
-														<p class="font-italic"> [[${post.motel.account.email}]]</p>
-													</div>
-													<div class="col-2 my-auto">
-														<a href="#" class="float-end"><i
-																class='bx bxs-chevron-right'></i>
-														</a>
+						<div class="row">
+							<div class="product-active owl-carousel">
+								<div class="col-11" th:each="post, iterStat : ${sameDistrictAndProvincePosts}">
+									<div class="single-product-wrap">
+										<div class="product-image">
+											<a
+												th:href="@{'/room-details/' + ${post.postId} +'/phong-'+ ${post.motel.motelId}}">
+												<img th:src="@{|/files/ImgMotel/${post.motel.image}|}"
+													alt="Li's Product Image" style="height: 20rem;">
+											</a>
+										</div>
+										<div class="product_desc">
+											<div class="product_desc_info">
+												<h4><a class="product_name" href="single-product.html"
+														th:text="${post.motel.descriptions}"></a></h4>
+												<div class="price-box mt-30">
+													<span class="new-price"></span>
+												</div>
+												<div class="product-desc mt-20">
+													<p>
+														<span> <i class='bx bxs-location-plus'></i>
+															[[${post.motel.detailAddress}]],
+															[[${post.motel.ward}]],
+															[[${post.motel.district}]],
+															[[${post.motel.province}]]
+														</span>
+													</p>
+												</div>
+												<div class="d-flex flex-column">
+													<div class="row mt-10">
+														<div class="col-2">
+															<img th:src="@{|/files/ImgMotelRoom/${post.motel.account.avatar}|}"
+																alt="" class="rounded-circle img-user mt-2"
+																style="height: 2.5rem;">
+														</div>
+														<div class="col-8">
+															<span>[[${post.motel.account.fullname}]]</span>
+															<p class="font-italic"> [[${post.motel.account.email}]]</p>
+														</div>
+														<div class="col-2 my-auto">
+															<a href="#" class="float-end"><i
+																	class='bx bxs-chevron-right'></i>
+															</a>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -318,8 +316,8 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		</div>
 	</div>
 	<div th:replace="~{/layout/footer.html}">
 	</div>

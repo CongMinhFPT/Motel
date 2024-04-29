@@ -71,8 +71,6 @@ public class PostController {
 	@GetMapping("/room-details/motel-{motel_room_id}")
 	public String showRoomDetals(@PathVariable("motel_room_id") Integer motel_room_id, Model model,
 			Authentication authentication) {
-		// Post post = postRepository.findById(postId).orElse(null);
-
 		if (authentication == null) {
 			String emailAccount = null;
 			Account account = accountsRepository.getByEmail(emailAccount);
@@ -118,6 +116,7 @@ public class PostController {
 				}
 			}
 			model.addAttribute("sameDistrictAndProvincePosts", filteredPosts);
+
 //			List<Double> roomBills = new ArrayList<>();
 //			List<String> roomImage = new ArrayList<>();
 //			for (Post sameDistrictAndProvincePost : filteredPosts) {
@@ -136,6 +135,7 @@ public class PostController {
 
 //			model.addAttribute("roomBills", roomBills);
 //			model.addAttribute("roomImage", roomImage);
+
 
 			return "room/room_detail";
 		} else {

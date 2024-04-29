@@ -33,7 +33,7 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" th:if="${#request.remoteUser}">
 
                             <li><a class="dropdown-item" th:href="@{|/information/${#request.remoteUser}|}">Thông tin</a></li>
-                            <li><a class="dropdown-item" th:href="@{|/chat/${#request.remoteUser}/${null}|}">chat</a></li>
+                            <li><a class="dropdown-item" th:href="@{|/texting/${'=?'}|}">chat</a></li>
                             <li><a class="dropdown-item" th:href="@{|/payment/${#request.remoteUser}|}">Thông tin hóa đơn</a></li>
                             <li><a class="dropdown-item" th:href="@{/favorite}">Trang yêu thích</a></li>
                             <li><a class="dropdown-item" th:href="@{/change}">Thay đổi mật khẩu</a></li>

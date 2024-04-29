@@ -60,6 +60,7 @@ public class RoomController {
 	    String city = motel.getProvince();
 	    List<PostMotel>postMotels = new ArrayList<>();
 	     List<Post> posts = postRepository.findPosts(city);
+		 System.out.println(posts.size());
 	     int count = 0;
 	     for (int i = 0; i < posts.size(); i++) {
 	         if (!posts.get(i).getMotel().getMotelId().equals(motel.getMotelId())) {
@@ -71,6 +72,7 @@ public class RoomController {
 	             }
 	         }
 	     }
+		 System.out.println(postMotels.size());
 	   if (postMotels.size()==0) {
 	    model.addAttribute("checkpostnull", false);
 	   }else{

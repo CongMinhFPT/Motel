@@ -59,12 +59,13 @@
 				</div>
 				<h5 class="mt-4">Trang Chủ / Nhà Trọ / Nhà Trọ Tên</h5>
 				<div>
-					<h3 class="mt-4">Bạn đang xem  [[${motel.descriptions}]]
+					<h3 class="mt-4">Bạn đang xem [[${motel.descriptions}]]
 					</h3>
 					<p>
 						<span>Người đại diện <br>
-							<span>Tên: [[${account.fullname}]], [[${account.phone}]] <br>
-								Giới tính: [[${account.gender==true ?'Nam':'Nữ'}]]
+							<span>Tên: [[${account.fullname}]] <br>
+								SĐT: [[${account.phone}]] <br>
+							
 							</span>
 						</span><br>
 						<span><i class='bx bx-current-location pe-1'></i> {{addresss}}</span>
@@ -89,142 +90,140 @@
 				</div>
 				<hr>
 				<div style="min-height: 25rem;" class="row justify-content-start pe-5  ps-5  mb-5   ">
-					<div ng-show="!items.length" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 25rem; background-color:  #f4efef; position: relative;">
+					<div ng-show="!items.length"
+						style="display: flex; justify-content: center; align-items: center; width: 100%; height: 25rem; background-color:  #f4efef; position: relative;">
 						<p class="m-auto fw-bold ">Trống</p>
 					</div>
-					<div  ng-show="items.length" style="width: 30%" class=" mt-4 col-12 col-md-3  p-2 me-4  "
+					<div ng-show="items.length" style="width: 30%"
+						class=" mt-4 col-12 col-md-3  p-2 me-4 position-relative   "
 						ng-repeat="item in items.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage)">
-						<div class=" card  bg-white h-100   pt-3 p-2  position-relative  ">	
-								<a href="/room-details/motel-{{item.motelRoomId}}">		
-							<div id="carouselExample{{$index}}" class="carousel slide">
-								<div class="carousel-inner" style="height: 250px;">
-									<div ng-class="{'carousel-item active': $index === 0, 'carousel-item': $index !== 0}"
-										ng-repeat="item in item.nameimg">
-										<img src="/files/ImgMotelRoom/{{item}}" class="d-block w-100 h-100 " alt="...">
+						<div class=" card  bg-white h-100   pt-3 p-2  position-relative  ">
+							<a href="/room-details/motel-{{item.motelRoomId}}">
+								<div id="carouselExample{{$index}}" class="carousel slide">
+									<div class="carousel-inner" style="height: 250px;">
+										<div ng-class="{'carousel-item active': $index === 0, 'carousel-item': $index !== 0}"
+											ng-repeat="item in item.nameimg">
+											<img src="/files/ImgMotelRoom/{{item}}" class="d-block w-100 h-100 "
+												alt="...">
+										</div>
 									</div>
-								</div>
-								<button class="carousel-control-prev" type="button"
-									data-bs-target="#carouselExample{{$index}}" data-bs-slide="prev">
-									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-									<span class="visually-hidden">Previous</span>
-								</button>
-								<button class="carousel-control-next" type="button"
-									data-bs-target="#carouselExample{{$index}}" data-bs-slide="next">
-									<span class="carousel-control-next-icon" aria-hidden="true"></span>
-									<span class="visually-hidden">Next</span>
-								</button>
-															</a>
-							</div>
-							<div class="card-body  ">
-								<h5 class="card-title text-success ">Tên phòng: {{item.descriptions}}</h5>
-								<h5><span ng-show="item.roomBill===null"> Chưa có</span>
-									<span ng-show="item.roomBill!==null">
-										{{item.roomBill==0 ? 'Miễn Phí' : (item.roomBill|number) +' '+ 'đ'+'
-										'+'/Tháng'}}
-									</span>
-								</h5>
-								<p class="card-text">
+									<button class="carousel-control-prev" type="button"
+										data-bs-target="#carouselExample{{$index}}" data-bs-slide="prev">
+										<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Previous</span>
+									</button>
+									<button class="carousel-control-next" type="button"
+										data-bs-target="#carouselExample{{$index}}" data-bs-slide="next">
+										<span class="carousel-control-next-icon" aria-hidden="true"></span>
+										<span class="visually-hidden">Next</span>
+									</button>
+							</a>
+						</div>
+						<div class="card-body  ">
+							<h5 class="card-title text-success "> {{item.descriptions}}</h5>
+							<h5><span ng-show="item.roomBill===null">Giá chưa biết</span>
+								<span ng-show="item.roomBill!==null">
+									{{item.roomBill==0 ? 'Miễn Phí' : (item.roomBill|number) +' '+ 'đ'+'
+									'+'/Tháng'}}
+								</span>
+							</h5>
+							<p class="card-text">
 
-								</p>
-								<p>
-									<i class='bx bx-fullscreen pe-1'></i> Diện tích: {{item.width * item.length}} m2
-								</p>
-								<p>
-									<i class="bi bi-houses"></i> Loại phòng: {{item.title}}
-								</p>
-							</div>
-							<div>
-								<p>
-								<p>Tình trạng phòng</p>
-								<p class="text-white  text-center   bg-success p-3 rounded-3     ">{{item.name}}</p>
-								</p>
-							</div>
+							</p>
+							<p>
+								<i class='bx bx-fullscreen pe-1'></i> Diện tích: {{item.width * item.length}} m2
+							</p>
+							<p>
+								<i class="bi bi-houses"></i> Loại phòng: {{item.title}}
+							</p>
+						</div>
+						<div>
+						
+							<p class="status-label">{{item.name}}</p>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="text-center mt-4" ng-if="pageCount() > 1">
-				<button class="btn m-1"
-					ng-class="{ 'btn-outline-secondary': currentPage != 1, 'btn-success': currentPage == 1 }"
-					ng-disabled="currentPage == 1" ng-click="firstPage()">Đầu trang</button>
-				<button class="btn m-1"
-					ng-class="{ 'btn-outline-secondary': currentPage != 1, 'btn-success': currentPage == 1 }"
-					ng-disabled="currentPage == 1" ng-click="prevPage()">Previous</button>
-				<button class="btn m-1" ng-repeat="n in pages()"
-					ng-class="{ 'btn-outline-secondary': currentPage != n, 'btn-success': currentPage == n }"
-					ng-click="setPage(n)">{{n}}</button>
-				<button class="btn m-1"
-					ng-class="{ 'btn-outline-secondary': currentPage != pageCount(), 'btn-success': currentPage == pageCount() }"
-					ng-disabled="currentPage == pageCount()" ng-click="nextPage()">Next</button>
-				<button class="btn m-1"
-					ng-class="{ 'btn-outline-secondary': currentPage != pageCount(), 'btn-success': currentPage == pageCount() }"
-					ng-disabled="currentPage == pageCount()" ng-click="lastPage()">Cuối trang</button>
+		</div>
+		<div class="text-center mt-4" ng-if="pageCount() > 1">
+			<button class="btn m-1"
+				ng-class="{ 'btn-outline-secondary': currentPage != 1, 'btn-success': currentPage == 1 }"
+				ng-disabled="currentPage == 1" ng-click="firstPage()">Đầu trang</button>
+			<button class="btn m-1"
+				ng-class="{ 'btn-outline-secondary': currentPage != 1, 'btn-success': currentPage == 1 }"
+				ng-disabled="currentPage == 1" ng-click="prevPage()">Previous</button>
+			<button class="btn m-1" ng-repeat="n in pages()"
+				ng-class="{ 'btn-outline-secondary': currentPage != n, 'btn-success': currentPage == n }"
+				ng-click="setPage(n)">{{n}}</button>
+			<button class="btn m-1"
+				ng-class="{ 'btn-outline-secondary': currentPage != pageCount(), 'btn-success': currentPage == pageCount() }"
+				ng-disabled="currentPage == pageCount()" ng-click="nextPage()">Next</button>
+			<button class="btn m-1"
+				ng-class="{ 'btn-outline-secondary': currentPage != pageCount(), 'btn-success': currentPage == pageCount() }"
+				ng-disabled="currentPage == pageCount()" ng-click="lastPage()">Cuối trang</button>
+		</div>
+
+		<div class="m-4 ">
+			<div>
+				<h4>PHÒNG TRỌ CÙNG KHU VỰC</h4>
 			</div>
 
-			<div class="m-4 ">
-				<div>
-					<h4>PHÒNG TRỌ CÙNG KHU VỰC</h4>
-				</div>
-				<div th:if="${!checkpostnull}" class="p-5 ">
-					<p>Hiện chưa có nhà trọ cùng khu vực</p>
-				</div>
-				<div>
-					<div th:if="${checkpostnull}" class="row">
-						<div class="owl-carousel owl-theme pt-xl-3">
-							<div th:each="item : ${listpost}" class="item fw-bold">
-								<div class="col-lg-12 col-12">
-									<div class="card" style="background-color: #fff; color: #000;">
-										<a th:href="@{'/post/motel/motelroom/'+ ${item.motel.motelId}}">
-											<img class="card-img-top w-100"
-												th:src="@{'/files/ImgMotel/' + ${item.motel.image}}" alt="" /></a>
-										<div class="card-body">
-											<p class="card-text text-success " th:text="${item.posttitle}"></p>
-											<label class="fw-lighter  " for="">Mô tả</label>
-											<div style="background-color: #f4efef;" class="d-flex p-2  rounded-2">
-												<p class="d-flex align-items-start   ">
-												<div>
-													<span class="fw-lighter  ">
-														[[${item.motel.descriptions}]]
-													</span>
-													<br>
-													<span class="fw-lighter  ">
-														Người đại diện:
-														[[${item.account.fullname}]],[[${item.account.phone}]] <br>
-														Giới tính: [[${item.account.gender==true ?'Nam':'Nữ'}]]
-													</span>
-												</div>
-												</p>
-											</div>
-											<div class="row py-3">
-												<div class="col-lg-12 card-text text-start"><i
-														class='bx bx-current-location pe-1'></i>
-													[[${item.motel.detailAddress}]],[[${item.motel.ward}]],
-													[[${item.motel.district}]],
-													[[${item.motel.province}]]
-												</div>
-												<hr>
-												<div class="col-lg-12 card-text"><i
-														class='bx bx-fullscreen pe-1'></i>Tổng phòng hiện có :
-													[[${item.totalrooms}]]
-													<a>phòng</a>
-												</div>
-												<hr>
-												<div class="col-lg-12 card-text">
-
-													<i class='bx bx-user-plus pe-1'></i> Phòng trống:
-													[[${item.availability}]] phòng
-												</div>
-											</div>
-											<div class="col-lg-12 card-text d-flex  justify-content-end ">
-												<span class="fw-lighter">
-													<span th:if="${item.getDaysSinceCreation() == 0}"
-														th:text="'Đăng Hôm nay'"></span>
-													
-													<span th:if="${item.getDaysSinceCreation() > 0}"
-														th:text="${item.getDaysSinceCreation() + 'Đăng ngày trước'}"></span>
+			<div th:if="${!checkpostnull}" class="p-5 ">
+				<p>Hiện chưa có nhà trọ cùng khu vực</p>
+			</div>
+			<div>
+				<div th:if="${checkpostnull}" class="">
+					<div class=" pt-xl-3 row">
+						<div th:each="item : ${listpost}" class=" fw-bold col-lg-4 col-4">
+							<div class="">
+								<div class="card" style="background-color: #fff; color: #000;">
+									<a th:href="@{'/post/motel/motelroom/'+ ${item.motel.motelId}}">
+										<img class="card-img-top w-100"
+											th:src="@{'/files/ImgMotel/' + ${item.motel.image}}" alt="" /></a>
+									<div class="card-body">
+										<p class="card-text text-success " th:text="${item.posttitle}"></p>
+										<label class="fw-lighter  " for="">Mô tả</label>
+										<div style="background-color: #f4efef;" class="d-flex p-2  rounded-2">
+											<p class="d-flex align-items-start   ">
+											<div>
+												<span class="fw-lighter  ">
+													[[${item.motel.descriptions}]]
+												</span>
+												<br>
+												<span class="fw-lighter  ">
+													Người đại diện:
+													[[${item.account.fullname}]]<br>
+													SĐT: [[${item.account.phone}]] 
 													
 												</span>
 											</div>
+											</p>
+										</div>
+										<div class="row py-3">
+											<div class="col-lg-12 card-text text-start"><i
+													class='bx bx-current-location pe-1'></i>
+												[[${item.motel.detailAddress}]],[[${item.motel.ward}]],
+												[[${item.motel.district}]],
+												[[${item.motel.province}]]
+											</div>
+											<hr>
+											<div class="col-lg-12 card-text"><i class='bx bx-fullscreen pe-1'></i>Tổng
+												phòng hiện có :
+												[[${item.totalrooms}]]
+												<a>phòng</a>
+											</div>
+											<hr>
+											<div class="col-lg-12 card-text">
+
+												<i class='bx bx-user-plus pe-1'></i> Phòng trống:
+												[[${item.availability}]] phòng
+											</div>
+										</div>
+										<div class="col-lg-12 card-text d-flex  justify-content-end ">
+											<span class="fw-lighter">
+
+												Ngày tạo : [[${#dates.format(item.postcreateDate, 'dd-MM-yyy')}]]
+											</span>
 										</div>
 									</div>
 								</div>
@@ -233,6 +232,7 @@
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
 		</div>
 		</div>
@@ -249,6 +249,29 @@
 
 
 	<style>
+		.status-label {
+			position: absolute;
+			top: 16px;
+			left: 9px;
+			background: #3949ab;
+			color: white;
+			padding: 0.2rem 0.6rem;
+			border-radius: 0px 10px 10px 0px;
+			font-family: 'Roboto', sans-serif;
+			font-size: 0.9.5rem;
+			
+		}
+
+
+		.pt-xl-3.row {
+			display: flex;
+			align-items: stretch;
+		}
+
+		.fw-bold.col-lg-4.col-4 {
+			display: flex;
+		}
+
 		@keyframes loading {
 			0% {
 				content: '.';

@@ -19,7 +19,7 @@ public interface AccountsRepository extends JpaRepository<Account, Integer> {
 
 	Account getByCitizen(String citizen);
 
-	@Query(nativeQuery = true, value = "SELECT * FROM accounts a INNER JOIN authorities b ON a.account_id = b.account_id WHERE b.role_id = 'CUSTOMER' AND a.citizen LIKE CONCAT('%', :phone, '%') AND NOT EXISTS ( SELECT 1 FROM renter c WHERE c.account_id = a.account_id )")
+	@Query(nativeQuery = true, value = "SELECT * FROM accounts a INNER JOIN authorities b ON a.account_id = b.account_id WHERE b.role_id = 'CUSTOMER' AND a.citizen LIKE CONCAT('%', :phone, '%') AND NOT EXISTS ( SELECT 1 FROM renter c WHERE c.account_id = a.account_id AND c.check_out_date IS NULL 	)")
 	List<Account> getByPhone(@Param("phone") String phone);
 
 	@Query(nativeQuery = true, value = "select * from accounts a join renter b on a.account_id=b.account_id")

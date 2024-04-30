@@ -265,142 +265,7 @@ public class AdminCustomer {
 		return "admin/customers/customerFormCr";
 	}
 	
-	//
-	@GetMapping("/addowner")
-	public String createowner(@ModelAttribute("accounts") Account account, Model model) {
-		manageMotelImpl.SetModelMotel(model);
-		return "admin/customers/customerowner";
-	}
-
-	@PostMapping("/addowner/save")
-	public String createownerSubmit(@Valid @ModelAttribute("accounts") Account account, BindingResult bindingResult,
-			@RequestParam("image") MultipartFile photo, Model model) {
-
-		if (bindingResult.hasErrors()) {
-			if (account.getPhone().isBlank()) {
-				model.addAttribute("phone", "Vui lòng nhập số điện thoại!");
-			}
-			if (account.getCitizen().isBlank()) {
-				model.addAttribute("citizen", "Vui lòng nhập số căn cước công dân!");
-			}
-			if (account.getCreateDate() == null) {
-				model.addAttribute("date1", "Vui lòng chọn ngày tháng năm sinh!");
-
-			}
-			return "admin/customers/customerowner";
-		}
-		if (!account.getPhone().matches("^(0[2|3|5|7|8|9])+([0-9]{8})")) {
-			model.addAttribute("phone", "Sai định dạng số điện thoại!");
-			return "admin/customers/customerowner";
-		}
-
-		if (accountsRepository.getByEmail(account.getEmail()) != null) {
-			model.addAttribute("email", "Email này đã tồn tại!");
-			return "admin/customers/customerowner";
-		}
-		if (accountsRepository.findByPhone(account.getPhone()) != null) {
-			model.addAttribute("phone", "Số điện thoại đã tồn tại. Vui lòng nhập số điện thoại khác!");
-			return "admin/customers/customerowner";
-		}
-		if (!account.getCitizen().matches("^\\d{9}|\\d{12}$")) {
-			model.addAttribute("citizen", "Sai định dạng số căn cước công dân. Vui lòng nhập 9 hoặc 12 chữ số!");
-			return "admin/customers/customerowner";
-		}
-		if (accountsRepository.getByCitizen(account.getCitizen()) != null) {
-			model.addAttribute("citizen", "Số căn cước công dân này đã tồn tại.!");
-			return "admin/customers/customerowner";
-		}
-		if (photo != null && !photo.isEmpty()) {
-			MultipartFile[] files = new MultipartFile[] { photo };
-			String nameImage = fileManager.ImgSave("CustomerImg", files);
-			account.setAvatar(nameImage);
-			// try {
-			// String fileName = photo.getOriginalFilename();
-			// Path fileNameAnPath = Paths.get(UPLOAD_DIRECTORY, fileName);
-			// Files.write(fileNameAnPath, photo.getBytes());
-			// account.setAvatar(fileName);
-			// } catch (Exception e) {
-			// e.printStackTrace();
-			// }
-
-		} 
-		
-		Calendar calNow = Calendar.getInstance(); // lấy thời gian hiện tại
-		System.out.println("calNow>> " + calNow);
-		Calendar calBirth = Calendar.getInstance(); // lấy ngày tháng năm sinh người dùng
-		System.out.println("calBirth>> " + calBirth);
-		calBirth.setTime(account.getCreateDate()); // đặc thời gian calBirth bằng ngày tháng năm sinh người dùng
-		int age = calNow.get(Calendar.YEAR) - calBirth.get(Calendar.YEAR); // năm hiện tại trừ năm sinh
-		System.out.println("age>> " + age);
-		if (calNow.get(Calendar.DAY_OF_YEAR) < calBirth.get(Calendar.DAY_OF_YEAR)) {
-			age--; // Kiểm tra xem ngày hiện tại có nhỏ hơn ngày sinh của người dùng không. Nếu có,
-					// chứng tỏ họ chưa đủ tuổi trong năm nay, vì vậy ta giảm tuổi đi một năm.
-			System.out.println("ageif>> " + age);
-		}
-		if (age < 18) { // Kiểm tra xem tuổi của người dùng có dưới 18 tuổi không. Nếu có, ta thêm thông
-						// báo lỗi vào model và trả về trang thông tin.
-			model.addAttribute("date1", "Bạn phải đủ 18 tuổi trở lên!");
-			return "admin/customers/customerowner";
-		}
-
-		String confirm = generateCode();
-		codeMap.put(confirm, account);
-		try {
-			sendConfirm(account.getEmail(), confirm);
-			model.addAttribute("signupinfow", "Vui lòng xem email để lấy mã xác nhận!");
-			System.out.println("Mã:" + confirm);
-		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("signuperr", "Lỗi gửi mã xác nhận!");
-		}
-		return "admin/customers/customerowner";
-	}
 	
-	@GetMapping("/confirmCusow")
-	public String showow() {
-		return "admin/customers/confirmCusow";
-	}
-
-	@PostMapping("/add/saveCusow")
-	public String saveCusow(@ModelAttribute("accounts") Account account, @RequestParam("code") String code, Model model) {
-		if (code.isBlank()) {
-			model.addAttribute("code", "Vui lòng nhập mã xác nhận!");
-			return "admin/customers/confirmCus";
-		}
-		if (codeMap.containsKey(code)) {
-			Account confirmCus = codeMap.get(code);
-			String passpe = pe.encode(confirmCus.getPassword());
-			confirmCus.setPassword(passpe);
-			accountsRepository.save(confirmCus);
-
-			Role staff = roleRepository.findById("CUSTOMER").orElseGet(() -> {
-				Role newRole = new Role();
-				newRole.setId("CUSTOMER");
-				return roleRepository.save(newRole);
-			});
-
-			Authority au = new Authority();
-			au.setAccount(confirmCus);
-			au.setRole(staff);
-			authorityRepository.save(au);
-			mailerService.add(memeMessage -> {
-				MimeMessageHelper helper = new MimeMessageHelper(memeMessage);
-				try {
-					helper.setTo(confirmCus.getEmail());
-					helper.setSubject("Nhà Trọ F.E Xin Chào!");
-					helper.setText("Nhà trọ F.E luôn là lựa chọn tốt nhất. Hân hạnh được phục vụ quí khách! ");
-				} catch (MessagingException e) {
-					e.printStackTrace();
-				}
-			});
-			codeMap.remove(code);
-			model.addAttribute("signupow", "Thêm người dùng thành công!.");
-		} else {
-			// Hiển thị thông báo lỗi nếu mã xác nhận không hợp lệ
-			model.addAttribute("signuperr", "Mã xác nhận không hợp lệ.");
-		}
-		return "admin/customers/confirmCusow";
-	}
 
 	@GetMapping("/confirmCus")
 	public String show() {
@@ -550,6 +415,143 @@ public class AdminCustomer {
 			model.addAttribute("updateerr", "Mã xác nhận không hợp lệ.");
 		}
 		return "admin/customers/confirmCusUp";
+	}
+	
+	//
+	@GetMapping("/addowner")
+	public String createowner(@ModelAttribute("accounts") Account account, Model model) {
+		manageMotelImpl.SetModelMotel(model);
+		return "admin/customers/customerowner";
+	}
+
+	@PostMapping("/addowner/save")
+	public String createownerSubmit(@Valid @ModelAttribute("accounts") Account account, BindingResult bindingResult,
+			@RequestParam("image") MultipartFile photo, Model model) {
+
+		if (bindingResult.hasErrors()) {
+			if (account.getPhone().isBlank()) {
+				model.addAttribute("phone", "Vui lòng nhập số điện thoại!");
+			}
+			if (account.getCitizen().isBlank()) {
+				model.addAttribute("citizen", "Vui lòng nhập số căn cước công dân!");
+			}
+			if (account.getCreateDate() == null) {
+				model.addAttribute("date1", "Vui lòng chọn ngày tháng năm sinh!");
+
+			}
+			return "admin/customers/customerowner";
+		}
+		if (!account.getPhone().matches("^(0[2|3|5|7|8|9])+([0-9]{8})")) {
+			model.addAttribute("phone", "Sai định dạng số điện thoại!");
+			return "admin/customers/customerowner";
+		}
+
+		if (accountsRepository.getByEmail(account.getEmail()) != null) {
+			model.addAttribute("email", "Email này đã tồn tại!");
+			return "admin/customers/customerowner";
+		}
+		if (accountsRepository.findByPhone(account.getPhone()) != null) {
+			model.addAttribute("phone", "Số điện thoại đã tồn tại. Vui lòng nhập số điện thoại khác!");
+			return "admin/customers/customerowner";
+		}
+		if (!account.getCitizen().matches("^\\d{9}|\\d{12}$")) {
+			model.addAttribute("citizen", "Sai định dạng số căn cước công dân. Vui lòng nhập 9 hoặc 12 chữ số!");
+			return "admin/customers/customerowner";
+		}
+		if (accountsRepository.getByCitizen(account.getCitizen()) != null) {
+			model.addAttribute("citizen", "Số căn cước công dân này đã tồn tại.!");
+			return "admin/customers/customerowner";
+		}
+		if (photo != null && !photo.isEmpty()) {
+			MultipartFile[] files = new MultipartFile[] { photo };
+			String nameImage = fileManager.ImgSave("CustomerImg", files);
+			account.setAvatar(nameImage);
+			// try {
+			// String fileName = photo.getOriginalFilename();
+			// Path fileNameAnPath = Paths.get(UPLOAD_DIRECTORY, fileName);
+			// Files.write(fileNameAnPath, photo.getBytes());
+			// account.setAvatar(fileName);
+			// } catch (Exception e) {
+			// e.printStackTrace();
+			// }
+
+		} 
+		
+		Calendar calNow = Calendar.getInstance(); // lấy thời gian hiện tại
+		System.out.println("calNow>> " + calNow);
+		Calendar calBirth = Calendar.getInstance(); // lấy ngày tháng năm sinh người dùng
+		System.out.println("calBirth>> " + calBirth);
+		calBirth.setTime(account.getCreateDate()); // đặc thời gian calBirth bằng ngày tháng năm sinh người dùng
+		int age = calNow.get(Calendar.YEAR) - calBirth.get(Calendar.YEAR); // năm hiện tại trừ năm sinh
+		System.out.println("age>> " + age);
+		if (calNow.get(Calendar.DAY_OF_YEAR) < calBirth.get(Calendar.DAY_OF_YEAR)) {
+			age--; // Kiểm tra xem ngày hiện tại có nhỏ hơn ngày sinh của người dùng không. Nếu có,
+					// chứng tỏ họ chưa đủ tuổi trong năm nay, vì vậy ta giảm tuổi đi một năm.
+			System.out.println("ageif>> " + age);
+		}
+		if (age < 18) { // Kiểm tra xem tuổi của người dùng có dưới 18 tuổi không. Nếu có, ta thêm thông
+						// báo lỗi vào model và trả về trang thông tin.
+			model.addAttribute("date1", "Bạn phải đủ 18 tuổi trở lên!");
+			return "admin/customers/customerowner";
+		}
+
+		String confirm = generateCode();
+		codeMap.put(confirm, account);
+		try {
+			sendConfirm(account.getEmail(), confirm);
+			model.addAttribute("signupinfow", "Vui lòng xem email để lấy mã xác nhận!");
+			System.out.println("Mã:" + confirm);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("signuperr", "Lỗi gửi mã xác nhận!");
+		}
+		return "admin/customers/customerowner";
+	}
+	
+	@GetMapping("/confirmCusow")
+	public String showow() {
+		return "admin/customers/confirmCusow";
+	}
+
+	@PostMapping("/add/saveCusow")
+	public String saveCusow(@ModelAttribute("accounts") Account account, @RequestParam("code") String code, Model model) {
+		if (code.isBlank()) {
+			model.addAttribute("code", "Vui lòng nhập mã xác nhận!");
+			return "admin/customers/confirmCus";
+		}
+		if (codeMap.containsKey(code)) {
+			Account confirmCus = codeMap.get(code);
+			String passpe = pe.encode(confirmCus.getPassword());
+			confirmCus.setPassword(passpe);
+			accountsRepository.save(confirmCus);
+
+			Role staff = roleRepository.findById("CUSTOMER").orElseGet(() -> {
+				Role newRole = new Role();
+				newRole.setId("CUSTOMER");
+				return roleRepository.save(newRole);
+			});
+
+			Authority au = new Authority();
+			au.setAccount(confirmCus);
+			au.setRole(staff);
+			authorityRepository.save(au);
+			mailerService.add(memeMessage -> {
+				MimeMessageHelper helper = new MimeMessageHelper(memeMessage);
+				try {
+					helper.setTo(confirmCus.getEmail());
+					helper.setSubject("Nhà Trọ F.E Xin Chào!");
+					helper.setText("Nhà trọ F.E luôn là lựa chọn tốt nhất. Hân hạnh được phục vụ quí khách! ");
+				} catch (MessagingException e) {
+					e.printStackTrace();
+				}
+			});
+			codeMap.remove(code);
+			model.addAttribute("signupow", "Thêm người dùng thành công!.");
+		} else {
+			// Hiển thị thông báo lỗi nếu mã xác nhận không hợp lệ
+			model.addAttribute("signuperr", "Mã xác nhận không hợp lệ.");
+		}
+		return "admin/customers/confirmCusow";
 	}
 
 	private void sendConfirm(String email, String confirm) {

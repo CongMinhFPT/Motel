@@ -30,18 +30,18 @@
 						</div>
 						<div class="mb-3 row">
 							<div class="col">
-								<label for="province" class="form-label text-black">Tỉnh</label>
+								<label for="province" class="form-label text-black">Chọn tỉnh/thành phố</label>
 								<select class="form-control " id="city" th:field="*{province}" required>
 									<option th:if="*{province!=null}" id="city1" th:value="*{province}"
 										th:attr="data-id=*{provinceID}" th:text="*{province}" selected></option>
-									<option value="" data-id="" selected> -- Chọn tỉnh thành --</option>
+									<option value="" data-id="" selected> -- Chọn tỉnh thành phố --</option>
 									<input class="d-none " type="text" id="cityIdInput" th:field="*{provinceID}">
 								</select>
 								<label th:errors="*{province}" id="provinces-error"
 									style="color: red; padding: 0.5rem; display: block;" for=""></label>
 							</div>
 							<div class="col">
-								<label for="district" class="form-label text-black">Huyện</label>
+								<label for="district" class="form-label text-black">Chọn quận/huyện</label>
 								<select id="district" class="form-control " th:field="*{district}" required>
 									<option th:if="*{district!=null}" id="district1" th:value="*{district}"
 										th:attr="data-id=*{districtID}" th:text="*{district}" selected></option>
@@ -52,7 +52,7 @@
 									style="color: red; padding: 0.5rem; display: block;" for=""></label>
 							</div>
 							<div class="col">
-								<label for="ward" class="form-label text-black ">Phường</label>
+								<label for="ward" class="form-label text-black ">Chọn phường/xã</label>
 								<select id="ward" class="form-control " th:field="*{ward}" required>
 									<option id="ward1" th:if="*{ward!=null}" th:value="*{ward}" th:text="*{ward}"
 										selected></option>

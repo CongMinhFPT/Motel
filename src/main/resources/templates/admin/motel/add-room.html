@@ -70,10 +70,10 @@
 							</div>
 						</div>
 						<div>
-							<label class="form-label mt-1 text-black  " for="">Loại phòng</label>
+							<label class="form-label mt-1 text-black  " for="">Danh mục phòng</label>
 							<select th:field="*{categoryRoom.categoryRoomId}" class="form-control " name=""
 								id="categoryRoom">
-								<option value="">chọn loại phòng</option>
+								<option value="">Chọn danh mục phòng</option>
 								<option th:if="${categoryRoomlist!=null}" th:each="item : ${categoryRoomlist} "
 									th:value="${item.categoryRoomId}">[[${item.quantity}]] người,
 									[[${item.descriptions}]] </option>

@@ -104,7 +104,7 @@ public ResponseEntity<Map<String , Object>> GetDataMotelroomInMotel(@PathVariabl
                 a.getWifiCash().isEmpty() ? null : a.getWifiCash().get(0).getWifiBill(),
                 a.getRoomCash().isEmpty() ? null : a.getRoomCash().get(0).getRoomBill(),
                 a.getRenter().isEmpty() ? 0 : a.getRenter().size(),
-                a.getCategoryRoom().getQuantity()+" NGười, "+ a.getCategoryRoom().getDescriptions(),
+                a.getCategoryRoom().getQuantity()+" Người, "+ a.getCategoryRoom().getDescriptions(),
                 a.getRoomStatus() != null ? a.getRoomStatus().getName() : null);
         motelRoomNews.add(motelRoomNew);
     });

@@ -622,7 +622,7 @@
                 <nav class="navbar navbar-expand">
                     <div class="collapse navbar-collapse justify-content-between">
                         <div class="header-left">
-                            
+
                         </div>
                         <ul class="navbar-nav header-right main-notification">
                             <li class="nav-item dropdown notification_dropdown">
@@ -649,7 +649,7 @@
                                     </svg>
                                 </a>
                             </li>
-                            
+
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="#" role="button" data-toggle="dropdown">
 
@@ -730,7 +730,7 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a th:href="@{/admin/show-motel}">Nhà Trọ</a></li>
-                            <li><a th:href="@{/admin/manage-motel}"> Danh Sách nhà Trọ</a></li>
+                            <li><a th:href="@{/admin/manage-motel}"> Danh Sách Nhà Trọ</a></li>
                             <li><a th:href="@{/admin/category}">Danh Mục Phòng Trọ</a>
                             </li>
                             <li><a th:href="@{/admin/manage-motelroom}"> Danh Sách Phòng Trọ</a></li>
@@ -744,6 +744,8 @@
                             </li>
                             <li><a th:href="@{/admin/posts}">Bài Đăng</a>
                             </li>
+                            <li><a th:href="@{/admin/statistic}">Thống Kê</a>
+                            </li>
                         </ul>
                     </li>
                     <li th:if="${#request.isUserInRole('MANAGER')}"><a class="has-arrow ai-icon"
@@ -755,7 +757,7 @@
 
                             <li><a th:href="@{/admin/blogs}">Tin Tức</a></li>
                             <li><a th:href="@{/admin/tags}">Danh mục tin tức</a></li>
-                            
+
                         </ul>
                     </li>
                     <li th:if="${#request.isUserInRole('SUPPER')}"><a class="has-arrow ai-icon" href="javascript:void()"
@@ -784,7 +786,7 @@
                         </ul>
                     </li>
                 </ul>
-                
+
             </div>
         </div>
     </nav>

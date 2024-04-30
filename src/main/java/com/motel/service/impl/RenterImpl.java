@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.motel.entity.Account;
 import com.motel.entity.Indexs;
+import com.motel.entity.Invoice;
 import com.motel.entity.MotelRoom;
 import com.motel.entity.Renter;
 import com.motel.entity.RoomStatus;
@@ -76,13 +78,25 @@ public class RenterImpl implements RenterService {
             throw new IllegalStateException("Tài khoản đã thuê ở nhà trọ khác.");
         }
 
-        Renter existingRenter = renterRepository.findByAccount(account);
-        if (existingRenter != null) {
-            if (existingRenter.getMotelRoom().equals(motelRoom)) {
-                throw new IllegalStateException("Tài khoản đã thuê ở phòng trọ này trước đó.");
-            } else {
-                throw new IllegalStateException("Tài khoản đã thuê ở một phòng trọ khác trước đó.");
-            }
+        // Renter existingRenter = renterRepository.findByAccount(account);
+        // if (existingRenter != null) {
+        // if (existingRenter.getMotelRoom().equals(motelRoom)) {
+        // throw new IllegalStateException("Tài khoản đã thuê ở phòng trọ này trước
+        // đó.");
+        // } else {
+        // throw new IllegalStateException("Tài khoản đã thuê ở một phòng trọ khác trước
+        // đó.");
+        // }
+        // }
+
+        List<Renter> currentRenter = renterRepository.findAll()
+                .stream()
+                .filter(ren -> ren.getAccount().getAccountId().equals(renterModel.getAccountId()))
+                .filter(ren -> ren.getCheckOutDate() == null)
+                .collect(Collectors.toList());
+
+        if (!currentRenter.isEmpty()) {
+            throw new IllegalArgumentException("Tài khoản này đã thuê ở phòng trọ này trước đó!");
         }
 
         List<RoomStatus> roomStatuses = roomStatusRepository.findAll();

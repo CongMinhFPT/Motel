@@ -2,7 +2,8 @@
     <nav>
         <div class="nav-bar border-bottom">
             <i class='bx bx-menu sidebarOpen'></i>
-            <span class="logo navLogo"><a th:href="@{/index}"><img th:src="@{/img/F.E.png}" alt="" style="height: 100px; width: 110px;"></a></span>
+            <span class="logo navLogo"><a th:href="@{/index}"><img th:src="@{/img/F.E.png}" alt=""
+                        style="height: 100px; width: 110px;"></a></span>
 
             <div class="menu">
                 <div class="logo-toggle">
@@ -10,7 +11,7 @@
                     <i class='bx bx-x siderbarClose'></i>
                 </div>
 
-                <ul class="nav-links" >
+                <ul class="nav-links">
                     <li><a th:href="@{/index}">TRANG CHỦ</a></li>
                     <li><a th:href="@{/room}">NHÀ TRỌ</a></li>
                     <li><a th:href="@{/contact}">PHẢN HỒI</a></li>
@@ -32,20 +33,25 @@
                         </ul>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" th:if="${#request.remoteUser}">
 
-                            <li><a class="dropdown-item" th:href="@{|/information/${#request.remoteUser}|}">Thông tin</a></li>
+                            <li><a class="dropdown-item" th:href="@{|/information/${#request.remoteUser}|}">Thông
+                                    tin</a></li>
                             <li><a class="dropdown-item" th:href="@{|/texting/${'=?'}|}">chat</a></li>
-                            <li><a class="dropdown-item" th:href="@{|/payment/${#request.remoteUser}|}">Thông tin hóa đơn</a></li>
+                            <li><a class="dropdown-item" th:href="@{|/payment/${#request.remoteUser}|}">Thông tin hóa
+                                    đơn</a></li>
                             <li><a class="dropdown-item" th:href="@{/favorite}">Trang yêu thích</a></li>
                             <li><a class="dropdown-item" th:href="@{/change}">Thay đổi mật khẩu</a></li>
                             <li><a class="dropdown-item" th:href="@{/request}">Yêu cầu cấp quyền</a></li>
                             <li><a class="dropdown-item" th:href="@{/requestList}">Danh sách yêu cầu</a></li>
-                           
-                       
 
-                            <li><a class="dropdown-item" th:if="${#request.isUserInRole('OWNER')}" th:href="@{/admin/manage-motel}">Quản lý nhà trọ</a></li>
 
-                            <li><a class="dropdown-item" th:href="@{/admin}" th:if="${#request.isUserInRole('MANAGER') or #request.isUserInRole('SUPPER')}">Quản lý</a></li>
-							 <li><a class="dropdown-item" id="logoutButton">Đăng xuất</a></li>
+
+                            <li><a class="dropdown-item" th:if="${#request.isUserInRole('OWNER')}"
+                                    th:href="@{/admin/manage-motel}">Quản lý nhà trọ</a></li>
+
+                            <li><a class="dropdown-item" th:href="@{/admin/blogs}"
+                                    th:if="${#request.isUserInRole('MANAGER') or #request.isUserInRole('SUPPER')}">Quản
+                                    lý</a></li>
+                            <li><a class="dropdown-item" id="logoutButton">Đăng xuất</a></li>
                         </ul>
                     </div>
                 </ul>
@@ -73,11 +79,11 @@
 
 
 
-            
-        </div>
-       
 
-        
+        </div>
+
+
+
 
     </nav>
 

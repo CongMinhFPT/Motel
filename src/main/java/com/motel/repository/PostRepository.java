@@ -22,7 +22,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	@Query(nativeQuery = true, value = "SELECT COUNT(*) AS NumberOfPosts FROM posts WHERE create_date = GETDATE() AND status = 1")
 	Object findPostToDay();
 
-	@Query(nativeQuery = true, value = "SELECT p.title, COUNT(*) AS NumberOfPosts, p.create_date FROM posts p INNER JOIN motel_room m ON p.motel_room_id = m.motel_room_id WHERE p.create_date = GETDATE() AND p.status = 1 GROUP BY p.title, p.create_date")
+	@Query(nativeQuery = true, value = "SELECT p.title, COUNT(*) AS NumberOfPosts, p.create_date FROM posts p INNER JOIN motels m ON p.motel_id = m.motel_id WHERE p.create_date = GETDATE() AND p.status = 1 GROUP BY p.title, p.create_date")
 	List<Object> findPostToDayMotelRoom();
 
 	@Query(nativeQuery = true, value = "SELECT * FROM posts WHERE status = 0")
@@ -47,8 +47,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	@Query(value = "select * from posts a inner join motels b on a.motel_id = b.motel_id where a.motel_id IN (:listMotelId)", nativeQuery = true)
 	List<Post> findPostsByMotel(@Param("listMotelId") List<Integer> listMotelId);
-	
+
 	@Query(value = "SELECT p FROM Post p WHERE p.motel.motelId = :motelId")
-    List<Post> findPostsByMotelId(@Param("motelId") Integer motelId);
+	List<Post> findPostsByMotelId(@Param("motelId") Integer motelId);
 
 }

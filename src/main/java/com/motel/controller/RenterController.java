@@ -185,16 +185,61 @@ public class RenterController {
 
     @GetMapping("/admin/check-in-and-check-out")
     public String getListCheckInAndCheckOut(Model model) {
-        manageMotelImpl.SetModelMotel(model);
-        model.addAttribute("renters", renterRepository.findAll());
-        return "/admin/renter/check-in-and-check-out-list";
+        if (manageMotelImpl.CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+            if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+                Motel motel = motelRepository.getById(customUserDetails.getMotelid());
+
+                List<MotelRoom> motelRooms = motel.getMotelRoom();
+                List<Renter> renters = new ArrayList<>();
+
+                for (MotelRoom motelRoom : motelRooms) {
+                    for (Renter renter : motelRoom.getRenter()) {
+                        renters.add(renter);
+                    }
+                }
+
+                renters.sort(Comparator.comparing(Renter::getRenterDate).reversed());
+                manageMotelImpl.SetModelMotel(model);
+                model.addAttribute("renters", renters);
+                return "/admin/renter/check-in-and-check-out-list";
+            } else {
+                return "redirect:/admin/manage-motel";
+            }
+        } else {
+            return "home/signin";
+        }
+
     }
 
     @GetMapping("/admin/change-room")
     public String getListChangeRoom(Model model) {
-        manageMotelImpl.SetModelMotel(model);
-        model.addAttribute("renters", renterRepository.findAll());
-        return "/admin/renter/change-room-renter-list";
+
+        if (manageMotelImpl.CheckLogin().isPresent()) {
+            CustomUserDetails customUserDetails = manageMotelImpl.CheckLogin().get();
+            if (manageMotelImpl.CheckAccountSetIdMotel(customUserDetails)) {
+                Motel motel = motelRepository.getById(customUserDetails.getMotelid());
+
+                List<MotelRoom> motelRooms = motel.getMotelRoom();
+                List<Renter> renters = new ArrayList<>();
+
+                for (MotelRoom motelRoom : motelRooms) {
+                    for (Renter renter : motelRoom.getRenter()) {
+                        renters.add(renter);
+                    }
+                }
+
+                renters.sort(Comparator.comparing(Renter::getRenterDate).reversed());
+                manageMotelImpl.SetModelMotel(model);
+                model.addAttribute("renters", renters);
+                return "/admin/renter/change-room-renter-list";
+            } else {
+                return "redirect:/admin/manage-motel";
+            }
+        } else {
+            return "home/signin";
+        }
+
     }
 
     @GetMapping("/admin/renter/change-room/{renterId}")

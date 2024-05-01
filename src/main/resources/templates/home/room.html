@@ -69,61 +69,49 @@
                     </div>
                 </div>
                 <div class="row mt-5" style="border-bottom: 3px solid black">
-                    <div class="col-lg-3 mb-4">
+                    <div class="col-lg-2 ">
                         <div class=" mb-0">
                             <label class="form-label " for="">Tìm theo tên</label><br>
                             <input class="form-control " ng-model="sesearchnamemotel" type="search"
                                 ng-model-options="{ debounce: 700 }">
                         </div>
                     </div>
-                    <div class="col-lg-6"></div>
-                    <!-- <div class="col-lg-3">
-                        <div class="custom-select-wrapper mb-4">
-                            <h6 class="mb-0 w-50">Ngày:</h6>
-                            <select class="custom-select w-50" name="sortDir" id="sortDirTime" onchange="sortCards()">
-                                <option value="desc" th:selected="${sortDir == 'desc'}">Mới nhất</option>
-                                <option value="asc" th:selected="${sortDir == 'asc'}">Cũ nhất</option>
+                    <div class="col-10  d-flex justify-content-around  mb-3  ">
+                        <div class=" mt-3 ">
+                            <label  for="">Chọn tỉnh/thành phố</label><br>
+                            <select style="width: 200px;" class="custom-select  " id="province" name="province" ng-model="province"
+                                ng-change="filterItemsprovince()">
+                                <option value="">Tất cả</option>
+                                <option ng-repeat="city in citis" value="{{city.Id}}">{{city.Name}}</option>
                             </select>
-
                         </div>
-                    </div> -->
-                </div>
+                        <div class="  mt-3 ">
+                            <label for="">Chọn quận/huyện</label><br>
+                            <select style="width: 200px;" class="custom-select form-control " id="district" name="district"
+                                ng-model="district" ng-change="filterItemsdistrict()">
+                                <option value="">Tất cả</option>
+                                <option ng-repeat="district in districts" value="{{district.Id}}">{{district.Name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="  mt-3 ">
+                            <label for="">Chọn phường/xã</label>
+                            <select style="width: 200px;" class="custom-select form-control " id="ward" name="ward" ng-model="ward"
+                                ng-change="filterItemsWard()">
+                                <option value="">Tất cả</option>
+                                <option ng-repeat="ward in wards" value="{{ward.Id}}">{{ward.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
             </div>
 
             <div class="mt-4">
                 <div class="container mt-1 p-2">
                     <div class="row">
-                        <div class="col-4 mt-5 ">
-                            <div class="d-flex justify-content-between mt-3 ">
-                                <label class="form-label " for="">Chọn tỉnh/thành phố</label>
-                                <select class="custom-select  w-50" id="province" name="province" ng-model="province"
-                                    ng-change="filterItemsprovince()">
-                                    <option value="">Tất cả</option>
-                                    <option ng-repeat="city in citis" value="{{city.Id}}">{{city.Name}}</option>
-                                </select>
-                            </div>
-                            <div class="d-flex justify-content-between  mt-3 ">
-                                <label for="">Chọn quận/huyện</label>
-                                <select class="custom-select form-control w-50" id="district" name="district"
-                                    ng-model="district" ng-change="filterItemsdistrict()">
-                                    <option value="">Tất cả</option>
-                                    <option ng-repeat="district in districts" value="{{district.Id}}">{{district.Name}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="d-flex justify-content-between  mt-3 ">
-                                <label for="">Chọn phường/xã</label>
-                                <select class="custom-select form-control w-50" id="ward" name="ward" ng-model="ward"
-                                    ng-change="filterItemsWard()">
-                                    <option value="">Tất cả</option>
-                                    <option ng-repeat="ward in wards" value="{{ward.Id}}">{{ward.Name}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-8 ps-3 ">
+                        <div class="col-lg-12 ps-3 ">
                             <div ng-show="true">
                                 <div style="min-height: 25rem;" class=" row ">
-                                    <div ng-show="items.length" class=" mt-4 col-12 col-md-5  p-2 me-4  "
+                                    <div ng-show="items.length" class=" mt-4 col-12 col-md-4  p-2   "
                                         ng-repeat="item in items.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage)">
                                         <div class="h-100">
                                             <div class="card h-100" style="background-color: #fff; color: #000;">

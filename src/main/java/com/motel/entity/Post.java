@@ -50,7 +50,7 @@ public class Post {
     @Transient
     public String getCreateDateFormat() {
         if (createDate != null) {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy | HH:mm:ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             String strDate = formatter.format(createDate);
             return strDate;
         }
@@ -66,5 +66,5 @@ public class Post {
                 ", title='" + title +
                 '}';
     }
-   
+
 }

@@ -56,27 +56,106 @@
 			var totalWater = this.getAttribute('data-total-water');
 
 			var modalBody = document.querySelector('#exampleModalCenter .modal-body');
-			modalBody.innerHTML = '<p class="fw-bold text-center">Phòng: ' + motelRoom + '</p>' + '<div class="row pb-3">' +
-				'<p class="fw-bold">- Tiền điện: ' + '</p>' +
-				'<div class="col-md-12">Chỉ số điện mới: ' + newElectricityIndex + ' kwh</div>' +
-				'<div class="col-md-12">Chỉ số điện cũ: ' + oldElectricityIndex + ' kwh</div>' +
-				'<div class="col-md-12">Chỉ số điện chênh lệch: ' + differenceElectricity + ' kwh</div>' +
-				'<div class="col-md-12">Thành tiền: ' + electricityBill + ' * ' + differenceElectricity + ' = ' + totalElectricity + ' VNĐ</div>' +
-				'</div>' +
-				'<hr>' +
-				'<div class="row pb-1">' +
-				'<p class="fw-bold">- Tiền điện: ' + '</p>' +
-				'<div class="col-md-12">Chỉ số nước mới: ' + newWaterIndex + ' m³</div>' +
-				'<div class="col-md-12">Chỉ số nước cũ: ' + oldWaterIndex + ' m³</div>' +
-				'<div class="col-md-12">Chỉ số nước chênh lệch: ' + differenceWater + ' m³</div>' +
-				'<div class="col-md-12">Thành tiền: ' + waterBill + ' * ' + differenceWater + ' = ' + totalWater + ' VNĐ</div>' +
-				'</div>' +
-				'<hr>' +
-				'<div class="row pb-3">' +
-				'<div class="col-md-12">Giá wifi: ' + wifiBill + ' VNĐ</div>' +
-				'<div class="col-md-12">Giá phòng:' + roomBill + ' VNĐ</div>' +
-				'</div>' +
-				'<p class="fw-bold">Tổng tiền: ' + totalElectricity + ' + ' + totalWater + ' + ' + wifiBill + ' + ' + roomBill + ' = ' + totalPrice + ' VNĐ</p>';
+			var electricityDetails = `
+    <div class="row pb-3">
+        <p class="fw-bold">- Tiền điện: </p>
+        <div class="col-md-12">Chỉ số điện mới: ${newElectricityIndex} kwh</div>
+        <div class="col-md-12">Chỉ số điện cũ: ${oldElectricityIndex} kwh</div>
+        <div class="col-md-12">Chỉ số điện chênh lệch: ${differenceElectricity} kwh</div>
+        <div class="col-md-12">Thành tiền: ${electricityBill} * ${differenceElectricity} = ${totalElectricity} VNĐ</div>
+    </div>
+    <hr>
+`;
+
+			var waterDetails = `
+    <div class="row pb-1">
+        <p class="fw-bold">- Tiền nước: </p>
+        <div class="col-md-12">Chỉ số nước mới: ${newWaterIndex} m³</div>
+        <div class="col-md-12">Chỉ số nước cũ: ${oldWaterIndex} m³</div>
+        <div class="col-md-12">Chỉ số nước chênh lệch: ${differenceWater} m³</div>
+        <div class="col-md-12">Thành tiền: ${waterBill} * ${differenceWater} = ${totalWater} VNĐ</div>
+    </div>
+    <hr>
+`;
+
+			var otherDetails = `
+    <div class="row pb-3">
+        <div class="col-md-12">Giá wifi: ${wifiBill} VNĐ</div>
+        <div class="col-md-12">Giá phòng: ${roomBill} VNĐ</div>
+    </div>
+`;
+
+			var totalPriceTable = `
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Loại</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tiền điện</td>
+                <td>${differenceElectricity} kwh</td>
+                <td>${totalElectricity} VNĐ</td>
+            </tr>
+            <tr>
+                <td>Tiền nước</td>
+                <td>${differenceWater} m³</td>
+                <td>${totalWater} VNĐ</td>
+            </tr>
+            <tr>
+                <td>Giá wifi</td>
+                <td>1</td>
+                <td>${wifiBill} VNĐ</td>
+            </tr>
+            <tr>
+                <td>Giá phòng</td>
+                <td>1</td>
+                <td>${roomBill} VNĐ</td>
+            </tr>
+        </tbody>
+    </table>
+`;
+
+			// var totalPrice = totalElectricity + totalWater + wifiBill + roomBill;
+			var totalPriceHTML = `<p class="fw-bold">Tổng tiền: ${totalPrice} VNĐ</p>`;
+
+			// Clear previous content
+			modalBody.innerHTML = '';
+
+			// Append new content
+			modalBody.innerHTML += '<p class="fw-bold text-center">Phòng: ' + motelRoom + '</p>';
+			modalBody.innerHTML += electricityDetails;
+			modalBody.innerHTML += waterDetails;
+			modalBody.innerHTML += otherDetails;
+			modalBody.innerHTML += totalPriceTable;
+			modalBody.innerHTML += totalPriceHTML;
+
+
+			// var modalBody = document.querySelector('#exampleModalCenter .modal-body');
+			// modalBody.innerHTML = '<p class="fw-bold text-center">Phòng: ' + motelRoom + '</p>' + '<div class="row pb-3">' +
+			// 	'<p class="fw-bold">- Tiền điện: ' + '</p>' +
+			// 	'<div class="col-md-12">Chỉ số điện mới: ' + newElectricityIndex + ' kwh</div>' +
+			// 	'<div class="col-md-12">Chỉ số điện cũ: ' + oldElectricityIndex + ' kwh</div>' +
+			// 	'<div class="col-md-12">Chỉ số điện chênh lệch: ' + differenceElectricity + ' kwh</div>' +
+			// 	'<div class="col-md-12">Thành tiền: ' + electricityBill + ' * ' + differenceElectricity + ' = ' + totalElectricity + ' VNĐ</div>' +
+			// 	'</div>' +
+			// 	'<hr>' +
+			// 	'<div class="row pb-1">' +
+			// 	'<p class="fw-bold">- Tiền nước: ' + '</p>' +
+			// 	'<div class="col-md-12">Chỉ số nước mới: ' + newWaterIndex + ' m³</div>' +
+			// 	'<div class="col-md-12">Chỉ số nước cũ: ' + oldWaterIndex + ' m³</div>' +
+			// 	'<div class="col-md-12">Chỉ số nước chênh lệch: ' + differenceWater + ' m³</div>' +
+			// 	'<div class="col-md-12">Thành tiền: ' + waterBill + ' * ' + differenceWater + ' = ' + totalWater + ' VNĐ</div>' +
+			// 	'</div>' +
+			// 	'<hr>' +
+			// 	'<div class="row pb-3">' +
+			// 	'<div class="col-md-12">Giá wifi: ' + wifiBill + ' VNĐ</div>' +
+			// 	'<div class="col-md-12">Giá phòng:' + roomBill + ' VNĐ</div>' +
+			// 	'</div>' +
+			// 	'<p class="fw-bold">Tổng tiền: ' + totalElectricity + ' + ' + totalWater + ' + ' + wifiBill + ' + ' + roomBill + ' = ' + totalPrice + ' VNĐ</p>';
 		});
 	});
 

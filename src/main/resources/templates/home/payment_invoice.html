@@ -29,12 +29,17 @@
 							<form class="signin-form mx-1 mx-md-4">
 								<div class="row justify-content-center signin ">
 									<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-2">Thông Tin Hóa Đơn</p>
+									<a class="" th:href="@{|/history-invoice/${#request.remoteUser}|}">
+										Xem lịch sử hóa đơn
+									</a>
 								</div>
 								<div th:unless="${hideForm}">
 									<div th:each="invoices, index : ${invoicess}" class="py-4">
 										<p class="text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-2">Thông Tin Hóa Đơn
-											<span th:text="${index.count}"></span>
+											<span
+												th:text="${#dates.format(invoices.createDate, 'dd - MM - yyyy')}"></span>
 										</p>
+
 										<div class="row mb-3">
 											<div class="col-md-6">
 												<label for="fullName" class="form-label">Họ Tên</label>

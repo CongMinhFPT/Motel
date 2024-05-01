@@ -12,6 +12,9 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     @Query(nativeQuery = true, value = "select * from invoice a inner join renter b on a.renter_id = b.renter_id inner join accounts c on b.account_id = c.account_id inner join invoice_status d on a.invoice_status_id = d.invoice_status_id where c.email = :email AND (d.invoice_status_id = 2 OR d.invoice_status_id = 3)")
     List<Invoice> findByAccountEmail(@Param("email") String email);
 
+    @Query(nativeQuery = true, value = "select * from invoice a inner join renter b on a.renter_id = b.renter_id inner join accounts c on b.account_id = c.account_id inner join invoice_status d on a.invoice_status_id = d.invoice_status_id where c.email = :email AND d.invoice_status_id = 1")
+    List<Invoice> findByAccountEmailStatus(@Param("email") String email);
+
     @Query(nativeQuery = true, value = "SELECT SUM(total_price) AS totalRevenue FROM invoice WHERE DATEPART(YEAR, create_date) = 2024 GROUP BY DATEPART(MONTH, create_date)")
     List<Object> getRevenueByMonth();
 

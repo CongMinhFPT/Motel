@@ -43,19 +43,19 @@
 										<div class="d-flex action-button pe-3">
 											<a href="javascript:void(0);" data-toggle="modal"
 												data-target="#exampleModalCenter" type="button"
-												class="btn btn-success btn-xs light btn-view-details" th:attr="data-old-electricity-index=${#numbers.formatDecimal(invoice.oldElectricityIndex, 0, 'WHITESPACE', 0, 'POINT')}, 
-												data-new-electricity-index=${#numbers.formatDecimal(invoice.newElectricityIndex, 0, 'WHITESPACE', 0, 'POINT')},
-												data-old-water-index=${#numbers.formatDecimal(invoice.oldWaterIndex, 0, 'WHITESPACE', 0, 'POINT')},
-												data-new-water-index=${#numbers.formatDecimal(invoice.newWaterIndex, 0, 'WHITESPACE', 0, 'POINT')},
-												data-total-price=${#numbers.formatDecimal(invoice.totalPrice, 0, 'WHITESPACE', 0, 'POINT')},
-												data-electricity-bill=${#numbers.formatDecimal(invoice.renter.motelRoom.electricityCash[0].electricityBill, 0, 'WHITESPACE', 0, 'POINT')},
-												data-water-bill=${#numbers.formatDecimal(invoice.renter.motelRoom.waterCash[0].waterBill, 0, 'WHITESPACE', 0, 'POINT')},
-												data-wifi-bill=${#numbers.formatDecimal(invoice.renter.motelRoom.wifiCash[0].wifiBill, 0, 'WHITESPACE', 0, 'POINT')},
-												data-room-bill=${#numbers.formatDecimal(invoice.renter.motelRoom.roomCash[0].roomBill, 0, 'WHITESPACE', 0, 'POINT')},
-												data-difference-water=${#numbers.formatDecimal(invoice.newWaterIndex - invoice.oldWaterIndex, 0, 'WHITESPACE', 0, 'POINT')},
-												data-difference-electricity=${#numbers.formatDecimal(invoice.newElectricityIndex - invoice.oldElectricityIndex, 0, 'WHITESPACE', 0, 'POINT')},
-												data-total-electricity=${#numbers.formatDecimal((invoice.newElectricityIndex - invoice.oldElectricityIndex) * invoice.renter.motelRoom.electricityCash[0].electricityBill, 0, 'WHITESPACE', 0, 'POINT')},
-												data-total-water=${#numbers.formatDecimal((invoice.newWaterIndex - invoice.oldWaterIndex) * invoice.renter.motelRoom.waterCash[0].waterBill, 0, 'WHITESPACE', 0, 'POINT')},
+												class="btn btn-success btn-xs light btn-view-details" th:attr="data-old-electricity-index=${#numbers.formatDecimal(invoice.oldElectricityIndex, 0, 'COMMA', 0, 'POINT')}, 
+												data-new-electricity-index=${#numbers.formatDecimal(invoice.newElectricityIndex, 0, 'COMMA', 0, 'POINT')},
+												data-old-water-index=${#numbers.formatDecimal(invoice.oldWaterIndex, 0, 'COMMA', 0, 'POINT')},
+												data-new-water-index=${#numbers.formatDecimal(invoice.newWaterIndex, 0, 'COMMA', 0, 'POINT')},
+												data-total-price=${#numbers.formatDecimal(invoice.totalPrice, 0, 'COMMA', 0, 'POINT')},
+												data-electricity-bill=${#numbers.formatDecimal(invoice.renter.motelRoom.electricityCash[0].electricityBill, 0, 'COMMA', 0, 'POINT')},
+												data-water-bill=${#numbers.formatDecimal(invoice.renter.motelRoom.waterCash[0].waterBill, 0, 'COMMA', 0, 'POINT')},
+												data-wifi-bill=${#numbers.formatDecimal(invoice.renter.motelRoom.wifiCash[0].wifiBill, 0, 'COMMA', 0, 'POINT')},
+												data-room-bill=${#numbers.formatDecimal(invoice.renter.motelRoom.roomCash[0].roomBill, 0, 'COMMA', 0, 'POINT')},
+												data-difference-water=${#numbers.formatDecimal(invoice.newWaterIndex - invoice.oldWaterIndex, 0, 'COMMA', 0, 'POINT')},
+												data-difference-electricity=${#numbers.formatDecimal(invoice.newElectricityIndex - invoice.oldElectricityIndex, 0, 'COMMA', 0, 'POINT')},
+												data-total-electricity=${#numbers.formatDecimal((invoice.newElectricityIndex - invoice.oldElectricityIndex) * invoice.renter.motelRoom.electricityCash[0].electricityBill, 0, 'COMMA', 0, 'POINT')},
+												data-total-water=${#numbers.formatDecimal((invoice.newWaterIndex - invoice.oldWaterIndex) * invoice.renter.motelRoom.waterCash[0].waterBill, 0, 'COMMA', 0, 'POINT')},
 												data-motelRoom=${invoice.renter.motelRoom.descriptions}">
 												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 													fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">

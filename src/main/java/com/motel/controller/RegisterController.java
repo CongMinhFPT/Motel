@@ -83,19 +83,19 @@ public class RegisterController {
 
 	@Autowired
 	InvoiceStatusRepository invoiceStatusRepository;
-	
-	@Autowired 
+
+	@Autowired
 	ManageMotelImpl filemanage;
 
 	private static String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
 
 	private static Map<String, Account> codeMap = new HashMap<>();
 	private static Map<String, String> confirmationCodes = new HashMap<>();
-	
+
 	private static String generateCode() {
-		return UUID.randomUUID().toString().substring(0,6);
+		return UUID.randomUUID().toString().substring(0, 6);
 	}
-	
+
 	@GetMapping("/signup")
 	public String Signup(@ModelAttribute("accounts") Account account) {
 		return "home/signup";
@@ -158,8 +158,6 @@ public class RegisterController {
 			return "home/signup";
 		}
 
-
-
 		String confirmationCode = generateCode();
 		codeMap.put(confirmationCode, account);
 		System.out.println("Mã xác nhận: " + confirmationCode);
@@ -173,55 +171,56 @@ public class RegisterController {
 
 		return "home/signup";
 	}
-	
+
 	@GetMapping("/confirmSignup")
 	public String show() {
 		return "home/confirmSignup";
 	}
-	
+
 	@PostMapping("/confirmSignup/save")
-	public String confirmSave(@ModelAttribute("account") Account account, @RequestParam("code") String code, Model model) {
-		
-		if(code.isBlank()) {
+	public String confirmSave(@ModelAttribute("account") Account account, @RequestParam("code") String code,
+			Model model) {
+
+		if (code.isBlank()) {
 			model.addAttribute("code", "Vui lòng nhập mã xác nhận!");
 			return "home/confirmSignup";
 		}
-		
-		if(codeMap.containsKey(code)) {
+
+		if (codeMap.containsKey(code)) {
 			Account confirmAccount = codeMap.get(code);
 			String passpe = pe.encode(confirmAccount.getPassword());
 			System.out.println("PassPE>> " + passpe);
 			confirmAccount.setPassword(passpe);
 			accountsRepository.save(confirmAccount);
-	
+
 			Role staff = roleRepository.findById("CUSTOMER").orElseGet(() -> {
 				Role newRole = new Role();
 				newRole.setId("CUSTOMER");
 				return roleRepository.save(newRole);
 			});
-	
+
 			Authority au = new Authority();
 			au.setAccount(confirmAccount);
 			au.setRole(staff);
 			authorityRepository.save(au);
-			
+
 			mailerService.add(memeMessage -> {
-	            MimeMessageHelper helper = new MimeMessageHelper(memeMessage);
-	            try {
-	                helper.setTo(confirmAccount.getEmail());
-	                helper.setSubject("Nhà Trọ F.E Xin Chào!");
-	                helper.setText("Nhà trọ F.E luôn là lựa chọn tốt nhất. Hân hạnh được phục vụ quí khách! ");
-	            } catch (MessagingException e) {
-	                e.printStackTrace();
-	            }
-	        });
-			
+				MimeMessageHelper helper = new MimeMessageHelper(memeMessage);
+				try {
+					helper.setTo(confirmAccount.getEmail());
+					helper.setSubject("Nhà Trọ F.E Xin Chào!");
+					helper.setText("Nhà trọ F.E luôn là lựa chọn tốt nhất. Hân hạnh được phục vụ quí khách! ");
+				} catch (MessagingException e) {
+					e.printStackTrace();
+				}
+			});
+
 			codeMap.remove(code);
 			model.addAttribute("signup", "Đăng ký thành công!.");
-		}else {
-	        // Hiển thị thông báo lỗi nếu mã xác nhận không hợp lệ
-	        model.addAttribute("signuperr", "Mã xác nhận không hợp lệ.");
-	    }
+		} else {
+			// Hiển thị thông báo lỗi nếu mã xác nhận không hợp lệ
+			model.addAttribute("signuperr", "Mã xác nhận không hợp lệ.");
+		}
 		return "home/confirmSignup";
 	}
 
@@ -377,7 +376,7 @@ public class RegisterController {
 		}
 		return "home/forgot_password";
 	}
-	
+
 	@GetMapping("/confirmForm")
 	public String show(Model model, @RequestParam("email") String email) {
 		Account acc = accountsRepository.getByEmail(email);
@@ -385,10 +384,11 @@ public class RegisterController {
 		model.addAttribute("email", email);
 		return "home/confirmgenerate";
 	}
-	
+
 	@PostMapping("/confirm/{email}")
-	public String Confirm(Model model, @ModelAttribute("acc") Account acount, @RequestParam("code") String code, @PathVariable("email") String email) {
-		if(confirmationCodes.containsKey(email) && confirmationCodes.get(email).equals(code)) {
+	public String Confirm(Model model, @ModelAttribute("acc") Account acount, @RequestParam("code") String code,
+			@PathVariable("email") String email) {
+		if (confirmationCodes.containsKey(email) && confirmationCodes.get(email).equals(code)) {
 			String generatedString = randompassword();
 			System.out.println("Random forgot:>> " + generatedString);
 
@@ -396,15 +396,15 @@ public class RegisterController {
 			acc.setPassword(pe.encode(generatedString));
 			accountsRepository.save(acc);
 			try {
-	            sendEmail(email, generatedString);
-	            model.addAttribute("message", "Vui lòng xem email để lấy lại mật khẩu!");
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            model.addAttribute("messagee", "Đã có lỗi gửi mật khẩu!");
-	        }
+				sendEmail(email, generatedString);
+				model.addAttribute("message", "Vui lòng xem email để lấy lại mật khẩu!");
+			} catch (Exception e) {
+				e.printStackTrace();
+				model.addAttribute("messagee", "Đã có lỗi gửi mật khẩu!");
+			}
 		} else {
-	        model.addAttribute("messagee", "Mã xác nhận không đúng!");
-	    }
+			model.addAttribute("messagee", "Mã xác nhận không đúng!");
+		}
 		return "home/confirmGenerate";
 	}
 
@@ -425,17 +425,17 @@ public class RegisterController {
 		String acc = authentication.getName();
 		model.addAttribute("acc", acc);
 		if (photo != null && !photo.isEmpty()) {
-			MultipartFile[] files = new MultipartFile[]{photo};
+			MultipartFile[] files = new MultipartFile[] { photo };
 			String nameImage = filemanage.ImgSave("CustomerImg", files);
 			account.setAvatar(nameImage);
-//			try {
-//				String fileName = photo.getOriginalFilename();
-//				Path fileNameAnPath = Paths.get(UPLOAD_DIRECTORY, fileName);
-//				Files.write(fileNameAnPath, photo.getBytes());
-//				account.setAvatar(fileName);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
+			// try {
+			// String fileName = photo.getOriginalFilename();
+			// Path fileNameAnPath = Paths.get(UPLOAD_DIRECTORY, fileName);
+			// Files.write(fileNameAnPath, photo.getBytes());
+			// account.setAvatar(fileName);
+			// } catch (Exception e) {
+			// e.printStackTrace();
+			// }
 		} else {
 			String photoname = acccurrent.getAvatar();
 			account.setAvatar(photoname);
@@ -534,7 +534,7 @@ public class RegisterController {
 			}
 		});
 	}
-	
+
 	@GetMapping("/payment/{email}")
 	public String payment(@PathVariable("email") String email, Model model) {
 		List<Invoice> invoices = invoiceRepository.findByAccountEmail(email);
@@ -545,6 +545,15 @@ public class RegisterController {
 			model.addAttribute("invoicess", invoices);
 		}
 		return "/home/payment_invoice";
+	}
+
+	@GetMapping("/history-invoice/{email}")
+	public String historyInvoice(@PathVariable("email") String email, Model model) {
+		List<Invoice> invoices = invoiceRepository.findByAccountEmailStatus(email);
+
+		model.addAttribute("invoices", invoices);
+
+		return "/home/history_invoice";
 	}
 
 	@GetMapping("/payment_infor")

@@ -136,9 +136,7 @@
 		text: changeMessage,
 		showConfirmButton: false,
 		timer: 1500
-	}).then(() => {
-		window.location.href = '/index';
-	});
+	})
 </script>
 <script th:if="${not #strings.isEmpty(signin)}" th:inline="javascript">
 	var changeMessage = /*[[${signin}]]*/ '';

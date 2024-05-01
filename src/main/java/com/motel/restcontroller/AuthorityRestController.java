@@ -38,7 +38,7 @@ public class AuthorityRestController {
 	public Map<String, Object> getAuthority(){
 		Map<String, Object> data = new HashMap<>();
 		data.put("authorities", authorityRepository.findAll());
-		data.put("accounts", accountsRepository.findAll());
+		data.put("accounts", accountsRepository.findAllAccount());
 		data.put("roles", roleRepository.findAllRole());
 		return data;
 	}

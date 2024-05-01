@@ -127,6 +127,9 @@ $scope.getData = function() {
 };
 
 $scope.filterItemsdistrict = function () {
+    $scope.ward = null;
+    $scope.wards = []; 
+    $scope.selectedWardName ='';
     if (!$scope.district || !$scope.districts || $scope.districts.length === 0) {         
         $scope.selectedDistrictName = '';
     } else {

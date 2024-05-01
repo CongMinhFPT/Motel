@@ -26,6 +26,30 @@
 		});
 	}
 </script>
+<!--Thêm người dùng từ owner-->
+<script th:if="${not #strings.isEmpty(signupow)}" th:inline="javascript">
+	var changeMessage = /*[[${signupow}]]*/ '';
+	Swal.fire({
+		title: "Thành công!",
+		text: changeMessage,
+		icon: "success"
+	}).then(() => {
+		window.location.href = '/admin/renter';
+	});
+</script>
+<script th:if="${not #strings.isEmpty(signupinfow)}" th:inline="javascript">
+	var changeMessage = /*[[${signupinfow}]]*/ '';
+	Swal.fire({
+		icon: "info",
+		title: "Xác nhận!",
+		text: changeMessage,
+		showConfirmButton: false,
+		timer: 1500
+	}).then(() => {
+		var email = /*[[${email1}]]*/ '';
+		window.location.href = '/confirmCusow';
+	});
+</script>
 <!--Thêm người dùng-->
 <script th:if="${not #strings.isEmpty(signup)}" th:inline="javascript">
 	var changeMessage = /*[[${signup}]]*/ '';

@@ -9,6 +9,4 @@ import com.motel.entity.Authority;
 
 public interface AuthorityRepository extends JpaRepository<Authority, Integer>{
 
-	@Query(nativeQuery = true, value ="SELECT * FROM authorities WHERE role_id = 'MANAGER' OR role_id = 'STAFF'")
-	List<Authority> findAllAutho();
 }

@@ -93,6 +93,16 @@
 		window.location.href = '/customerList';
 	});
 </script>
+<script th:if="${not #strings.isEmpty(update1)}" th:inline="javascript">
+	var changeMessage = /*[[${update1}]]*/ '';
+	Swal.fire({
+		title: "Thành công!",
+		text: changeMessage,
+		icon: "success"
+	}).then(() => {
+		window.location.href = '/customerList';
+	});
+</script>
 <script th:if="${not #strings.isEmpty(updateerr)}" th:inline="javascript">
 	var changeMessage = /*[[${updateerr}]]*/ '';
 	Swal.fire({

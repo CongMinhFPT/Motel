@@ -33,8 +33,9 @@
 										<div class="col-lg-6">
 											<p class="text-center">Xin chào, <b th:text="${id}"></b>!</p>
 											<div class="form-group form-float">
+												<label class="form-label fw-bold" for="form3Example2c">Hình xác minh</label>
 												<div class="form-line">
-													<label class="form-label fw-bold" for="form3Example2c">Hình xác minh</label>
+													
 													<img th:src="@{|/files/CustomerImg/${request.avatar}|}"
 														id="imagePreview" class="img-fluid rounded-3 mb-3" alt=""
 														style="height: 200px;">

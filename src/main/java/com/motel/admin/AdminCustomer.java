@@ -387,11 +387,36 @@ public class AdminCustomer {
 		try {
 			sendConfirm(account.getEmail(), confirm);
 			model.addAttribute("updateinfo", "Vui lòng xem email để lấy mã xác nhận!");
+			System.out.println("confirm>> " + confirm);
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("updateerr", "Lỗi gửi mã xác nhận!");
 		}
 		return "admin/customers/customerForm";
+	}
+	
+	@GetMapping("/confirmCusUp")
+	public String showUp() {
+		return "admin/customers/confirmCusUp";
+	}
+
+	@PostMapping("/confirmCusUpSave")
+	public String saveCusUp(@ModelAttribute("accounts") Account account, @RequestParam("code") String code,
+			Model model) {
+		if (code.isBlank()) {
+			model.addAttribute("code", "Vui lòng nhập mã xác nhận!");
+			return "admin/customers/confirmCusUp";
+		}
+		if (codeMap.containsKey(code)) {
+			Account confirmCus = codeMap.get(code);
+			accountsRepository.save(confirmCus);
+			codeMap.remove(code);
+			model.addAttribute("update", "Cập nhật thành công!.");
+		} else {
+			// Hiển thị thông báo lỗi nếu mã xác nhận không hợp lệ
+			model.addAttribute("updateerr", "Mã xác nhận không hợp lệ.");
+		}
+		return "admin/customers/confirmCusUp";
 	}
 	
 	@GetMapping("/editActive/{id}")
@@ -421,31 +446,8 @@ public class AdminCustomer {
 		account.setCreateDate(date);
 		account.setGender(gender);
 		accountsRepository.save(account);
-		return "redirect:/customerList";
-	}
-	
-	@GetMapping("/confirmCusUp")
-	public String showUp() {
-		return "admin/customers/confirmCusUp";
-	}
-
-	@PostMapping("/confirmCusUpSave")
-	public String saveCusUp(@ModelAttribute("accounts") Account account, @RequestParam("code") String code,
-			Model model) {
-		if (code.isBlank()) {
-			model.addAttribute("code", "Vui lòng nhập mã xác nhận!");
-			return "admin/customers/confirmCusUp";
-		}
-		if (codeMap.containsKey(code)) {
-			Account confirmCus = codeMap.get(code);
-			accountsRepository.save(confirmCus);
-			codeMap.remove(code);
-			model.addAttribute("update", "Cập nhật thành công!.");
-		} else {
-			// Hiển thị thông báo lỗi nếu mã xác nhận không hợp lệ
-			model.addAttribute("updateerr", "Mã xác nhận không hợp lệ.");
-		}
-		return "admin/customers/confirmCusUp";
+		model.addAttribute("update1", "Cập nhật thành công!.");
+		return "admin/customers/customerActive";
 	}
 	
 	//

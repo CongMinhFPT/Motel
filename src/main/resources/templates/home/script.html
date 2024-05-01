@@ -14,6 +14,34 @@
 <script th:src="@{/js/room.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
 <script th:src="@{/vendor/owlcarousel/owl.carousel.min.js}"></script>
+<!--Đăng xuất-->
+<script>
+	var logoutButton = document.getElementById('logoutButton');
+	logoutButton.onclick = function (e) {
+		Swal.fire({
+			title: "Xác Nhận!",
+			text: "Bạn có muốn đăng xuất!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Đăng xuất",
+			cancelButtonText: "Không"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					icon: "success",
+					title: "Thành công!",
+					text: "Đăng xuất thành công!",
+					showConfirmButton: false,
+					timer: 1500
+				}).then(() => {
+					window.location.href = '/auth/logoff';
+				});
+			}
+		});
+	}
+</script>
 
 <script th:inline="javascript">
 	var paymentSuccess = /*[[${paymentSuccess}]]*/ false;

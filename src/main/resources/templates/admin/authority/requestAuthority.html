@@ -26,7 +26,7 @@
 								<tr>
 									<th class="p-3 text-center">STT</th>
 									<th class="p-3 text-center">HÌNH</th>
-									<th class="p-3 text-center">SỐ THUẾ</th>
+									
 									<th class="p-3 text-center">EMAIL</th>
 									<th class="p-3 text-center">NỘI DUNG YÊU CẦU</th>
 									<th class="p-3 text-center">NGÀY GỬI</th>
@@ -47,9 +47,7 @@
 												class="img-fluid mr-2" alt="" onclick="openCustomModal(this.src)">
 										</div>
 									</td>
-									<td class="p-3 text-center">
-										<h6 th:text="${re.tax_code}"></h6>
-									</td>
+								
 									<td class="p-3 text-center">
 										<h6 th:text="${re.account.email}"></h6>
 									</td>
@@ -175,7 +173,8 @@
 			});
 		}
 	</script>
-
+	
+	
 	<script>
 		function openCustomModal(src) {
 			// Tạo một custom-modal element

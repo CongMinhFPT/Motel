@@ -64,6 +64,8 @@ public class AdminRequestAuthorityController {
 		RequestAuthority req = requestAuthorityRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Username không tồn tại: " + id));
 		model.addAttribute("request", req);
+		int count = requestAuthorityRepository.findRequestCount();
+		model.addAttribute("requestCount", count);
 		manageMotelImpl.SetModelMotel(model);
 		return "admin/authority/requestAuthorityFrom";
 	}
@@ -96,13 +98,14 @@ public class AdminRequestAuthorityController {
 		Account acc = req.getAccount();
 		String des = req.getDescriptions();
 		String email = acc.getEmail();
+		String avatar = req.getAvatar();
 
 		// Cập nhật các trường của requestAuthority
 		requestAuthority.setDescriptions(des);
 		requestAuthority.setAccount(acc);
 		requestAuthority.setResponseDate(new Date());
 		requestAuthority.setRequestAuthorityStatus(reS);
-
+		requestAuthority.setAvatar(avatar);
 		sendMail(email, respdes);
 
 		// Lưu RequestAuthority đã cập nhật

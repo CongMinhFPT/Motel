@@ -266,7 +266,7 @@ public class RegisterController {
 			// Nếu tài khoản đã tồn tại, không cần tạo mới, sử dụng tài khoản hiện có để
 			// đăng nhập
 			model.addAttribute("auth", "Đăng nhập thành công!");
-			return "home/signin";
+			return "redirect:/index";
 		}
 
 		// Nếu tài khoản chưa tồn tại, tạo một tài khoản mới và lưu vào CSDL
@@ -291,7 +291,7 @@ public class RegisterController {
 		authorityRepository.save(au);
 
 		model.addAttribute("auth", "Đăng nhập thành công!");
-		return "home/signin";
+		return "redirect:/index";
 	}
 
 	@GetMapping("/change")

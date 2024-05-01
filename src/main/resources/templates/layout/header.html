@@ -35,6 +35,7 @@
 
 							<li><a class="dropdown-item" th:href="@{|/information/${#request.remoteUser}|}">Thông
 									tin</a></li>
+							<li><a class="dropdown-item" th:href="@{|/texting/${'=?'}|}" th:if="${#request.isUserInRole('CUSTOMER')}">Nhắn tin</a></li>
 							<li><a class="dropdown-item" th:href="@{/change}">Thay đổi mật khẩu</a></li>
 							<!--<li><a class="dropdown-item" th:href="@{|/texting/${'=?'}|}">Nhắn tin</a></li>-->
 							<li><a class="dropdown-item" th:href="@{|/payment/${#request.remoteUser}|}"
@@ -42,7 +43,7 @@
 									đơn</a></li>
 							<li><a class="dropdown-item" th:href="@{/favorite}"
 									th:if="${#request.isUserInRole('CUSTOMER')}">Trang yêu thích</a></li>
-
+							 
 							<li><a class="dropdown-item" th:href="@{/request}"
 									th:if="${#request.isUserInRole('CUSTOMER')}">Yêu cầu cấp quyền</a></li>
 							<li><a class="dropdown-item" th:href="@{/requestList}"

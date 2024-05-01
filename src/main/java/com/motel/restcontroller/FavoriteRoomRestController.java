@@ -32,6 +32,9 @@ public class FavoriteRoomRestController {
 
     @Autowired
     MotelRoomService motelRoomService;
+    
+    @Autowired
+    FavoriteRoomRepository favoriteRoomRepository;
 
     @PostMapping("/api/addFavoriteRoom/{accountId}/{motelRoomId}")
     public ResponseEntity<FavoriteRoom> addFavoriteRoom(@PathVariable("accountId") Integer accountId,
@@ -45,9 +48,9 @@ public class FavoriteRoomRestController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/api/listFavoriteRoom")
-    public ResponseEntity<List<Post>> getPagedProducts() {
-        List<Post> favoriteRoomPage = favoriteRoomService.getPagedFavoriteRooms();
+    @GetMapping("/api/listFavoriteRoom/{account_id)")
+    public ResponseEntity<List<FavoriteRoom>> getPagedProducts(@PathVariable("account_id") Integer account_id) {
+        List<FavoriteRoom> favoriteRoomPage = favoriteRoomRepository.findFavoriteRoomByAccount(account_id);
         return ResponseEntity.ok(favoriteRoomPage);
     }
 

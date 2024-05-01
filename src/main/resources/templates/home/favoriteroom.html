@@ -50,64 +50,64 @@
             </div>
             <div class="p-5">
                 <div class="card mb-3" style="background-color: #fff; color: #000"
-                    ng-repeat="favoriteRoom in favoriteRooms">
+                    th:each=" favoriteRoom : ${favoriteRooms}">
                     <div class="row g-0">
                         <div class="col-lg-4 p-2">
-                            <img class="img-fluid" style="height: 100%" th:src="@{/img/phong tro.jpg}" alt="" />
+                            <img class="img-fluid" style="height: 100%" th:src="@{|/files/ImgMotelRoom/${favoriteRoom.motelRoom.image[0].name}|}" alt="" />
                         </div>
                         <div class="col-lg-8">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-10">
-                                        <a ng-href="/room-details/{{ favoriteRoom.postId }}"
-                                            class="text-decoration-none text-dark">
-                                            <p class="card-text">{{favoriteRoom.title}}</p>
-                                        </a>
+                                            <p class="card-text">[[${favoriteRoom.motelRoom.motel.descriptions}]]</p>
+                                            <p class="card-text">[[${favoriteRoom.motelRoom.descriptions}]]</p>
                                     </div>
                                     <div class="col-2">
                                         <img class="" style="max-width: 75%; max-height: 75%;"
                                             th:src="@{/img/icons8-heart-50-red.png}"
-                                            ng-click="deleteFavoriteRoom(favoriteRoom.motelRoom.favoriteRoom[0].favoriteRoomId)"
+                                             th:attr="ng-click=@{|deleteFavoriteRoom(${favoriteRoom.favoriteRoomId})|}"
+                                            
                                             id="img" alt="" />
                                     </div>
                                 </div>
                                 <h4 class="card-title mt-1">
-                                    {{favoriteRoom.motelRoom.roomCash[0].roomBill}} triệu/tháng</h4>
+                                    [[${#numbers.formatDecimal(favoriteRoom.motelRoom.roomCash[0].roomBill, 0, 'COMMA', 0, 'POINT')}]] đ/tháng</h4>
                                 <div class="row py-0 p-0">
                                     <div class="col-4 card-text">
                                         <img class="" style="max-height: 30% ; max-width: 30%;"
                                             th:src="@{/img/block.png}" alt="" />
-                                        Diện tích: {{favoriteRoom.motelRoom.length*favoriteRoom.motelRoom.width}}
+                                        Diện tích: [[ ${#numbers.formatDecimal(favoriteRoom.motelRoom.length * favoriteRoom.motelRoom.width, 0, 'COMMA', 0, 'POINT')}]] m²
                                     </div>
                                     <div class="col-4 card-text">
                                         <img class="" style="max-height: 30% ; max-width: 30%;"
-                                            th:src="@{/img/double-bed.png}" alt="" />
-                                        {{ favoriteRoom.motelRoom.categoryRoom.title}}
+                                            th:src="@{/img/double-bed.png}" alt="" /> Số người ở: 
+                                        [[ ${ favoriteRoom.motelRoom.categoryRoom.quantity}]]
                                     </div>
-                                    <div class="col-4 card-text">
+                                    <div class="col-4 card-text" th:if="${favoriteRoom.motelRoom.wifiCash[0].wifiBill == 0}">
                                         <img class="" style="max-height: 30% ; max-width: 30%;"
                                             th:src="@{/img/wifi.png}" alt="" />
-                                        {{ favoriteRoom.motelRoom.wifiCash[0].wifiBill == 0 ?
-                                        0:favoriteRoom.motelRoom.wifiCash[0].wifiBill}} VND
+                                            Miễn Phí Wifi
+                                    </div>
+                                    <div class="col-4 card-text" th:unless="${favoriteRoom.motelRoom.wifiCash[0].wifiBill == 0}">
+                                        <img class="" style="max-height: 30% ; max-width: 30%;"
+                                            th:src="@{/img/wifi.png}" alt="" />
+                                        [[${#numbers.formatDecimal(favoriteRoom.motelRoom.wifiCash[0].wifiBill, 0, 'COMMA', 0, 'POINT')}]] đ
                                     </div>
                                 </div>
                                 <div class="card-person py-0 p-0">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <h6 class="card-text mb-0 createDate">
-                                                {{favoriteRoom.createDate
-                                                |
-                                                date:'dd-MM-yyyy' }}</h6>
+                                            <h6 class="card-text mb-0 createDate">[[${#dates.format(favoriteRoom.createDate, 'dd - MM - yyyy')}]]</h6>
                                         </div>
                                         <div class="col-lg-6">
                                             <h6 class="card-text ward d-inline-block">
-                                                {{favoriteRoom.motelRoom.motel.ward}}
+                                                [[ ${favoriteRoom.motelRoom.motel.ward}]]
                                             </h6>,
                                             <h6 class="card-text district d-inline-block">
-                                                {{favoriteRoom.motelRoom.motel.district}}
+                                                [[ ${favoriteRoom.motelRoom.motel.district}]]
                                             </h6>,
                                             <h6 class="card-text city d-inline-block ml-2">
-                                                {{favoriteRoom.motelRoom.motel.province}}</h6>
+                                                [[ ${favoriteRoom.motelRoom.motel.province}]]</h6>
                                         </div>
                                     </div>
                                 </div>

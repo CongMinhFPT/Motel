@@ -43,9 +43,9 @@
 	}
 </script>
 <script th:inline="javascript">
-	function confirmDelete(renterId) {
+	function confirmDeleteRenter(renterId) {
 		Swal.fire({
-			title: 'Bạn có chắc chắn muốn xóa?',
+			title: 'Bạn có chắc chắn muốn trả phòng cho người thuê này?',
 			text: "Hành động này không thể hoàn tác!",
 			icon: 'warning',
 			showCancelButton: true,
@@ -65,7 +65,7 @@
 
 	function confirmAndDeleteRenter(motelRoomId) {
 		Swal.fire({
-			title: 'Bạn có chắc chắn muốn xóa?',
+			title: 'Bạn có chắc chắn muốn trả phòng cho phòng trọ này?',
 			text: "Khi xóa thì tất cả các chỉ số liên quan đến phòng sẽ bị xóa!",
 			icon: 'warning',
 			showCancelButton: true,

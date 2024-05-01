@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -392,7 +393,37 @@ public class AdminCustomer {
 		}
 		return "admin/customers/customerForm";
 	}
-
+	
+	@GetMapping("/editActive/{id}")
+	public String showEditActive(Model model, @PathVariable("id") Integer id, @ModelAttribute("account") Account account) {
+		Account cus = accountService.getById(id);
+		model.addAttribute("account", cus);
+		return "admin/customers/customerActive";
+	}
+	
+	@PostMapping("/editActive/{accountId}")
+	public String submitActive(@PathVariable("accountId") Integer accountId, Model model, @ModelAttribute("account") Account account) {
+		Account id = accountsRepository.getById(accountId);
+		String fullname = id.getFullname();
+		String phone = id.getPhone();
+		String email = id.getEmail();
+		String password = id.getPassword();
+		String avatar = id.getAvatar();
+		String citizen = id.getCitizen();
+		Date date = id.getCreateDate();
+		boolean gender = id.isGender();
+		account.setFullname(fullname);
+		account.setPhone(phone);
+		account.setEmail(email);
+		account.setPassword(password);
+		account.setAvatar(avatar);
+		account.setCitizen(citizen);
+		account.setCreateDate(date);
+		account.setGender(gender);
+		accountsRepository.save(account);
+		return "redirect:/customerList";
+	}
+	
 	@GetMapping("/confirmCusUp")
 	public String showUp() {
 		return "admin/customers/confirmCusUp";

@@ -62,8 +62,8 @@ app.controller('favoriteRoomCtrl', function ($scope, $http, $timeout, $rootScope
 
     $scope.favoriteRooms = [];
 
-    $scope.getFavoriteRoom = function () {
-        var url = '/api/listFavoriteRoom';
+    $scope.getFavoriteRoom = function (account_id) {
+        var url = '/api/listFavoriteRoom/'+account_id;
         $http.get(url)
             .then(function (response) {
                 $scope.favoriteRooms = response.data;
@@ -73,5 +73,4 @@ app.controller('favoriteRoomCtrl', function ($scope, $http, $timeout, $rootScope
             })
     };
 
-    $scope.getFavoriteRoom();
 })

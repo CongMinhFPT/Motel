@@ -14,9 +14,12 @@ public interface FavoriteRoomRepository extends JpaRepository<FavoriteRoom, Inte
     @Query(nativeQuery = true, value = "select * from favorite_room where motel_room_id = :motel_room_id")
     Page<FavoriteRoom> findByFavoriteRoom(@Param("motel_room_id") Integer motelRoomId, Pageable pageable);
 
-    @Query(nativeQuery = true, value = "SELECT COUNT(*) AS total_favorites FROM motel_room m INNER JOIN favorite_room f ON m.motel_room_id = f.motel_room_id WHERE f.create_date = GETDATE()")
+    @Query(nativeQuery = true, value = "SELECT COUNT(*) AS total_favorites FROM motel_room m INNER JOIN favorite_room f ON m.motel_room_id = f.motel_room_id WHERE f.create_date = CONVERT(DATE, GETDATE())")
     Object findFavoriteToDay();
 
     @Query(nativeQuery = true, value = "SELECT m.descriptions, COUNT(*) AS total_favorites FROM motel_room m INNER JOIN favorite_room f ON m.motel_room_id = f.motel_room_id  GROUP BY m.descriptions")
     List<Object> findFavoriteToDayMotelRoom();
+    
+    @Query(nativeQuery = true, value = "select * from favorite_room where account_id = :account_id")
+    List<FavoriteRoom> findFavoriteRoomByAccount(@Param("account_id") Integer account_id);
 }

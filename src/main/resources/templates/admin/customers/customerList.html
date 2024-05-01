@@ -24,9 +24,9 @@
 						</div>
 					</form>
 
-					<a href="javascript:void(0);" class="btn btn-info light mr-3"><i
+					<!--<a href="javascript:void(0);" class="btn btn-info light mr-3"><i
 							class="las la-download scale3 mr-2"></i>In Danh Sách</a>
-					<a th:href="@{/add}" class="btn btn-info">+ Thêm Người Dùng</a>
+					<a th:href="@{/add}" class="btn btn-info">+ Thêm Người Dùng</a>-->
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
@@ -111,8 +111,8 @@
 											</a>
 										</div>
 										<div class="d-flex action-button" th:unless="${cus.active}">
-											<a th:href="@{/edit/{id}(id=${cus.accountId})}"
-												class="btn btn-info btn-xs light px-2 d-none">
+											<a th:href="@{/editActive/{id}(id=${cus.accountId})}"
+												class="btn btn-info btn-xs light px-2">
 												<svg width="20" height="20" viewbox="0 0 24 24" fill="none"
 													xmlns="http://www.w3.org/2000/svg">
 													<path

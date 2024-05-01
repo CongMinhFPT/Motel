@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" th:replace="~{/admin/layout/layout :: dynamic(~{::body})}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<div class="content-body">
+		<div class="container-fluid">
+			<div class="card">
+				<div class="card-header d-sm-flex d-block">
+					<div class="mr-auto mb-sm-0 mb-3">
+						<h4 class="card-title mb-2">Cập nhật trang thái</h4>
+						<!--<span>Lorem Ipsum sit amet</span>-->
+					</div>
+				</div>
+				<div class="card-body">
+					<form class="signin-form mx-1 mx-md-4"
+						th:action="@{/editActive/{accountId}(accountId=${account.accountId})}" th:object="${account}"
+						enctype="multipart/form-data" method="post">
+						<div class="row signin ">
+
+							<div class="col-6 d-flex flex-row align-items-center mb-3">
+								<div class="form-outline flex-fill mb-0">
+									<label class="form-label fw-bold" for="form3Example2c">Trạng thái</label>
+									<br>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="inlineRadioOptions1"
+											id="inlineRadio11" value="true"  th:field="*{active}" required>
+										<label class="form-check-label" for="inlineRadio11">Hoạt động</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="radio" name="inlineRadioOptions1"
+											id="inlineRadio12" value="false" th:field="*{active}" required>
+										<label class="form-check-label" for="inlineRadio12">Ngừng hoạt
+											động</label>
+									</div>
+
+								</div>
+							</div>
+							<div>
+								<button class="btn btn-secondary rounded-3">Cập nhật</button>
+								<a th:href="@{/customerList}" class="btn btn-secondary rounded-3">Quay về danh
+									sách</a>
+							</div>
+
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+	<!--information-->
+	<script th:if="${not #strings.isEmpty(update)}" th:inline="javascript">
+		var changeMessage = /*[[${update}]]*/ '';
+		Swal.fire({
+			icon: "success",
+			title: "Thành công!",
+			text: changeMessage,
+			showConfirmButton: false,
+			timer: 1500
+		});
+	</script>
+	<script>
+		document.getElementById('uploadInput').addEventListener('change', function () {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				document.getElementById('imagePreview').src = e.target.result;
+			}
+			reader.readAsDataURL(this.files[0]);
+		});
+	</script>
+</body>
+
+</html>

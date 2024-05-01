@@ -59,7 +59,7 @@ public class MotelRoom {
   List<Image> image;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")
-  @JsonManagedReference
+  @JsonIgnore
   List<FavoriteRoom> favoriteRoom;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "motelRoom")

@@ -16,6 +16,7 @@ import com.motel.repository.RenterRepository;
 import com.motel.repository.RequestAuthorityRepository;
 import com.motel.entity.Account;
 import com.motel.entity.CustomUserDetails;
+import com.motel.entity.Invoice;
 import com.motel.entity.Motel;
 import com.motel.entity.MotelRoom;
 import com.motel.entity.Renter;
@@ -99,8 +100,36 @@ public class AdminController {
 					}
 				}
 
+				List<Invoice> invoicesSize = new ArrayList<>();
+
+				for (MotelRoom motelRoom : motelRooms) {
+					for (Renter renter : motelRoom.getRenter()) {
+						for (Invoice invoice : renter.getInvoice()) {
+							if (invoice.getInvoiceStatus().getInvoiceStatusId() == 2) {
+								invoicesSize.add(invoice);
+							}
+
+						}
+					}
+				}
+
+				List<Invoice> invoices = new ArrayList<>();
+
+				for (MotelRoom motelRoom : motelRooms) {
+					for (Renter renter : motelRoom.getRenter()) {
+						for (Invoice invoice : renter.getInvoice()) {
+							if (invoice.getInvoiceStatus().getInvoiceStatusId() == 2) {
+								invoices.add(invoice);
+							}
+
+						}
+					}
+				}
+
 				manageMotelImpl.SetModelMotel(model);
 				model.addAttribute("renters", renters.size());
+				model.addAttribute("invoicesSize", invoicesSize.size());
+				model.addAttribute("invoices", invoices);
 				String emailAccount = authentication.getName();
 				Account account = accountsRepository.getByEmail(emailAccount);
 				model.addAttribute("accountIdStatistic", account.getAccountId());

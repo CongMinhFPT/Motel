@@ -56,9 +56,9 @@
                     <div class="card card-coin  ">
                         <div class="card-body text-center" style="background-color: #eb8153; border-radius: 10px;">
                             <h4 class="text-light mb-2 font-w300">Số Hóa Đơn Chưa Thanh Toán</h4>
-                            <h2 class="text-light mb-2 font-w600">{{invoiceStatus[0] == 0 ? 0 : invoiceStatus[0]}}</h2>
+                            <h2 class="text-light mb-2 font-w600">[[${invoicesSize}]]</h2>
                             <a href="javascript:void(0);" data-toggle="modal" data-target="#exampleModalInvoice"
-                                type="button" class="btn btn-light btn-xs light" ng-click="getInvoiceStatusDetail()">
+                                type="button" class="btn btn-light btn-xs light">
                                 Xem chi tiết
                             </a>
                         </div>
@@ -317,15 +317,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="invoiceStatusDetail in invoiceStatusDetails">
+                                <tr th:each="invoice : ${invoices}">
                                     <td>
-                                        {{invoiceStatusDetail[0]}}
+                                        [[${invoice.renter.motelRoom.descriptions}]]
                                     </td>
                                     <td>
-                                        {{invoiceStatusDetail[1] | date : 'dd-MM-yyyy' }}
+                                        [[${#dates.format(invoice.createDate, 'dd - MM - yyyy')}]]
                                     </td>
                                     <td>
-                                        {{ formatCurrency(invoiceStatusDetail[2])}}
+                                        [[${#numbers.formatDecimal(invoice.totalPrice, 0, 'COMMA', 0, 'POINT')}]]
                                     </td>
                                 </tr>
                             </tbody>

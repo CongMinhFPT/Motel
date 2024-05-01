@@ -25,6 +25,7 @@
 									<th>#</th>
 									<th>PHÒNG TRỌ</th>
 									<th>NGÀY TẠO</th>
+									<th>TỔNG TIỀN</th>
 									<th>TRẠNG THÁI</th>
 									<th>CHỌN</th>
 								</tr>
@@ -36,7 +37,8 @@
 									<td th:text="${invoice.renter.motelRoom.descriptions}">
 									</td>
 									<td th:text="${#dates.format(invoice.createDate, 'dd - MM - yyyy')}"></td>
-
+									<td th:text="${#numbers.formatDecimal(invoice.totalPrice, 0, 'COMMA', 0, 'POINT')}">
+									</td>
 									<td th:text="${invoice.invoiceStatus.title}">
 									</td>
 									<td>

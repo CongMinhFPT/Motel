@@ -98,7 +98,7 @@
 					<p class="fw-bold">{{indexes[0].motelRoom.descriptions}}</p>
 					<select class="style-1 btn-primary default-select" ng-model="year"
 						ng-change="getIndexsByYearAndMotelRoom(year, indexes[0].motelRoom.motelRoomId)">
-
+						<option value="0"> Chọn nămọ</option>
 						<option ng-repeat="index in indexYear" ng-value="index">{{ index }}</option>
 					</select>
 

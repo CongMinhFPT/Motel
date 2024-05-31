@@ -364,6 +364,7 @@ public class RegisterController {
 			confirmationCodes.put(email, confirmforgot);
 			try {
 				sendEmail(email, confirmforgot);
+				System.out.println("Random forgot:>> " + confirmforgot);
 				model.addAttribute("mes", "Vui xem email lấy mã xác nhận!");
 				model.addAttribute("email1", email);
 			} catch (Exception e) {

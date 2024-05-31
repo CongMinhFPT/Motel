@@ -29,7 +29,7 @@
 									
 									<th class="p-3 text-center">EMAIL</th>
 									<th class="p-3 text-center">NỘI DUNG YÊU CẦU</th>
-									<th class="p-3 text-center">NGÀY GỬI</th>
+									<th class="p-3 text-center" style="width: 200px;">NGÀY GỬI</th>
 									<th class="p-3 text-center">NGÀY PHẢN HỒI</th>
 									<th class="p-3 text-center">NỘI DUNG PHẢN HỒI</th>
 									<th class="p-3 text-center">TRẠNG THÁI</th>
@@ -56,10 +56,10 @@
 									</td>
 
 									<td class="p-3 text-center">
-										<h6 th:text="${re.createDate}"></h6>
+										<h6 th:text="${#dates.format(re.createDate, 'dd-MM-yyyy')}"></h6>
 									</td>
 									<td class="p-3 text-center">
-										<h6 th:text="${re.responseDate}"></h6>
+										<h6 th:text="${#dates.format(re.responseDate, 'dd-MM-yyyy')}"></h6>
 									</td>
 									<td class="p-3 text-center" style="max-width: 300px; overflow-wrap: break-word;">
 										<h6 th:text="${re.respdescriptions}"></h6>

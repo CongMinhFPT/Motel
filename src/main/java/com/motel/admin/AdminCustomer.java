@@ -544,11 +544,11 @@ public class AdminCustomer {
 		return "admin/customers/confirmCusow";
 	}
 
-	@PostMapping("/add/saveCusow")
+	@PostMapping("/confirmCusow/save")
 	public String saveCusow(@ModelAttribute("accounts") Account account, @RequestParam("code") String code, Model model) {
 		if (code.isBlank()) {
 			model.addAttribute("code", "Vui lòng nhập mã xác nhận!");
-			return "admin/customers/confirmCus";
+			return "admin/customers/confirmCusow";
 		}
 		if (codeMap.containsKey(code)) {
 			Account confirmCus = codeMap.get(code);

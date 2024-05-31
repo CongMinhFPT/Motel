@@ -43,7 +43,7 @@ public class AuthorityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/admin/posts","/admin/add-post","/admin/update-post/**","/admin/save-post","/admin/update-post/**","/admin/deletePost/**",
 						"/admin/show-motel","/admin/add-motel","/admin/manage-motel","/admin/manage-motel/**","/admin/update-motel","/admin/condition-motel","/admin/add-motelroom",
 						"/admin/manage-motelroom","/admin/update-motelroom/**","/admin/invoice/**","/admin/renter/**","/admin/deleteRenter/**","/admin/indexs/**",
-						"/admin/category","/admin/categoryform/**","/admin/addcategory","/admin/upcategory","/changeStatus/**","/addowner/**","/confirmCusow","/add/saveCusow").hasAnyRole("OWNER")
+						"/admin/category","/admin/categoryform/**","/admin/addcategory","/admin/upcategory","/changeStatus/**","/addowner/**","/confirmCusow/**").hasAnyRole("OWNER")
 				.antMatchers("/admin/**").hasAnyRole("MANAGER","SUPPER","OWNER")
 //				.antMatchers("/room","/change/**","/information/**","/payment/**","/payment_infor").hasAnyRole("MANAGER", "SUPPER", "OWNER", "CUSTOMER")
 				.antMatchers("/change/**","/information/**","/payment/**","/payment_infor","/request","/deleteRe/**","/requestList","/change/**").authenticated()

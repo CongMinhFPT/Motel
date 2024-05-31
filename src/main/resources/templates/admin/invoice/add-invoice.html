@@ -21,9 +21,8 @@
 								<form th:action="@{/admin/invoice/add-invoice}" th:object="${invoice}" method="post">
 									<div class="form-row">
 										<div class="form-group col-md-6">
-											<label for="inputState">Phòng Trọ</label>
+											<label for="inputState">Chọn Phòng Trọ</label>
 											<select id="inputState" class="form-control" th:field="*{motelRoomId}">
-												<option value="">Chọn phòng trọ</option>
 												<option th:each="currentRenter : ${renters}"
 													th:value="${currentRenter.motelRoomId}"
 													th:text="${currentRenter.descriptions}">

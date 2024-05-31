@@ -566,12 +566,13 @@ public class RegisterController {
 
 		if (responseCode.equals("00")) {
 			Invoice invoice = invoiceRepository.findById(Integer.parseInt(invoiceIdString))
-					.orElseThrow(() -> new IllegalArgumentException("Không tồn tại hợp đồng này của sinh viên"));
+					.orElseThrow(() -> new IllegalArgumentException("Không tồn tại hóa đơn này"));
 			invoice.setInvoiceStatus(invoiceStatusRepository.findAll().get(0));
 			invoiceRepository.save(invoice);
 
 			model.addAttribute("paymentSuccess", true);
 		}
+
 		return "/home/payment_invoice";
 	}
 

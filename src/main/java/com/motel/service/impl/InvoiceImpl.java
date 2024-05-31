@@ -1,12 +1,18 @@
 package com.motel.service.impl;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -30,6 +36,7 @@ import com.motel.repository.RoomCashRepository;
 import com.motel.repository.WaterCashRepository;
 import com.motel.repository.WifiCashRepository;
 import com.motel.service.InvoiceService;
+import com.motel.service.MailerService;
 
 @Service
 public class InvoiceImpl implements InvoiceService {
@@ -60,6 +67,9 @@ public class InvoiceImpl implements InvoiceService {
 
     @Autowired
     InvoiceStatusRepository invoiceStatusRepository;
+
+    @Autowired
+    MailerService mailerService;
 
     @Override
     public List<Invoice> getAll() {
@@ -232,6 +242,77 @@ public class InvoiceImpl implements InvoiceService {
             invoice.setRenter(renter);
             invoiceRepository.save(invoice);
 
+            mailerService.add(mimeMessage -> {
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+                try {
+                    helper.setTo(renter.getAccount().getEmail());
+                    helper.setSubject("Nhà Trọ F.E Xin Chào!");
+                    // Tạo đối tượng SimpleDateFormat để định dạng ngày
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+                    // Tạo nội dung của hóa đơn
+                    StringBuilder invoiceContent = new StringBuilder();
+                    invoiceContent.append("<html><body>");
+                    invoiceContent.append("<table style='border-collapse: collapse; width: 50%; margin: auto;'>");
+                    invoiceContent.append(
+                            "<tr><td colspan='2' style='text-align: left;'><h2>HÓA ĐƠN THANH TOÁN</h2></td></tr>");
+                    invoiceContent.append("<tr><td style='text-align: left;'><strong>Phòng:</strong></td><td>")
+                            .append(renter.getMotelRoom().getDescriptions()).append("</td></tr>");
+                    invoiceContent.append("<tr><td style='text-align: left;'><strong>Ngày tạo:</strong></td><td>")
+                            .append(dateFormat.format(invoice.getCreateDate())).append("</td></tr>");
+                    invoiceContent.append("<tr><td style='text-align: left;'><strong>Chỉ số điện cũ:</strong></td><td>")
+                            .append(formatIndex(invoice.getOldElectricityIndex())).append(" kwh</td></tr>");
+                    invoiceContent
+                            .append("<tr><td style='text-align: left;'><strong>Chỉ số điện mới:</strong></td><td>")
+                            .append(formatIndex(invoice.getNewElectricityIndex())).append(" kwh</td></tr>");
+                    invoiceContent
+                            .append("<tr><td style='text-align: left;'><strong>Chỉ số chênh lệch điện:</strong></td><td>")
+                            .append(formatIndex(invoice.getNewElectricityIndex() - invoice.getOldElectricityIndex()))
+                            .append(" kwh</td></tr>");
+                    invoiceContent.append("<tr><td style='text-align: left;'><strong>Chỉ số nước cũ:</strong></td><td>")
+                            .append(formatIndex(invoice.getOldWaterIndex())).append(" m³</td></tr>");
+                    invoiceContent
+                            .append("<tr><td style='text-align: left;'><strong>Chỉ số nước mới:</strong></td><td>")
+                            .append(formatIndex(invoice.getNewWaterIndex())).append(" m³</td></tr>");
+                    invoiceContent
+                            .append("<tr><td style='text-align: left;'><strong>Chỉ số nước chênh lệch:</strong></td><td>")
+                            .append(formatIndex(invoice.getNewWaterIndex())).append(" m³</td></tr>");
+                    invoiceContent
+                            .append("<tr><td style='text-align: left;'><strong>Giá điện:</strong></td><td>")
+                            .append(formatCurrency(
+                                    invoice.getRenter().getMotelRoom().getElectricityCash().get(0)
+                                            .getElectricityBill()))
+                            .append("</td></tr>");
+                    invoiceContent
+                            .append("<tr><td style='text-align: left;'><strong>Giá nước:</strong></td><td>")
+                            .append(formatCurrency(
+                                    invoice.getRenter().getMotelRoom().getWaterCash().get(0).getWaterBill()))
+                            .append("</td></tr>");
+                    invoiceContent
+                            .append("<tr><td style='text-align: left;'><strong>Giá phòng:</strong></td><td>")
+                            .append(formatCurrency(
+                                    invoice.getRenter().getMotelRoom().getRoomCash().get(0).getRoomBill()))
+                            .append("</td></tr>");
+                    invoiceContent
+                            .append("<tr><td style='text-align: left;'><strong>Giá wifi:</strong></td><td>")
+                            .append(formatCurrency(
+                                    invoice.getRenter().getMotelRoom().getWifiCash().get(0).getWifiBill()))
+                            .append("</td></tr>");
+                    invoiceContent
+                            .append("<tr><td style='text-align: left;'><strong>Trạng thái hóa đơn:</strong></td><td>")
+                            .append(invoice.getInvoiceStatus().getTitle()).append("</td></tr>");
+                    invoiceContent.append("<tr><td style='text-align: left;'><strong>Tổng giá tiền:</strong></td><td>")
+                            .append(formatCurrency(invoice.getTotalPrice())).append("</td></tr>");
+                    invoiceContent.append("</table>");
+                    invoiceContent.append("</body></html>");
+
+                    // Thiết lập nội dung hóa đơn trong email
+                    helper.setText(invoiceContent.toString(), true);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+            });
+
             return invoice;
 
         } else {
@@ -282,6 +363,15 @@ public class InvoiceImpl implements InvoiceService {
     @Override
     public List<Object> getRevenueByYear() {
         return invoiceRepository.getRevenueByYear();
+    }
+
+    private String formatCurrency(Double amount) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        return decimalFormat.format(amount).replace(",", ".") + " đ";
+    }
+
+    private String formatIndex(double index) {
+        return String.format("%.0f", index);
     }
 
 }

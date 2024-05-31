@@ -8,9 +8,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,6 +45,7 @@ import com.motel.repository.RenterRepository;
 import com.motel.repository.RoomCashRepository;
 import com.motel.repository.WaterCashRepository;
 import com.motel.service.InvoiceService;
+import com.motel.service.MailerService;
 import com.motel.service.impl.ManageMotelImpl;
 
 @Controller

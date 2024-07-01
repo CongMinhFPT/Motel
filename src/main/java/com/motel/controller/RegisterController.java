@@ -561,7 +561,7 @@ public class RegisterController {
 	public String transaction(
 			@RequestParam(value = "vnp_OrderInfo") String orderInfo,
 			@RequestParam(value = "vnp_ResponseCode") String responseCode, Model model) {
-		String invoiceIdString = orderInfo.substring(orderInfo.length() - 1);
+		String invoiceIdString = orderInfo.substring(orderInfo.length() - 2);
 		System.out.println(invoiceIdString);
 
 		if (responseCode.equals("00")) {

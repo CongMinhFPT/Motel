@@ -3,6 +3,7 @@ package com.motel.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.annotation.WebServlet;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import com.motel.service.ManageMotelService;
 import com.motel.service.impl.ManageMotelImpl;
 
 @Controller
+
 public class CategoryController {
 	@Autowired
 	CategoryRoomRepository categoryrep;
@@ -113,7 +115,7 @@ public class CategoryController {
 		if (result.hasErrors()) {
 			return "admin/category/up-category";
 		}
-
+         
 		categoryService.create(category);
 		model.addAttribute("messagess", "Create Success!");
 		return "admin/category/up-category";
